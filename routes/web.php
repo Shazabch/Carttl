@@ -16,6 +16,10 @@ Route::get('/car-damage-test', function () {
 })->name('car.damage.test');
 
 
+Route::get('/car-detail-page', function () {
+    return view('detail');
+})->name('car-detail-page');
+
 // Route::group(['prefix' => 'account'], function(){
 // Guest middleware
 Route::group(['middleware' => 'guest'], function () {

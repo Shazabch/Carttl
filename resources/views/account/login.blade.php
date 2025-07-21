@@ -1,5 +1,7 @@
 @extends('layouts.auth')
-
+@section('title')
+    Login - GoldenX
+@endsection
 @section('content')
     <div class="col-lg-6 d-flex align-items-center justify-content-center bg-white">
         <div class="w-100" style="max-width: 450px;">

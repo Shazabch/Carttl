@@ -1,4 +1,7 @@
 @extends('layouts.auth')
+@section('title')
+    Register - GoldenX
+@endsection
 @section('content')
     <div class="col-lg-6 d-flex align-items-center justify-content-center bg-white">
         <div class="w-100">
