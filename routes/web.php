@@ -11,9 +11,7 @@ Route::get('/', function () {
 });
 
 
-Route::get('/car-damage-test', function () {
-    return view('carDamgeTest');
-})->name('car.damage.test');
+
 
 
 // Route::group(['prefix' => 'account'], function(){
@@ -43,8 +41,11 @@ Route::group(['prefix' => 'admin'], function () {
     // Authenticate middleware for admin
     Route::group(['middleware' => 'admin.auth'], function () {
         Route::get('dashboard', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
-        Route::get('logout', [AdminLoginController::class, 'logout'])->name('admin.logout');
+        Route::post('logout', [AdminLoginController::class, 'logout'])->name('admin.logout');
+        Route::get('/car-damage-test', function () {
+            return view('carDamgeTest');
+        })->name('car.damage.test');
     });
 
-    Route::view('admin/sale', 'admin.sale')->name('admin.sale');
+    Route::view('sale', 'admin.sale')->name('admin.sale');
 });

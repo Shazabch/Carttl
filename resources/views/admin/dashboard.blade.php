@@ -162,20 +162,20 @@
                                 <h4 class="menu-text">System</h4>
                                 <i class="menu-icon ki ki-bold-more-hor icon-md"></i>
                             </li>
-                           
+
                                 <li class="menu-item" aria-haspopup="true">
-                                    <a href="#" class="menu-link">
+                                    <a href="{{ route('car.damage.test') }}" class="menu-link">
                                         <span class="svg-icon menu-icon">
                                             <!--begin::Svg Icon | path:assets/media/svg/icons/Design/Layers.svg-->
-                                            <i class="fas fa-users-cog"></i>
+                                            <i class="fas fa-car"></i>
 
                                             <!--end::Svg Icon-->
                                         </span>
-                                        <span class="menu-text">Cars</span>
+                                        <span class="menu-text">Car Test</span>
                                     </a>
                                 </li>
-                         
-                           
+
+
                                 <li class="menu-item " aria-haspopup="true">
                                     <a href="" class="menu-link">
                                         <span class="svg-icon menu-icon">
@@ -187,7 +187,7 @@
                                         <span class="menu-text">Car 2</span>
                                     </a>
                                 </li>
-                          
+
 
 
 
@@ -206,18 +206,18 @@
                                     <span class="svg-icon menu-icon">
                                         <!--begin::Svg Icon-->
                                         <i class="fas fa-cash-register"></i>
-    
+
                                         <!--end::Svg Icon-->
                                     </span>
                                     <span class="menu-text">Sales</span>
                                     <i class="menu-arrow"></i>
                                 </a>
-    
+
                                 <!-- Submenu Start -->
                                 <div class="menu-submenu">
                                     <i class="menu-arrow"></i>
                                     <ul class="menu-subnav">
-    
+
                                         <!-- Sale Management Link -->
                                         <li class="menu-item " aria-haspopup="true">
                                             <a href="{{route('admin.sale')}}" class="menu-link">
@@ -225,7 +225,7 @@
                                                 <span class="menu-text">Sale</span>
                                             </a>
                                         </li>
-    
+
                                         <!-- Direct Income Link -->
                                         <li class="menu-item " aria-haspopup="true">
                                             <a href="{{route('admin.sale')}}" class="menu-link">
@@ -233,12 +233,12 @@
                                                 <span class="menu-text">Sale 2</span>
                                             </a>
                                         </li>
-    
+
                                     </ul>
                                 </div>
                                 <!-- Submenu End -->
                             </li>
-                           
+
                             <li class="menu-item menu-item-submenu  }}"
                             aria-haspopup="true" data-menu-toggle="hover">
                     <a href="javascript:;" class="menu-link menu-toggle">
