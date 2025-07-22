@@ -61,5 +61,5 @@ Route::group(['prefix' => 'admin'], function () {
         })->name('car.damage.test');
     });
 
-    Route::view('sale', 'admin.sale')->name('admin.sale');
+    Route::view('user', 'admin.user')->name('admin.user');
 });

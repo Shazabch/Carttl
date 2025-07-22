@@ -24,7 +24,7 @@
     <link href="{{ asset('assets/plugins/custom/prismjs/prismjs.bundle.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('assets/css/style.bundle.css') }}" rel="stylesheet" type="text/css" />
     <!--end::Global Theme Styles-->
-
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <!--begin::Layout Themes(used by all pages)-->
     <link href="{{ asset('assets/css/themes/layout/header/base/light.css') }}" rel="stylesheet" type="text/css" />
@@ -32,6 +32,7 @@
     <link href="{{ asset('assets/css/themes/layout/brand/dark.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('assets/css/themes/layout/aside/dark.css') }}" rel="stylesheet" type="text/css" />
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <!--end::Layout Themes-->
     <link rel="shortcut icon" href="assets/media/logos/favicon.ico" />
     @stack('styles')
@@ -196,7 +197,7 @@
 
 
                             <li class="menu-section">
-                                <h4 class="menu-text">Golden x 2</h4>
+                                <h4 class="menu-text">Administrator</h4>
                                 <i class="menu-icon ki ki-bold-more-hor icon-md"></i>
                             </li>
                            <!--Dummy-->
@@ -204,12 +205,9 @@
                                         aria-haspopup="true" data-menu-toggle="hover">
                                 <a href="javascript:;" class="menu-link menu-toggle">
                                     <span class="svg-icon menu-icon">
-                                        <!--begin::Svg Icon-->
-                                        <i class="fas fa-cash-register"></i>
-
-                                        <!--end::Svg Icon-->
+                                        <i class="fas fa-cogs"></i>
                                     </span>
-                                    <span class="menu-text">Sales</span>
+                                    <span class="menu-text">System Settings</span>
                                     <i class="menu-arrow"></i>
                                 </a>
 
@@ -220,15 +218,15 @@
 
                                         <!-- Sale Management Link -->
                                         <li class="menu-item " aria-haspopup="true">
-                                            <a href="{{route('admin.sale')}}" class="menu-link">
+                                            <a href="{{route('admin.user')}}" class="menu-link">
                                                 <i class="menu-bullet menu-bullet-dot"><span></span></i>
-                                                <span class="menu-text">Sale</span>
+                                                <span class="menu-text">Users</span>
                                             </a>
                                         </li>
 
                                         <!-- Direct Income Link -->
                                         <li class="menu-item " aria-haspopup="true">
-                                            <a href="{{route('admin.sale')}}" class="menu-link">
+                                            <a href="#" class="menu-link">
                                                 <i class="menu-bullet menu-bullet-dot"><span></span></i>
                                                 <span class="menu-text">Sale 2</span>
                                             </a>
