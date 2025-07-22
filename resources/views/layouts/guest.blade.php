@@ -13,9 +13,15 @@
     <link rel="stylesheet" href="{{ asset('css/car-detail.css') }}">
 </head>
 
+
 <body>
     <!-- Navbar -->
     @include('components.guest.header')
+
+    <button class="floating-inspection-btn" onclick="bookInspection()">
+        <i class="fas fa-calendar-alt " style="text-decoration: none"></i>
+        <span>Book Inspection</span>
+    </button>
 
     @yield('content')
 

@@ -8,17 +8,25 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('home');
-});
+})->name('home');
 
+
+Route::get('/car-auctions', function () {
+    return view('auctions');
+})->name('auctions');
 
 Route::get('/car-damage-test', function () {
     return view('carDamgeTest');
 })->name('car.damage.test');
 
 
-Route::get('/car-detail-page', function () {
+Route::get('/car-detail', function () {
     return view('detail');
 })->name('car-detail-page');
+
+Route::get('/contact-us', function () {
+    return view('contact-us');
+})->name('contact-us');
 
 // Route::group(['prefix' => 'account'], function(){
 // Guest middleware
