@@ -14,6 +14,10 @@ Route::get('/', function () {
 
 
 
+Route::get('/car-detail-page', function () {
+    return view('detail');
+})->name('car-detail-page');
+
 // Route::group(['prefix' => 'account'], function(){
 // Guest middleware
 Route::group(['middleware' => 'guest'], function () {
