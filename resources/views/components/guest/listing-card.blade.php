@@ -8,7 +8,7 @@
         </div>
         <div class="card-body">
             <h5 class="card-title">2022 BMW M4 Competition</h5>
-            <div class="fw-bold mb-2 current-bid">Current Bid: {{ format_currency('78900') }}</div>
+            <div class="fw-bold mb-2 current-bid">Current Bid: AED 78,000.00</div>
             <div class="d-flex justify-content-between text-secondary small mb-3">
                 <span><i class="fas fa-tachometer-alt me-1"></i>12,300 miles</span>
                 <span><i class="fas fa-clock me-1"></i>Ends in 1d</span>
@@ -31,7 +31,7 @@
         </div>
         <div class="card-body">
             <h5 class="card-title">2022 BMW M4 Competition</h5>
-            <div class="fw-bold mb-2 current-bid">Current Bid: {{ format_currency('78900') }}</div>
+            <div class="fw-bold mb-2 current-bid">Current Bid: AED 78,000.00</div>
             <div class="d-flex justify-content-between text-secondary small mb-3">
                 <span><i class="fas fa-tachometer-alt me-1"></i>12,300 miles</span>
                 <span><i class="fas fa-clock me-1"></i>Ends in 1d</span>
@@ -54,7 +54,7 @@
         </div>
         <div class="card-body">
             <h5 class="card-title">2022 BMW M4 Competition</h5>
-            <div class="fw-bold mb-2 current-bid">Current Bid: {{ format_currency('78900') }}</div>
+            <div class="fw-bold mb-2 current-bid">Current Bid: AED 78,000.00</div>
             <div class="d-flex justify-content-between text-secondary small mb-3">
                 <span><i class="fas fa-tachometer-alt me-1"></i>12,300 miles</span>
                 <span><i class="fas fa-clock me-1"></i>Ends in 1d</span>
