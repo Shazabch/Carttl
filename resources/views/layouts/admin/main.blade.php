@@ -56,10 +56,10 @@
                 <!--begin::Brand-->
                 <div class="brand flex-column-auto" id="kt_brand">
                     <!--begin::Logo-->
-                    <a href="{{route('admin.dashboard')}}" class="brand-logo">
+                    <a href="{{ route('admin.dashboard') }}" class="brand-logo">
                         <div class="d-flex flex-center">
-                            <h3 class="font-weight-boldest text-warning">
-                                Golden <span class="text-danger">X</span>
+                            <h3 class="font-weight-boldest text-white">
+                                Golden<span class="text-warning">X</span>
                             </h3>
 
                         </div>
@@ -104,11 +104,8 @@
                         <!--begin::Header Menu Wrapper-->
                         <div class="header-menu-wrapper header-menu-wrapper-left" id="kt_header_menu_wrapper">
                             <!--begin::Header Menu-->
-                            <div id="kt_header_menu"
-                                class="header-menu header-menu-mobile header-menu-layout-default">
+                            <div id="kt_header_menu" class="header-menu header-menu-mobile header-menu-layout-default">
                                 <div class="d-flex flex-center">
-                                    <h3 class="font-size-h1 font-weight-boldest text-warning">Golden <span
-                                            class="text-danger">X</span></h3>
                                     {{-- <button class="btn btn-primary ml-3" data-toggle="modal"
                                         data-target="#dailyBookManagementModal">Add In Daily Book</button> --}}
                                 </div>
@@ -128,7 +125,8 @@
                                     <span
                                         class="text-muted font-weight-bold font-size-base d-none d-md-inline mr-1">Hi,</span>
                                     <span
-                                        class="text-dark-50 font-weight-bolder font-size-base d-none d-md-inline mr-3"> {{ Auth::guard('admin')->user()->name }}</a></span>
+                                        class="text-dark-50 font-weight-bolder font-size-base d-none d-md-inline mr-3">
+                                        {{ Auth::guard('admin')->user()->name }}</a></span>
                                     <span class="symbol symbol-lg-35 symbol-25 symbol-light-success">
                                         <span class="symbol-label font-size-h5 font-weight-bold">S</span>
                                     </span>
@@ -620,8 +618,7 @@
                 </li>
             </ul>
             <div class="offcanvas-close mt-n1 pr-5">
-                <a href="#" class="btn btn-xs btn-icon btn-light btn-hover-primary"
-                    id="kt_quick_panel_close">
+                <a href="#" class="btn btn-xs btn-icon btn-light btn-hover-primary" id="kt_quick_panel_close">
                     <i class="ki ki-close icon-xs text-muted"></i>
                 </a>
             </div>
@@ -735,9 +732,8 @@
                             <span class="svg-icon svg-icon-warning mr-5">
                                 <span class="svg-icon svg-icon-lg">
                                     <!--begin::Svg Icon | path:assets/media/svg/icons/Home/Library.svg-->
-                                    <svg xmlns="http://www.w3.org/2000/svg"
-                                        xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px"
-                                        viewBox="0 0 24 24" version="1.1">
+                                    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                                        width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
                                         <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
                                             <rect x="0" y="0" width="24" height="24" />
                                             <path
@@ -766,9 +762,8 @@
                             <span class="svg-icon svg-icon-success mr-5">
                                 <span class="svg-icon svg-icon-lg">
                                     <!--begin::Svg Icon | path:assets/media/svg/icons/Communication/Write.svg-->
-                                    <svg xmlns="http://www.w3.org/2000/svg"
-                                        xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px"
-                                        viewBox="0 0 24 24" version="1.1">
+                                    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                                        width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
                                         <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
                                             <rect x="0" y="0" width="24" height="24" />
                                             <path
@@ -797,9 +792,8 @@
                             <span class="svg-icon svg-icon-danger mr-5">
                                 <span class="svg-icon svg-icon-lg">
                                     <!--begin::Svg Icon | path:assets/media/svg/icons/Communication/Group-chat.svg-->
-                                    <svg xmlns="http://www.w3.org/2000/svg"
-                                        xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px"
-                                        viewBox="0 0 24 24" version="1.1">
+                                    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                                        width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
                                         <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
                                             <rect x="0" y="0" width="24" height="24" />
                                             <path
@@ -827,9 +821,8 @@
                             <span class="svg-icon svg-icon-info mr-5">
                                 <span class="svg-icon svg-icon-lg">
                                     <!--begin::Svg Icon | path:assets/media/svg/icons/General/Attachment2.svg-->
-                                    <svg xmlns="http://www.w3.org/2000/svg"
-                                        xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px"
-                                        viewBox="0 0 24 24" version="1.1">
+                                    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                                        width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
                                         <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
                                             <rect x="0" y="0" width="24" height="24" />
                                             <path
@@ -1213,10 +1206,9 @@
                                     <span class="svg-icon svg-icon-lg">
                                         <!--begin::Svg Icon | path:assets/media/svg/icons/Communication/Add-user.svg-->
                                         <svg xmlns="http://www.w3.org/2000/svg"
-                                            xmlns:xlink="http://www.w3.org/1999/xlink" width="24px"
-                                            height="24px" viewBox="0 0 24 24" version="1.1">
-                                            <g stroke="none" stroke-width="1" fill="none"
-                                                fill-rule="evenodd">
+                                            xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px"
+                                            viewBox="0 0 24 24" version="1.1">
+                                            <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
                                                 <polygon points="0 0 24 0 24 24 0 24" />
                                                 <path
                                                     d="M18,8 L16,8 C15.4477153,8 15,7.55228475 15,7 C15,6.44771525 15.4477153,6 16,6 L18,6 L18,4 C18,3.44771525 18.4477153,3 19,3 C19.5522847,3 20,3.44771525 20,4 L20,6 L22,6 C22.5522847,6 23,6.44771525 23,7 C23,7.55228475 22.5522847,8 22,8 L20,8 L20,10 C20,10.5522847 19.5522847,11 19,11 C18.4477153,11 18,10.5522847 18,10 L18,8 Z M9,11 C6.790861,11 5,9.209139 5,7 C5,4.790861 6.790861,3 9,3 C11.209139,3 13,4.790861 13,7 C13,9.209139 11.209139,11 9,11 Z"
@@ -1328,8 +1320,7 @@
                                 <div class="d-flex flex-column mb-5 align-items-start">
                                     <div class="d-flex align-items-center">
                                         <div class="symbol symbol-circle symbol-40 mr-3">
-                                            <img alt="Pic"
-                                                src="{{ asset('assets/media/users/300_12.jpg') }}" />
+                                            <img alt="Pic" src="{{ asset('assets/media/users/300_12.jpg') }}" />
                                         </div>
                                         <div>
                                             <a href="#"
@@ -1352,8 +1343,7 @@
                                                 class="text-dark-75 text-hover-primary font-weight-bold font-size-h6">You</a>
                                         </div>
                                         <div class="symbol symbol-circle symbol-40 ml-3">
-                                            <img alt="Pic"
-                                                src="{{ asset('assets/media/users/300_21.jpg') }}" />
+                                            <img alt="Pic" src="{{ asset('assets/media/users/300_21.jpg') }}" />
                                         </div>
                                     </div>
                                     <div
@@ -1366,8 +1356,7 @@
                                 <div class="d-flex flex-column mb-5 align-items-start">
                                     <div class="d-flex align-items-center">
                                         <div class="symbol symbol-circle symbol-40 mr-3">
-                                            <img alt="Pic"
-                                                src="{{ asset('assets/media/users/300_21.jpg') }}" />
+                                            <img alt="Pic" src="{{ asset('assets/media/users/300_21.jpg') }}" />
                                         </div>
                                         <div>
                                             <a href="#"
@@ -1390,8 +1379,7 @@
                                                 class="text-dark-75 text-hover-primary font-weight-bold font-size-h6">You</a>
                                         </div>
                                         <div class="symbol symbol-circle symbol-40 ml-3">
-                                            <img alt="Pic"
-                                                src="{{ asset('assets/media/users/300_21.jpg') }}" />
+                                            <img alt="Pic" src="{{ asset('assets/media/users/300_21.jpg') }}" />
                                         </div>
                                     </div>
                                     <div
@@ -1403,8 +1391,7 @@
                                 <div class="d-flex flex-column mb-5 align-items-start">
                                     <div class="d-flex align-items-center">
                                         <div class="symbol symbol-circle symbol-40 mr-3">
-                                            <img alt="Pic"
-                                                src="{{ asset('assets/media/users/300_12.jpg') }}" />
+                                            <img alt="Pic" src="{{ asset('assets/media/users/300_12.jpg') }}" />
                                         </div>
                                         <div>
                                             <a href="#"
@@ -1429,8 +1416,7 @@
                                                 class="text-dark-75 text-hover-primary font-weight-bold font-size-h6">You</a>
                                         </div>
                                         <div class="symbol symbol-circle symbol-40 ml-3">
-                                            <img alt="Pic"
-                                                src="{{ asset('assets/media/users/300_21.jpg') }}" />
+                                            <img alt="Pic" src="{{ asset('assets/media/users/300_21.jpg') }}" />
                                         </div>
                                     </div>
                                     <div
@@ -1443,8 +1429,7 @@
                                 <div class="d-flex flex-column mb-5 align-items-start">
                                     <div class="d-flex align-items-center">
                                         <div class="symbol symbol-circle symbol-40 mr-3">
-                                            <img alt="Pic"
-                                                src="{{ asset('assets/media/users/300_12.jpg') }}" />
+                                            <img alt="Pic" src="{{ asset('assets/media/users/300_12.jpg') }}" />
                                         </div>
                                         <div>
                                             <a href="#"
@@ -1467,8 +1452,7 @@
                                                 class="text-dark-75 text-hover-primary font-weight-bold font-size-h6">You</a>
                                         </div>
                                         <div class="symbol symbol-circle symbol-40 ml-3">
-                                            <img alt="Pic"
-                                                src="{{ asset('assets/media/users/300_21.jpg') }}" />
+                                            <img alt="Pic" src="{{ asset('assets/media/users/300_21.jpg') }}" />
                                         </div>
                                     </div>
                                     <div
@@ -1536,4 +1520,4 @@
         @csrf
     </form>
 
-  @include('admin.partials.footer')
+    @include('admin.partials.footer')
