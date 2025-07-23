@@ -7,11 +7,20 @@
            </button>
            <div class="collapse navbar-collapse" id="mainNav">
                <ul class="navbar-nav ms-auto align-items-lg-center">
-                   <li class="nav-item"><a class="nav-link" href="{{ route('home') }}">Home</a></li>
-                   <li class="nav-item"><a class="nav-link" href="{{ route('auctions') }}">Auctions</a></li>
-                   <li class="nav-item"><a class="nav-link" href="#">Sell Cars</a></li>
-                   <li class="nav-item"><a class="nav-link" href="{{ route('contact-us') }}">Contact Us</a></li>
-                   <li class="nav-item ms-lg-3"><a class="btn btn-warning me-2" href="{{ route('account.login') }}">Sign
+                   <li class="nav-item"><a class="nav-link  {{ set_active_route('home') }}"
+                           href="{{ route('home') }}">Home</a></li>
+                   <li class="nav-item"><a class="nav-link {{ set_active_route('auctions') }}"
+                           href="{{ route('auctions') }}">Auctions</a></li>
+                   <li class="nav-item"><a class="nav-link {{ set_active_route('sell-cars') }}"
+                           href="{{ route('sell-cars') }}">Sell Cars</a></li>
+                   <li class="nav-item"><a class="nav-link {{ set_active_route('contact-us') }}"
+                           href="{{ route('contact-us') }}">Contact Us</a></li>
+                   <li class="nav-item"><a class="nav-link {{ set_active_route('favorites') }}"
+                           href="{{ route('favorites') }}">
+                           <i class="fas fa-heart"></i>
+                           favorites</a></li>
+                   <li class="nav-item ms-lg-3"><a class="btn btn-warning me-2"
+                           href="{{ route('account.login') }}">Sign
                            In</a></li>
                    <li class="nav-item"><a class="btn btn-outline-warning"
                            href="{{ route('account.register') }}">Register</a></li>

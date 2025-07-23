@@ -233,5 +233,17 @@
             </div>
         </div>
     </section>
+    <section class="py-5" style="background-color: #f8fafc;">
+        <div class="container">
+            <div class="text-center mb-5">
+                <h2 class="fw-bold mb-2" style="color: #0f172a;">Featured Cars for Sale</h2>
+                <p class="text-secondary mb-0">Looking for your next ride? Check out our featured cars—great deals on the
+                    most popular models, all in one place..</p>
+            </div>
+            <div class="row g-4">
+                @include('components.guest.listing-card')
+            </div>
+        </div>
+    </section>
     <!-- Footer -->
 @endsection
