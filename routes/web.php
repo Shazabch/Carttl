@@ -74,3 +74,6 @@ Route::group(['prefix' => 'admin'], function () {
 
     Route::view('user', 'admin.user')->name('admin.user');
 });
+Route::get('/un-authenticated', function () {
+    return view('un-auth');
+})->name('un-auth');
