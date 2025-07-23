@@ -31,14 +31,12 @@
                             <td>{{ $user->email }}</td>
                             <td>{{ ucfirst($user->role) }}</td>
                             <td>
-                                <button class="btn btn-sm btn-info" wire:click="editItem({{ $user->id }})">
-                                    Edit
-                                </button>
-                                {{-- Dispatch event with user ID as a parameter --}}
-                                <button class="btn btn-sm btn-danger"
-                                    wire:click="$dispatch('confirmDeleteUser', { id: {{ $user->id }} })">
-                                    Delete
-                                </button>
+                                <i class="fas fa-edit text-info me-2" style="cursor: pointer;"
+                                    wire:click="editItem({{ $user->id }})" title="Edit"></i>
+
+                                <i class="fas fa-trash text-danger" style="cursor: pointer;"
+                                    wire:click="$dispatch('confirmDeleteUser', { id: {{ $user->id }} })"
+                                    title="Delete"></i>
                             </td>
                         </tr>
                     @empty
@@ -62,12 +60,12 @@
             {{-- Change wire:submit.prevent to wire:submit --}}
             <form wire:submit="saveUser" class="modal-content">
                 <div class="modal-header bg-primary text-white">
-                    <h5 class="modal-title">{{ $user_id ? 'Edit' : 'Add' }} User </h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <h5 class="modal-title  text-white">{{ $user_id ? 'Edit' : 'Add' }} User </h5>
+
                 </div>
                 <div class="modal-body">
                     <div class="mb-3">
-                        <label>Name  <small class="text-danger">*</small></label>
+                        <label>Name <small class="text-danger">*</small></label>
                         {{-- Use wire:model instead of wire:model.defer for instant feedback --}}
                         <input type="text" class="form-control" wire:model="name">
                         @error('name')
@@ -82,8 +80,7 @@
                         @enderror
                     </div>
                     <div class="mb-3">
-                        <label>Password <small
-                                class="text-danger">*</small></label>
+                        <label>Password <small class="text-danger">*</small></label>
                         <input type="password" class="form-control" wire:model="password" autocomplete="new-password">
                         @error('password')
                             <small class="text-danger">{{ $message }}</small>
@@ -102,7 +99,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
                     <button type="submit" class="btn btn-primary">
                         <div wire:loading wire:target="saveUser" class="spinner-border spinner-border-sm"
                             role="status">

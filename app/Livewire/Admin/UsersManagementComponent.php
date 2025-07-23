@@ -52,7 +52,7 @@ class UsersManagementComponent extends Component
         $this->email = $user->email;
         $this->role = $user->role;
         $this->password = '';
-
+        $this->resetValidation();
         $this->dispatch('open-modal');
     }
 
@@ -75,9 +75,10 @@ class UsersManagementComponent extends Component
         $this->dispatch('close-modal');
         $this->dispatch('success-notification', message: $this->user_id ? 'User updated successfully.' : 'User created successfully.');
         $this->reset();
+        $this->dispatch('close-modal');
     }
 
-
+    #[On('deleteItem')]
     public function deleteItem($id)
     {
         User::findOrFail($id)->delete();
