@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\admin\ContactSubmissionController;
 use App\Http\Controllers\admin\DashboardController as AdminDashboardController;
 use App\Http\Controllers\admin\LoginController as AdminLoginController;
 use App\Http\Controllers\DashboardController;
@@ -15,9 +16,7 @@ Route::get('/car-auctions', function () {
     return view('auctions');
 })->name('auctions');
 
-Route::get('/car-damage-test', function () {
-    return view('carDamgeTest');
-})->name('car.damage.test');
+
 
 
 Route::get('/car-detail', function () {
@@ -59,6 +58,7 @@ Route::group(['prefix' => 'admin'], function () {
         Route::get('/car-damage-test', function () {
             return view('carDamgeTest');
         })->name('car.damage.test');
+        Route::get('/submissions', [ContactSubmissionController::class, 'index'])->name('submissions.index');
     });
 
     Route::view('user', 'admin.user')->name('admin.user');
