@@ -58,7 +58,7 @@ Route::group(['prefix' => 'admin'], function () {
         Route::get('/car-damage-test', function () {
             return view('carDamgeTest');
         })->name('car.damage.test');
-        Route::get('/submissions', [ContactSubmissionController::class, 'index'])->name('submissions.index');
+        Route::get('/submissions', [ContactSubmissionController::class, 'index'])->name('admin.submissions');
     });
 
     Route::view('user', 'admin.user')->name('admin.user');
