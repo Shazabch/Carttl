@@ -1,7 +1,7 @@
 @extends('admin.dashboard')
 @section('title', 'Contact Submission List')
 @section('content')
-<div class="container py-4">
+<div class="container">
     <div class="row">
         <div class="col">
             <h1 class="mb-4">Contact Form Submissions</h1>
