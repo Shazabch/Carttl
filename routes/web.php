@@ -16,7 +16,18 @@ Route::get('/car-auctions', function () {
     return view('auctions');
 })->name('auctions');
 
+Route::get('/sell-cars', function () {
+    return view('sell-cars');
+})->name('sell-cars');
 
+
+Route::get('/car-favorites', function () {
+    return view('favorites');
+})->name('favorites');
+
+Route::get('/car-damage-test', function () {
+    return view('carDamgeTest');
+})->name('car.damage.test');
 
 
 Route::get('/car-detail', function () {

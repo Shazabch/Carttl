@@ -115,7 +115,6 @@
     @push('scripts')
         <script>
             document.addEventListener('livewire:init', () => {
-                // Event listener for delete confirmation
                 Livewire.on('confirmDeleteUser', (event) => {
                     Swal.fire({
                         title: 'Are you sure?',
@@ -127,7 +126,6 @@
                         confirmButtonText: 'Yes, delete it!'
                     }).then((result) => {
                         if (result.isConfirmed) {
-                            // Dispatch event to the component with the user ID
                             Livewire.dispatch('deleteItem', {
                                 id: event.id
                             });
