@@ -15,7 +15,7 @@
               <div class="col-md-3 footer-section">
                   <h3><i class="fas fa-link me-2"></i>Quick Links</h3>
                   <ul class="list-unstyled">
-                      <li><a href="#"><i class="fas fa-home me-2"></i>Home</a></li>
+                      <li><a href="{{ route('home') }}"><i class="fas fa-home me-2"></i>Home</a></li>
                       <li><a href="#"><i class="fas fa-star me-2"></i>Featured Auctions</a></li>
                       <li><a href="#"><i class="fas fa-info-circle me-2"></i>How It Works</a></li>
                       <li><a href="#"><i class="fas fa-quote-left me-2"></i>Testimonials</a></li>
@@ -26,7 +26,7 @@
                   <h3><i class="fas fa-headset me-2"></i>Support</h3>
                   <ul class="list-unstyled">
                       <li><a href="#"><i class="fas fa-question-circle me-2"></i>FAQ</a></li>
-                      <li><a href="#"><i class="fas fa-envelope me-2"></i>Contact Us</a></li>
+                      <li><a href="{{ route('contact-us') }}"><i class="fas fa-envelope me-2"></i>Contact Us</a></li>
                       <li><a href="#"><i class="fas fa-file-contract me-2"></i>Terms of Service</a></li>
                       <li><a href="#"><i class="fas fa-shield-alt me-2"></i>Privacy Policy</a></li>
                   </ul>
