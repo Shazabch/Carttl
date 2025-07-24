@@ -133,15 +133,6 @@
                     });
                 });
 
-                // Event listener for success notifications
-                Livewire.on('success-notification', (event) => {
-                    Swal.fire({
-                        title: 'Success!',
-                        text: event.message,
-                        icon: 'success',
-                    });
-                });
-
                 window.addEventListener('open-modal', event => {
                     $('#userModal').modal('show');
                 });

@@ -71,11 +71,11 @@ class UsersManagementComponent extends Component
         }
 
         User::updateOrCreate(['id' => $this->user_id], $data);
-
-        $this->dispatch('close-modal');
-        $this->dispatch('success-notification', message: $this->user_id ? 'User updated successfully.' : 'User created successfully.');
         $this->reset();
         $this->dispatch('close-modal');
+        $this->dispatch('success-notification', message: $this->user_id ? 'User updated successfully.' : 'User created successfully.');
+
+
     }
 
     #[On('deleteItem')]
