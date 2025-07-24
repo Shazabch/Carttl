@@ -29,7 +29,7 @@ class EnquirySubmitNotification extends Notification
             ->subject('New Enquiry Submitted')
             ->greeting('Hello Admin,')
             ->line('A new enquiry has been submitted.')
-            ->line('Name: ' . $this->enquiry->name)
+            ->line('Name: ' . $this->enquiry->first_name . ' ' . $this->enquiry->last_name)
             ->line('Email: ' . $this->enquiry->email)
             ->line('Message: ' . $this->enquiry->message)
             ->action('View Enquiries', url('admin.submissions'))
@@ -39,8 +39,13 @@ class EnquirySubmitNotification extends Notification
     public function toDatabase($notifiable)
     {
         return [
-            'message' => 'A new enquiry has been submitted by ' . $this->enquiry->name,
-            'url' => url('admin.submissions'),
+            'title' => 'New enquiry submitted',
+            'name' => $this->enquiry->first_name . ' ' . $this->enquiry->last_name,
+            'email' => $this->enquiry->email,
+            'message' => $this->enquiry->message,
+            'link' => url('admin.submissions'),
+            'created_at' => now(),
+
         ];
     }
 }
