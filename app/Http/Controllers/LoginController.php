@@ -30,7 +30,7 @@ class LoginController extends Controller
                 return redirect()->route('account.dashboard');
             }else{
                 return redirect()->route('account.login')->with('error','Either email or password is incorrect.');
-                
+
             }
         }
     }
@@ -55,10 +55,12 @@ class LoginController extends Controller
 
         $user = new User();
         $user->name = $request->username;
-        $user->email = $request->email; 
+        $user->email = $request->email;
         $user->password = Hash::make($request->password);
         $user->role = 'customer';
         $user->save();
+
+        $user->syncRoles('customer');
 
         return redirect()->route('account.login')->with('success','You have successfully registered.');
     }

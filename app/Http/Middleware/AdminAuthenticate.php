@@ -16,9 +16,21 @@ class AdminAuthenticate
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if(!Auth::guard('admin')->check()){
+        if (!Auth::guard('admin')->check()) {
             return redirect()->route('admin.login');
         }
-        return $next($request);
+
+        $user = Auth::guard('admin')->user();
+        if ($user->getRoleNames()->isEmpty()) {
+            Auth::guard('admin')->logout();
+        }
+
+        if ($user->hasRole(['admin', 'super-admin'])) {
+
+            return $next($request);
+        } elseif ($user->hasRole(['customer'])) {
+            return redirect()->route('account.dashboard');
+        }
+        abort(403, 'You are not authorized to access this page.');
     }
 }

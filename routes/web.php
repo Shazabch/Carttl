@@ -73,6 +73,7 @@ Route::group(['prefix' => 'admin'], function () {
     });
 
     Route::view('user', 'admin.user')->name('admin.user');
+    Route::view('roles', 'admin.roles.index')->name('admin.roles');
 });
 Route::get('/un-authenticated', function () {
     return view('un-auth');

@@ -163,6 +163,12 @@
 
                          <!-- Sale Management Link -->
                          <li class="menu-item " aria-haspopup="true">
+                             <a href="{{ route('admin.roles') }}" class="menu-link">
+                                 <i class="menu-bullet menu-bullet-dot"><span></span></i>
+                                 <span class="menu-text">Roles</span>
+                             </a>
+                         </li>
+                         <li class="menu-item " aria-haspopup="true">
                              <a href="{{ route('admin.user') }}" class="menu-link">
                                  <i class="menu-bullet menu-bullet-dot"><span></span></i>
                                  <span class="menu-text">Users</span>

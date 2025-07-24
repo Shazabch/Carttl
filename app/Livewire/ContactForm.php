@@ -5,6 +5,10 @@ namespace App\Livewire;
 use App\Models\ContactSubmission; // Import the new model
 use Livewire\Component;
 use Livewire\Attributes\Rule;
+use App\Models\User;
+use App\Notifications\EnquiryReceivedConfirmation;
+use App\Notifications\EnquirySubmitNotification;
+use Illuminate\Support\Facades\Notification;
 
 class ContactForm extends Component
 {
@@ -37,7 +41,7 @@ class ContactForm extends Component
 
         try {
             // 2. Create the database record
-            ContactSubmission::create([
+            $enquiry = ContactSubmission::create([
                 'first_name' => $this->firstName,
                 'last_name' => $this->lastName,
                 'email' => $this->email,
@@ -45,14 +49,18 @@ class ContactForm extends Component
                 'message' => $this->message,
                 'terms_agreed' => $this->terms,
             ]);
+            // Notify all admins and super-admins
+            $recipients = User::role(['admin', 'super-admin'])->get();
+            Notification::send($recipients, new EnquirySubmitNotification($enquiry));
+            Notification::route('mail', $enquiry->email)
+                    ->notify(new EnquiryReceivedConfirmation($enquiry));
             session()->flash('success', 'Thank you! Your message has been received and saved.');
             $this->formSubmitted = true;
 
             $this->terms = true;
         } catch (\Exception $e) {
-
             // \Log::error('Contact form submission error: ' . $e->getMessage());
-            session()->flash('error', 'Sorry, there was an issue saving your message. Please try again.');
+            session()->flash('error', $e->getMessage());
         }
     }
     public function resetForm()
