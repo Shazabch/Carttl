@@ -3,8 +3,10 @@
 use App\Http\Controllers\admin\ContactSubmissionController;
 use App\Http\Controllers\admin\DashboardController as AdminDashboardController;
 use App\Http\Controllers\admin\LoginController as AdminLoginController;
+use App\Http\Controllers\admin\VehicleManagerController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\LoginController;
+use App\Models\Vehicle;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -70,10 +72,11 @@ Route::group(['prefix' => 'admin'], function () {
             return view('carDamgeTest');
         })->name('car.damage.test');
         Route::get('/submissions', [ContactSubmissionController::class, 'index'])->name('admin.submissions');
+        Route::get('/vehicles', [VehicleManagerController::class, 'index'])->name('admin.vehicles');
+        Route::get('/vehicles/{id}/details', [VehicleManagerController::class, 'details'])->name('admin.vehicles.details');
+        Route::view('user', 'admin.user')->name('admin.user');
+        Route::view('roles', 'admin.roles.index')->name('admin.roles');
     });
-
-    Route::view('user', 'admin.user')->name('admin.user');
-    Route::view('roles', 'admin.roles.index')->name('admin.roles');
 });
 Route::get('/un-authenticated', function () {
     return view('un-auth');

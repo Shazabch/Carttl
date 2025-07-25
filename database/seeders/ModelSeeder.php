@@ -6,6 +6,7 @@ use Illuminate\Database\Seeder;
 use App\Models\Model;
 use App\Models\Brand;
 use App\Models\Make;
+use App\Models\VehicleModel;
 
 class ModelSeeder extends Seeder
 {
@@ -77,7 +78,7 @@ class ModelSeeder extends Seeder
                 continue;
             }
             foreach ($models as $modelName) {
-                Make::create([
+                VehicleModel::create([
                     'brand_id' => $brand->id,
                     'name' => $modelName,
                 ]);
