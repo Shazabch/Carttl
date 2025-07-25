@@ -184,6 +184,17 @@
     });
 </script>
 
+<script src="https://unpkg.com/filepond@^4/dist/filepond.js"></script>
+<script>
+    document.addEventListener('livewire:initialized', () => {
+        Livewire.hook('message.processed', () => {
+            const input = document.querySelector('.filepond');
+            if (input && !input._pond) {
+                FilePond.create(input);
+            }
+        });
+    });
+</script>
 
 
 <!-- Include Select2 JS -->

@@ -36,6 +36,11 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <!--end::Layout Themes-->
     <link rel="shortcut icon" href="assets/media/logos/favicon.ico" />
+    <link href="https://unpkg.com/filepond@^4/dist/filepond.css" rel="stylesheet" />
+    <!-- FilePond Plugins -->
+<script src="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.js"></script>
+<link href="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css" rel="stylesheet" />
+
     @stack('styles')
     @livewireStyles
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
