@@ -126,18 +126,41 @@
                                  <span class="menu-text">All Vehicle Enquiries</span>
                              </a>
                          </li>
-
-
-
-
-
-
                      </ul>
                  </div>
                  <!-- Submenu End -->
              </li>
 
+             <li class="menu-section">
+                <h4 class="menu-text">Sell</h4>
+                <i class="menu-icon ki ki-bold-more-hor icon-md"></i>
+            </li>
+            <li class="menu-item menu-item-submenu  }}" aria-haspopup="true" data-menu-toggle="hover">
+                <a href="javascript:;" class="menu-link menu-toggle">
+                    <span class="svg-icon menu-icon">
+                        <i class="fas fa-cogs"></i>
+                    </span>
+                    <span class="menu-text">Sell</span>
+                    <i class="menu-arrow"></i>
+                </a>
 
+                <!-- Submenu Start -->
+                <div class="menu-submenu">
+                    <i class="menu-arrow"></i>
+                    <ul class="menu-subnav">
+
+                        <!-- Sale Management Link -->
+                        <li class="menu-item " aria-haspopup="true">
+                            <a href="{{ route('admin.sell.index') }}" class="menu-link">
+                                <i class="menu-bullet menu-bullet-dot"><span></span></i>
+                                <span class="menu-text">Sell Your Car</span>
+                            </a>
+                        </li>
+
+                    </ul>
+                </div>
+                <!-- Submenu End -->
+            </li>
 
 
 
@@ -146,7 +169,7 @@
                  <h4 class="menu-text">Administrator</h4>
                  <i class="menu-icon ki ki-bold-more-hor icon-md"></i>
              </li>
-             <!--Dummy-->
+
              <li class="menu-item menu-item-submenu  }}" aria-haspopup="true" data-menu-toggle="hover">
                  <a href="javascript:;" class="menu-link menu-toggle">
                      <span class="svg-icon menu-icon">

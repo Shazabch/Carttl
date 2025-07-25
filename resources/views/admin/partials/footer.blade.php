@@ -157,6 +157,35 @@
 
     }
 </script>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const toggleBtn = document.getElementById('kt_quick_notification_toggle');
+        const closeBtn = document.getElementById('kt_quick_user_close');
+        const offcanvas = document.getElementById('kt_modal_notification');
+
+        // Open offcanvas
+        toggleBtn?.addEventListener('click', function() {
+            offcanvas?.classList.add('offcanvas-on');
+        });
+
+        // Close on X
+        closeBtn?.addEventListener('click', function(e) {
+            e.preventDefault();
+            offcanvas?.classList.remove('offcanvas-on');
+        });
+
+        // Close on outside click
+        document.addEventListener('click', function(event) {
+            const isClickInside = offcanvas.contains(event.target) || toggleBtn.contains(event.target);
+            if (!isClickInside && offcanvas.classList.contains('offcanvas-on')) {
+                offcanvas.classList.remove('offcanvas-on');
+            }
+        });
+    });
+</script>
+
+
+
 <!-- Include Select2 JS -->
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
 <!--end::Page Scripts-->
