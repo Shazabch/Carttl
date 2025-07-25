@@ -11,4 +11,5 @@ class SaleEnquiry extends Model
     {
         return $this->hasOne(SaleEnquiryImage::class, 'sale_enquiry_id');
     }
+
 }

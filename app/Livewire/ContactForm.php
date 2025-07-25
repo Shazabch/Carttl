@@ -2,7 +2,7 @@
 
 namespace App\Livewire;
 
-use App\Models\ContactSubmission; // Import the new model
+use App\Models\ContactSubmission;
 use Livewire\Component;
 use Livewire\Attributes\Rule;
 use App\Models\User;

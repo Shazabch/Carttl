@@ -21,7 +21,9 @@ Route::get('/car-auctions', function () {
 Route::get('/sell-cars', function () {
     return view('sell-cars');
 })->name('sell-cars');
-
+Route::get('/sell-car', function () {
+    return view('sell-car');
+})->name('sell-car');
 
 Route::get('/car-favorites', function () {
     return view('favorites');

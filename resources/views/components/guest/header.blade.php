@@ -10,6 +10,7 @@
                    <li class="nav-item"><a class="nav-link  " href="{{ route('home') }}">Home</a></li>
                    <li class="nav-item"><a class="nav-link " href="{{ route('auctions') }}">Auctions</a></li>
                    <li class="nav-item"><a class="nav-link ('sell" href="{{ route('sell-cars') }}">Sell Cars</a></li>
+                   <li class="nav-item"><a class="nav-link ('sellcar" href="{{ route('sell-car') }}">Sell </a></li>
                    <li class="nav-item"><a class="nav-link ('contact" href="{{ route('contact-us') }}">Contact Us</a>
                    </li>
                    <li class="nav-item"><a class="nav-link " href="{{ route('favorites') }}">
