@@ -6,12 +6,10 @@
     <!-- Hero Section -->
     <section class="hero-section d-flex align-items-center justify-content-center">
         <div class="hero-bg"></div>
-
         <div class="container hero-content">
             <h1 class="hero-title">Discover Exceptional Automobiles</h1>
-            <p class="hero-subtitle">Explore our curated collection of premium vehicles and place your bid on automotive
-                excellence.</p>
-            <div class="filter-bar mx-auto mt-4" style="max-width: 1100px;">
+            <p class="hero-subtitle">Explore our curated collection of premium vehicles and place your bid on automotive excellence.</p>
+            <div class="filter-bar mt-4">
                 <!-- Filter Tabs -->
                 <ul class="nav filter-tabs mb-4" id="auctionTabs" role="tablist">
                     <li class="nav-item" role="presentation">
@@ -106,21 +104,21 @@
                             </select>
                         </div>
                     </div>
-                    <div class="col-12 filter-actions">
+                    {{-- <div class="col-12 filter-actions">
                         <a href="#" class="filter-reset d-flex align-items-center">
                             <i class="fas fa-undo me-2"></i> Reset Filters
                         </a>
                         <button type="submit" class="btn btn-warning px-4">Search Auctions</button>
-                    </div>
+                    </div> --}}
                 </form>
                 <!-- Advanced Filters Toggle -->
-                <div class="advanced-filters-toggle d-flex align-items-center mt-3" data-bs-toggle="collapse"
+                {{-- <div class="advanced-filters-toggle d-flex align-items-center mt-3" data-bs-toggle="collapse"
                     data-bs-target="#advancedFilters" aria-expanded="false" aria-controls="advancedFilters">
                     <span>Advanced Filters</span>
                     <i class="fas fa-chevron-down ms-2"></i>
-                </div>
+                </div> --}}
                 <!-- Advanced Filters -->
-                <div class="collapse advanced-filters mt-3" id="advancedFilters">
+                {{-- <div class="collapse advanced-filters mt-3" id="advancedFilters">
                     <div class="row g-3">
                         <div class="col-md-3">
                             <label class="form-label">Body Style</label>
@@ -216,7 +214,7 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                </div> --}}
             </div>
         </div>
     </section>
@@ -245,5 +243,118 @@
             </div>
         </div>
     </section>
-    <!-- Footer -->
+    <!-- CTA -->
+    <section class="cta-section">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-7 text-center text-lg-start">
+                    <h2 class="h-44 fw-700">Ready to hit the road?<br />Book your car today!</h2>
+                    <p class="cta-text p-20">
+                        Our friendly customer service team is here to help. Contact us anytime for support and inquiries.
+                    </p>
+                    <a href="https://demo.awaikenthemes.com/novaride/contact-us/" class="btn cta-btn">
+                        Contact Us <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="white" class="ms-2" viewBox="0 0 14 14"><path d="M11.6654 3.97592L1.64141 13.9999L-0.00537109 12.3531L10.0174 2.32914H1.18372V-0.00012207H13.9946V12.8108H11.6654V3.97592Z" fill="white"/></svg>
+                    </a>
+                </div>
+                <div class="col-lg-5 text-center mt-4 mt-lg-0">
+                    <img src="https://demo.awaikenthemes.com/novaride/wp-content/uploads/2024/08/cta-car-img.png" alt="Car Image" class="cta-img" />
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Blogs -->
+    <section class="section-blog">
+        <div class="container">
+            <div class="row justify-content-center mb-5">
+                <div class="col-lg-10 text-center">
+                    <h3 class="sec-h-top">Latest Blog</h3>
+                    <h2 class="h-44 fw-600">Insights That Fuel Every Car Deal</h2>
+                </div>
+            </div>
+            <div class="row g-4 align-items-stretch">
+                <!-- Featured Post -->
+                <div class="col-lg-6">
+                    <div class="featured-post position-relative">
+                        <div class="feature-post-img">
+                            <img src="https://demo.awaikenthemes.com/novaride/wp-content/uploads/2024/08/post-1.jpg" class="img-fluid w-100 h-100 object-fit-cover rounded-4" alt="Featured Post">
+                        </div>
+                        <div class="featured-content text-white">
+                            <div class="d-flex align-items-center mb-2">
+                                <i class="fas fa-calendar-alt me-2"></i>
+                                <span>August 5, 2024</span>
+                            </div>
+                            <h4 class="p-22 fw-600 my-3">Top Tips For Booking Your Car Rental: What You Need To Know</h4>
+                            <a href="#" class="read-more-icon d-inline-block">
+                                <span class="icon-circle"><i class="fas fa-arrow-right"></i></span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <!-- Side Posts -->
+                <div class="col-lg-6 d-flex flex-column gap-4">
+                    <!-- Single Side Post -->
+                    <div class="side-post row align-items-center">
+                        <div class="col-lg-4">
+                            <div class="side-post-img">
+                                <img src="https://demo.awaikenthemes.com/novaride/wp-content/uploads/2024/08/post-2.jpg" class="img-fluid" alt="">
+                            </div>
+                        </div>
+                        <div class="col-lg-8">
+                            <div class="d-flex align-items-center mb-1 text-muted small">
+                                <i class="fas fa-calendar-alt me-2"></i>
+                                <span>August 5, 2024</span>
+                            </div>
+                            <h6 class="my-3 p-20 fw-600">Exploring Your Rental Car Options: Sedan, SUV, Or Convertible?</h6>
+                            <a href="#" class="text-accent fw-semibold text-decoration-none d-flex align-items-center gap-2">
+                                Read Story 
+                                <div class="icon-circle-sm">
+                                    <i class="fas fa-arrow-right"></i>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="side-post row align-items-center">
+                        <div class="col-lg-4">
+                            <div class="side-post-img">
+                                <img src="https://demo.awaikenthemes.com/novaride/wp-content/uploads/2024/08/post-2.jpg" class="img-fluid" alt="">
+                            </div>
+                        </div>
+                        <div class="col-lg-8">
+                            <div class="d-flex align-items-center mb-1 text-muted small">
+                                <i class="fas fa-calendar-alt me-2"></i>
+                                <span>August 5, 2024</span>
+                            </div>
+                            <h6 class="my-3 p-20 fw-600">Exploring Your Rental Car Options: Sedan, SUV, Or Convertible?</h6>
+                            <a href="#" class="text-accent fw-semibold text-decoration-none d-flex align-items-center gap-2">
+                                Read Story 
+                                <div class="icon-circle-sm">
+                                    <i class="fas fa-arrow-right"></i>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="side-post row align-items-center">
+                        <div class="col-lg-4">
+                            <div class="side-post-img">
+                                <img src="https://demo.awaikenthemes.com/novaride/wp-content/uploads/2024/08/post-2.jpg" class="img-fluid" alt="">
+                            </div>
+                        </div>
+                        <div class="col-lg-8">
+                            <div class="d-flex align-items-center mb-1 text-muted small">
+                                <i class="fas fa-calendar-alt me-2"></i>
+                                <span>August 5, 2024</span>
+                            </div>
+                            <h6 class="my-3 p-20 fw-600">Exploring Your Rental Car Options: Sedan, SUV, Or Convertible?</h6>
+                            <a href="#" class="text-accent fw-semibold text-decoration-none d-flex align-items-center gap-2">
+                                Read Story 
+                                <div class="icon-circle-sm">
+                                    <i class="fas fa-arrow-right"></i>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 @endsection

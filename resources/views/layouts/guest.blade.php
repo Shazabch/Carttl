@@ -5,9 +5,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@yield('title')</title>
+    <link rel="shortcut icon" href="{{ asset('images/favicon@72x.ico') }}">
+    <!-- Chrome for Android theme color -->
+    <link rel="shortcut icon" href="{{ asset('images/favicon@72x.ico') }}">
+    <link rel="apple-touch-icon" href="{{ asset('images/favicon@72x.ico') }}">
+    <link rel="apple-touch-icon" sizes="72x72" href="{{ asset('images/favicon@72x.ico') }}">
+    <link rel="apple-touch-icon" sizes="114x114" href="{{ asset('images/favicon@72x.ico') }}">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap"
-        rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Epilogue:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    {{-- <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet"> --}}
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="{{ asset('css/guest.css') }}">
     <link rel="stylesheet" href="{{ asset('css/car-detail.css') }}">
@@ -18,10 +26,10 @@
     <!-- Navbar -->
     @include('components.guest.header')
 
-    <button class="floating-inspection-btn" onclick="bookInspection()">
+    {{-- <button class="floating-inspection-btn" onclick="bookInspection()">
         <i class="fas fa-calendar-alt " style="text-decoration: none"></i>
         <span>Book Inspection</span>
-    </button>
+    </button> --}}
 
     @yield('content')
 
@@ -31,7 +39,7 @@
 
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-
+    <script src="{{asset('js/main.js')}}"></script>
     <!-- Optional: Navbar scroll effect -->
     <script>
         window.addEventListener('scroll', function() {
