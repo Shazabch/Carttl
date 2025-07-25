@@ -21,15 +21,17 @@ Route::get('/car-auctions', function () {
 Route::get('/sell-cars', function () {
     return view('sell-cars');
 })->name('sell-cars');
-
+Route::get('/sell-car', function () {
+    return view('sell-car');
+})->name('sell-car');
 
 Route::get('/car-favorites', function () {
     return view('favorites');
 })->name('favorites');
 
-Route::get('/car-damage-test', function () {
-    return view('carDamgeTest');
-})->name('car.damage.test');
+// Route::get('/car-damage-test', function () {
+//     return view('carDamgeTest');
+// })->name('car.damage.test');
 
 
 Route::get('/car-detail', function () {
@@ -76,6 +78,9 @@ Route::group(['prefix' => 'admin'], function () {
         Route::get('/vehicles/{id}/details', [VehicleManagerController::class, 'details'])->name('admin.vehicles.details');
         Route::view('user', 'admin.user')->name('admin.user');
         Route::view('roles', 'admin.roles.index')->name('admin.roles');
+        Route::view('sell-your-car', 'admin.sell.index')->name('admin.sell.index');
+        Route::view('sell-car-lsiting', 'admin.sell.list')->name('admin.sell.list');
+
     });
 });
 Route::get('/un-authenticated', function () {

@@ -8,12 +8,20 @@
                <span class="navbar-toggler-icon"></span>
            </button>
            <div class="collapse navbar-collapse" id="mainNav">
-               <ul class="navbar-nav mx-auto align-items-lg-center">
-                    <li class="nav-item"><a class="nav-link" href="{{ route('home') }}">Home</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{{ route('auctions') }}">Auctions</a></li>
-                    <li class="nav-item"><a class="nav-link ('sell" href="{{ route('sell-cars') }}">Sell Cars</a></li>
-                    <li class="nav-item"><a class="nav-link ('contact" href="{{ route('contact-us') }}">Contact Us</a></li>
-                    <li class="nav-item"><a class="nav-link " href="{{ route('favorites') }}">Favorites</a></li>
+               <ul class="navbar-nav ms-auto align-items-lg-center">
+                   <li class="nav-item"><a class="nav-link  " href="{{ route('home') }}">Home</a></li>
+                   <li class="nav-item"><a class="nav-link " href="{{ route('auctions') }}">Auctions</a></li>
+                   <li class="nav-item"><a class="nav-link ('sell" href="{{ route('sell-cars') }}">Sell Cars</a></li>
+                   <li class="nav-item"><a class="nav-link ('sellcar" href="{{ route('sell-car') }}">Sell </a></li>
+                   <li class="nav-item"><a class="nav-link ('contact" href="{{ route('contact-us') }}">Contact Us</a>
+                   </li>
+                   <li class="nav-item"><a class="nav-link " href="{{ route('favorites') }}">
+                           <i class="fas fa-heart"></i>
+                           <i>favorites</i></a></li>
+                   <li class="nav-item ms-lg-3"><a class="btn btn-warning me-2" href="{{ route('account.login') }}">Sign
+                           In</a></li>
+                   <li class="nav-item"><a class="btn btn-outline-warning"
+                           href="{{ route('account.register') }}">Register</a></li>
                </ul>
                <div class="d-flex gap-2 align-items-center">
                     <li class="nav-item">
