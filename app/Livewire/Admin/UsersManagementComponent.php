@@ -4,85 +4,97 @@ namespace App\Livewire\Admin;
 
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
-use Livewire\Component;
-use Livewire\WithPagination;
 use Livewire\Attributes\On;
+use Livewire\WithPagination;
+use Livewire\Component;
 
 class UsersManagementComponent extends Component
 {
     use WithPagination;
 
-    public $user_id = null;
-    public $name, $email, $password, $role;
-    public $search = '';
-    public $perPage = 10;
+    public ?User $editingUser = null;
+    public bool $showModal = false;
+
+    public string $search = '';
+    public int $perPage = 10;
+    public string $password = ''; // keep password separate from model binding
 
     protected function rules()
     {
+        $userId = $this->editingUser?->id ?? 'NULL';
+
         return [
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email,' . $this->user_id,
-            'role' => 'required|string',
-            'password' => $this->user_id ? 'nullable|min:6' : 'required|min:6',
+            'editingUser.name' => 'required|string|max:255',
+            'editingUser.email' => 'required|email|unique:users,email,' . $userId,
+            'editingUser.role' => 'required|string',
+            'password' => $this->editingUser?->id ? 'nullable|min:6' : 'required|min:6',
         ];
+    }
+
+    public function mount()
+    {
+        $this->editingUser = new User();
     }
 
     public function render()
     {
-        $users = User::where('name', 'like', '%' . $this->search . '%')
-                     ->orWhere('email', 'like', '%' . $this->search . '%')
-                     ->paginate($this->perPage);
+        $users = User::query()
+            ->where('name', 'like', "%{$this->search}%")
+            ->orWhere('email', 'like', "%{$this->search}%")
+            ->paginate($this->perPage);
 
-        return view('livewire.admin.users-management-component', compact('users'));
+        return view('livewire.admin.users-management-component', [
+            'users' => $users,
+        ]);
     }
 
     public function addNew()
     {
-        $this->reset();
         $this->resetValidation();
+        $this->editingUser = new User();
+        $this->password = '';
+        $this->showModal = true;
     }
 
-    public function editItem($id)
+    public function editItem(int $id)
     {
-
-        $user = User::findOrFail($id);
-
-        $this->user_id = $user->id;
-        $this->name = $user->name;
-        $this->email = $user->email;
-        $this->role = $user->role;
+        $this->editingUser = User::findOrFail($id);
         $this->password = '';
         $this->resetValidation();
-        $this->dispatch('open-modal');
+        $this->showModal = true;
     }
 
     public function saveUser()
     {
-        $validated = $this->validate();
+        $this->validate();
 
-        $data = [
-            'name' => $this->name,
-            'email' => $this->email,
-            'role' => $this->role,
-        ];
+        $data = $this->editingUser->toArray();
 
         if (!empty($this->password)) {
             $data['password'] = Hash::make($this->password);
+        } elseif ($this->editingUser->exists) {
+            unset($data['password']);
         }
 
-        User::updateOrCreate(['id' => $this->user_id], $data);
-        $this->reset();
-        $this->dispatch('close-modal');
-        $this->dispatch('success-notification', message: $this->user_id ? 'User updated successfully.' : 'User created successfully.');
+        User::updateOrCreate(
+            ['id' => $this->editingUser->id],
+            $data
+        );
 
+        $this->showModal = false;
 
+        $message = $this->editingUser->id ? 'User updated successfully.' : 'User created successfully.';
+        $this->dispatch('success-notification', message: $message);
+
+        $this->editingUser = new User();
+        $this->password = '';
     }
 
     #[On('deleteItem')]
-    public function deleteItem($id)
+    public function deleteItem(int $id)
     {
         User::findOrFail($id)->delete();
+
         $this->dispatch('success-notification', message: 'User deleted successfully.');
     }
-
 }

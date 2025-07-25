@@ -130,7 +130,7 @@
                     <div class="row g-0">
                         <!-- Left side with car image and branding -->
                         <div class="col-lg-6 car-bg">
-                            <h1 class="display-4 fw-bold mb-4">AutoAuction</h1>
+                            <h1 class="display-4 fw-bold mb-4">GoldenX</h1>
                             <p class="lead mb-5">Premium car selling and auction platform administration</p>
                             <div class="row mt-4">
                                 <div class="col-md-4 text-center mb-4">

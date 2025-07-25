@@ -65,7 +65,7 @@
                     </button>
 
                     <div class="text-center text-muted">
-                        <p class="mb-1">© 2025 AutoAuction Admin Panel</p>
+                        <p class="mb-1">©{{ now()->year }} GoldenX Admin Panel</p>
                     </div>
                 </form>
 
