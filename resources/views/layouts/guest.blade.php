@@ -20,6 +20,8 @@
     <link href="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css" rel="stylesheet" />
     {{-- <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet"> --}}
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="{{ asset('owl/owl.carousel.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('owl/owl.theme.default.min.css') }}">
     <link rel="stylesheet" href="{{ asset('css/guest.css') }}">
     <link rel="stylesheet" href="{{ asset('css/car-detail.css') }}">
 </head>
@@ -39,7 +41,9 @@
 
 
     <!-- Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{{asset('owl/owl.carousel.min.js')}}"></script>
     <script src="{{asset('js/main.js')}}"></script>
 
     <!-- FilePond JS -->

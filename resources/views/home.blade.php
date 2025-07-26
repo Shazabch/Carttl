@@ -8,7 +8,8 @@
         <div class="hero-bg"></div>
         <div class="container hero-content">
             <h1 class="hero-title">Discover Exceptional Automobiles</h1>
-            <p class="hero-subtitle">Explore our curated collection of premium vehicles and place your bid on automotive excellence.</p>
+            <p class="hero-subtitle">Explore our curated collection of premium vehicles and place your bid on automotive
+                excellence.</p>
             <div class="filter-bar mt-4">
                 <!-- Filter Tabs -->
                 <ul class="nav filter-tabs mb-4" id="auctionTabs" role="tablist">
@@ -219,7 +220,7 @@
         </div>
     </section>
     <!-- Featured Section -->
-    <section class="py-5" style="background-color: #f8fafc;">
+    <section class="py-5">
         <div class="container">
             <div class="text-center mb-5">
                 <h2 class="fw-bold mb-2" style="color: #0f172a;">Featured Auctions</h2>
@@ -231,7 +232,7 @@
             </div>
         </div>
     </section>
-    <section class="py-5" style="background-color: #f8fafc;">
+    <section class="py-5">
         <div class="container">
             <div class="text-center mb-5">
                 <h2 class="fw-bold mb-2" style="color: #0f172a;">Featured Cars for Sale</h2>
@@ -243,23 +244,373 @@
             </div>
         </div>
     </section>
+    <!-- CTA 2 -->
+    <section class="main-section">
+        <div class="container">
+            <div class="row justify-content-center mb-5">
+                <div class="col-lg-8 text-center">
+                    <h2 class="h-35 fw-600">Search for your favorite car or sell your car on AutoDecar</h2>
+                </div>
+            </div>
+            <div class="row align-items-center g-4">
+                <div class="col-lg-4">
+                    <div class="card-box">
+                        <img src="{{asset('images/icons/search-car.svg')}}" alt="Search Icon" class="icon">
+                        <h5>Are you looking for a car?</h5>
+                        <p>Save time and effort as you no longer need to visit multiple stores to find the right car.</p>
+                        <a href="" class="btn-main">
+                            Find cars
+                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="white"
+                                viewBox="0 0 14 14">
+                                <path
+                                    d="M11.6654 3.97592L1.64141 13.9999L-0.00537109 12.3531L10.0174 2.32914H1.18372V-0.00012207H13.9946V12.8108H11.6654V3.97592Z" />
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+                <div class="col-lg-4 text-center">
+                    <img src="{{asset('images/Untitled design (27).png')}}" alt="Car" class="car-image">
+                </div>
+                <div class="col-lg-4">
+                    <div class="card-box">
+                        <img src="{{asset('images/icons/sell-car.svg')}}" alt="Sell Icon" class="icon">
+                        <h5>Do you want to sell a car?</h5>
+                        <p>Find your perfect car match and sell your car quickly with our user-friendly online service.</p>
+                        <a href="" class="btn-main">
+                            Sell a car
+                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="white"
+                                viewBox="0 0 14 14">
+                                <path
+                                    d="M11.6654 3.97592L1.64141 13.9999L-0.00537109 12.3531L10.0174 2.32914H1.18372V-0.00012207H13.9946V12.8108H11.6654V3.97592Z" />
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- SERVICES -->
+    <section class="our-services">
+        <div class="container">
+            <div class="row justify-content-center mb-5">
+                <div class="col-lg-6 text-center">
+                    <h3 class="sec-h-top">Our Services</h3>
+                    <h2 class="h-35 fw-600">Explore our wide range of cars services</h2>
+                </div>
+            </div>
+            <div class="row g-4 text-center text-md-start">
+                <div class="col-md-3">
+                    <div class="service-card h-100">
+                        <div class="service-card-inner">
+                            <div class="icon-wrapper">
+                                <img src="{{ asset('images/icons/s1.svg') }}" alt="Car with Driver" width="24">
+                            </div>
+                            <h5 class="p-20 fw-600">Car Rental With Driver</h5>
+                            <p class="text-muted mb-4">Enhance your rental experience with additional options.</p>
+                            <a href="" class="arrow-btn">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="white"
+                                    viewBox="0 0 14 14">
+                                    <path
+                                        d="M11.6654 3.97592L1.64141 13.9999L-0.00537109 12.3531L10.0174 2.32914H1.18372V-0.00012207H13.9946V12.8108H11.6654V3.97592Z" />
+                                </svg>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="service-card h-100">
+                        <div class="service-card-inner">
+                            <div class="icon-wrapper">
+                                <img src="{{ asset('images/icons/s2.svg') }}" alt="Business Car" width="24">
+                            </div>
+                            <h5 class="p-20 fw-600">Business Car Rental</h5>
+                            <p class="text-muted mb-4">Enhance your rental experience with additional options.</p>
+                            <a href="" class="arrow-btn">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="white"
+                                    viewBox="0 0 14 14">
+                                    <path
+                                        d="M11.6654 3.97592L1.64141 13.9999L-0.00537109 12.3531L10.0174 2.32914H1.18372V-0.00012207H13.9946V12.8108H11.6654V3.97592Z" />
+                                </svg>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="service-card h-100">
+                        <div class="service-card-inner">
+                            <div class="icon-wrapper">
+                                <img src="{{ asset('images/icons/s3.svg') }}" alt="Airport Transfer" width="24">
+                            </div>
+                            <h5 class="p-20 fw-600">Airport Transfer</h5>
+                            <p class="text-muted mb-4">Enhance your rental experience with additional options.</p>
+                            <a href="" class="arrow-btn">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="white"
+                                    viewBox="0 0 14 14">
+                                    <path
+                                        d="M11.6654 3.97592L1.64141 13.9999L-0.00537109 12.3531L10.0174 2.32914H1.18372V-0.00012207H13.9946V12.8108H11.6654V3.97592Z" />
+                                </svg>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="service-card h-100">
+                        <div class="service-card-inner">
+                            <div class="icon-wrapper">
+                                <img src="{{ asset('images/icons/s4.svg') }}" alt="Chauffeur" width="24">
+                            </div>
+                            <h5 class="p-20 fw-600">Chauffeur Services</h5>
+                            <p class="text-muted mb-4">Enhance your rental experience with additional options.</p>
+                            <a href="" class="arrow-btn">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="white"
+                                    viewBox="0 0 14 14">
+                                    <path
+                                        d="M11.6654 3.97592L1.64141 13.9999L-0.00537109 12.3531L10.0174 2.32914H1.18372V-0.00012207H13.9946V12.8108H11.6654V3.97592Z" />
+                                </svg>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="section-text mt-5">
+                <p>Discover our range of car rental services designed to meet all your travel needs.<br>From a diverse fleet
+                    of vehicles to flexible rental plans.</p>
+                <a href="" class="btn-main">
+                    View All Service
+                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="white"
+                        viewBox="0 0 14 14">
+                        <path
+                            d="M11.6654 3.97592L1.64141 13.9999L-0.00537109 12.3531L10.0174 2.32914H1.18372V-0.00012207H13.9946V12.8108H11.6654V3.97592Z" />
+                    </svg>
+                </a>
+            </div>
+        </div>
+    </section>
     <!-- CTA -->
-    <section class="cta-section">
+    <section class="cta-section mt-5">
         <div class="container">
             <div class="row align-items-center">
                 <div class="col-lg-7 text-center text-lg-start">
-                    <h2 class="h-44 fw-700">Ready to hit the road?<br />Book your car today!</h2>
+                    <h2 class="h-35 fw-700">Ready to get your car inspected?<br />Schedule your inspection today!</h2>
                     <p class="cta-text p-20">
                         Our friendly customer service team is here to help. Contact us anytime for support and inquiries.
                     </p>
-                    <a href="https://demo.awaikenthemes.com/novaride/contact-us/" class="btn cta-btn">
-                        Contact Us <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="white" class="ms-2" viewBox="0 0 14 14"><path d="M11.6654 3.97592L1.64141 13.9999L-0.00537109 12.3531L10.0174 2.32914H1.18372V-0.00012207H13.9946V12.8108H11.6654V3.97592Z" fill="white"/></svg>
+                    <a href="" class="btn-main">
+                        Contact Us
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="white" viewBox="0 0 14 14">
+                            <path d="M11.6654 3.97592L1.64141 13.9999L-0.00537109 12.3531L10.0174 2.32914H1.18372V-0.00012207H13.9946V12.8108H11.6654V3.97592Z" />
+                        </svg>
                     </a>
                 </div>
                 <div class="col-lg-5 text-center mt-4 mt-lg-0">
-                    <img src="https://demo.awaikenthemes.com/novaride/wp-content/uploads/2024/08/cta-car-img.png" alt="Car Image" class="cta-img" />
+                    <img src="{{ asset('images/cars-inspection.png') }}" alt="Car Image" class="cta-img" />
                 </div>
             </div>
+        </div>
+    </section>
+    <!-- Testimonail -->
+    <section class="section-testimonail">
+        <div class="container">
+            <div class="row justify-content-center mb-5">
+                <div class="col-lg-6 text-center">
+                    <h3 class="sec-h-top">Testimonials</h3>
+                    <h2 class="h-35 fw-600">What our customers are saying about us</h2>
+                </div>
+            </div>
+        </div>
+        <div class="testimonail_slider slider-testimonal owl-carousel owl-theme">
+            <div class="item">
+                <div class="item-wrap">
+                    <div class="item-wrap-header">
+                        <ul class="item-wrap-stars">
+                            <li>
+                                <i class="fa-solid fa-star"></i>
+                                <i class="fa-solid fa-star"></i>
+                                <i class="fa-solid fa-star"></i>
+                                <i class="fa-solid fa-star"></i>
+                                <i class="fa-solid fa-star"></i>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="item-wrap-content">
+                        <p>
+                            Renting a car from nova ride was a great decision. Not only did I get a reliable and comfortable
+                            vehicle, but the prices were also very competitive.
+                        </p>
+                    </div>
+                    <div class="item-wrap-bio">
+                        <div class="item-wrap-details">
+                            <div class="item-avatar">
+                                <img loading="lazy" decoding="async" src="https://demo.awaikenthemes.com/novaride/wp-content/uploads/2024/08/author-1.jpg" class="attachment-full size-full" alt="">
+                            </div>
+                            <div class="item-wrap-info">
+                                <strong class="item-wrap-name">Floyd Miles</strong>
+                                <span class="item-wrap-title">Project Manager</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="item">
+                <div class="item-wrap">
+                    <div class="item-wrap-header">
+                        <ul class="item-wrap-stars">
+                            <li>
+                                <i class="fa-solid fa-star"></i>
+                                <i class="fa-solid fa-star"></i>
+                                <i class="fa-solid fa-star"></i>
+                                <i class="fa-solid fa-star"></i>
+                                <i class="fa-solid fa-star"></i>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="item-wrap-content">
+                        <p>
+                            Renting a car from nova ride was a great decision. Not only did I get a reliable and comfortable
+                            vehicle, but the prices were also very competitive.
+                        </p>
+                    </div>
+                    <div class="item-wrap-bio">
+                        <div class="item-wrap-details">
+                            <div class="item-avatar">
+                                <img loading="lazy" decoding="async" width="60" height="60" src="https://demo.awaikenthemes.com/novaride/wp-content/uploads/2024/08/author-1.jpg" class="attachment-full size-full" alt="">
+                            </div>
+                            <div class="item-wrap-info">
+                                <strong class="item-wrap-name">Floyd Miles</strong>
+                                <span class="item-wrap-title">Project Manager</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="item">
+                <div class="item-wrap">
+                    <div class="item-wrap-header">
+                        <ul class="item-wrap-stars">
+                            <li>
+                                <i class="fa-solid fa-star"></i>
+                                <i class="fa-solid fa-star"></i>
+                                <i class="fa-solid fa-star"></i>
+                                <i class="fa-solid fa-star"></i>
+                                <i class="fa-solid fa-star"></i>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="item-wrap-content">
+                        <p>
+                            Renting a car from nova ride was a great decision. Not only did I get a reliable and comfortable
+                            vehicle, but the prices were also very competitive.
+                        </p>
+                    </div>
+                    <div class="item-wrap-bio">
+                        <div class="item-wrap-details">
+                            <div class="item-avatar">
+                                <img loading="lazy" decoding="async" width="60" height="60" src="https://demo.awaikenthemes.com/novaride/wp-content/uploads/2024/08/author-1.jpg" class="attachment-full size-full" alt="">
+                            </div>
+                            <div class="item-wrap-info">
+                                <strong class="item-wrap-name">Floyd Miles</strong>
+                                <span class="item-wrap-title">Project Manager</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="item">
+                <div class="item-wrap">
+                    <div class="item-wrap-header">
+                        <ul class="item-wrap-stars">
+                            <li>
+                                <i class="fa-solid fa-star"></i>
+                                <i class="fa-solid fa-star"></i>
+                                <i class="fa-solid fa-star"></i>
+                                <i class="fa-solid fa-star"></i>
+                                <i class="fa-solid fa-star"></i>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="item-wrap-content">
+                        <p>
+                            Renting a car from nova ride was a great decision. Not only did I get a reliable and comfortable
+                            vehicle, but the prices were also very competitive.
+                        </p>
+                    </div>
+                    <div class="item-wrap-bio">
+                        <div class="item-wrap-details">
+                            <div class="item-avatar">
+                                <img loading="lazy" decoding="async" width="60" height="60" src="https://demo.awaikenthemes.com/novaride/wp-content/uploads/2024/08/author-1.jpg" class="attachment-full size-full" alt="">
+                            </div>
+                            <div class="item-wrap-info">
+                                <strong class="item-wrap-name">Floyd Miles</strong>
+                                <span class="item-wrap-title">Project Manager</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="item">
+                <div class="item-wrap">
+                    <div class="item-wrap-header">
+                        <ul class="item-wrap-stars">
+                            <li>
+                                <i class="fa-solid fa-star"></i>
+                                <i class="fa-solid fa-star"></i>
+                                <i class="fa-solid fa-star"></i>
+                                <i class="fa-solid fa-star"></i>
+                                <i class="fa-solid fa-star"></i>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="item-wrap-content">
+                        <p>
+                            Renting a car from nova ride was a great decision. Not only did I get a reliable and comfortable
+                            vehicle, but the prices were also very competitive.
+                        </p>
+                    </div>
+                    <div class="item-wrap-bio">
+                        <div class="item-wrap-details">
+                            <div class="item-avatar">
+                                <img loading="lazy" decoding="async" width="60" height="60" src="https://demo.awaikenthemes.com/novaride/wp-content/uploads/2024/08/author-1.jpg" class="attachment-full size-full" alt="">
+                            </div>
+                            <div class="item-wrap-info">
+                                <strong class="item-wrap-name">Floyd Miles</strong>
+                                <span class="item-wrap-title">Project Manager</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div> 
+            <div class="item">
+                <div class="item-wrap">
+                    <div class="item-wrap-header">
+                        <ul class="item-wrap-stars">
+                            <li>
+                                <i class="fa-solid fa-star"></i>
+                                <i class="fa-solid fa-star"></i>
+                                <i class="fa-solid fa-star"></i>
+                                <i class="fa-solid fa-star"></i>
+                                <i class="fa-solid fa-star"></i>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="item-wrap-content">
+                        <p>
+                            Renting a car from nova ride was a great decision. Not only did I get a reliable and comfortable
+                            vehicle, but the prices were also very competitive.
+                        </p>
+                    </div>
+                    <div class="item-wrap-bio">
+                        <div class="item-wrap-details">
+                            <div class="item-avatar">
+                                <img loading="lazy" decoding="async" width="60" height="60" src="https://demo.awaikenthemes.com/novaride/wp-content/uploads/2024/08/author-1.jpg" class="attachment-full size-full" alt="">
+                            </div>
+                            <div class="item-wrap-info">
+                                <strong class="item-wrap-name">Floyd Miles</strong>
+                                <span class="item-wrap-title">Project Manager</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>            
         </div>
     </section>
     <!-- Blogs -->
@@ -268,7 +619,7 @@
             <div class="row justify-content-center mb-5">
                 <div class="col-lg-10 text-center">
                     <h3 class="sec-h-top">Latest Blog</h3>
-                    <h2 class="h-44 fw-600">Insights That Fuel Every Car Deal</h2>
+                    <h2 class="h-35 fw-600">Insights That Fuel Every Car Deal</h2>
                 </div>
             </div>
             <div class="row g-4 align-items-stretch">
@@ -276,7 +627,8 @@
                 <div class="col-lg-6">
                     <div class="featured-post position-relative">
                         <div class="feature-post-img">
-                            <img src="https://demo.awaikenthemes.com/novaride/wp-content/uploads/2024/08/post-1.jpg" class="img-fluid w-100 h-100 object-fit-cover rounded-4" alt="Featured Post">
+                            <img src="https://demo.awaikenthemes.com/novaride/wp-content/uploads/2024/08/post-1.jpg"
+                                class="img-fluid w-100 h-100 object-fit-cover rounded-4" alt="Featured Post">
                         </div>
                         <div class="featured-content text-white">
                             <div class="d-flex align-items-center mb-2">
@@ -296,7 +648,8 @@
                     <div class="side-post row align-items-center">
                         <div class="col-lg-4">
                             <div class="side-post-img">
-                                <img src="https://demo.awaikenthemes.com/novaride/wp-content/uploads/2024/08/post-2.jpg" class="img-fluid" alt="">
+                                <img src="https://demo.awaikenthemes.com/novaride/wp-content/uploads/2024/08/post-2.jpg"
+                                    class="img-fluid" alt="">
                             </div>
                         </div>
                         <div class="col-lg-8">
@@ -304,9 +657,11 @@
                                 <i class="fas fa-calendar-alt me-2"></i>
                                 <span>August 5, 2024</span>
                             </div>
-                            <h6 class="my-3 p-20 fw-600">Exploring Your Rental Car Options: Sedan, SUV, Or Convertible?</h6>
-                            <a href="#" class="text-accent fw-semibold text-decoration-none d-flex align-items-center gap-2">
-                                Read Story 
+                            <h6 class="my-3 p-20 fw-600">Exploring Your Rental Car Options: Sedan, SUV, Or Convertible?
+                            </h6>
+                            <a href="#"
+                                class="text-accent fw-semibold text-decoration-none d-flex align-items-center gap-2">
+                                Read Story
                                 <div class="icon-circle-sm">
                                     <i class="fas fa-arrow-right"></i>
                                 </div>
@@ -316,7 +671,8 @@
                     <div class="side-post row align-items-center">
                         <div class="col-lg-4">
                             <div class="side-post-img">
-                                <img src="https://demo.awaikenthemes.com/novaride/wp-content/uploads/2024/08/post-2.jpg" class="img-fluid" alt="">
+                                <img src="https://demo.awaikenthemes.com/novaride/wp-content/uploads/2024/08/post-2.jpg"
+                                    class="img-fluid" alt="">
                             </div>
                         </div>
                         <div class="col-lg-8">
@@ -324,9 +680,11 @@
                                 <i class="fas fa-calendar-alt me-2"></i>
                                 <span>August 5, 2024</span>
                             </div>
-                            <h6 class="my-3 p-20 fw-600">Exploring Your Rental Car Options: Sedan, SUV, Or Convertible?</h6>
-                            <a href="#" class="text-accent fw-semibold text-decoration-none d-flex align-items-center gap-2">
-                                Read Story 
+                            <h6 class="my-3 p-20 fw-600">Exploring Your Rental Car Options: Sedan, SUV, Or Convertible?
+                            </h6>
+                            <a href="#"
+                                class="text-accent fw-semibold text-decoration-none d-flex align-items-center gap-2">
+                                Read Story
                                 <div class="icon-circle-sm">
                                     <i class="fas fa-arrow-right"></i>
                                 </div>
@@ -336,7 +694,8 @@
                     <div class="side-post row align-items-center">
                         <div class="col-lg-4">
                             <div class="side-post-img">
-                                <img src="https://demo.awaikenthemes.com/novaride/wp-content/uploads/2024/08/post-2.jpg" class="img-fluid" alt="">
+                                <img src="https://demo.awaikenthemes.com/novaride/wp-content/uploads/2024/08/post-2.jpg"
+                                    class="img-fluid" alt="">
                             </div>
                         </div>
                         <div class="col-lg-8">
@@ -344,9 +703,11 @@
                                 <i class="fas fa-calendar-alt me-2"></i>
                                 <span>August 5, 2024</span>
                             </div>
-                            <h6 class="my-3 p-20 fw-600">Exploring Your Rental Car Options: Sedan, SUV, Or Convertible?</h6>
-                            <a href="#" class="text-accent fw-semibold text-decoration-none d-flex align-items-center gap-2">
-                                Read Story 
+                            <h6 class="my-3 p-20 fw-600">Exploring Your Rental Car Options: Sedan, SUV, Or Convertible?
+                            </h6>
+                            <a href="#"
+                                class="text-accent fw-semibold text-decoration-none d-flex align-items-center gap-2">
+                                Read Story
                                 <div class="icon-circle-sm">
                                     <i class="fas fa-arrow-right"></i>
                                 </div>

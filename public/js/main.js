@@ -26,3 +26,26 @@ window.addEventListener("scroll", () => {
     headerMenu.classList.remove("on-scroll");
   }
 });
+
+
+$('.testimonail_slider').owlCarousel({
+    center:true,
+    loop:true,
+    margin:20,
+    nav:true,
+    dots:false,
+    smartSpeed: 600, // Controls the speed of the slide transition (in ms)
+    animateOut: 'fadeOut', // Animation class for slide out
+    animateIn: 'fadeIn',   // Animation class for slide in
+    responsive:{
+        0:{
+            items:2
+        },
+        600:{
+            items:4
+        },
+        1000:{
+            items:4
+        }
+    }
+})
