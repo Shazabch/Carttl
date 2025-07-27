@@ -40,49 +40,16 @@ $('.testimonail_slider').owlCarousel({
     animateIn: 'fadeIn',   // Animation class for slide in
     responsive:{
         0:{
-            items:2
+            items:1.2
         },
         600:{
-            items:4
+            items:2
         },
         1000:{
             items:4
         }
     }
 })
-$(document).ready(function () {
-  const $carousel = $('.testimonail_slider');
-
-  $carousel.owlCarousel({
-    items: 3,
-    center:true,
-    loop:true,
-    margin:20,
-    nav:true,
-    dots:false,
-    smartSpeed: 600, // Controls the speed of the slide transition (in ms)
-    animateOut: 'fadeOut', // Animation class for slide out
-    animateIn: 'fadeIn',   // Animation class for slide in
-    onInitialized: triggerAOS,
-    onTranslated: triggerAOS
-  });
-
-  function triggerAOS(event) {
-    // Remove animation classes from all
-    $('.owl-item .item').removeClass('aos-animate');
-
-    // Find centered item and manually trigger AOS animation
-    const center = $('.owl-item.center .item');
-    center.addClass('aos-animate');
-
-    // Optional: Re-initialize AOS (in case new DOM elements load)
-    AOS.refresh();
-  }
-
-  AOS.init({
-    once: false // allow re-animations
-  });
-});
 
 $(".cars-card-slider").owlCarousel({
   loop: true,
@@ -95,6 +62,12 @@ $(".cars-card-slider").owlCarousel({
     },
     600: {
       items: 1,
+    },
+    768: {
+      items: 2,
+    },
+    992: {
+      items: 3,
     },
     1000: {
       items: 4,

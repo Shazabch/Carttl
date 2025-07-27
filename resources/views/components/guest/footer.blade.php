@@ -76,7 +76,7 @@
                 <h5>About Company</h5>
               </div>
               <div class="menu-about-company-container">
-                <ul id="menu-about-company" class="menu">
+                <ul id="menu-about-company">
                   <li class="menu-item"><a href="#">About Us</a></li>
                   <li class="menu-item"><a href="#">Return & Exchange</a></li>
                   <li class="menu-item"><a href="#">Refund Policy</a></li>
@@ -96,7 +96,7 @@
                 <h5>Search & Explore</h5>
               </div>
               <div class="menu-search-explore-container">
-                <ul id="menu-search-explore" class="menu">
+                <ul id="menu-search-explore">
                   <li class="menu-item"><a href="#">Used Cars</a></li>
                   <li class="menu-item"><a href="#">New Cars</a></li>
                   <li class="menu-item"><a href="#">Auction Cars</a></li>
@@ -115,7 +115,7 @@
                 <h5>Cars By Brands</h5>
               </div>
               <div class="menu-car-by-brands-container">
-                <ul id="menu-car-by-brands" class="menu">
+                <ul id="menu-car-by-brands">
                   <li class="menu-item"><a href="#">BMW</a></li>
                   <li class="menu-item"><a href="#">Ferrari</a></li>
                   <li class="menu-item"><a href="#">Mercedes</a></li>
@@ -135,7 +135,7 @@
                 <h5>Cars By Location</h5>
               </div>
               <div class="menu-car-by-location-container">
-                <ul id="menu-car-by-location" class="menu">
+                <ul id="menu-car-by-location">
                   <li class="menu-item"><a href="#">New Delhi</a></li>
                   <li class="menu-item"><a href="#">Kualalumpur</a></li>
                   <li class="menu-item"><a href="#">Panama City</a></li>

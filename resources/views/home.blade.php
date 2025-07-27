@@ -223,7 +223,7 @@
         <div class="overlay"></div>
         <div class="container">
             <div class="row">
-                <div class="col-lg-6">
+                <div class="col-xl-6">
                     <div class="banner-content"  data-aos="fade-up" data-aos-delay="400" data-aos-duration="1000" data-aos-easing="ease-out-cubic">
                         <h5 class="banner-text-sm">Buy. Sell. Auction</h5>
                         <h1 class="banner-heading mt-4 mb-3">Your Trusted Destination to Buy, Sell & Auction Cars</h1>
@@ -235,7 +235,7 @@
                 <div class="col-lg-12">
                     <div class="filter-bar mt-4">
                         <form class="row align-items-end g-2">
-                            <div class="col-md-3">
+                            <div class="col-xl-3 col-lg-6">
                                 <label for="make" class="form-label">Make</label>
                                 <select id="make" class="form-select">
                                     <option value="">All Makes</option>
@@ -250,7 +250,7 @@
                                     <option>Audi</option>
                                 </select>
                             </div>
-                            <div class="col-md-3">
+                            <div class="col-xl-3 col-lg-6">
                                 <label for="model" class="form-label">Model</label>
                                 <select id="model" class="form-select">
                                     <option value="">All Models</option>
@@ -259,7 +259,7 @@
                                     <option>Boxster</option>
                                 </select>
                             </div>
-                            <div class="col-md-2">
+                            <div class="col-xl-2 col-lg-6">
                                 <label class="form-label">Year</label>
                                 <div class="input-group">
                                     <select class="form-select" id="year-min">
@@ -287,7 +287,7 @@
                                     </select>
                                 </div>
                             </div>
-                            <div class="col-md-2">
+                            <div class="col-xl-2 col-lg-6">
                                 <label class="form-label">Price Range</label>
                                 <div class="input-group">
                                     <select class="form-select" id="price-min">
@@ -308,7 +308,7 @@
                                     </select>
                                 </div>
                             </div>
-                            <div class="col-md-2 filter-actions">
+                            <div class="col-xl-2 col-lg-12 filter-actions">
                                 {{-- <a href="#" class="filter-reset d-flex align-items-center">
                                     <i class="fas fa-undo me-2"></i>
                                 </a> --}}
@@ -321,7 +321,7 @@
         </div>
     </section>
     <!-- Featured Section -->
-    <section class="">
+    <section class="ox-hidden">
         <div class="card-slider-wrap">
             <div class="row mb-5 align-items-end">
                 <div class="col-lg-8">
@@ -576,7 +576,7 @@
             </div>
         </div>
     </section>
-    <section class="section-auction">
+    <section class="ox-hidden section-auction">
         <div class="card-slider-wrap">
             <div class="row mb-5 align-items-end">
                 <div class="col-lg-8">
@@ -832,7 +832,7 @@
         </div>
     </section>
     <!-- CTA 2 -->
-    <section class="main-section">
+    <section class="main-section ox-hidden">
         <div class="container">
             <div class="row justify-content-center mb-5">
                 <div class="col-lg-8 text-center">
@@ -851,7 +851,7 @@
                         </a>
                     </div>
                 </div>
-                <div class="col-lg-4 text-center" data-aos="fade-up" data-aos-delay="300" data-aos-duration="1000" data-aos-easing="ease-out-cubic">
+                <div class="col-lg-4 text-center">
                     <img src="{{asset('images/Untitled design (27).png')}}" alt="Car" class="car-image">
                 </div>
                 <div class="col-lg-4" data-aos="fade-right" data-aos-delay="300" data-aos-duration="1000" data-aos-easing="ease-out-cubic">
@@ -868,7 +868,7 @@
         </div>
     </section>
     <!-- SERVICES -->
-    <section class="our-services">
+    <section class="our-services ox-hidden">
         <div class="container">
             <div class="row justify-content-center mb-5">
                 <div class="col-lg-6 text-center">
@@ -876,8 +876,8 @@
                     <h2 class="h-35 fw-700">Explore our wide range of cars services</h2>
                 </div>
             </div>
-            <div class="row g-4 text-center text-md-start">
-                <div class="col-md-3" data-aos="fade-left" data-aos-delay="0" data-aos-duration="1000" data-aos-easing="ease-out-cubic">
+            <div class="row g-4 text-start">
+                <div class="col-lg-3 col-md-6" data-aos="fade-left" data-aos-delay="0" data-aos-duration="1000" data-aos-easing="ease-out-cubic">
                     <div class="service-card h-100">
                         <div class="service-card-inner">
                             <div class="icon-wrapper">
@@ -895,7 +895,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-3" data-aos="fade-left" data-aos-delay="100" data-aos-duration="1000" data-aos-easing="ease-out-cubic">
+                <div class="col-lg-3 col-md-6" data-aos="fade-left" data-aos-delay="100" data-aos-duration="1000" data-aos-easing="ease-out-cubic">
                     <div class="service-card h-100">
                         <div class="service-card-inner">
                             <div class="icon-wrapper">
@@ -913,7 +913,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-3" data-aos="fade-left" data-aos-delay="200" data-aos-duration="1000" data-aos-easing="ease-out-cubic">
+                <div class="col-lg-3 col-md-6" data-aos="fade-left" data-aos-delay="200" data-aos-duration="1000" data-aos-easing="ease-out-cubic">
                     <div class="service-card h-100">
                         <div class="service-card-inner">
                             <div class="icon-wrapper">
@@ -931,7 +931,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-3" data-aos="fade-left" data-aos-delay="300" data-aos-duration="1000" data-aos-easing="ease-out-cubic">
+                <div class="col-lg-3 col-md-6" data-aos="fade-left" data-aos-delay="300" data-aos-duration="1000" data-aos-easing="ease-out-cubic">
                     <div class="service-card h-100">
                         <div class="service-card-inner">
                             <div class="icon-wrapper">
@@ -950,7 +950,7 @@
                     </div>
                 </div>
             </div>
-            <div class="section-text mt-5" data-aos="fade-up" data-aos-delay="0" data-aos-duration="1000" data-aos-easing="ease-out-cubic">
+            <div class="section-text mt-5">
                 <p>Discover our range of car rental services designed to meet all your travel needs.<br>From a diverse fleet
                     of vehicles to flexible rental plans.</p>
                 <a href="" class="btn-main">
@@ -965,7 +965,7 @@
         </div>
     </section>
     <!-- CTA -->
-    <section class="cta-section mt-5">
+    <section class="cta-section mt-5 ox-hidden">
         <div class="container">
             <div class="row align-items-center">
                 <div class="col-lg-7 text-center text-lg-start" data-aos="fade-up" data-aos-delay="0" data-aos-duration="1000" data-aos-easing="ease-out-cubic">
@@ -987,7 +987,7 @@
         </div>
     </section>
     <!-- Testimonail -->
-    <section class="section-testimonail">
+    <section class="section-testimonail ox-hidden">
         <div class="container">
             <div class="row justify-content-center mb-5">
                 <div class="col-lg-6 text-center">
@@ -1192,10 +1192,10 @@
         </div>
     </section>
     <!-- FAQ -->
-    <section class="section-faq">
+    <section class="section-faq ox-hidden">
         <div class="container">
             <div class="row align-items-center">
-                <div class="col-lg-5" data-aos="fade-up" data-aos-delay="0" data-aos-duration="1000" data-aos-easing="ease-out-cubic">
+                <div class="col-lg-5 mb-4 mb-lg-0" data-aos="fade-up" data-aos-delay="0" data-aos-duration="1000" data-aos-easing="ease-out-cubic">
                     <div class="faq-img">
                         <img src="{{asset('images/faq.webp')}}" class="img-fluid rounded-4" alt="">
                     </div>
@@ -1254,7 +1254,7 @@
         </div>
     </section>
     <!-- Blogs -->
-    <section class="section-blog">
+    <section class="section-blog ox-hidden">
         <div class="container">
             <div class="row justify-content-center mb-5">
                 <div class="col-lg-10 text-center">
@@ -1286,13 +1286,12 @@
                 <div class="col-lg-6 d-flex flex-column gap-4">
                     <!-- Single Side Post -->
                     <div class="side-post row align-items-center" data-aos="fade-left" data-aos-delay="0" data-aos-duration="1000" data-aos-easing="ease-out-cubic">
-                        <div class="col-lg-4">
+                        <div class="col-sm-4 mb-3 mb-lg-0">
                             <div class="side-post-img">
-                                <img src="https://demo.awaikenthemes.com/novaride/wp-content/uploads/2024/08/post-2.jpg"
-                                    class="img-fluid" alt="">
+                                <img src="https://demo.awaikenthemes.com/novaride/wp-content/uploads/2024/08/post-2.jpg" class="img-fluid" alt="">
                             </div>
                         </div>
-                        <div class="col-lg-8">
+                        <div class="col-sm-8">
                             <div class="d-flex align-items-center mb-1 text-muted small">
                                 <i class="fas fa-calendar-alt me-2"></i>
                                 <span>August 5, 2024</span>
@@ -1309,21 +1308,20 @@
                         </div>
                     </div>
                     <div class="side-post row align-items-center" data-aos="fade-left" data-aos-delay="100" data-aos-duration="1000" data-aos-easing="ease-out-cubic">
-                        <div class="col-lg-4">
+                        <div class="col-sm-4 mb-3 mb-lg-0">
                             <div class="side-post-img">
                                 <img src="https://demo.awaikenthemes.com/novaride/wp-content/uploads/2024/08/post-2.jpg"
                                     class="img-fluid" alt="">
                             </div>
                         </div>
-                        <div class="col-lg-8">
+                        <div class="col-sm-8">
                             <div class="d-flex align-items-center mb-1 text-muted small">
                                 <i class="fas fa-calendar-alt me-2"></i>
                                 <span>August 5, 2024</span>
                             </div>
                             <h6 class="my-3 p-20 fw-600">Exploring Your Rental Car Options: Sedan, SUV, Or Convertible?
                             </h6>
-                            <a href="#"
-                                class="text-accent fw-semibold text-decoration-none d-flex align-items-center gap-2">
+                            <a href="#" class="text-accent fw-semibold text-decoration-none d-flex align-items-center gap-2">
                                 Read Story
                                 <div class="icon-circle-sm">
                                     <i class="fas fa-arrow-right"></i>
@@ -1332,13 +1330,13 @@
                         </div>
                     </div>
                     <div class="side-post row align-items-center" data-aos="fade-left" data-aos-delay="200" data-aos-duration="1000" data-aos-easing="ease-out-cubic">
-                        <div class="col-lg-4">
+                        <div class="col-sm-4 mb-3 mb-lg-0">
                             <div class="side-post-img">
                                 <img src="https://demo.awaikenthemes.com/novaride/wp-content/uploads/2024/08/post-2.jpg"
                                     class="img-fluid" alt="">
                             </div>
                         </div>
-                        <div class="col-lg-8">
+                        <div class="col-sm-8">
                             <div class="d-flex align-items-center mb-1 text-muted small">
                                 <i class="fas fa-calendar-alt me-2"></i>
                                 <span>August 5, 2024</span>
