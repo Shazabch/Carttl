@@ -4,14 +4,13 @@
 @endsection
 @section('content')
     <!-- Hero Section -->
-    <section class="hero-section d-flex align-items-center justify-content-center">
+    {{-- <section class="hero-section d-flex align-items-center justify-content-center">
         <div class="hero-bg"></div>
         <div class="container hero-content">
             <h1 class="hero-title">Discover Exceptional Automobiles</h1>
             <p class="hero-subtitle">Explore our curated collection of premium vehicles and place your bid on automotive
                 excellence.</p>
             <div class="filter-bar mt-4">
-                <!-- Filter Tabs -->
                 <ul class="nav filter-tabs mb-4" id="auctionTabs" role="tablist">
                     <li class="nav-item" role="presentation">
                         <button class="nav-link active" id="all-tab" data-bs-toggle="tab" data-bs-target="#all"
@@ -30,7 +29,6 @@
                             type="button" role="tab">Recently Added</button>
                     </li>
                 </ul>
-                <!-- Filter Form -->
                 <form class="row g-3">
                     <div class="col-md-3">
                         <label for="make" class="form-label">Make</label>
@@ -105,21 +103,19 @@
                             </select>
                         </div>
                     </div>
-                    {{-- <div class="col-12 filter-actions">
+                    <div class="col-12 filter-actions">
                         <a href="#" class="filter-reset d-flex align-items-center">
                             <i class="fas fa-undo me-2"></i> Reset Filters
                         </a>
                         <button type="submit" class="btn btn-warning px-4">Search Auctions</button>
-                    </div> --}}
+                    </div>
                 </form>
-                <!-- Advanced Filters Toggle -->
-                {{-- <div class="advanced-filters-toggle d-flex align-items-center mt-3" data-bs-toggle="collapse"
+                <div class="advanced-filters-toggle d-flex align-items-center mt-3" data-bs-toggle="collapse"
                     data-bs-target="#advancedFilters" aria-expanded="false" aria-controls="advancedFilters">
                     <span>Advanced Filters</span>
                     <i class="fas fa-chevron-down ms-2"></i>
-                </div> --}}
-                <!-- Advanced Filters -->
-                {{-- <div class="collapse advanced-filters mt-3" id="advancedFilters">
+                </div>
+                <div class="collapse advanced-filters mt-3" id="advancedFilters">
                     <div class="row g-3">
                         <div class="col-md-3">
                             <label class="form-label">Body Style</label>
@@ -215,32 +211,623 @@
                             </div>
                         </div>
                     </div>
-                </div> --}}
+                </div>
+            </div>
+        </div>
+    </section> --}}
+    <section class="home-banner">
+        <video class="bg-video" autoplay muted loop playsinline>
+            <source src="https://demo.awaikenthemes.com/assets/videos/novaride-video.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+        <div class="overlay"></div>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8">
+                    <div class="banner-content">
+                        <h5 class="banner-text-sm">Buy. Sell. Auction</h5>
+                        <h1 class="banner-heading mt-4 mb-3">Your Trusted Destination to Buy, Sell & Auction Cars</h1>
+                        <p class="p-text">From finding your dream ride to getting the best deal for your car,<br> we're here to make it easy and hassle-free.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="filter-bar mt-4">
+                        <form class="row align-items-end g-2">
+                            <div class="col-md-3">
+                                <label for="make" class="form-label">Make</label>
+                                <select id="make" class="form-select">
+                                    <option value="">All Makes</option>
+                                    <option>Porsche</option>
+                                    <option>Ferrari</option>
+                                    <option>Lamborghini</option>
+                                    <option>Aston Martin</option>
+                                    <option>Bentley</option>
+                                    <option>McLaren</option>
+                                    <option>Mercedes-Benz</option>
+                                    <option>BMW</option>
+                                    <option>Audi</option>
+                                </select>
+                            </div>
+                            <div class="col-md-3">
+                                <label for="model" class="form-label">Model</label>
+                                <select id="model" class="form-select">
+                                    <option value="">All Models</option>
+                                    <option>911</option>
+                                    <option>Cayman</option>
+                                    <option>Boxster</option>
+                                </select>
+                            </div>
+                            <div class="col-md-2">
+                                <label class="form-label">Year</label>
+                                <div class="input-group">
+                                    <select class="form-select" id="year-min">
+                                        <option value="">From</option>
+                                        <option>2023</option>
+                                        <option>2020</option>
+                                        <option>2015</option>
+                                        <option>2010</option>
+                                        <option>2000</option>
+                                        <option>1990</option>
+                                        <option>1980</option>
+                                        <option>1970</option>
+                                        <option>1960</option>
+                                    </select>
+                                    <select class="form-select" id="year-max">
+                                        <option value="">To</option>
+                                        <option>2025</option>
+                                        <option>2023</option>
+                                        <option>2020</option>
+                                        <option>2015</option>
+                                        <option>2010</option>
+                                        <option>2000</option>
+                                        <option>1990</option>
+                                        <option>1980</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <label class="form-label">Price Range</label>
+                                <div class="input-group">
+                                    <select class="form-select" id="price-min">
+                                        <option value="">Min</option>
+                                        <option>$10,000</option>
+                                        <option>$25,000</option>
+                                        <option>$50,000</option>
+                                        <option>$100,000</option>
+                                        <option>$250,000</option>
+                                    </select>
+                                    <select class="form-select" id="price-max">
+                                        <option value="">Max</option>
+                                        <option>$50,000</option>
+                                        <option>$100,000</option>
+                                        <option>$250,000</option>
+                                        <option>$500,000</option>
+                                        <option>$1,000,000+</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-2 filter-actions">
+                                {{-- <a href="#" class="filter-reset d-flex align-items-center">
+                                    <i class="fas fa-undo me-2"></i>
+                                </a> --}}
+                                <button type="submit" class="btn-main w-100 justify-content-center">Search Auctions</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
     <!-- Featured Section -->
-    <section class="py-5">
-        <div class="container">
-            <div class="text-center mb-5">
-                <h2 class="fw-bold mb-2" style="color: #0f172a;">Featured Auctions</h2>
-                <p class="text-secondary mb-0">Discover our handpicked selection of exceptional vehicles currently
-                    available for bidding.</p>
+    <section class="">
+        <div class="card-slider-wrap">
+            <div class="row mb-5 align-items-end">
+                <div class="col-lg-8">
+                    <h2 class="h-35 fw-700">Featured Auctions</h2>
+                    <p class="text-secondary mb-0">Discover our handpicked selection of exceptional vehicles currently available for bidding.</p>
+                </div>
+                <div class="col-lg-4 text-end">
+                    <a href="" class="btn-main">View All</a>
+                </div>
             </div>
-            <div class="row g-4">
-                @include('components.guest.listing-card')
+            <div class="cars-card-slider owl-carousel owl-theme">
+                <div class="car-box-card">
+                    <div class="car-box-card-images">
+                        <div class="car-box-card-images-inner">
+                            <a href="{{ route('car-detail-page') }}" class="car-box-card-imag-item">
+                                <img src="{{asset('images/c38ec63b-c441-4574-8b3a-8c69a2aa9595.webp')}}" class="obj_fit" alt="Rent Property Listing">
+                            </a>
+                        </div>
+                        <div class="overlap-car-box-card">
+                            <div class="car-box-type p-left">
+                                <span class="car-box-badge">
+                                    <img src="{{asset('images/icons/fire.svg')}}" alt="">
+                                    Hot Bid 
+                                </span>
+                            </div>
+                            <div class="wishlist-btn">
+                                <i class="far fa-heart"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="car-box-card-content">
+                        <div class="car-box-other-detail">
+                            <h3>Jeep Wrangler Rubicon</h3>
+                            <div class="car-box-specs">
+                                <div class="spec_item">
+                                    <img src="{{asset('images/icons/meter.svg')}}" alt="">
+                                    <span>290 m</span>
+                                </div>
+                                <div class="spec_item">
+                                    <img src="{{asset('images/icons/time.svg')}}" alt="">
+                                    <span>Ends in 1d</span>
+                                </div>
+                                <div class="spec_item">
+                                    <img src="{{asset('images/icons/user-check.svg')}}" alt="">
+                                    <span>9 bids</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="car-box-price-and-specs">
+                            <div class="car-box-price">
+                                <h4 class="mb-0">Current Bid:</h4>
+                                <h4 class="mb-0 car-box-price-text">AED 78,000.00</h4>
+                            </div>
+                        </div>
+                        <div class="mt-3">
+                            <a href="" class="view-detail-btn">View Detail</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="car-box-card">
+                    <div class="car-box-card-images">
+                        <div class="car-box-card-images-inner">
+                            <a href="{{ route('car-detail-page') }}" class="car-box-card-imag-item">
+                                <img src="{{asset('images/c38ec63b-c441-4574-8b3a-8c69a2aa9595.webp')}}" class="obj_fit" alt="Rent Property Listing">
+                            </a>
+                        </div>
+                        <div class="overlap-car-box-card">
+                            <div class="car-box-type p-left">
+                                <span class="car-box-badge">
+                                    <img src="{{asset('images/icons/fire.svg')}}" alt="">
+                                    Hot Bid 
+                                </span>
+                            </div>
+                            <div class="wishlist-btn">
+                                <i class="far fa-heart"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="car-box-card-content">
+                        <div class="car-box-other-detail">
+                            <h3>Jeep Wrangler Rubicon</h3>
+                            <div class="car-box-specs">
+                                <div class="spec_item">
+                                    <img src="{{asset('images/icons/meter.svg')}}" alt="">
+                                    <span>290 m</span>
+                                </div>
+                                <div class="spec_item">
+                                    <img src="{{asset('images/icons/time.svg')}}" alt="">
+                                    <span>Ends in 1d</span>
+                                </div>
+                                <div class="spec_item">
+                                    <img src="{{asset('images/icons/user-check.svg')}}" alt="">
+                                    <span>9 bids</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="car-box-price-and-specs">
+                            <div class="car-box-price">
+                                <h4 class="mb-0">Current Bid:</h4>
+                                <h4 class="mb-0 car-box-price-text">AED 78,000.00</h4>
+                            </div>
+                        </div>
+                        <div class="mt-3">
+                            <a href="" class="view-detail-btn">View Detail</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="car-box-card">
+                    <div class="car-box-card-images">
+                        <div class="car-box-card-images-inner">
+                            <a href="{{ route('car-detail-page') }}" class="car-box-card-imag-item">
+                                <img src="{{asset('images/c38ec63b-c441-4574-8b3a-8c69a2aa9595.webp')}}" class="obj_fit" alt="Rent Property Listing">
+                            </a>
+                        </div>
+                        <div class="overlap-car-box-card">
+                            <div class="car-box-type p-left">
+                                <span class="car-box-badge">
+                                    <img src="{{asset('images/icons/fire.svg')}}" alt="">
+                                    Hot Bid 
+                                </span>
+                            </div>
+                            <div class="wishlist-btn">
+                                <i class="far fa-heart"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="car-box-card-content">
+                        <div class="car-box-other-detail">
+                            <h3>Jeep Wrangler Rubicon</h3>
+                            <div class="car-box-specs">
+                                <div class="spec_item">
+                                    <img src="{{asset('images/icons/meter.svg')}}" alt="">
+                                    <span>290 m</span>
+                                </div>
+                                <div class="spec_item">
+                                    <img src="{{asset('images/icons/time.svg')}}" alt="">
+                                    <span>Ends in 1d</span>
+                                </div>
+                                <div class="spec_item">
+                                    <img src="{{asset('images/icons/user-check.svg')}}" alt="">
+                                    <span>9 bids</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="car-box-price-and-specs">
+                            <div class="car-box-price">
+                                <h4 class="mb-0">Current Bid:</h4>
+                                <h4 class="mb-0 car-box-price-text">AED 78,000.00</h4>
+                            </div>
+                        </div>
+                        <div class="mt-3">
+                            <a href="" class="view-detail-btn">View Detail</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="car-box-card">
+                    <div class="car-box-card-images">
+                        <div class="car-box-card-images-inner">
+                            <a href="{{ route('car-detail-page') }}" class="car-box-card-imag-item">
+                                <img src="{{asset('images/c38ec63b-c441-4574-8b3a-8c69a2aa9595.webp')}}" class="obj_fit" alt="Rent Property Listing">
+                            </a>
+                        </div>
+                        <div class="overlap-car-box-card">
+                            <div class="car-box-type p-left">
+                                <span class="car-box-badge">
+                                    <img src="{{asset('images/icons/fire.svg')}}" alt="">
+                                    Hot Bid 
+                                </span>
+                            </div>
+                            <div class="wishlist-btn">
+                                <i class="far fa-heart"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="car-box-card-content">
+                        <div class="car-box-other-detail">
+                            <h3>Jeep Wrangler Rubicon</h3>
+                            <div class="car-box-specs">
+                                <div class="spec_item">
+                                    <img src="{{asset('images/icons/meter.svg')}}" alt="">
+                                    <span>290 m</span>
+                                </div>
+                                <div class="spec_item">
+                                    <img src="{{asset('images/icons/time.svg')}}" alt="">
+                                    <span>Ends in 1d</span>
+                                </div>
+                                <div class="spec_item">
+                                    <img src="{{asset('images/icons/user-check.svg')}}" alt="">
+                                    <span>9 bids</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="car-box-price-and-specs">
+                            <div class="car-box-price">
+                                <h4 class="mb-0">Current Bid:</h4>
+                                <h4 class="mb-0 car-box-price-text">AED 78,000.00</h4>
+                            </div>
+                        </div>
+                        <div class="mt-3">
+                            <a href="" class="view-detail-btn">View Detail</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="car-box-card">
+                    <div class="car-box-card-images">
+                        <div class="car-box-card-images-inner">
+                            <a href="{{ route('car-detail-page') }}" class="car-box-card-imag-item">
+                                <img src="{{asset('images/c38ec63b-c441-4574-8b3a-8c69a2aa9595.webp')}}" class="obj_fit" alt="Rent Property Listing">
+                            </a>
+                        </div>
+                        <div class="overlap-car-box-card">
+                            <div class="car-box-type p-left">
+                                <span class="car-box-badge">
+                                    <img src="{{asset('images/icons/fire.svg')}}" alt="">
+                                    Hot Bid 
+                                </span>
+                            </div>
+                            <div class="wishlist-btn">
+                                <i class="far fa-heart"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="car-box-card-content">
+                        <div class="car-box-other-detail">
+                            <h3>Jeep Wrangler Rubicon</h3>
+                            <div class="car-box-specs">
+                                <div class="spec_item">
+                                    <img src="{{asset('images/icons/meter.svg')}}" alt="">
+                                    <span>290 m</span>
+                                </div>
+                                <div class="spec_item">
+                                    <img src="{{asset('images/icons/time.svg')}}" alt="">
+                                    <span>Ends in 1d</span>
+                                </div>
+                                <div class="spec_item">
+                                    <img src="{{asset('images/icons/user-check.svg')}}" alt="">
+                                    <span>9 bids</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="car-box-price-and-specs">
+                            <div class="car-box-price">
+                                <h4 class="mb-0">Current Bid:</h4>
+                                <h4 class="mb-0 car-box-price-text">AED 78,000.00</h4>
+                            </div>
+                        </div>
+                        <div class="mt-3">
+                            <a href="" class="view-detail-btn">View Detail</a>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
-    <section class="py-5">
-        <div class="container">
-            <div class="text-center mb-5">
-                <h2 class="fw-bold mb-2" style="color: #0f172a;">Featured Cars for Sale</h2>
-                <p class="text-secondary mb-0">Looking for your next ride? Check out our featured cars—great deals on the
-                    most popular models, all in one place..</p>
+    <section class="section-auction">
+        <div class="card-slider-wrap">
+            <div class="row mb-5 align-items-end">
+                <div class="col-lg-8">
+                    <h2 class="h-35 fw-700">Featured Auctions</h2>
+                    <p class="text-secondary mb-0">Looking for your next ride? Check out our featured cars—great deals on the most popular models, all in one place..</p>
+                </div>
+                <div class="col-lg-4 text-end">
+                    <a href="" class="btn-main">View All</a>
+                </div>
             </div>
-            <div class="row g-4">
-                @include('components.guest.listing-card')
+            <div class="cars-card-slider owl-carousel owl-theme">
+                <div class="car-box-card">
+                    <div class="car-box-card-images">
+                        <div class="car-box-card-images-inner">
+                            <a href="{{ route('car-detail-page') }}" class="car-box-card-imag-item">
+                                <img src="{{asset('images/c38ec63b-c441-4574-8b3a-8c69a2aa9595.webp')}}" class="obj_fit" alt="Rent Property Listing">
+                            </a>
+                        </div>
+                        <div class="overlap-car-box-card">
+                            <div class="car-box-type p-left">
+                                <span class="car-box-badge">
+                                    <img src="{{asset('images/icons/fire.svg')}}" alt="">
+                                    Hot Bid 
+                                </span>
+                            </div>
+                            <div class="wishlist-btn">
+                                <i class="far fa-heart"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="car-box-card-content">
+                        <div class="car-box-other-detail">
+                            <h3>Jeep Wrangler Rubicon</h3>
+                            <div class="car-box-specs">
+                                <div class="spec_item">
+                                    <img src="{{asset('images/icons/meter.svg')}}" alt="">
+                                    <span>290 m</span>
+                                </div>
+                                <div class="spec_item">
+                                    <img src="{{asset('images/icons/time.svg')}}" alt="">
+                                    <span>Ends in 1d</span>
+                                </div>
+                                <div class="spec_item">
+                                    <img src="{{asset('images/icons/user-check.svg')}}" alt="">
+                                    <span>9 bids</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="car-box-price-and-specs">
+                            <div class="car-box-price">
+                                <h4 class="mb-0">Current Bid:</h4>
+                                <h4 class="mb-0 car-box-price-text">AED 78,000.00</h4>
+                            </div>
+                        </div>
+                        <div class="mt-3">
+                            <a href="" class="view-detail-btn">View Detail</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="car-box-card">
+                    <div class="car-box-card-images">
+                        <div class="car-box-card-images-inner">
+                            <a href="{{ route('car-detail-page') }}" class="car-box-card-imag-item">
+                                <img src="{{asset('images/c38ec63b-c441-4574-8b3a-8c69a2aa9595.webp')}}" class="obj_fit" alt="Rent Property Listing">
+                            </a>
+                        </div>
+                        <div class="overlap-car-box-card">
+                            <div class="car-box-type p-left">
+                                <span class="car-box-badge">
+                                    <img src="{{asset('images/icons/fire.svg')}}" alt="">
+                                    Hot Bid 
+                                </span>
+                            </div>
+                            <div class="wishlist-btn">
+                                <i class="far fa-heart"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="car-box-card-content">
+                        <div class="car-box-other-detail">
+                            <h3>Jeep Wrangler Rubicon</h3>
+                            <div class="car-box-specs">
+                                <div class="spec_item">
+                                    <img src="{{asset('images/icons/meter.svg')}}" alt="">
+                                    <span>290 m</span>
+                                </div>
+                                <div class="spec_item">
+                                    <img src="{{asset('images/icons/time.svg')}}" alt="">
+                                    <span>Ends in 1d</span>
+                                </div>
+                                <div class="spec_item">
+                                    <img src="{{asset('images/icons/user-check.svg')}}" alt="">
+                                    <span>9 bids</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="car-box-price-and-specs">
+                            <div class="car-box-price">
+                                <h4 class="mb-0">Current Bid:</h4>
+                                <h4 class="mb-0 car-box-price-text">AED 78,000.00</h4>
+                            </div>
+                        </div>
+                        <div class="mt-3">
+                            <a href="" class="view-detail-btn">View Detail</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="car-box-card">
+                    <div class="car-box-card-images">
+                        <div class="car-box-card-images-inner">
+                            <a href="{{ route('car-detail-page') }}" class="car-box-card-imag-item">
+                                <img src="{{asset('images/c38ec63b-c441-4574-8b3a-8c69a2aa9595.webp')}}" class="obj_fit" alt="Rent Property Listing">
+                            </a>
+                        </div>
+                        <div class="overlap-car-box-card">
+                            <div class="car-box-type p-left">
+                                <span class="car-box-badge">
+                                    <img src="{{asset('images/icons/fire.svg')}}" alt="">
+                                    Hot Bid 
+                                </span>
+                            </div>
+                            <div class="wishlist-btn">
+                                <i class="far fa-heart"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="car-box-card-content">
+                        <div class="car-box-other-detail">
+                            <h3>Jeep Wrangler Rubicon</h3>
+                            <div class="car-box-specs">
+                                <div class="spec_item">
+                                    <img src="{{asset('images/icons/meter.svg')}}" alt="">
+                                    <span>290 m</span>
+                                </div>
+                                <div class="spec_item">
+                                    <img src="{{asset('images/icons/time.svg')}}" alt="">
+                                    <span>Ends in 1d</span>
+                                </div>
+                                <div class="spec_item">
+                                    <img src="{{asset('images/icons/user-check.svg')}}" alt="">
+                                    <span>9 bids</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="car-box-price-and-specs">
+                            <div class="car-box-price">
+                                <h4 class="mb-0">Current Bid:</h4>
+                                <h4 class="mb-0 car-box-price-text">AED 78,000.00</h4>
+                            </div>
+                        </div>
+                        <div class="mt-3">
+                            <a href="" class="view-detail-btn">View Detail</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="car-box-card">
+                    <div class="car-box-card-images">
+                        <div class="car-box-card-images-inner">
+                            <a href="{{ route('car-detail-page') }}" class="car-box-card-imag-item">
+                                <img src="{{asset('images/c38ec63b-c441-4574-8b3a-8c69a2aa9595.webp')}}" class="obj_fit" alt="Rent Property Listing">
+                            </a>
+                        </div>
+                        <div class="overlap-car-box-card">
+                            <div class="car-box-type p-left">
+                                <span class="car-box-badge">
+                                    <img src="{{asset('images/icons/fire.svg')}}" alt="">
+                                    Hot Bid 
+                                </span>
+                            </div>
+                            <div class="wishlist-btn">
+                                <i class="far fa-heart"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="car-box-card-content">
+                        <div class="car-box-other-detail">
+                            <h3>Jeep Wrangler Rubicon</h3>
+                            <div class="car-box-specs">
+                                <div class="spec_item">
+                                    <img src="{{asset('images/icons/meter.svg')}}" alt="">
+                                    <span>290 m</span>
+                                </div>
+                                <div class="spec_item">
+                                    <img src="{{asset('images/icons/time.svg')}}" alt="">
+                                    <span>Ends in 1d</span>
+                                </div>
+                                <div class="spec_item">
+                                    <img src="{{asset('images/icons/user-check.svg')}}" alt="">
+                                    <span>9 bids</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="car-box-price-and-specs">
+                            <div class="car-box-price">
+                                <h4 class="mb-0">Current Bid:</h4>
+                                <h4 class="mb-0 car-box-price-text">AED 78,000.00</h4>
+                            </div>
+                        </div>
+                        <div class="mt-3">
+                            <a href="" class="view-detail-btn">View Detail</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="car-box-card">
+                    <div class="car-box-card-images">
+                        <div class="car-box-card-images-inner">
+                            <a href="{{ route('car-detail-page') }}" class="car-box-card-imag-item">
+                                <img src="{{asset('images/c38ec63b-c441-4574-8b3a-8c69a2aa9595.webp')}}" class="obj_fit" alt="Rent Property Listing">
+                            </a>
+                        </div>
+                        <div class="overlap-car-box-card">
+                            <div class="car-box-type p-left">
+                                <span class="car-box-badge">
+                                    <img src="{{asset('images/icons/fire.svg')}}" alt="">
+                                    Hot Bid 
+                                </span>
+                            </div>
+                            <div class="wishlist-btn">
+                                <i class="far fa-heart"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="car-box-card-content">
+                        <div class="car-box-other-detail">
+                            <h3>Jeep Wrangler Rubicon</h3>
+                            <div class="car-box-specs">
+                                <div class="spec_item">
+                                    <img src="{{asset('images/icons/meter.svg')}}" alt="">
+                                    <span>290 m</span>
+                                </div>
+                                <div class="spec_item">
+                                    <img src="{{asset('images/icons/time.svg')}}" alt="">
+                                    <span>Ends in 1d</span>
+                                </div>
+                                <div class="spec_item">
+                                    <img src="{{asset('images/icons/user-check.svg')}}" alt="">
+                                    <span>9 bids</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="car-box-price-and-specs">
+                            <div class="car-box-price">
+                                <h4 class="mb-0">Current Bid:</h4>
+                                <h4 class="mb-0 car-box-price-text">AED 78,000.00</h4>
+                            </div>
+                        </div>
+                        <div class="mt-3">
+                            <a href="" class="view-detail-btn">View Detail</a>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
@@ -249,7 +836,7 @@
         <div class="container">
             <div class="row justify-content-center mb-5">
                 <div class="col-lg-8 text-center">
-                    <h2 class="h-35 fw-600">Search for your favorite car or sell your car on AutoDecar</h2>
+                    <h2 class="h-35 fw-700">Search for your favorite car or sell your car on AutoDecar</h2>
                 </div>
             </div>
             <div class="row align-items-center g-4">
@@ -260,11 +847,7 @@
                         <p>Save time and effort as you no longer need to visit multiple stores to find the right car.</p>
                         <a href="" class="btn-main">
                             Find cars
-                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="white"
-                                viewBox="0 0 14 14">
-                                <path
-                                    d="M11.6654 3.97592L1.64141 13.9999L-0.00537109 12.3531L10.0174 2.32914H1.18372V-0.00012207H13.9946V12.8108H11.6654V3.97592Z" />
-                            </svg>
+                            <i class="fa-solid fa-magnifying-glass"></i>
                         </a>
                     </div>
                 </div>
@@ -278,11 +861,6 @@
                         <p>Find your perfect car match and sell your car quickly with our user-friendly online service.</p>
                         <a href="" class="btn-main">
                             Sell a car
-                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="white"
-                                viewBox="0 0 14 14">
-                                <path
-                                    d="M11.6654 3.97592L1.64141 13.9999L-0.00537109 12.3531L10.0174 2.32914H1.18372V-0.00012207H13.9946V12.8108H11.6654V3.97592Z" />
-                            </svg>
                         </a>
                     </div>
                 </div>
@@ -295,7 +873,7 @@
             <div class="row justify-content-center mb-5">
                 <div class="col-lg-6 text-center">
                     <h3 class="sec-h-top">Our Services</h3>
-                    <h2 class="h-35 fw-600">Explore our wide range of cars services</h2>
+                    <h2 class="h-35 fw-700">Explore our wide range of cars services</h2>
                 </div>
             </div>
             <div class="row g-4 text-center text-md-start">
@@ -414,7 +992,7 @@
             <div class="row justify-content-center mb-5">
                 <div class="col-lg-6 text-center">
                     <h3 class="sec-h-top">Testimonials</h3>
-                    <h2 class="h-35 fw-600">What our customers are saying about us</h2>
+                    <h2 class="h-35 fw-700">What our customers are saying about us</h2>
                 </div>
             </div>
         </div>
@@ -613,13 +1191,75 @@
             </div>            
         </div>
     </section>
+    <!-- FAQ -->
+    <section class="section-faq">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6">
+                    <div class="faq-img">
+                        <img src="{{asset('images/faq.webp')}}" class="img-fluid rounded-4" alt="">
+                    </div>
+                </div>
+                <div class="col-lg-6 ps-lg-4">
+                    <h3 class="sec-h-top mx-0 mb-3">Frequently Asked Questions</h3>
+                    <h2 class="h-35 fw-700 mb-4">Everything you need to know about ourservices</h2>
+                    <div class="custom-accordion">
+                        <div class="accordion accordion-flush" id="accordionFlushExample">
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="flush-headingOne">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
+                                    What Do I Need To Rent A Car?
+                                </button>
+                                </h2>
+                                <div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
+                                    <div class="accordion-body">
+                                        <p>
+                                            Explore our diverse selection of high-end vehicles, choose your preferred pickup and return dates, and select a location that best fits your needs
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="flush-headingTwo">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseTwo">
+                                        How Old Do I Need To Be To Rent A Car
+                                    </button>
+                                </h2>
+                                <div id="flush-collapseTwo" class="accordion-collapse collapse" aria-labelledby="flush-headingTwo" data-bs-parent="#accordionFlushExample">
+                                    <div class="accordion-body">
+                                        <p>
+                                            Explore our diverse selection of high-end vehicles, choose your preferred pickup and return dates, and select a location that best fits your needs
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="flush-headingThree">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseThree" aria-expanded="false" aria-controls="flush-collapseThree">
+                                        Can I Rent A Car With A Debit Card?
+                                    </button>
+                                </h2>
+                                <div id="flush-collapseThree" class="accordion-collapse collapse" aria-labelledby="flush-headingThree" data-bs-parent="#accordionFlushExample">
+                                    <div class="accordion-body">
+                                        <p>
+                                            Explore our diverse selection of high-end vehicles, choose your preferred pickup and return dates, and select a location that best fits your needs
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
     <!-- Blogs -->
     <section class="section-blog">
         <div class="container">
             <div class="row justify-content-center mb-5">
                 <div class="col-lg-10 text-center">
                     <h3 class="sec-h-top">Latest Blog</h3>
-                    <h2 class="h-35 fw-600">Insights That Fuel Every Car Deal</h2>
+                    <h2 class="h-35 fw-700">Insights That Fuel Every Car Deal</h2>
                 </div>
             </div>
             <div class="row g-4 align-items-stretch">
