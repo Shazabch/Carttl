@@ -115,6 +115,7 @@ body {
 }
 section{
     padding: 70px 0;
+    overflow-x: hidden;
 }
 /* ===== NAVBAR STYLES ===== */
 .navbar {
@@ -288,7 +289,7 @@ section{
   opacity: 1;
   border-radius: 1rem;
   transform: rotate(0deg);
-  background-color: #fff;
+  background-color: var(--accent);
   transition: 0.25s ease-in-out;
 }
 .burger-line:nth-child(1) {
@@ -2191,6 +2192,9 @@ footer .footer-center ul {
     background-color: var(--light-2);
 }
 /* === According === */
+.section-faq{
+    background-color: #fff8f6;
+}
 .custom-accordion .accordion-button {
     background-color: transparent;
     box-shadow: none;
@@ -2223,7 +2227,7 @@ footer .footer-center ul {
     color: #333;
 }
 .faq-img{
-    height: 470px;
+    height: 500px;
 }
 .faq-img img{
     width: 100%;

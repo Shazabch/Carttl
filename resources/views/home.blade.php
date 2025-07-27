@@ -223,8 +223,8 @@
         <div class="overlay"></div>
         <div class="container">
             <div class="row">
-                <div class="col-lg-8">
-                    <div class="banner-content">
+                <div class="col-lg-6">
+                    <div class="banner-content"  data-aos="fade-up" data-aos-delay="400" data-aos-duration="1000" data-aos-easing="ease-out-cubic">
                         <h5 class="banner-text-sm">Buy. Sell. Auction</h5>
                         <h1 class="banner-heading mt-4 mb-3">Your Trusted Destination to Buy, Sell & Auction Cars</h1>
                         <p class="p-text">From finding your dream ride to getting the best deal for your car,<br> we're here to make it easy and hassle-free.</p>
@@ -333,7 +333,7 @@
                 </div>
             </div>
             <div class="cars-card-slider owl-carousel owl-theme">
-                <div class="car-box-card">
+                <div class="car-box-card" data-aos="fade-left" data-aos-delay="0" data-aos-duration="1000" data-aos-easing="ease-out-cubic">
                     <div class="car-box-card-images">
                         <div class="car-box-card-images-inner">
                             <a href="{{ route('car-detail-page') }}" class="car-box-card-imag-item">
@@ -381,7 +381,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="car-box-card">
+                <div class="car-box-card" data-aos="fade-left" data-aos-delay="100" data-aos-duration="1000" data-aos-easing="ease-out-cubic">
                     <div class="car-box-card-images">
                         <div class="car-box-card-images-inner">
                             <a href="{{ route('car-detail-page') }}" class="car-box-card-imag-item">
@@ -429,7 +429,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="car-box-card">
+                <div class="car-box-card" data-aos="fade-left" data-aos-delay="200" data-aos-duration="1000" data-aos-easing="ease-out-cubic">
                     <div class="car-box-card-images">
                         <div class="car-box-card-images-inner">
                             <a href="{{ route('car-detail-page') }}" class="car-box-card-imag-item">
@@ -477,7 +477,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="car-box-card">
+                <div class="car-box-card" data-aos="fade-left" data-aos-delay="300" data-aos-duration="1000" data-aos-easing="ease-out-cubic">
                     <div class="car-box-card-images">
                         <div class="car-box-card-images-inner">
                             <a href="{{ route('car-detail-page') }}" class="car-box-card-imag-item">
@@ -525,7 +525,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="car-box-card">
+                <div class="car-box-card" data-aos="fade-left" data-aos-delay="400" data-aos-duration="1000" data-aos-easing="ease-out-cubic">
                     <div class="car-box-card-images">
                         <div class="car-box-card-images-inner">
                             <a href="{{ route('car-detail-page') }}" class="car-box-card-imag-item">
@@ -588,7 +588,7 @@
                 </div>
             </div>
             <div class="cars-card-slider owl-carousel owl-theme">
-                <div class="car-box-card">
+                <div class="car-box-card" data-aos="fade-left" data-aos-delay="0" data-aos-duration="1000" data-aos-easing="ease-out-cubic">
                     <div class="car-box-card-images">
                         <div class="car-box-card-images-inner">
                             <a href="{{ route('car-detail-page') }}" class="car-box-card-imag-item">
@@ -636,7 +636,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="car-box-card">
+                <div class="car-box-card" data-aos="fade-left" data-aos-delay="100" data-aos-duration="1000" data-aos-easing="ease-out-cubic">
                     <div class="car-box-card-images">
                         <div class="car-box-card-images-inner">
                             <a href="{{ route('car-detail-page') }}" class="car-box-card-imag-item">
@@ -684,7 +684,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="car-box-card">
+                <div class="car-box-card" data-aos="fade-left" data-aos-delay="200" data-aos-duration="1000" data-aos-easing="ease-out-cubic">
                     <div class="car-box-card-images">
                         <div class="car-box-card-images-inner">
                             <a href="{{ route('car-detail-page') }}" class="car-box-card-imag-item">
@@ -732,7 +732,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="car-box-card">
+                <div class="car-box-card" data-aos="fade-left" data-aos-delay="300" data-aos-duration="1000" data-aos-easing="ease-out-cubic">
                     <div class="car-box-card-images">
                         <div class="car-box-card-images-inner">
                             <a href="{{ route('car-detail-page') }}" class="car-box-card-imag-item">
@@ -780,7 +780,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="car-box-card">
+                <div class="car-box-card" data-aos="fade-left" data-aos-delay="400" data-aos-duration="1000" data-aos-easing="ease-out-cubic">
                     <div class="car-box-card-images">
                         <div class="car-box-card-images-inner">
                             <a href="{{ route('car-detail-page') }}" class="car-box-card-imag-item">
@@ -840,7 +840,7 @@
                 </div>
             </div>
             <div class="row align-items-center g-4">
-                <div class="col-lg-4">
+                <div class="col-lg-4" data-aos="fade-left" data-aos-delay="300" data-aos-duration="1000" data-aos-easing="ease-out-cubic">
                     <div class="card-box">
                         <img src="{{asset('images/icons/search-car.svg')}}" alt="Search Icon" class="icon">
                         <h5>Are you looking for a car?</h5>
@@ -851,10 +851,10 @@
                         </a>
                     </div>
                 </div>
-                <div class="col-lg-4 text-center">
+                <div class="col-lg-4 text-center" data-aos="fade-up" data-aos-delay="300" data-aos-duration="1000" data-aos-easing="ease-out-cubic">
                     <img src="{{asset('images/Untitled design (27).png')}}" alt="Car" class="car-image">
                 </div>
-                <div class="col-lg-4">
+                <div class="col-lg-4" data-aos="fade-right" data-aos-delay="300" data-aos-duration="1000" data-aos-easing="ease-out-cubic">
                     <div class="card-box">
                         <img src="{{asset('images/icons/sell-car.svg')}}" alt="Sell Icon" class="icon">
                         <h5>Do you want to sell a car?</h5>
@@ -877,7 +877,7 @@
                 </div>
             </div>
             <div class="row g-4 text-center text-md-start">
-                <div class="col-md-3">
+                <div class="col-md-3" data-aos="fade-left" data-aos-delay="0" data-aos-duration="1000" data-aos-easing="ease-out-cubic">
                     <div class="service-card h-100">
                         <div class="service-card-inner">
                             <div class="icon-wrapper">
@@ -895,7 +895,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-3" data-aos="fade-left" data-aos-delay="100" data-aos-duration="1000" data-aos-easing="ease-out-cubic">
                     <div class="service-card h-100">
                         <div class="service-card-inner">
                             <div class="icon-wrapper">
@@ -913,7 +913,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-3" data-aos="fade-left" data-aos-delay="200" data-aos-duration="1000" data-aos-easing="ease-out-cubic">
                     <div class="service-card h-100">
                         <div class="service-card-inner">
                             <div class="icon-wrapper">
@@ -931,7 +931,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-3" data-aos="fade-left" data-aos-delay="300" data-aos-duration="1000" data-aos-easing="ease-out-cubic">
                     <div class="service-card h-100">
                         <div class="service-card-inner">
                             <div class="icon-wrapper">
@@ -950,7 +950,7 @@
                     </div>
                 </div>
             </div>
-            <div class="section-text mt-5">
+            <div class="section-text mt-5" data-aos="fade-up" data-aos-delay="0" data-aos-duration="1000" data-aos-easing="ease-out-cubic">
                 <p>Discover our range of car rental services designed to meet all your travel needs.<br>From a diverse fleet
                     of vehicles to flexible rental plans.</p>
                 <a href="" class="btn-main">
@@ -968,7 +968,7 @@
     <section class="cta-section mt-5">
         <div class="container">
             <div class="row align-items-center">
-                <div class="col-lg-7 text-center text-lg-start">
+                <div class="col-lg-7 text-center text-lg-start" data-aos="fade-up" data-aos-delay="0" data-aos-duration="1000" data-aos-easing="ease-out-cubic">
                     <h2 class="h-35 fw-700">Ready to get your car inspected?<br />Schedule your inspection today!</h2>
                     <p class="cta-text p-20">
                         Our friendly customer service team is here to help. Contact us anytime for support and inquiries.
@@ -997,7 +997,7 @@
             </div>
         </div>
         <div class="testimonail_slider slider-testimonal owl-carousel owl-theme">
-            <div class="item">
+            <div class="item" data-aos="fade-left" data-aos-duration="1000" data-aos-easing="ease-out-cubic">
                 <div class="item-wrap">
                     <div class="item-wrap-header">
                         <ul class="item-wrap-stars">
@@ -1029,7 +1029,7 @@
                     </div>
                 </div>
             </div>
-            <div class="item">
+            <div class="item" data-aos="fade-left" data-aos-duration="1000" data-aos-easing="ease-out-cubic">
                 <div class="item-wrap">
                     <div class="item-wrap-header">
                         <ul class="item-wrap-stars">
@@ -1061,7 +1061,7 @@
                     </div>
                 </div>
             </div>
-            <div class="item">
+            <div class="item" data-aos="fade-left" data-aos-duration="1000" data-aos-easing="ease-out-cubic">
                 <div class="item-wrap">
                     <div class="item-wrap-header">
                         <ul class="item-wrap-stars">
@@ -1093,7 +1093,7 @@
                     </div>
                 </div>
             </div>
-            <div class="item">
+            <div class="item" data-aos="fade-left" data-aos-duration="1000" data-aos-easing="ease-out-cubic">
                 <div class="item-wrap">
                     <div class="item-wrap-header">
                         <ul class="item-wrap-stars">
@@ -1125,7 +1125,7 @@
                     </div>
                 </div>
             </div>
-            <div class="item">
+            <div class="item" data-aos="fade-left" data-aos-duration="1000" data-aos-easing="ease-out-cubic">
                 <div class="item-wrap">
                     <div class="item-wrap-header">
                         <ul class="item-wrap-stars">
@@ -1157,7 +1157,7 @@
                     </div>
                 </div>
             </div> 
-            <div class="item">
+            <div class="item" data-aos="fade-left" data-aos-duration="1000" data-aos-easing="ease-out-cubic">
                 <div class="item-wrap">
                     <div class="item-wrap-header">
                         <ul class="item-wrap-stars">
@@ -1195,12 +1195,12 @@
     <section class="section-faq">
         <div class="container">
             <div class="row align-items-center">
-                <div class="col-lg-6">
+                <div class="col-lg-5" data-aos="fade-up" data-aos-delay="0" data-aos-duration="1000" data-aos-easing="ease-out-cubic">
                     <div class="faq-img">
                         <img src="{{asset('images/faq.webp')}}" class="img-fluid rounded-4" alt="">
                     </div>
                 </div>
-                <div class="col-lg-6 ps-lg-4">
+                <div class="col-lg-7 ps-lg-5" data-aos="fade-left" data-aos-delay="300" data-aos-duration="1000" data-aos-easing="ease-out-cubic">
                     <h3 class="sec-h-top mx-0 mb-3">Frequently Asked Questions</h3>
                     <h2 class="h-35 fw-700 mb-4">Everything you need to know about ourservices</h2>
                     <div class="custom-accordion">
@@ -1264,7 +1264,7 @@
             </div>
             <div class="row g-4 align-items-stretch">
                 <!-- Featured Post -->
-                <div class="col-lg-6">
+                <div class="col-lg-6" data-aos="fade-left" data-aos-delay="0" data-aos-duration="1000" data-aos-easing="ease-out-cubic">
                     <div class="featured-post position-relative">
                         <div class="feature-post-img">
                             <img src="https://demo.awaikenthemes.com/novaride/wp-content/uploads/2024/08/post-1.jpg"
@@ -1285,7 +1285,7 @@
                 <!-- Side Posts -->
                 <div class="col-lg-6 d-flex flex-column gap-4">
                     <!-- Single Side Post -->
-                    <div class="side-post row align-items-center">
+                    <div class="side-post row align-items-center" data-aos="fade-left" data-aos-delay="0" data-aos-duration="1000" data-aos-easing="ease-out-cubic">
                         <div class="col-lg-4">
                             <div class="side-post-img">
                                 <img src="https://demo.awaikenthemes.com/novaride/wp-content/uploads/2024/08/post-2.jpg"
@@ -1308,7 +1308,7 @@
                             </a>
                         </div>
                     </div>
-                    <div class="side-post row align-items-center">
+                    <div class="side-post row align-items-center" data-aos="fade-left" data-aos-delay="100" data-aos-duration="1000" data-aos-easing="ease-out-cubic">
                         <div class="col-lg-4">
                             <div class="side-post-img">
                                 <img src="https://demo.awaikenthemes.com/novaride/wp-content/uploads/2024/08/post-2.jpg"
@@ -1331,7 +1331,7 @@
                             </a>
                         </div>
                     </div>
-                    <div class="side-post row align-items-center">
+                    <div class="side-post row align-items-center" data-aos="fade-left" data-aos-delay="200" data-aos-duration="1000" data-aos-easing="ease-out-cubic">
                         <div class="col-lg-4">
                             <div class="side-post-img">
                                 <img src="https://demo.awaikenthemes.com/novaride/wp-content/uploads/2024/08/post-2.jpg"
