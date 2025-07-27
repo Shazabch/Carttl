@@ -3,6 +3,8 @@
     --primary: #0f172a;
     --secondary: #1e293b;
     --accent: #f59e0b;
+    --accent-2: #ffe8e2;
+    --accent-hover:#f8d0c6;
     --light: #f8fafc;
     --dark: #020617;
     --gray-100: #f1f5f9;
@@ -320,16 +322,25 @@ section{
     gap: 5px;
 }
 .header-action .nav-link{
-    color: rgba(255, 255, 255, 0.9) !important;
+    color: var(--accent) !important;
     font-weight: 500;
-    font-size: 16px;
-    padding: 0.8rem .9rem !important;
-    border-radius: 8px;
+    border-radius: 17px;
+    padding: 0.8rem 1.3rem !important;
     transition: all 0.3s ease;
     position: relative;
     overflow: hidden;
-    background-color: var(--accent);
+    background-color: var(--accent-2);
     border: 0;
+}
+.header-icon{
+    padding: .75rem;
+    border-radius: 17px;
+    background-color: var(--accent-2) !important;
+    height: 53px;
+    width: 53px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 /* ===== BUTTON STYLES ===== */
 .btn-warning {
@@ -421,9 +432,9 @@ section{
 /* ===== FILTER BAR ===== */
 .filter-bar {
     background: #ffff;
-    border-radius: 8px;
+    border-radius: 30px;
     box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
-    padding: 30px 15px 15px 18px;
+    padding: 30px 20px 20px 21px;
     position: relative;
     z-index: 2;
     animation: fadeInUp 1s ease 0.4s both;
@@ -509,6 +520,13 @@ section{
     padding-top: 1.5rem;
     border-top: 1px solid var(--gray-200);
     margin-top: 1.5rem;
+}
+.filter-actions .btn-main{
+    height: 65px;
+    width: 65px;
+    font-size: 19px;
+    border-radius: 50%;
+    font-size: 20px;
 }
 /* ===== FORM STYLES ===== */
 .form-label {
@@ -1566,6 +1584,7 @@ h4.footer_widget_title,
 /* New footer 2 */
 footer {
     background: #13141A;
+    border-radius: 25px 25px 0 0;
 }
 footer .container-fluid{
     max-width: 2000px;
@@ -1814,7 +1833,7 @@ footer .footer-center ul {
 .icon-wrapper {
     width: 60px;
     height: 60px;
-    background-color: #ffe8e2;
+    background-color: var(--accent-2);
     border-radius: 50%;
     display: flex;
     align-items: center;
@@ -1830,7 +1849,7 @@ footer .footer-center ul {
 .arrow-btn {
     width: 50px;
     height: 50px;
-    background-color: var(--accent);
+    background-color: var(--accent-2);
     border-radius: 50%;
     display: flex;
     align-items: center;
@@ -1849,22 +1868,28 @@ footer .footer-center ul {
     color: #666;
 }
 .btn-main {
-    background: linear-gradient(135deg, var(--accent), #fbbf24);
-    color: white;
-    border-radius: 8px;
+    /* background: linear-gradient(135deg, var(--accent), #fbbe24cd); */
+    background-color: var(--accent-2);
+    color: var(--accent);
+    border-radius: 17px;
     padding: 11px 25px 10px 25px;
-    font-weight: 500;
+    font-weight: 400;
     display: inline-flex;
     align-items: center;
     gap: 8px;
+    font-size: 16px;
     text-decoration: none;
+    transition: all .3s ease;
     border: 0;
 }
 .btn-main:hover {
-    background-color: var(--accent);
+    background-color: var(--accent-hover);
+}
+.btn-main.white{
+    background-color: #fff;
 }
 .service-card:hover .arrow-btn {
-    background-color: #000;
+    background-color: var(--accent-2);
     transform: rotate(45deg);
 }
 .service-card h5,
@@ -1991,7 +2016,7 @@ footer .footer-center ul {
     width: 45px;
     height: 45px;
     border-radius: 50% !important;
-    background-color: var(--accent) !important;
+    background-color: var(--accent-2) !important;
 }
 .slider-testimonal .owl-nav .owl-prev span {
     transform: rotate(180deg);
@@ -2337,6 +2362,9 @@ footer .footer-center ul {
     .banner-heading {
         font-size: 35px;
     }
+    .navbar-nav .nav-link{
+        padding: 1rem 1.2rem !important;
+    }
 }
 @media only screen and (max-width: 768px) {
     .banner-heading {
@@ -2383,5 +2411,25 @@ footer .footer-center ul {
     }
     .footer-widget{
         margin-bottom: 0;
+    }
+    .header-icon{
+        width: 45px;
+        height: 45px;
+    }
+    .header-icon img{
+        width: 18px;
+    }
+    .filter-bar{
+        border-radius: 20px;
+    }
+}
+@media only screen and (max-width:400px){
+    .brand {
+        width: 120px;
+        height: 72px;
+    }
+    .menu.is-active {
+        top: 73px;
+        height: calc(100% - 73px);
     }
 }

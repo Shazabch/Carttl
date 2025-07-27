@@ -235,7 +235,7 @@
                 <div class="col-lg-12">
                     <div class="filter-bar mt-4">
                         <form class="row align-items-end g-2">
-                            <div class="col-xl-3 col-lg-6">
+                            <div class="col-xl-4 col-lg-6">
                                 <label for="make" class="form-label">Make</label>
                                 <select id="make" class="form-select">
                                     <option value="">All Makes</option>
@@ -308,11 +308,13 @@
                                     </select>
                                 </div>
                             </div>
-                            <div class="col-xl-2 col-lg-12 filter-actions">
+                            <div class="col-xl-1 col-lg-12 filter-actions">
                                 {{-- <a href="#" class="filter-reset d-flex align-items-center">
                                     <i class="fas fa-undo me-2"></i>
                                 </a> --}}
-                                <button type="submit" class="btn-main w-100 justify-content-center">Search Auctions</button>
+                                <button type="submit" class="btn-main ms-auto p-0">
+                                    <i class="fa-solid fa-magnifying-glass mx-auto"></i>
+                                </button>
                             </div>
                         </form>
                     </div>
@@ -886,7 +888,7 @@
                             <h5 class="p-20 fw-600">Car Rental With Driver</h5>
                             <p class="text-muted mb-4">Enhance your rental experience with additional options.</p>
                             <a href="" class="arrow-btn">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="white"
+                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="#f59e0b"
                                     viewBox="0 0 14 14">
                                     <path
                                         d="M11.6654 3.97592L1.64141 13.9999L-0.00537109 12.3531L10.0174 2.32914H1.18372V-0.00012207H13.9946V12.8108H11.6654V3.97592Z" />
@@ -904,7 +906,7 @@
                             <h5 class="p-20 fw-600">Business Car Rental</h5>
                             <p class="text-muted mb-4">Enhance your rental experience with additional options.</p>
                             <a href="" class="arrow-btn">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="white"
+                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="#f59e0b"
                                     viewBox="0 0 14 14">
                                     <path
                                         d="M11.6654 3.97592L1.64141 13.9999L-0.00537109 12.3531L10.0174 2.32914H1.18372V-0.00012207H13.9946V12.8108H11.6654V3.97592Z" />
@@ -922,7 +924,7 @@
                             <h5 class="p-20 fw-600">Airport Transfer</h5>
                             <p class="text-muted mb-4">Enhance your rental experience with additional options.</p>
                             <a href="" class="arrow-btn">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="white"
+                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="#f59e0b"
                                     viewBox="0 0 14 14">
                                     <path
                                         d="M11.6654 3.97592L1.64141 13.9999L-0.00537109 12.3531L10.0174 2.32914H1.18372V-0.00012207H13.9946V12.8108H11.6654V3.97592Z" />
@@ -940,7 +942,7 @@
                             <h5 class="p-20 fw-600">Chauffeur Services</h5>
                             <p class="text-muted mb-4">Enhance your rental experience with additional options.</p>
                             <a href="" class="arrow-btn">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="white"
+                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="#f59e0b"
                                     viewBox="0 0 14 14">
                                     <path
                                         d="M11.6654 3.97592L1.64141 13.9999L-0.00537109 12.3531L10.0174 2.32914H1.18372V-0.00012207H13.9946V12.8108H11.6654V3.97592Z" />
@@ -955,7 +957,7 @@
                     of vehicles to flexible rental plans.</p>
                 <a href="" class="btn-main">
                     View All Service
-                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="white"
+                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="#f59e0b"
                         viewBox="0 0 14 14">
                         <path
                             d="M11.6654 3.97592L1.64141 13.9999L-0.00537109 12.3531L10.0174 2.32914H1.18372V-0.00012207H13.9946V12.8108H11.6654V3.97592Z" />
@@ -973,9 +975,9 @@
                     <p class="cta-text p-20">
                         Our friendly customer service team is here to help. Contact us anytime for support and inquiries.
                     </p>
-                    <a href="" class="btn-main">
+                    <a href="" class="btn-main white">
                         Contact Us
-                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="white" viewBox="0 0 14 14">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="#f59e0b" viewBox="0 0 14 14">
                             <path d="M11.6654 3.97592L1.64141 13.9999L-0.00537109 12.3531L10.0174 2.32914H1.18372V-0.00012207H13.9946V12.8108H11.6654V3.97592Z" />
                         </svg>
                     </a>
@@ -1354,6 +1356,25 @@
                     </div>
                 </div>
             </div>
+        </div>
+    </section>
+    <!-- CTA 3 -->
+    <section class="ft-cta py-5">
+        <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-9">
+            <h2 class="h-40 fw-600">Ready to Sell Your Car?</h2>
+            <p class="mb-4">Get the best value fast — simple, secure, and hassle-free.</p>
+            </div>
+            <div class="col-lg-3">
+            <a href="" class="btn-main">
+                Sell Your Car Now
+                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="#f59e0b" viewBox="0 0 14 14">
+                    <path d="M11.6654 3.97592L1.64141 13.9999L-0.00537109 12.3531L10.0174 2.32914H1.18372V-0.00012207H13.9946V12.8108H11.6654V3.97592Z"></path>
+                </svg>
+            </a>
+            </div>
+        </div>
         </div>
     </section>
 @endsection

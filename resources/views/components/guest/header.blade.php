@@ -45,14 +45,16 @@
                 <li class="nav-item"><a class="nav-link" href="{{ route('auctions') }}">Auctions</a></li>
                 <li class="nav-item"><a class="nav-link ('sell" href="{{ route('sell-cars') }}">Sell Cars</a></li>
                 <li class="nav-item"><a class="nav-link ('contact" href="{{ route('contact-us') }}">Contact Us</a></li>
-                <li class="nav-item"><a class="nav-link" href="{{ route('favorites') }}">Favorites</a></li>
             </ul>
         </div>
         <div class="header-action">
-            <button class="nav-link book-inspection" onclick="bookInspection()">Book Inspection</button>
-            <a href="{{ route('account.login') }}" class="nav-link">
+            <a href="{{ route('account.login') }}" class="header-icon">
                 <img src="{{asset('images/icons/user.svg')}}" alt="">
             </a>
+            <a href="{{ route('favorites') }}" class="header-icon">
+                <img src="{{asset('images/icons/heart.svg')}}" alt="">
+            </a> 
+            <button class="nav-link book-inspection" onclick="bookInspection()">Book Inspection</button>
             <div class="burger" id="burger">
                 <span class="burger-line"></span>
                 <span class="burger-line"></span>
