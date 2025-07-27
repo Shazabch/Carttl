@@ -14,7 +14,7 @@
     --success: #10b981;
     --danger: #ef4444;
     --warning: #f59e0b;
-    --header:#fff8f6;
+    --header:#fff;
     --light-2:#fff8f6;
 }
 
@@ -115,7 +115,6 @@ body {
 }
 section{
     padding: 70px 0;
-    overflow-x: hidden;
 }
 /* ===== NAVBAR STYLES ===== */
 .navbar {
