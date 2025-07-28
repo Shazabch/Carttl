@@ -54,7 +54,7 @@
             <a href="{{ route('favorites') }}" class="header-icon">
                 <img src="{{asset('images/icons/heart.svg')}}" alt="">
             </a> 
-            <button class="nav-link book-inspection" onclick="bookInspection()">Book Inspection</button>
+            <a href="{{route('book-inspection')}}" class="nav-link book-inspection">Book Inspection</a>
             <div class="burger" id="burger">
                 <span class="burger-line"></span>
                 <span class="burger-line"></span>
