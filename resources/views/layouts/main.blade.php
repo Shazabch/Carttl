@@ -123,7 +123,7 @@
 </head>
 
 <body>
-    <div class="container login-container">
+    <div class="container ">
         <div class="row g-0">
             <div class="col-lg-12">
                 <div class="card login-card">
