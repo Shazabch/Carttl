@@ -18,6 +18,8 @@ Route::get('/car-auctions', function () {
     return view('auctions');
 })->name('auctions');
 
+
+
 Route::get('/sell-cars', function () {
     return view('sell-cars');
 })->name('sell-cars');
@@ -68,6 +70,10 @@ Route::group(['prefix' => 'admin'], function () {
     });
     // Authenticate middleware for admin
     Route::group(['middleware' => 'admin.auth'], function () {
+
+        Route::get('/testimonials', function () {
+            return view('admin.testimonials');
+        })->name('admin.testimonials');
         Route::get('dashboard', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
         Route::post('logout', [AdminLoginController::class, 'logout'])->name('admin.logout');
         Route::get('/car-damage-test', function () {
@@ -80,7 +86,6 @@ Route::group(['prefix' => 'admin'], function () {
         Route::view('roles', 'admin.roles.index')->name('admin.roles');
         Route::view('sell-your-car', 'admin.sell.index')->name('admin.sell.index');
         Route::view('sell-car-lsiting', 'admin.sell.list')->name('admin.sell.list');
-
     });
 });
 Route::get('/un-authenticated', function () {
