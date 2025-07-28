@@ -47,6 +47,7 @@ class BlogComponent extends Component
         $this->resetForm();
         $this->showForm = true;
         $this->isEditing = false;
+
     }
     public function editBlog(Blog $blog)
     {
@@ -58,6 +59,7 @@ class BlogComponent extends Component
         $this->slug = $blog->slug;
         $this->content = $blog->content;
         $this->is_published = $blog->is_published;
+        $this->dispatch('clear-filepond-files');
     }
 
     public function saveBlog()
@@ -115,6 +117,7 @@ class BlogComponent extends Component
 
     public function render()
     {
+
         $blogs = Blog::query()
             ->where('title', 'like', '%' . $this->search . '%')
             ->latest()

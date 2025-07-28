@@ -29,7 +29,8 @@ class VehicleFormComponent extends Component
     // --- Data for Dropdowns & Selections ---
     public $brands = [], $models = [], $bodyTypes = [], $fuelTypes = [], $transmissions = [];
 
-    protected $listeners = ['showCreateForm', 'showEditForm'];
+    protected $listeners = ['showCreateForm', 'showEditForm','addNewSelectOption' => 'handleAddNewSelectOption'];
+
 
     // All rules point to the keys in the vehicleData array.
     protected function rules()
@@ -74,7 +75,14 @@ class VehicleFormComponent extends Component
         $this->vehicleData['status'] = 'draft';
 
         // Pre-load data for dropdowns and selections
-        $this->brands = Brand::all();
+
+        $this->brands =  Brand::orderBy('name')->get();
+        $this->brands = $this->brands->map(function ($brand) {
+            return [
+                'id' => $brand->id,
+                'text' => $brand->name,
+            ];
+        })->toArray();
         $this->bodyTypes = BodyType::all();
         $this->fuelTypes = FuelType::all();
         $this->transmissions = Transmission::all();
@@ -85,6 +93,13 @@ class VehicleFormComponent extends Component
     {
         if ($value) {
             $this->models = VehicleModel::where('brand_id', $value)->get();
+
+            $this->models = $this->models->map(function ($model) {
+                return [
+                    'id' => $model->id,
+                    'text' => $model->name,
+                ];
+            })->toArray();
         } else {
             $this->models = [];
         }
@@ -144,9 +159,9 @@ class VehicleFormComponent extends Component
 
         // Use updateOrCreate with the data array. This is clean and efficient.
         Vehicle::updateOrCreate(['id' => $this->vehicle_id], $this->vehicleData);
-          $this->dispatch('success-notification', [
-                'message' => $this->isEditing ? 'Vehicle updated successfully.' : 'Vehicle created successfully.'
-            ]);
+        $this->dispatch('success-notification', [
+            'message' => $this->isEditing ? 'Vehicle updated successfully.' : 'Vehicle created successfully.'
+        ]);
         $this->dispatch('vehicleSaved');
 
         $this->cancel();
@@ -201,6 +216,36 @@ class VehicleFormComponent extends Component
 
         $this->validate($rulesForStep);
     }
+    public function handleAddNewSelectOption($text, $model, $list)
+    {
+
+        $newItemText = trim($text);
+        if ($list === 'brands' && !empty($newItemText)) {
+            $newItem = Brand::create([
+                'name' => $newItemText,
+            ]);
+        } else if($list === 'models' && !empty($newItemText)) {
+            $brandId = data_get($this, 'vehicleData.brand_id');
+            if (!$brandId) {
+                session()->flash('error', 'Please select a brand first.');
+                return;
+            }
+            $newItem = VehicleModel::create([
+                'name' => $newItemText,
+                'brand_id' => $brandId,
+            ]);
+        } else {
+            $newItem = collect();
+        }
+        if ($newItem !== null && $newItem->id) {
+            data_set($this, $model, $newItem->id);
+            $array = data_get($this, $list, []);
+            $array[] = ['id' => $newItem->id, 'text' => $newItem->name];
+            data_set($this, $list, $array);
+        }
+        $this->dispatch('re-init-select-2-component');
+    }
+
 
     public function render()
     {
@@ -209,7 +254,7 @@ class VehicleFormComponent extends Component
             ->with('brand', 'vehicleModel')
             ->latest()
             ->paginate(10);
-
+        $this->dispatch('re-init-select-2-component');
         return view('livewire.admin.vehicle-form-component', compact('vehicles'));
     }
 }

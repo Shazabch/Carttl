@@ -1,5 +1,6 @@
 <div>
-    <h5>Basic Information</h5> <hr>
+    <h5>Basic Information</h5>
+    <hr>
     <div class="row">
         <div class="col-md-12 mb-3">
             <label class="form-label">Vehicle Title</label>
@@ -8,19 +9,25 @@
         </div>
         <div class="col-md-6 mb-3">
             <label class="form-label">Brand</label>
-            <select class="form-control @error('vehicleData.brand_id') is-invalid @enderror" wire:model.live="vehicleData.brand_id">
-                <option value="">Select Brand</option>
-                @foreach ($brands as $brand) <option value="{{ $brand->id }}">{{ $brand->name }}</option> @endforeach
-            </select>
-            @error('vehicleData.brand_id') <div class="invalid-feedback">{{ $message }}</div> @enderror
+            <x-select3
+                id="select-brand-vehicle"
+                dataArray="brands"
+                wire:model.live="vehicleData.brand_id"
+                placeholder="Select one"
+                :allowAdd="true" />
+
         </div>
         <div class="col-md-6 mb-3">
             <label class="form-label">Model</label>
-            <select class="form-control @error('vehicleData.vehicle_model_id') is-invalid @enderror" wire:model.defer="vehicleData.vehicle_model_id">
-                <option value="">Select Model</option>
-                @foreach ($models as $model) <option value="{{ $model->id }}">{{ $model->name }}</option> @endforeach
-            </select>
-            @error('vehicleData.vehicle_model_id') <div class="invalid-feedback">{{ $message }}</div> @enderror
+
+
+            <x-select3
+                id="select-model-vehicle"
+                dataArray="models"
+                wire:model="vehicleData.vehicle_model_id"
+                placeholder="Select one"
+                :allowAdd="true" />
+
         </div>
         <div class="col-md-6 mb-3">
             <label class="form-label">Year</label>
