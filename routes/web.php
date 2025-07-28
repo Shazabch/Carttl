@@ -80,6 +80,7 @@ Route::group(['prefix' => 'admin'], function () {
         Route::view('roles', 'admin.roles.index')->name('admin.roles');
         Route::view('sell-your-car', 'admin.sell.index')->name('admin.sell.index');
         Route::view('sell-car-lsiting', 'admin.sell.list')->name('admin.sell.list');
+        Route::view('/blogs', 'admin.blogs.index')->name('admin.blogs');
 
     });
 });
