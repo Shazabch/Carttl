@@ -861,7 +861,7 @@
                         <img src="{{asset('images/icons/sell-car.svg')}}" alt="Sell Icon" class="icon">
                         <h5>Do you want to sell a car?</h5>
                         <p>Find your perfect car match and sell your car quickly with our user-friendly online service.</p>
-                        <a href="" class="btn-main">
+                        <a href="{{route('sell-car')}}" class="btn-main">
                             Sell a car
                         </a>
                     </div>
@@ -1064,7 +1064,7 @@
                 <p class="mb-4">Get the best value fast — simple, secure, and hassle-free.</p>
                 </div>
                 <div class="col-lg-3">
-                <a href="" class="btn-main">
+                <a href="{{route('sell-car')}}" class="btn-main">
                     Sell Your Car Now
                     <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="#f59e0b" viewBox="0 0 14 14">
                         <path d="M11.6654 3.97592L1.64141 13.9999L-0.00537109 12.3531L10.0174 2.32914H1.18372V-0.00012207H13.9946V12.8108H11.6654V3.97592Z"></path>

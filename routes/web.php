@@ -9,44 +9,17 @@ use App\Http\Controllers\LoginController;
 use App\Models\Vehicle;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('home');
-})->name('home');
-
+Route::view('/', 'home')->name('home');
 Route::view('/blog', 'blogs.index')->name('get-blog');
 Route::view('/blog/details', 'blogs.details')->name('get-blog-details');
 Route::view('/book-inspection', 'book-inspection')->name('book-inspection');
 
-
-Route::get('/car-auctions', function () {
-    return view('auctions');
-})->name('auctions');
-
-
-
-Route::get('/sell-cars', function () {
-    return view('sell-cars');
-})->name('sell-cars');
-Route::get('/sell-car', function () {
-    return view('sell-car');
-})->name('sell-car');
-
-Route::get('/car-favorites', function () {
-    return view('favorites');
-})->name('favorites');
-
-// Route::get('/car-damage-test', function () {
-//     return view('carDamgeTest');
-// })->name('car.damage.test');
-
-
-Route::get('/car-detail', function () {
-    return view('detail');
-})->name('car-detail-page');
-
-Route::get('/contact-us', function () {
-    return view('contact-us');
-})->name('contact-us');
+Route::view('/car-auctions', 'auctions')->name('auctions');
+Route::view('/sell-cars', 'sell-cars')->name('sell-cars');
+Route::view('/sell-car', 'sell-car')->name('sell-car');
+Route::view('/car-favorites', 'favorites')->name('favorites');
+Route::view('/car-detail', 'detail')->name('car-detail-page');
+Route::view('/contact-us', 'contact-us')->name('contact-us');
 
 // Route::group(['prefix' => 'account'], function(){
 // Guest middleware
@@ -78,9 +51,8 @@ Route::group(['prefix' => 'admin'], function () {
 
         Route::get('dashboard', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
         Route::post('logout', [AdminLoginController::class, 'logout'])->name('admin.logout');
-        Route::get('/car-damage-test', function () {
-            return view('carDamgeTest');
-        })->name('car.damage.test');
+        Route::view('/car-damage-test', 'carDamgeTest')->name('car.damage.test');
+
         Route::get('/submissions', [ContactSubmissionController::class, 'index'])->name('admin.submissions');
         Route::get('/vehicles', [VehicleManagerController::class, 'index'])->name('admin.vehicles');
         Route::get('/vehicles/{id}/details', [VehicleManagerController::class, 'details'])->name('admin.vehicles.details');
@@ -91,9 +63,6 @@ Route::group(['prefix' => 'admin'], function () {
         Route::view('/blogs', 'admin.blogs.index')->name('admin.blogs');
         Route::view('/testimonials', 'admin.testimonials.index')->name('admin.testimonials');
         Route::view('/inspection-enquiries', 'admin.inspection.index')->name('admin.inspection.enquiries');
-
     });
 });
-Route::get('/un-authenticated', function () {
-    return view('un-auth');
-})->name('un-auth');
+Route::view('/un-authenticated', 'un-auth')->name('un-auth');
