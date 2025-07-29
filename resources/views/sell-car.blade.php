@@ -29,7 +29,7 @@ Sell your car
                 </div>
 
                 <div class="card-body">
-                    <livewire:admin.sell.sell-management-component/>
+                    <livewire:sell-car-component/>
                 </div>
             </div>
         </div>

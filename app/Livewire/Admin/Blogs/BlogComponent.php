@@ -75,10 +75,12 @@ class BlogComponent extends Component
 
         if ($this->isEditing) {
             $this->editingBlog->update($validatedData);
+             $this->dispatch('success-notification', message: 'Item Updated Successfully');
             session()->flash('success', 'Blog post updated successfully.');
 
         } else {
             Blog::create($validatedData);
+             $this->dispatch('success-notification', message: 'Item Created Successfully');
             session()->flash('success', 'Blog post created successfully.');
         }
 
@@ -98,6 +100,7 @@ class BlogComponent extends Component
         }
 
         $blog->delete();
+         $this->dispatch('success-notification', message: 'Item Deleted Successfully');
         session()->flash('success', 'Blog post deleted successfully.');
     }
 

@@ -90,6 +90,7 @@ Route::group(['prefix' => 'admin'], function () {
         Route::view('sell-car-lsiting', 'admin.sell.list')->name('admin.sell.list');
         Route::view('/blogs', 'admin.blogs.index')->name('admin.blogs');
         Route::view('/testimonials', 'admin.testimonials.index')->name('admin.testimonials');
+        Route::view('/inspection-enquiries', 'admin.inspection.index')->name('admin.inspection.enquiries');
 
     });
 });

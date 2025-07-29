@@ -44,7 +44,7 @@
 
                          <!-- Direct Income Link -->
                          <li class="menu-item " aria-haspopup="true">
-                             <a href="#" class="menu-link">
+                             <a href="{{ route('admin.inspection.enquiries') }}" class="menu-link">
                                  <i class="menu-bullet menu-bullet-dot"><span></span></i>
                                  <span class="menu-text">Inspection Enquiries</span>
                              </a>
@@ -130,12 +130,12 @@
                  </div>
                  <!-- Submenu End -->
              </li>
-
+  {{--
              <li class="menu-section">
                  <h4 class="menu-text">Sell</h4>
                  <i class="menu-icon ki ki-bold-more-hor icon-md"></i>
              </li>
-             <li class="menu-item menu-item-submenu  }}" aria-haspopup="true" data-menu-toggle="hover">
+             <li class="menu-item menu-item-submenu " aria-haspopup="true" data-menu-toggle="hover">
                  <a href="javascript:;" class="menu-link menu-toggle">
                      <span class="svg-icon menu-icon">
                          <i class="fas fa-cogs"></i>
@@ -143,6 +143,9 @@
                      <span class="menu-text">Sell</span>
                      <i class="menu-arrow"></i>
                  </a>
+
+
+
 
                  <!-- Submenu Start -->
                  <div class="menu-submenu">
@@ -159,6 +162,7 @@
 
                      </ul>
                  </div>
+                 --}}
                  <!-- Submenu End -->
              </li>
 
