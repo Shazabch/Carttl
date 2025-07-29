@@ -6,7 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Testimonial extends Model
 {
-    public $fillable = ['name', 'rank', 'comment'];
+
+    protected $guarded = [];
     protected $attributes = [
         'status' => true,
     ];

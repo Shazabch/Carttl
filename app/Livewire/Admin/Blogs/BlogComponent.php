@@ -28,7 +28,7 @@ class BlogComponent extends Component
     {
         return [
             'title' => 'required',
-            'slug' => 'required|string|unique:blogs,slug,' . ($this->isEditing ? $this->editingBlog->id : ''),
+            'slug' => 'required',
             'content' => 'nullable',
             'image' => [
                 $this->isEditing ? 'nullable' : 'required',

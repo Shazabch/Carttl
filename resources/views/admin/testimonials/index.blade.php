@@ -1,6 +1,6 @@
 @extends('layouts.admin.main')
 
-@section('title', 'Blogs')
+@section('title', 'Testimonials')
 
 @section('content')
     <div class="subheader py-2 py-lg-4 subheader-solid" id="kt_subheader">
@@ -12,8 +12,8 @@
                 <!--end::Page Title-->
                 <!--begin::Actions-->
                 <div class="subheader-separator subheader-separator-ver mt-2 mb-2 mr-4 bg-gray-200"></div>
-                <span class=" font-weight-bold mr-4">Blogs - GOLDEN X</span>
-                {{-- <a href="#" class="btn btn-light-warning font-weight-bolder btn-sm">Blog Management</a> --}}
+                <span class=" font-weight-bold mr-4">Testimonials - GOLDEN X</span>
+
                 <!--end::Actions-->
             </div>
             <!--end::Info-->
@@ -26,7 +26,7 @@
     </div>
     <div class="row mx-2">
         <div class="col-12">
-            @livewire('admin.blogs.blog-component')
+            @livewire('admin.testimonials.testimonial-component')
         </div>
     </div>
 @endsection
