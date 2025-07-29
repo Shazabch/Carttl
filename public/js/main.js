@@ -1,4 +1,4 @@
-AOS.init();
+  AOS.init();
 const navbarMenu = document.getElementById("menu");
 const burgerMenu = document.getElementById("burger");
 const headerMenu = document.getElementById("header");
@@ -94,4 +94,16 @@ $(".car-box-card_silder").owlCarousel({
       items: 1,
     },
   },
+});
+
+$(document).ready(function () {
+    $('.scrollTo').on('click', function (e) {
+        e.preventDefault();
+        const target = $($(this).data('target'));
+        if (target.length) {
+            $('html, body').animate({
+                scrollTop: target.offset().top
+            }, 800); // 800ms animation
+        }
+    });
 });
