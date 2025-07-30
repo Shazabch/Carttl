@@ -548,11 +548,10 @@ section{
 .form-select,
 .form-control {
     border: 0;
-    border-bottom: 2px solid var(--gray-200);
-    border-radius: 0px;
-    padding: 0.75rem 0rem;
+    border-radius: 16px;
+    padding: 20px 1rem;
     transition: all 0.3s ease;
-    background-color: var(--white);
+    background-color: #f5f5f5;
 }
 .form-control::placeholder{
     font-size: 14px;
@@ -1330,8 +1329,10 @@ footer::before {
     left: 0;
     right: 0;
     bottom: 0;
-    background: rgba(8, 12, 36, 0.466);
-    background: linear-gradient(90deg, rgb(0, 0, 0) 20%, rgb(14, 14, 17) 39%, rgba(8, 8, 10, 0.96) 50%, rgba(0, 0, 0, 0) 100%);
+    /* background: rgba(8, 12, 36, 0.466);
+    background: linear-gradient(90deg, rgb(0, 0, 0) 20%, rgb(14, 14, 17) 39%, rgba(8, 8, 10, 0.96) 50%, rgba(0, 0, 0, 0) 100%); */
+    background: #000;
+    background: linear-gradient(90deg, rgba(0, 0, 0, 1) 15%, rgba(255, 255, 255, 0) 100%);
 }
 .inner-banner .carousel-caption {
     position: absolute;
@@ -2350,6 +2351,12 @@ footer .footer-center ul {
 .inspection-success-story .testimonail_slider .owl-nav{
     justify-content: end;
     padding-right: 40px;
+}
+.sell-your-car{
+    background-color: #fff;
+    padding: 25px 30px 25px 30px;
+    border-radius: 20px;
+    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
 }
 /* ===== RESPONSIVE DESIGN ===== */
 @media (max-width: 992px) {
