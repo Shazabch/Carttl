@@ -5,6 +5,7 @@
     --accent: #f59e0b;
     --accent-2: #ffe8e2;
     --accent-hover:#f8d0c6;
+    --accent-hover-2:#dd961c;
     --light: #f8fafc;
     --dark: #020617;
     --gray-100: #f1f5f9;
@@ -340,7 +341,7 @@ section{
 .header-icon{
     padding: .75rem;
     border-radius: 17px;
-    background-color: var(--accent-2) !important;
+    background-color: var(--accent) !important;
     height: 53px;
     width: 53px;
     display: flex;
@@ -350,7 +351,7 @@ section{
 }
 .header-action .nav-link:hover,
 .header-icon:hover{
-    background-color: #fff !important;
+    background-color: var(--accent-hover-2) !important;
     box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px; 
 }
 /* ===== BUTTON STYLES ===== */
@@ -445,7 +446,7 @@ section{
     background: #ffff;
     border-radius: 30px;
     box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
-    padding: 30px 20px 20px 21px;
+    padding: 20px 20px 20px 21px;
     position: relative;
     z-index: 2;
     animation: fadeInUp 1s ease 0.4s both;
@@ -461,35 +462,44 @@ section{
     font-family: 'DM Sans';
     color: #040401;
     padding-left: 5px;
+    background-color: transparent;
+    cursor: pointer;
 }
 .filter-bar .form-select:focus, 
 .filter-bar .form-control:focus {
     box-shadow: none;
     border-bottom-color:var(--accent);
 }
-.filter-bar  .form-label{
-    font-size: 18px;
+.filter-bar .form-control::placeholder,
+.filter-bar .form-control::placeholder{
+    font-size: 12px;
+}
+.filter-bar .form-label{
+    font-size: 14px;
     font-weight: 400 !important;
     font-family: 'DM Sans';
-    margin-bottom: 2px;
+    margin-bottom: 10px;
 }
-.filter-tabs {
-    border-bottom: 2px solid var(--gray-200);
-    margin-bottom: 2rem;
+.filter-tabs{
+    gap: 5px;
 }
 .filter-tabs .nav-link {
     color: var(--gray-600);
-    font-weight: 600;
+    font-weight: 500;
+    background-color: var(--accent-2);
     border: none;
-    border-bottom: 3px solid transparent;
-    padding: 1rem 1.5rem;
+    border: 0px solid transparent;
+    padding: 7px 25px;
     transition: all 0.3s ease;
     position: relative;
+    border-radius: 18px;
+    font-size: 13px;
 }
 .filter-tabs .nav-link.active {
-    color: var(--primary);
-    border-bottom: 3px solid var(--accent);
+    color: #fff;
+    border: 0px solid var(--accent);
     background: none;
+    background-color: var(--accent);
 }
 .filter-tabs .nav-link:hover {
     color: var(--accent);
@@ -511,15 +521,21 @@ section{
     transform: translateX(5px);
 }
 .advanced-filters-toggle {
-    color: var(--accent);
+    color: #fff;
     cursor: pointer;
-    font-weight: 500;
+    font-weight: 400;
     margin-top: 1rem;
     transition: all 0.3s ease;
     user-select: none;
+    background-color: var(--accent);
+    padding: 6px 14px;
+    font-size: 15px;
+    border-radius: 18px;
+    width: fit-content;
 }
 .advanced-filters-toggle:hover {
-    color: var(--primary);
+    color: #fff;
+    background-color:var(--accent-hover-2);
 }
 .advanced-filters-toggle i {
     transition: transform 0.3s ease;
@@ -528,16 +544,19 @@ section{
     transform: rotate(180deg);
 }
 .advanced-filters {
-    padding-top: 1.5rem;
-    border-top: 1px solid var(--gray-200);
-    margin-top: 1.5rem;
+    /* padding-top: 1.5rem; */
 }
 .filter-actions .btn-main{
-    height: 65px;
-    width: 65px;
+    height: 55px;
+    width: 55px;
     font-size: 19px;
     border-radius: 50%;
     font-size: 20px;
+}
+.advanced-filters .form-check-label{
+    font-size: 14px;
+    font-weight: 400;
+    color: #333;
 }
 /* ===== FORM STYLES ===== */
 .form-label {
@@ -547,7 +566,7 @@ section{
 }
 .form-select,
 .form-control {
-    border: 0;
+    border: 1px solid transparent;
     border-radius: 16px;
     padding: 20px 1rem;
     transition: all 0.3s ease;
@@ -1785,9 +1804,9 @@ footer .footer-center ul {
 }
 .btn-main {
     /* background: linear-gradient(135deg, var(--accent), #fbbe24cd); */
-    background-color: var(--accent-2);
-    color: var(--accent);
-    border-radius: 17px;
+    background-color: var(--accent);
+    color: #fff;
+    border-radius: 30px;
     padding: 11px 25px 10px 25px;
     font-weight: 400;
     display: inline-flex;
@@ -1799,12 +1818,16 @@ footer .footer-center ul {
     border: 0;
 }
 .btn-main:hover {
-    background-color: #fff;
+    background-color: var(--accent-hover-2);
     box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
-    color: var(--accent);
+    color: #fff;
+}
+.btn-main svg{
+    filter: brightness(40);
 }
 .btn-main.white{
     background-color: #fff;
+    color: var(--accent);
 }
 .btn-main.white:hover{
     background-color: var(--accent);
@@ -1823,6 +1846,52 @@ footer .footer-center ul {
 .btn-main.dark:hover{
     background-color: #fff;
     color: var(--accent);
+}
+.btn-main.gray{
+    background-color: #fff3f4;
+    color: var(--accent);
+}
+.theme_btn{
+    cursor: pointer;
+    padding: 10px 20px;
+    border-radius: 100px;
+    background: var(--accent);
+    z-index: 0;
+    color: #fff;
+    border: 1px solid transparent;
+    display: flex;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+    -webkit-transition: all 0.6s cubic-bezier(0.19, 1, 0.22, 1);
+    transition: all 0.6s cubic-bezier(0.19, 1, 0.22, 1);
+    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+    text-decoration: none;
+    width: max-content;
+}
+.theme_btn span {
+    font-size: 15px;
+    font-weight: 600;
+}
+.theme_btn > img {
+    width: 34px;
+    margin-left: 10px;
+    transition: transform 0.3s ease-in-out;
+}
+.theme_btn::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: #dd961c;
+    left: -100%;
+    border-radius: 100px;
+    -webkit-transition: all 0.6s cubic-bezier(0.19, 1, 0.22, 1);
+    transition: all 0.6s cubic-bezier(0.19, 1, 0.22, 1);
+}
+.theme_btn:hover::after {
+    left: 0;
+    z-index: -1;
 }
 .service-card:hover .arrow-btn {
     background-color: var(--accent-2);
@@ -1952,7 +2021,7 @@ footer .footer-center ul {
     width: 45px;
     height: 45px;
     border-radius: 50% !important;
-    background-color: var(--accent-2) !important;
+    background-color: var(--accent) !important;
 }
 .slider-testimonal .owl-nav .owl-prev span {
     transform: rotate(180deg);
@@ -2354,10 +2423,84 @@ footer .footer-center ul {
 }
 .sell-your-car{
     background-color: #fff;
-    padding: 25px 30px 25px 30px;
+    padding: 35px 30px 25px 30px;
     border-radius: 20px;
     box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
 }
+/* benefit-wrap */
+.benefit-wrap{
+    height: 520px;
+    border-radius: 10px;
+    overflow: hidden;
+}
+.benefit-wrap img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+.section-why-benefit{
+    background-color: #f4f4f4;
+}
+.section-why-benefit .icon-wrapper{
+    width: 43px;
+    height: 43px;
+    margin-bottom: 24px;
+    background-color: #fff;
+}
+.section-why-benefit .icon-wrapper img{
+    width: 35px;
+}
+.custom-progress {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    max-width: 800px;
+    margin: 0 auto;
+}
+.custom-progress .step {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex: 1;
+    position: relative;
+}
+.custom-progress .step .icon {
+    background-color: #f5f5f5;
+    color: var(--accent);
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    transition: all 0.3s ease;
+}
+.custom-progress .step.active .icon {
+    background-color: #ffc107;
+    color: #fff;
+    box-shadow: 0 0 0 4px rgba(255, 193, 7, 0.2);
+}
+.custom-progress .step p {
+    margin-top: 10px;
+    font-weight: 500;
+    font-size: 14px;
+    text-align: center;
+    color: #444;
+}
+.custom-progress .line {
+    height: 4px;
+    background-color: #e0e0e0;
+    flex: 1;
+    margin: 0 10px;
+    border-radius: 2px;
+    transition: background-color 0.3s ease;
+}
+.custom-progress .line.filled {
+    background-color: var(--accent);
+}
+
+
 /* ===== RESPONSIVE DESIGN ===== */
 @media (max-width: 992px) {
     .filters-sidebar {
@@ -2523,6 +2666,9 @@ footer .footer-center ul {
     }
     .filter-bar{
         border-radius: 20px;
+    }
+    .sell-your-car{
+        padding: 30px 15px 20px 15px;
     }
 }
 @media only screen and (max-width:400px){

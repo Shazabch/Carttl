@@ -41,22 +41,27 @@
            </a>
            <div class="menu" id="menu">
                <ul class="menu-inner navbar-nav">
-                   <li class="nav-item"><a class="nav-link {{ request()->routeIs('home') ? 'active' : '' }}"
-                           href="{{ route('home') }}">Home</a></li>
-                   <li class="nav-item"><a class="nav-link" href="{{ route('auctions') }}">Auctions</a></li>
-                   <li class="nav-item"><a class="nav-link ('sell" href="{{ route('sell-cars') }}">Buy Cars</a></li>
-                   <li class="nav-item"><a class="nav-link ('contact" href="{{ route('contact-us') }}">Contact Us</a>
+                   <li class="nav-item"><a class="nav-link {{ request()->routeIs('home') ? 'active' : '' }}" href="{{ route('home') }}">Home</a></li>
+                   <li class="nav-item"><a class="nav-link {{ request()->routeIs('auctions') ? 'active' : '' }}" href="{{ route('auctions') }}">Auctions</a></li>
+                   <li class="nav-item"><a class="nav-link {{ request()->routeIs('sell-cars') ? 'active' : '' }} ('sell" href="{{ route('sell-cars') }}">Buy Cars</a></li>
+                   <li class="nav-item"><a class="nav-link {{ request()->routeIs('contact-us') ? 'active' : '' }} ('contact" href="{{ route('contact-us') }}">Contact Us</a>
                    </li>
                </ul>
            </div>
            <div class="header-action">
-               <a href="{{ route('account.login') }}" class="header-icon">
+                <a href="{{ route('account.login') }}" class="header-icon">
                    <img src="{{ asset('images/icons/user.svg') }}" alt="">
-               </a>
-               <a href="{{ route('favorites') }}" class="header-icon">
+                </a>
+                <a href="{{ route('favorites') }}" class="header-icon">
                    <img src="{{ asset('images/icons/heart.svg') }}" alt="">
-               </a>
-               <a href="{{ route('book-inspection') }}" class="nav-link book-inspection">Book Inspection</a>
+                </a>
+                {{-- <a href="{{ route('book-inspection') }}" class="nav-link book-inspection">
+                    Book Inspection
+                </a> --}}
+                <a href="{{ route('book-inspection') }}" class="theme_btn mt-0">
+                    <span>Book Inspection</span>
+                    <img src="{{asset('images/icons/arrow_right.svg')}}" alt="arrow right">
+                </a>
                <div class="burger" id="burger">
                    <span class="burger-line"></span>
                    <span class="burger-line"></span>

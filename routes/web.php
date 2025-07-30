@@ -13,7 +13,6 @@ Route::view('/', 'home')->name('home');
 Route::view('/blog', 'blogs.index')->name('get-blog');
 Route::view('/blog/details', 'blogs.details')->name('get-blog-details');
 Route::view('/book-inspection', 'book-inspection')->name('book-inspection');
-Route::view('/sell-your-car', 'sell-your-car')->name('car-you-sell');
 
 Route::view('/car-auctions', 'auctions')->name('auctions');
 Route::view('/sell-cars', 'sell-cars')->name('sell-cars');
