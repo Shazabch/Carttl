@@ -21,7 +21,7 @@ class GenerationComponent extends Component
     public $showForm = false;
     public $isEditing = false;
     public $currentStep = 1; // You can keep the wizard logic
-    public $search = '';
+    public $search = null;
     public $report_id = null;
 
     public $showDetails = false;
@@ -234,10 +234,12 @@ class GenerationComponent extends Component
     public function render()
     {
         // Fetch reports for the list view
+
         $reports = VehicleInspectionReport::where('vin', 'like', '%' . $this->search . '%')
             ->orWhere('make', 'like', '%' . $this->search . '%')
             ->latest()
             ->paginate(10);
+
         $this->dispatch('re-init-select-2-component');
         return view('livewire.admin.inspection.generation-component', [
             'reports' => $reports
