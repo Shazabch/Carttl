@@ -5,16 +5,14 @@
 @section('content')
     <div class="car-listing-section">
         <div class="container-fluid">
-            <!-- Header Section -->
-
 
             <div class="row">
                 <!-- Filters Sidebar -->
                 <div class="col-lg-3">
                     <div class="filters-sidebar">
                         <div class="filters-header">
-                            <h4><i class="fas fa-filter me-2"></i>Filters</h4>
-                            <button class="btn btn-link btn-sm text-warning p-0">Clear All</button>
+                            <h4 class="p-20">Filters</h4>
+                            <button class="btn-link">Clear All</button>
                         </div>
 
                         <!-- Price Range Filter -->
@@ -140,22 +138,11 @@
                                 <div class="view-options">
                                     <span class="me-3 text-muted">View:</span>
                                     <div class="btn-group" role="group">
-                                        <button type="button" class="btn btn-outline-warning btn-sm active"
-                                            data-view="grid-large">
+                                        <button type="button" class="btn btn-outline-warning btn-sm active" data-view="grid-large">
                                             <i class="fas fa-th-large"></i>
-                                        </button>
-                                        <button type="button" class="btn btn-outline-warning btn-sm" data-view="grid">
-                                            <i class="fas fa-th"></i>
-                                        </button>
-                                        <button type="button" class="btn btn-outline-warning btn-sm"
-                                            data-view="grid-small">
-                                            <i class="fas fa-grip-horizontal"></i>
                                         </button>
                                         <button type="button" class="btn btn-outline-warning btn-sm" data-view="list">
                                             <i class="fas fa-list"></i>
-                                        </button>
-                                        <button type="button" class="btn btn-outline-warning btn-sm" data-view="table">
-                                            <i class="fas fa-table"></i>
                                         </button>
                                     </div>
                                 </div>

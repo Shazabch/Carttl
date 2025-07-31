@@ -38,43 +38,51 @@
 
         {{-- All your form fields go here, exactly as before --}}
         <div class="row">
-            <div class="col-md-3">
-                <label for="firstName" class="mt-1 form-label">
-                    <i class="fas fa-user text-warning me-1"></i> First Name <span class="text-danger">*</span>
-                </label>
-                <input type="text" id="firstName" class="form-control" placeholder="Enter your first name" wire:model="firstName">
-                @error('firstName') <div class="text-danger small mt-1">{{ $message }}</div> @enderror
+            <div class="col-lg-6">
+                <div class="form-group mb-3">
+                    <label for="firstName" class="mt-1 form-label">
+                        First Name <span class="text-danger">*</span>
+                    </label>
+                    <input type="text" id="firstName" class="form-control" placeholder="Enter your first name" wire:model="firstName">
+                    @error('firstName') <div class="text-danger small mt-1">{{ $message }}</div> @enderror
+                </div>
             </div>
-            <div class="col-md-3">
-                <label for="lastName" class="mt-1 form-label">
-                    <i class="fas fa-user text-warning me-1"></i> Last Name <span class="text-danger">*</span>
-                </label>
-                <input type="text" id="lastName" class="form-control" placeholder="Enter your last name" wire:model="lastName">
-                @error('lastName') <div class="text-danger small mt-1">{{ $message }}</div> @enderror
+            <div class="col-lg-6">
+                <div class="form-group mb-3">
+                    <label for="lastName" class="mt-1 form-label">
+                        Last Name <span class="text-danger">*</span>
+                    </label>
+                    <input type="text" id="lastName" class="form-control" placeholder="Enter your last name" wire:model="lastName">
+                    @error('lastName') <div class="text-danger small mt-1">{{ $message }}</div> @enderror
+                </div>
             </div>
-            <div class="col-md-3">
-                <label for="email" class="mt-1 form-label">
-                    <i class="fas fa-envelope text-warning me-1"></i> Email Address <span class="text-danger">*</span>
-                </label>
-                <input type="email" id="email" class="form-control" placeholder="your.email@example.com" wire:model="email">
-                @error('email') <div class="text-danger small mt-1">{{ $message }}</div> @enderror
+            <div class="col-lg-6">
+                <div class="form-group mb-3">
+                    <label for="email" class="mt-1 form-label">
+                        Email Address <span class="text-danger">*</span>
+                    </label>
+                    <input type="email" id="email" class="form-control" placeholder="your.email@example.com" wire:model="email">
+                    @error('email') <div class="text-danger small mt-1">{{ $message }}</div> @enderror
+                </div>
             </div>
-            <div class="col-md-3">
-                <label for="phone" class="mt-1 form-label">
-                    <i class="fas fa-phone text-warning me-1"></i> Phone Number
-                </label>
-                <input type="tel" id="phone" class="form-control" placeholder="+1 (555) 123-4567" wire:model="phone">
-                @error('phone') <div class="text-danger small mt-1">{{ $message }}</div> @enderror
+            <div class="col-lg-6">
+                <div class="form-group mb-3">
+                    <label for="phone" class="mt-1 form-label">Phone Number</label>
+                    <input type="tel" id="phone" class="form-control" placeholder="+1 (555) 123-4567" wire:model="phone">
+                    @error('phone') <div class="text-danger small mt-1">{{ $message }}</div> @enderror
+                </div>
+            </div>
+            <div class="col-lg-12">
+                <div class="form-group">
+                    <label for="message" class="mt-1 form-label">
+                       Message <span class="text-danger">*</span>
+                    </label>
+                    <textarea id="message" class="form-control" rows="5" placeholder="Please provide details..." wire:model.lazy="message"></textarea>
+                    @error('message') <div class="text-danger small mt-1">{{ $message }}</div> @enderror
+                </div>
             </div>
         </div>
 
-        <div class="mt-3">
-            <label for="message" class="mt-1 form-label">
-                <i class="fas fa-comment text-warning me-1"></i> Message <span class="text-danger">*</span>
-            </label>
-            <textarea id="message" class="form-control" rows="5" placeholder="Please provide details..." wire:model.lazy="message"></textarea>
-            @error('message') <div class="text-danger small mt-1">{{ $message }}</div> @enderror
-        </div>
 
         <div class="form-check mt-3">
             <input class="form-check-input" type="checkbox" id="terms" wire:model="terms">
@@ -87,7 +95,7 @@
         </div>
 
         <div class="d-grid gap-2 d-md-flex justify-content-md-start mt-4">
-            <button type="submit" class="btn btn-warning text-dark" wire:loading.attr="disabled">
+            <button type="submit" class="btn-main dark" wire:loading.attr="disabled">
                 <span wire:loading.remove wire:target="submit">
                     <i class="fas fa-paper-plane me-1"></i> Send Message
                 </span>

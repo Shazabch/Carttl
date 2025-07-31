@@ -66,7 +66,7 @@
                                         We strive to provide exceptional customer service and support. Whether you have
                                         questions.
                                     </p>
-                                    <a href="" class="btn-main white">
+                                    <a href="" class="btn-main dark">
                                         Contact Now
                                     </a>
                                 </div>
