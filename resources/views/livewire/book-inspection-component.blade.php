@@ -66,7 +66,7 @@
                                         We strive to provide exceptional customer service and support. Whether you have
                                         questions.
                                     </p>
-                                    <a href="" class="btn-main dark">
+                                    <a href="/contact-us" class="btn-main dark">
                                         Contact Now
                                     </a>
                                 </div>
@@ -75,7 +75,7 @@
                     </div>
                     <div class="col-lg-8 ps-lg-5">
                         <div class="book-inspection-form">
-                            <form wire:submit.prevent="saveInspection"> 
+                            <form wire:submit.prevent="saveInspection">
                                 <div class="row">
                                     <div class="col-lg-12 mb-3">
                                         <div class="form-group">

@@ -65,7 +65,7 @@ Sell your car
                                 We strive to provide exceptional customer service and support. Whether you have
                                 questions.
                             </p>
-                            <a href="" class="btn-main dark">
+                            <a href="/contact-us" class="btn-main dark">
                                 Contact Now
                             </a>
                         </div>
@@ -133,7 +133,7 @@ Sell your car
                                     Join the growing community of satisfied customers who’ve successfully sold their cars through our platform. We’re known for fair pricing, fast payouts, and exceptional service.
                                 </p>
                             </div>
-                        </div> 
+                        </div>
                     </div>
                 </div>
             </div>

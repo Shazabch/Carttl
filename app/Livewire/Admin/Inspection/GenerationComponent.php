@@ -2,9 +2,16 @@
 
 namespace App\Livewire\Admin\Inspection;
 
+use App\Models\BodyType;
+use App\Models\Brand;
+use App\Models\FuelType;
+use App\Models\Transmission;
 use App\Models\VehicleInspectionReport; // Use the correct model
+use App\Models\VehicleModel;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Livewire\Component;
 use Livewire\WithPagination;
+use Livewire\Attributes\On;
 
 class GenerationComponent extends Component
 {
@@ -17,14 +24,31 @@ class GenerationComponent extends Component
     public $search = '';
     public $report_id = null;
 
+    public $showDetails = false;
+    public ?VehicleInspectionReport $reportInView = null;
+
     // --- Form Data Holder ---
     public array $reportData = [];
 
-    // --- Data for Dropdowns & Selections (if you have any) ---
-    // Example: public $inspectors = [];
+    public $brands = [], $models = [], $bodyTypes = [], $fuelTypes = [], $transmissions = [];
 
     protected $listeners = ['showCreateForm', 'showEditForm'];
 
+
+
+    // In GenerationComponent.php
+
+    public ?string $modalForProperty = null;
+
+    public function openModal(string $property)
+    {
+        $this->modalForProperty = $property;
+    }
+
+    public function closeModal()
+    {
+        $this->modalForProperty = null;
+    }
     // --- Validation Rules ---
     protected function rules()
     {
@@ -54,8 +78,38 @@ class GenerationComponent extends Component
     public function mount()
     {
         $this->initializeReportData();
+        $this->brands =  Brand::orderBy('name')->get();
+        $this->brands = $this->brands->map(function ($brand) {
+            return [
+                'id' => $brand->id,
+                'text' => $brand->name,
+            ];
+        })->toArray();
+        $this->bodyTypes = BodyType::all();
+        $this->fuelTypes = FuelType::all();
+        $this->transmissions = Transmission::all();
         // Pre-load any data needed for dropdowns, e.g., a list of inspectors
         // $this->inspectors = User::whereRole('inspector')->get();
+    }
+    public function updatedReportDataMake($value)
+    {
+
+
+        if ($value) {
+            $this->models = VehicleModel::where('brand_id', $value)->get();
+
+            $this->models = $this->models->map(function ($model) {
+                return [
+                    'id' => $model->id,
+                    'text' => $model->name,
+                ];
+            })->toArray();
+        } else {
+            $this->models = [];
+        }
+
+        $this->dispatch('re-init-select-2-component');
+        $this->reportData['model'] = null; // Reset vehicle_model_id in our data array
     }
 
     // --- WIZARD CONTROLS ---
@@ -84,6 +138,7 @@ class GenerationComponent extends Component
         $this->mount(); // Re-initialize with default values
         $this->currentStep = 1;
         $this->showForm = true;
+        $this->showDetails = false;
     }
 
     public function showEditForm($reportId)
@@ -97,6 +152,14 @@ class GenerationComponent extends Component
 
         $this->currentStep = 1;
         $this->showForm = true;
+        $this->showDetails = false;
+    }
+    // NEW Method to show the details view
+    public function showReportDetails($reportId)
+    {
+        $this->reportInView = VehicleInspectionReport::findOrFail($reportId);
+        $this->showDetails = true;
+        $this->showForm = false; // Hide the form/wizard
     }
 
 
@@ -104,7 +167,8 @@ class GenerationComponent extends Component
 
     public function saveReport()
     {
-        $this->validate();
+        // $this->validate();
+
 
         // Use updateOrCreate with the data array
         VehicleInspectionReport::updateOrCreate(['id' => $this->report_id], $this->reportData);
@@ -117,10 +181,26 @@ class GenerationComponent extends Component
     public function cancel()
     {
         $this->showForm = false;
+         $this->showDetails = false;
+        $this->reportInView = null;
         $this->reset();
         $this->mount();
     }
+     public function generatePdf($reportId)
+    {
+        $report = VehicleInspectionReport::findOrFail($reportId);
 
+        $pdf = Pdf::loadView('admin.inspection.report-pdf-template', ['report' => $report]);
+        $pdf->setPaper('a4', 'portrait');
+        $filename = 'inspection-report-' . $report->id . '-' . $report->vin . '.pdf';
+
+        // This is the key part for Livewire: return a file download response
+        return response()->streamDownload(function () use ($pdf) {
+            echo $pdf->stream();
+        }, $filename);
+    }
+
+    #[On('deleteReport')]
     public function deleteReport($id)
     {
         VehicleInspectionReport::findOrFail($id)->delete();
@@ -158,7 +238,7 @@ class GenerationComponent extends Component
             ->orWhere('make', 'like', '%' . $this->search . '%')
             ->latest()
             ->paginate(10);
-
+        $this->dispatch('re-init-select-2-component');
         return view('livewire.admin.inspection.generation-component', [
             'reports' => $reports
         ]);

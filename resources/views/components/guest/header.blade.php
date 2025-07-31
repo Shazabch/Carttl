@@ -43,7 +43,8 @@
                <ul class="menu-inner navbar-nav">
                    <li class="nav-item"><a class="nav-link {{ request()->routeIs('home') ? 'active' : '' }}" href="{{ route('home') }}">Home</a></li>
                    <li class="nav-item"><a class="nav-link {{ request()->routeIs('auctions') ? 'active' : '' }}" href="{{ route('auctions') }}">Auctions</a></li>
-                   <li class="nav-item"><a class="nav-link {{ request()->routeIs('sell-cars') ? 'active' : '' }} ('sell" href="{{ route('sell-cars') }}">Buy Cars</a></li>
+                   <li class="nav-item"><a class="nav-link {{ request()->routeIs('buy-cars') ? 'active' : '' }} ('buy" href="{{ route('buy-cars') }}">Buy</a></li>
+                   <li class="nav-item"><a class="nav-link {{ request()->routeIs('sell-car') ? 'active' : '' }} ('sell" href="{{ route('sell-car') }}">Sell</a></li>
                    <li class="nav-item"><a class="nav-link {{ request()->routeIs('contact-us') ? 'active' : '' }} ('contact" href="{{ route('contact-us') }}">Contact Us</a>
                    </li>
                </ul>

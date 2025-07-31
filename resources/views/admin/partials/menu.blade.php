@@ -69,11 +69,40 @@
                  <!-- Submenu End -->
              </li>
 
-
              <li class="menu-section">
                  <h4 class="menu-text">Vehicles</h4>
                  <i class="menu-icon ki ki-bold-more-hor icon-md"></i>
              </li>
+
+             <li class="menu-item menu-item-submenu  }}" aria-haspopup="true" data-menu-toggle="hover">
+                 <a href="javascript:;" class="menu-link menu-toggle">
+                     <span class="svg-icon menu-icon">
+                         <i class="fas fa-car"></i>
+                     </span>
+                     <span class="menu-text">Vehicle Inspection</span>
+                     <i class="menu-arrow"></i>
+                 </a>
+
+                 <!-- Submenu Start -->
+                 <div class="menu-submenu">
+                     <i class="menu-arrow"></i>
+                     <ul class="menu-subnav">
+
+                         <!-- Sale Management Link -->
+                         <li class="menu-item " aria-haspopup="true">
+                             <a href="{{ route('admin.inspection.generate') }}" class="menu-link">
+                                 <i class="menu-bullet menu-bullet-dot"><span></span></i>
+                                 <span class="menu-text">Inspect</span>
+                             </a>
+                         </li>
+
+
+
+                     </ul>
+                 </div>
+                 <!-- Submenu End -->
+             </li>
+
 
              <li class="menu-item menu-item-submenu  }}" aria-haspopup="true" data-menu-toggle="hover">
                  <a href="javascript:;" class="menu-link menu-toggle">
@@ -130,7 +159,7 @@
                  </div>
                  <!-- Submenu End -->
              </li>
-  {{--
+             {{--
              <li class="menu-section">
                  <h4 class="menu-text">Sell</h4>
                  <i class="menu-icon ki ki-bold-more-hor icon-md"></i>
@@ -155,74 +184,74 @@
                          <!-- Sale Management Link -->
                          <li class="menu-item " aria-haspopup="true">
                              <a href="{{ route('admin.sell.index') }}" class="menu-link">
-                                 <i class="menu-bullet menu-bullet-dot"><span></span></i>
-                                 <span class="menu-text">Sell Your Car</span>
-                             </a>
-                         </li>
-
-                     </ul>
-                 </div>
-                 --}}
-                 <!-- Submenu End -->
+             <i class="menu-bullet menu-bullet-dot"><span></span></i>
+             <span class="menu-text">Sell Your Car</span>
+             </a>
              </li>
-
-
-
-
-             <li class="menu-section">
-                 <h4 class="menu-text">Administrator</h4>
-                 <i class="menu-icon ki ki-bold-more-hor icon-md"></i>
-             </li>
-
-             <li class="menu-item menu-item-submenu  }}" aria-haspopup="true" data-menu-toggle="hover">
-                 <a href="javascript:;" class="menu-link menu-toggle">
-                     <span class="svg-icon menu-icon">
-                         <i class="fas fa-cogs"></i>
-                     </span>
-                     <span class="menu-text">System Settings</span>
-                     <i class="menu-arrow"></i>
-                 </a>
-
-                 <!-- Submenu Start -->
-                 <div class="menu-submenu">
-                     <i class="menu-arrow"></i>
-                     <ul class="menu-subnav">
-
-                         <!-- Sale Management Link -->
-                         <li class="menu-item " aria-haspopup="true">
-                             <a href="{{ route('admin.roles') }}" class="menu-link">
-                                 <i class="menu-bullet menu-bullet-dot"><span></span></i>
-                                 <span class="menu-text">Roles</span>
-                             </a>
-                         </li>
-                         <li class="menu-item " aria-haspopup="true">
-                             <a href="{{ route('admin.user') }}" class="menu-link">
-                                 <i class="menu-bullet menu-bullet-dot"><span></span></i>
-                                 <span class="menu-text">Users</span>
-                             </a>
-                         </li>
-                         <li class="menu-item " aria-haspopup="true">
-                             <a href="{{ route('admin.blogs') }}" class="menu-link">
-                                 <i class="menu-bullet menu-bullet-dot"><span></span></i>
-                                 <span class="menu-text">Blogs</span>
-                             </a>
-                         </li>
-                         <li class="menu-item " aria-haspopup="true">
-                             <a href="{{ route('admin.testimonials') }}" class="menu-link">
-                                 <i class="menu-bullet menu-bullet-dot"><span></span></i>
-                                 <span class="menu-text">Testimonials</span>
-                             </a>
-                         </li>
-
-
-                     </ul>
-                 </div>
-                 <!-- Submenu End -->
-             </li>
-
 
          </ul>
-         <!--end::Menu Nav-->
      </div>
-     <!--end::Menu Container-->
+     --}}
+     <!-- Submenu End -->
+     </li>
+
+
+
+
+     <li class="menu-section">
+         <h4 class="menu-text">Administrator</h4>
+         <i class="menu-icon ki ki-bold-more-hor icon-md"></i>
+     </li>
+
+     <li class="menu-item menu-item-submenu  }}" aria-haspopup="true" data-menu-toggle="hover">
+         <a href="javascript:;" class="menu-link menu-toggle">
+             <span class="svg-icon menu-icon">
+                 <i class="fas fa-cogs"></i>
+             </span>
+             <span class="menu-text">System Settings</span>
+             <i class="menu-arrow"></i>
+         </a>
+
+         <!-- Submenu Start -->
+         <div class="menu-submenu">
+             <i class="menu-arrow"></i>
+             <ul class="menu-subnav">
+
+                 <!-- Sale Management Link -->
+                 <li class="menu-item " aria-haspopup="true">
+                     <a href="{{ route('admin.roles') }}" class="menu-link">
+                         <i class="menu-bullet menu-bullet-dot"><span></span></i>
+                         <span class="menu-text">Roles</span>
+                     </a>
+                 </li>
+                 <li class="menu-item " aria-haspopup="true">
+                     <a href="{{ route('admin.user') }}" class="menu-link">
+                         <i class="menu-bullet menu-bullet-dot"><span></span></i>
+                         <span class="menu-text">Users</span>
+                     </a>
+                 </li>
+                 <li class="menu-item " aria-haspopup="true">
+                     <a href="{{ route('admin.blogs') }}" class="menu-link">
+                         <i class="menu-bullet menu-bullet-dot"><span></span></i>
+                         <span class="menu-text">Blogs</span>
+                     </a>
+                 </li>
+                 <li class="menu-item " aria-haspopup="true">
+                     <a href="{{ route('admin.testimonials') }}" class="menu-link">
+                         <i class="menu-bullet menu-bullet-dot"><span></span></i>
+                         <span class="menu-text">Testimonials</span>
+                     </a>
+                 </li>
+
+
+             </ul>
+         </div>
+         <!-- Submenu End -->
+     </li>
+
+
+     </ul>
+     <!--end::Menu Nav-->
+ </div>
+ <!--end::Menu Container-->
  </div>

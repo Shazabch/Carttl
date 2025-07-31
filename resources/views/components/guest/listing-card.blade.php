@@ -15,7 +15,7 @@
                 <span><i class="fas fa-user me-1"></i>9 bids</span>
             </div>
             <div class="d-flex justify-content-between">
-                <a href="{{ route('car-detail-page') }}" class="btn btn-warning btn-sm">View Details</a>
+                <a href="{{ route('car-detail-page',1) }}" class="btn btn-warning btn-sm">View Details</a>
                 <a href="#" class="btn btn-outline-warning btn-sm">Watch</a>
             </div>
         </div>
@@ -25,7 +25,7 @@
     <div class="car-box-card">
         <div class="car-box-card-images">
             <div class="car-box-card-images-inner">
-                <a href="{{ route('car-detail-page') }}" class="car-box-card-imag-item">
+                <a href="{{ route('car-detail-page',1) }}" class="car-box-card-imag-item">
                     <img src="{{asset('images/c38ec63b-c441-4574-8b3a-8c69a2aa9595.webp')}}" class="obj_fit" alt="Rent Property Listing">
                 </a>
             </div>
@@ -33,7 +33,7 @@
                 <div class="car-box-type p-left">
                     <span class="car-box-badge">
                         <img src="{{asset('images/icons/fire.svg')}}" alt="">
-                        Hot Bid 
+                        Hot Bid
                     </span>
                 </div>
                 <div class="wishlist-btn">

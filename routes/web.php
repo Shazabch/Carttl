@@ -16,7 +16,7 @@ Route::view('/blog/details', 'blogs.details')->name('get-blog-details');
 Route::view('/book-inspection', 'book-inspection')->name('book-inspection');
 
 Route::view('/car-auctions', 'auctions')->name('auctions');
-Route::view('/sell-cars', 'sell-cars')->name('sell-cars');
+Route::view('/buy-cars', 'sell-cars')->name('buy-cars');
 Route::view('/sell-car', 'sell-car')->name('sell-car');
 Route::view('/car-favorites', 'favorites')->name('favorites');
 Route::get('/car-detail/{id}', [VehicleController::class, 'vehicleDetails'])->name('car-detail-page');
@@ -65,6 +65,7 @@ Route::group(['prefix' => 'admin'], function () {
         Route::view('/testimonials', 'admin.testimonials.index')->name('admin.testimonials');
         Route::view('/inspection-enquiries', 'admin.inspection.index')->name('admin.inspection.enquiries');
         Route::view('/inspection-generate', 'admin.inspection.generate-report')->name('admin.inspection.generate');
+
 
     });
 });
