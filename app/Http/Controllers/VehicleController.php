@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 
 class VehicleController extends Controller
 {
-     public function vehicleDetails(){
-        return view('detail');
+     public function vehicleDetails($id){
+        return view('detail',compact('id'));
     }
 }

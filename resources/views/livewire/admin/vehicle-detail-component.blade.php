@@ -101,10 +101,10 @@
                     <livewire:admin.vehicle.vehicle-history-component :vehicleId="$vehicle->id" />
 
                     @elseif ($activeTab == 'inspection')
-                    <livewire:admin.vehicle.vehicle-history-component :vehicleId="$vehicle->id" />
+                    <livewire:admin.vehicle.vehicle-inspection-component :vehicleId="$vehicle->id" />
 
                     @elseif ($activeTab == 'bidding')
-                    <livewire:admin.vehicle.vehicle-history-component :vehicleId="$vehicle->id" />
+                    <livewire:admin.vehicle.vehicle-bidding-component :vehicleId="$vehicle->id" />
                     @elseif ($activeTab == 'maintenance')
                     <livewire:admin.vehicle.vehicle-maintenance-component :vehicleId="$vehicle->id" />
 

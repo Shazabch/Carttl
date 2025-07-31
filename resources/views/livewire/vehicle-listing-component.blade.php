@@ -56,7 +56,7 @@
                             </div>
                         </div>
                         <div class="mt-3">
-                            <a href="/car-detail/{$item->id}" class="view-detail-btn">View Detail</a>
+                            <a href="{{ route('car-detail-page',$item->id) }}" class="view-detail-btn">View Detail</a>
                         </div>
                     </div>
                 </div>
