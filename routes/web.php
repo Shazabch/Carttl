@@ -4,6 +4,7 @@ use App\Http\Controllers\admin\ContactSubmissionController;
 use App\Http\Controllers\admin\DashboardController as AdminDashboardController;
 use App\Http\Controllers\admin\LoginController as AdminLoginController;
 use App\Http\Controllers\admin\VehicleManagerController;
+use App\Http\Controllers\VehicleController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\LoginController;
 use App\Models\Vehicle;
@@ -18,7 +19,7 @@ Route::view('/car-auctions', 'auctions')->name('auctions');
 Route::view('/sell-cars', 'sell-cars')->name('sell-cars');
 Route::view('/sell-car', 'sell-car')->name('sell-car');
 Route::view('/car-favorites', 'favorites')->name('favorites');
-Route::view('/car-detail', 'detail')->name('car-detail-page');
+Route::get('/car-detail/{id}', [VehicleController::class, 'vehicleDetails'])->name('car-detail-page');
 Route::view('/contact-us', 'contact-us')->name('contact-us');
 
 // Route::group(['prefix' => 'account'], function(){

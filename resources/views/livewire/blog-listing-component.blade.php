@@ -9,10 +9,11 @@
             </div>
             <div class="row g-4 align-items-stretch">
                 <!-- Featured Post -->
+                @if($featuredBlog)
                 <div class="col-lg-6" data-aos="fade-left" data-aos-delay="0" data-aos-duration="1000" data-aos-easing="ease-out-cubic">
                     <div class="featured-post position-relative">
                         <div class="feature-post-img">
-                            <img src="{{ asset('storage/' . $featuredBlog->image) }}" class="img-fluid w-100 h-100 object-fit-cover rounded-4" alt="Featured Post">
+                            <img src="{{ asset('storage/' . $featuredBlog?->image) }}" class="img-fluid w-100 h-100 object-fit-cover rounded-4" alt="Featured Post">
                         </div>
                         <div class="featured-content text-white">
                             <div class="d-flex align-items-center mb-2">
@@ -26,6 +27,7 @@
                         </div>
                     </div>
                 </div>
+                @endif
                 <!-- Side Posts -->
                 <div class="col-lg-6 d-flex flex-column gap-4">
                     <!-- Single Side Post -->
