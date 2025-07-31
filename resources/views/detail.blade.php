@@ -6,6 +6,6 @@
 
 
 @section('content')
-    @livewire('Vehicle-detail-component')
+    @livewire('vehicle-detail-component',['id' => $id])
 @endsection
 <script src="{{ asset('js/car-detail.js') }}"></script>

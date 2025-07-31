@@ -49,6 +49,7 @@
                         <div class="col-md-6"><p><strong>Torque:</strong> {{ $vehicle->torque ?? 'N/A' }}</p></div>
                         <div class="col-md-6"><p><strong>Seats:</strong> {{ $vehicle->seats ?? 'N/A' }}</p></div>
                         <div class="col-md-6"><p><strong>Doors:</strong> {{ $vehicle->doors ?? 'N/A' }}</p></div>
+                        <div class="col-md-6"><p><strong>Top Speed:</strong> {{ $vehicle->top_speed ?? 'N/A' }}</p></div>
                     </div>
                 </div>
             </div>

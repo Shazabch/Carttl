@@ -1,6 +1,6 @@
-<div class="card">
+<div>
     <div class="card-header">
-        <h5 class="mb-0">Manage Vehicle History</h5>
+        <h5 class="mb-0">Manage Vehicle Service Schedule</h5>
     </div>
     <div class="card-body">
         @if (session()->has('success'))
