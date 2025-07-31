@@ -64,6 +64,8 @@ Route::group(['prefix' => 'admin'], function () {
         Route::view('/blogs', 'admin.blogs.index')->name('admin.blogs');
         Route::view('/testimonials', 'admin.testimonials.index')->name('admin.testimonials');
         Route::view('/inspection-enquiries', 'admin.inspection.index')->name('admin.inspection.enquiries');
+        Route::view('/inspection-generate', 'admin.inspection.generate-report')->name('admin.inspection.generate');
+
     });
 });
 Route::view('/un-authenticated', 'un-auth')->name('un-auth');
