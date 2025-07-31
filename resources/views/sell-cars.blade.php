@@ -5,19 +5,13 @@
 @section('content')
     <div class="car-listing-section">
         <div class="container-fluid">
-            <!-- Header Section -->
-
-
             <div class="row">
-                <!-- Filters Sidebar -->
                 <div class="col-lg-3">
                     <div class="filters-sidebar">
                         <div class="filters-header">
-                            <h4><i class="fas fa-filter me-2"></i>Filters</h4>
+                            <h4 class="h-24">Filters</h4>
                             <button class="btn btn-link btn-sm text-warning p-0">Clear All</button>
                         </div>
-
-                        <!-- Price Range Filter -->
                         <div class="filter-group">
                             <h6 class="filter-title">Price Range</h6>
                             <div class="price-inputs">
@@ -130,10 +124,7 @@
                         </div>
                     </div>
                 </div>
-
-                <!-- Main Content -->
                 <div class="col-lg-9">
-                    <!-- Toolbar -->
                     <div class="listing-toolbar">
                         <div class="row align-items-center">
                             <div class="col-md-6">
@@ -237,8 +228,6 @@
         </div>
     </div>
 @endsection
-
-
 <script>
     // ===== VIEW SWITCHING FUNCTIONALITY ===== 
     document.addEventListener('DOMContentLoaded', function() {

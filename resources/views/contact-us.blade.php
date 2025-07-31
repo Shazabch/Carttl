@@ -13,28 +13,23 @@ Contact Us
     }
 </style>
 @section('content')
-<div class="container-fluid my-3">
-    <div class="row justify-content-center">
-        <div class="col-lg-12">
-            <div class="card shadow-lg border-0 contact-form-card">
-                <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=800&q=80"
-                    alt="Map background" class="map-bg-img position-absolute top-0 start-0 w-100 h-100"
-                    style="object-fit: cover; opacity: 0.15; z-index: 0;">
-                <div class="card-header bg-white border-0 text-center py-4">
-                    <h2 class="mb-2 fw-bold text-dark">
-                        <i class="fas fa-envelope text-warning me-2"></i>
-                        Contact Us
-                    </h2>
-                    <p class="text-muted mb-0">Get in touch with our team for any inquiries </p>
-                </div>
-
-                <div class="card-body">
-                    <livewire:contact-form />
+<section>
+    <div class="container">
+        <div class="row justify-content-center mb-5">
+            <div class="col-lg-8 text-center">
+                <h3 class="sec-h-top">Contact Us</h3>
+                <h2 class="h-35 fw-700">Get in touch with our team for any inquiries</h2>
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-lg-12">
+                <div class="contact-form-card">
+                    <div class="card-body">
+                        <livewire:contact-form />
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-
-
-</div>
+</section>
 @endsection
