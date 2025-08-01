@@ -439,6 +439,11 @@
             </div>
         </div>
     </section>
+    <div class="modern-car-search">
+        <input type="text" placeholder="Search cars by model or city..." class="search-input">
+        <button class="search-btn">Search</button>
+    </div>
+
     <!-- Featured Section -->
   
     @livewire('vehicle-listing-component',['section' => 'Auctions'])
@@ -599,10 +604,8 @@
                     </p>
                     <a href="{{ route('book-inspection') }}" class="btn-main white">
                         Book Now
-                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="#f59e0b"
-                            viewBox="0 0 14 14">
-                            <path
-                                d="M11.6654 3.97592L1.64141 13.9999L-0.00537109 12.3531L10.0174 2.32914H1.18372V-0.00012207H13.9946V12.8108H11.6654V3.97592Z" />
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="#f59e0b" viewBox="0 0 14 14">
+                            <path d="M11.6654 3.97592L1.64141 13.9999L-0.00537109 12.3531L10.0174 2.32914H1.18372V-0.00012207H13.9946V12.8108H11.6654V3.97592Z" />
                         </svg>
                     </a>
                 </div>

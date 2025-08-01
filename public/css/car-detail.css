@@ -2,7 +2,8 @@
 :root {
     --detail-primary: #0f172a;
     --detail-secondary: #1e293b;
-    --detail-accent: #f59e0b;
+    --detail-accent: #bd9731;
+    --gray-yellow: #d7b236;
     --detail-light: #f8fafc;
     --detail-dark: #020617;
     --detail-gray-100: #f1f5f9;
@@ -13,18 +14,25 @@
     --detail-white: #ffffff;
     --detail-success: #10b981;
     --detail-danger: #ef4444;
-    --detail-warning: #f59e0b;
+    --detail-warning: #bd9731;
 }
 
 /* ===== HERO GALLERY ===== */
+.car-detail-page{
+    background-color: #f8fafc;
+    padding-bottom: 80px;
+}
 .hero-gallery {
     position: relative;
-    background: var(--detail-dark);
+    background-color: #fff;
+    padding: 1rem;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+    margin-bottom: 40px;
 }
-
 .main-image-container {
     position: relative;
-    height: 73vh;
+    height: 500px;
     overflow: hidden;
 }
 
@@ -33,6 +41,7 @@
     height: 100%;
     object-fit: cover;
     transition: transform 0.3s ease;
+    border-radius: 20px;
 }
 
 .image-overlay {
@@ -45,7 +54,8 @@
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
-    padding: 2rem;
+    padding: 20px;
+    border-radius: 20px;
 }
 
 .auction-status {
@@ -59,13 +69,14 @@
     color: white;
     padding: 0.5rem 1rem;
     border-radius: 20px;
-    font-weight: 600;
+    font-weight: 400;
     font-size: 0.9rem;
     animation: pulse 2s infinite;
+    width: max-content;
 }
 
 .status-badge.live {
-    background: linear-gradient(135deg, #ef4444, #dc2626);
+    background: linear-gradient(135deg, #d7b236, #cfad3c);
 }
 
 .time-remaining {
@@ -89,7 +100,7 @@
 }
 
 .control-btn {
-    background: rgba(0, 0, 0, 0.7);
+    background: var(--detail-accent);
     border: none;
     color: white;
     width: 45px;
@@ -105,22 +116,21 @@
 
 .control-btn:hover {
     background: var(--detail-accent);
-    color: var(--detail-dark);
-    transform: scale(1.1);
+    color: #fff;
+    transform: scale(1.0986541);
 }
 
 .thumbnail-gallery {
-    background: var(--detail-dark);
     padding: 1rem 0;
 }
 
 .thumbnail-container {
     display: flex;
     gap: 1rem;
-    padding: 0 2rem;
     overflow-x: auto;
-    scrollbar-width: thin;
-    scrollbar-color: var(--detail-accent) var(--detail-secondary);
+}
+.thumbnail-container::-webkit-scrollbar{
+    display: none !important;
 }
 
 .thumbnail {
@@ -160,17 +170,19 @@
 
 .car-subtitle {
     display: flex;
-    gap: 0.5rem;
+    gap: 4px;
     flex-wrap: wrap;
+    margin-bottom: 20px;
 }
-
 .badge-custom {
-    padding: 0.4rem 1rem;
+    padding: 4px 1rem;
     border-radius: 20px;
-    font-size: 0.8rem;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
+    font-size: 12px;
+    font-weight: 400;
+    text-transform: capitalize;
+    background-color: var(--gray-yellow);
+    color: #fff;
+    line-height: 24px;
 }
 
 .badge-custom.luxury {
@@ -190,13 +202,13 @@
 
 .action-buttons {
     display: flex;
-    gap: 0.5rem;
+    gap: 6px;
+    justify-content: end;
 }
-
 .btn-icon {
-    width: 45px;
-    height: 45px;
-    border: 2px solid var(--detail-gray-200);
+    width: 40px;
+    height: 40px;
+    border: 1px solid var(--detail-gray-400);
     background: var(--detail-white);
     border-radius: 50%;
     display: flex;
@@ -204,15 +216,16 @@
     justify-content: center;
     cursor: pointer;
     transition: all 0.3s ease;
-    color: var(--detail-gray-600);
+    color: var(--detail-gray-400);
 }
-
-.btn-icon:hover {
-    border-color: var(--detail-accent);
-    color: var(--detail-accent);
-    transform: translateY(-2px);
-    box-shadow: 0 4px 15px rgba(245, 158, 11, 0.2);
+.btn-icon:hover,
+.btn-icon.active {
+    border-color: var(--gray-yellow);
+    color: var(--gray-yellow);
+    background-color: var(--gray-yellow);
+    color: #fff;
 }
+.btn-icon:
 
 /* ===== SPECIFICATIONS GRID ===== */
 .spec-grid {
@@ -236,16 +249,19 @@
     transition: all 0.3s ease;
 }
 
-.spec-item:hover {
-    background: rgba(245, 158, 11, 0.05);
-    transform: translateY(-2px);
-}
-
 .spec-item i {
     font-size: 1.5rem;
-    color: var(--detail-accent);
+    color: var(--gray-yellow);
     width: 30px;
     text-align: center;
+}
+.spec-item:hover {
+    background:var(--gray-yellow);
+}
+.spec-item:hover i,
+.spec-item:hover .spec-label,
+.spec-item:hover .spec-value{
+    color: #fff;
 }
 
 .spec-item div {
@@ -275,11 +291,16 @@
 .detail-card {
     background: var(--detail-white);
     border-radius: 15px;
-    padding: 2rem;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
     transition: all 0.3s ease;
 }
-
+.detail-header{
+    padding: 23px 20px 20px 20px;
+    border-bottom: 1px solid var(--detail-gray-200);
+}
+.detail-content{
+    padding: 23px 20px 20px 20px;
+}
 .detail-card:hover {
     box-shadow: 0 20px 60px rgba(0, 0, 0, 0.12);
     transform: translateY(-5px);
@@ -289,9 +310,7 @@
     font-size: 1.3rem;
     font-weight: 600;
     color: var(--detail-primary);
-    margin-bottom: 1.5rem;
-    padding-bottom: 1rem;
-    border-bottom: 2px solid var(--detail-gray-200);
+    margin-bottom: 0;
     display: flex;
     align-items: center;
     gap: 0.8rem;
@@ -354,6 +373,7 @@
 .feature-item span {
     font-weight: 500;
     color: var(--detail-primary);
+    font-size: 14px;
 }
 
 /* ===== TIMELINE ===== */
@@ -393,7 +413,9 @@
     font-size: 0.8rem;
     font-weight: bold;
 }
-
+.timeline-icon i{
+    color: #fff;
+}
 .timeline-content h5 {
     font-weight: 600;
     color: var(--detail-primary);
@@ -483,7 +505,7 @@
 /* ===== STICKY SIDEBAR ===== */
 .sticky-sidebar {
     position: sticky;
-    top: 2rem;
+    top: 105px;
     display: flex;
     flex-direction: column;
     gap: 1.5rem;
@@ -493,36 +515,25 @@
 .auction-card {
     background: var(--detail-white);
     border-radius: 15px;
-    padding: 2rem;
+    padding: 25px 20px;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
-    border: 2px solid var(--detail-accent);
 }
-
 .auction-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 1.5rem;
-    padding-bottom: 1rem;
-    border-bottom: 2px solid var(--detail-gray-200);
+    margin-bottom: 10px;
 }
 
 .auction-header h3 {
     font-weight: 600;
     color: var(--detail-primary);
     margin: 0;
+    font-family: 'DM Sans';
 }
-
-.auction-id {
+.auction-id {       
+    display: block;
     color: var(--detail-gray-600);
     font-size: 0.9rem;
-    font-weight: 500;
+    margin-bottom: 0.5rem;
 }
-
-.current-bid {
-    margin-bottom: 2rem;
-}
-
 .bid-label {
     display: block;
     color: var(--detail-gray-600);
@@ -535,7 +546,7 @@
     font-size: 2.5rem;
     font-weight: 700;
     color: var(--detail-accent);
-    margin-bottom: 0.5rem;
+    font-family: 'DM Sans';
 }
 
 .bid-count {
@@ -612,35 +623,35 @@
 }
 
 .btn-bid {
-    background: linear-gradient(135deg, var(--detail-accent), #fbbf24);
+    background-color: var(--detail-accent);
     border: none;
-    color: var(--detail-dark);
-    font-weight: 600;
+    color: #fff;
     padding: 1rem;
-    border-radius: 8px;
-    font-size: 1.1rem;
+    border-radius: 30px;
+    font-size: 15px;
+    font-weight: 600;
     transition: all 0.3s ease;
 }
 
 .btn-bid:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 25px rgba(245, 158, 11, 0.3);
-    color: var(--detail-dark);
+    background-color: var(--gray-yellow);
 }
 
 .btn-auto-bid {
-    border: 2px solid var(--detail-accent);
+    border: 1px solid var(--accent);
     color: var(--detail-accent);
+    font-size: 15px;
     font-weight: 600;
     padding: 0.8rem;
-    border-radius: 8px;
+    border-radius: 30px;
     background: transparent;
     transition: all 0.3s ease;
 }
 
 .btn-auto-bid:hover {
-    background: var(--detail-accent);
-    color: var(--detail-dark);
+    background: var(--gray-yellow);
+    border-color: var(--gray-yellow);
+    color: #fff;
 }
 
 .auction-details {
@@ -669,7 +680,7 @@
 
 /* ===== BUY NOW CARD ===== */
 .buy-now-card {
-    background: linear-gradient(135deg, var(--detail-accent), #fbbf24);
+    background-color:var(--detail-accent);
     color: var(--detail-dark);
     border-radius: 15px;
     padding: 2rem;
@@ -679,28 +690,32 @@
 .buy-now-card h4 {
     font-weight: 600;
     margin-bottom: 1rem;
+    color: #fff;
 }
 
 .buy-now-price {
     font-size: 2rem;
     font-weight: 700;
     margin-bottom: 1rem;
+    color: #fff;
 }
 
 .buy-now-card p {
     margin-bottom: 1.5rem;
     opacity: 0.8;
+    color: #fff;
 }
 
 .btn-buy-now {
     background: var(--detail-dark);
     border: none;
-    color: white;
+    color: #fff;
+    padding: 1rem;
+    border-radius: 30px;
+    font-size: 15px;
     font-weight: 600;
-    padding: 1rem 2rem;
-    border-radius: 8px;
-    width: 100%;
     transition: all 0.3s ease;
+    width: 100%;
 }
 
 .btn-buy-now:hover {
@@ -734,7 +749,7 @@
     display: flex;
     flex-direction: column;
     gap: 1rem;
-    margin-bottom: 1.5rem;
+    margin-bottom: 10px;
 }
 
 .form-group label {
@@ -879,10 +894,6 @@
 }
 
 @media (max-width: 768px) {
-    .main-image-container {
-        height: 50vh;
-    }
-
     .image-overlay {
         padding: 1rem;
     }
@@ -903,11 +914,9 @@
     .bid-amount {
         font-size: 2rem !important;
     }
-
-    .thumbnail-container {
-        padding: 0 1rem;
+    .bid-history .bid-amount{
+        font-size: 18px !important;
     }
-
     .thumbnail {
         width: 100px;
         height: 70px;
@@ -918,26 +927,34 @@
     .car-header {
         padding: 1rem 0;
     }
-
     .action-buttons {
         flex-wrap: wrap;
     }
-
-    .detail-card {
-        padding: 1.5rem;
-    }
-
     .auction-card {
         padding: 1.5rem;
     }
-
     .contact-options {
         flex-direction: row;
         flex-wrap: wrap;
     }
-
     .contact-options .btn {
         flex: 1;
         min-width: 120px;
+    }
+    .main-image-container{
+        height: 400px;
+    }
+    .time-remaining{
+        padding: 0.8rem 14px;
+        border-radius: 10px;
+        font-weight: 300;
+        font-size: 13px;
+    }
+    .image-controls{
+        gap: 5px;
+    }
+    .control-btn{
+        width: 32px;
+        height: 32px;
     }
 }

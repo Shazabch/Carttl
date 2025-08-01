@@ -1,61 +1,323 @@
 <div>
-
     <div class="car-detail-page">
         <div class="container-fluid px-0">
-            <section class="hero-gallery">
-                <div class="main-image-container">
-                    <img src="https://images.unsplash.com/photo-1544636331-e26879cd4d9b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80"
-                        alt="2023 Porsche 911 Turbo S" class="main-image" id="mainImage">
-                    <div class="image-overlay">
-                        <div class="auction-status">
-                            <span class="status-badge live">LIVE AUCTION</span>
-                            <div class="time-remaining">
-                                <i class="fas fa-clock"></i>
-                                <span id="countdown">2d 14h 32m</span>
-                            </div>
-                        </div>
-                        <div class="image-controls">
-                            <button class="control-btn" id="prevImage"><i class="fas fa-chevron-left"></i></button>
-                            <button class="control-btn" id="nextImage"><i class="fas fa-chevron-right"></i></button>
-                            <button class="control-btn fullscreen-btn" id="fullscreenBtn"><i
-                                    class="fas fa-expand"></i></button>
-                        </div>
-                    </div>
-                </div>
-                <div class="thumbnail-gallery">
-                    <div class="thumbnail-container">
-                        <img src="https://images.unsplash.com/photo-1544636331-e26879cd4d9b?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80"
-                            alt="Front view" class="thumbnail active">
-                        <img src="https://images.unsplash.com/photo-1552519507-da3b142c6e3d?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80"
-                            alt="Side view" class="thumbnail">
-                        <img src="https://images.unsplash.com/photo-1549399542-7e3f8b79c341?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80"
-                            alt="Interior" class="thumbnail">
-                        <img src="https://images.unsplash.com/photo-1503376780353-7e6692767b70?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80"
-                            alt="Engine" class="thumbnail">
-                        <img src="https://images.unsplash.com/photo-1542362567-b07e54358753?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80"
-                            alt="Dashboard" class="thumbnail">
-                        <img src="https://images.unsplash.com/photo-1494976388531-d1058494cdd8?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80"
-                            alt="Rear view" class="thumbnail">
-                    </div>
-                </div>
-            </section>
-
             <!-- Main Content -->
             <div class="container mt-4">
                 <div class="row g-4">
                     <div class="col-lg-8">
-                        <div class="car-header">
-                            <div class="d-flex justify-content-between align-items-start mb-3">
-                                <div>
-                                    <h1 class="car-title">2023 Porsche 911 Turbo S</h1>
-                                    <div class="car-subtitle">
-                                        <span class="badge-custom luxury">Luxury</span>
-                                        <span class="badge-custom sports">Sports Car</span>
-                                        <span class="badge-custom certified">Certified</span>
+                        <div class="hero-gallery">
+                            <div class="main-image-container">
+                                <img src="https://images.unsplash.com/photo-1544636331-e26879cd4d9b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80" alt="2023 Porsche 911 Turbo S" class="main-image" id="mainImage">
+                                <div class="image-overlay">
+                                    <div class="auction-status">
+                                        <span class="status-badge live">LIVE AUCTION</span>
+                                        <div class="time-remaining">
+                                            <i class="fas fa-clock"></i>
+                                            <span id="countdown">2d 14h 32m</span>
+                                        </div>
+                                    </div>
+                                    <div class="image-controls">
+                                        <button class="control-btn" id="prevImage"><i class="fas fa-chevron-left"></i></button>
+                                        <button class="control-btn" id="nextImage"><i class="fas fa-chevron-right"></i></button>
+                                        <button class="control-btn fullscreen-btn" id="fullscreenBtn"><i class="fas fa-expand"></i></button>
                                     </div>
                                 </div>
-                                <div class="action-buttons">
-                                    <button class="btn-icon" data-bs-toggle="tooltip" title="Add to Watchlist">
+                            </div>
+                            <div class="thumbnail-gallery">
+                                <div class="thumbnail-container">
+                                    <img src="https://images.unsplash.com/photo-1544636331-e26879cd4d9b?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80" alt="Front view" class="thumbnail active">
+                                    <img src="https://images.unsplash.com/photo-1552519507-da3b142c6e3d?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80" alt="Side view" class="thumbnail">
+                                    <img src="https://images.unsplash.com/photo-1549399542-7e3f8b79c341?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80" alt="Interior" class="thumbnail">
+                                    <img src="https://images.unsplash.com/photo-1503376780353-7e6692767b70?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80" alt="Engine" class="thumbnail">
+                                    <img src="https://images.unsplash.com/photo-1542362567-b07e54358753?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80" alt="Dashboard" class="thumbnail">
+                                    <img src="https://images.unsplash.com/photo-1494976388531-d1058494cdd8?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80" alt="Rear view" class="thumbnail">
+                                    <img src="https://images.unsplash.com/photo-1494976388531-d1058494cdd8?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80" alt="Rear view" class="thumbnail">
+                                    <img src="https://images.unsplash.com/photo-1494976388531-d1058494cdd8?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80" alt="Rear view" class="thumbnail">
+                                    <img src="https://images.unsplash.com/photo-1494976388531-d1058494cdd8?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80" alt="Rear view" class="thumbnail">
+                                </div>
+                            </div>
+                        </div>  
+                        <div class="detail-sections">
+                            <div class="detail-card">
+                                <div class="detail-header">
+                                    <h3 class="detail-title">
+                                        Car Details
+                                    </h3>
+                                </div>
+                                <div class="detail-content">
+                                    <div class="row">
+                                        <div class="col-lg-6 mb-3">
+                                            <div class="spec-item">
+                                                <i class="fas fa-calendar-alt"></i>
+                                                <div>
+                                                    <span class="spec-label">Year</span>
+                                                    <span class="spec-value">2023</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6 mb-3">
+                                            <div class="spec-item">
+                                                <i class="fas fa-tachometer-alt"></i>
+                                                <div>
+                                                    <span class="spec-label">Mileage</span>
+                                                    <span class="spec-value">2,450 miles</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6 mb-3">
+                                            <div class="spec-item">
+                                                <i class="fas fa-cogs"></i>
+                                                <div>
+                                                    <span class="spec-label">Transmission</span>
+                                                    <span class="spec-value">8-Speed PDK</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6 mb-3">
+                                            <div class="spec-item">
+                                                <i class="fas fa-gas-pump"></i>
+                                                <div>
+                                                    <span class="spec-label">Fuel Type</span>
+                                                    <span class="spec-value">Premium Gasoline</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6 mb-3">
+                                            <div class="spec-item">
+                                                <i class="fas fa-road"></i>
+                                                <div>
+                                                    <span class="spec-label">Drivetrain</span>
+                                                    <span class="spec-value">AWD</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6 mb-3">
+                                            <div class="spec-item">
+                                                <i class="fas fa-palette"></i>
+                                                <div>
+                                                    <span class="spec-label">Color</span>
+                                                    <span class="spec-value">GT Silver Metallic</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="detail-card">
+                                <div class="detail-header">
+                                    <h3 class="detail-title">
+                                        Engine & Performance
+                                    </h3>
+                                </div>
+                                <div class="detail-content">
+                                    <div class="row g-3">
+                                        <div class="col-md-6">
+                                            <div class="detail-item">
+                                                <span class="detail-label">Engine</span>
+                                                <span class="detail-value">3.8L Twin-Turbo Flat-6</span>
+                                            </div>
+                                            <div class="detail-item">
+                                                <span class="detail-label">Horsepower</span>
+                                                <span class="detail-value">640 HP @ 6,750 RPM</span>
+                                            </div>
+                                            <div class="detail-item">
+                                                <span class="detail-label">Torque</span>
+                                                <span class="detail-value">590 lb-ft @ 2,500 RPM</span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="detail-item">
+                                                <span class="detail-label">0-60 mph</span>
+                                                <span class="detail-value">2.6 seconds</span>
+                                            </div>
+                                            <div class="detail-item">
+                                                <span class="detail-label">Top Speed</span>
+                                                <span class="detail-value">205 mph</span>
+                                            </div>
+                                            <div class="detail-item">
+                                                <span class="detail-label">Quarter Mile</span>
+                                                <span class="detail-value">10.5 seconds</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="detail-card">
+                                <div class="detail-header">
+                                    <h3 class="detail-title">
+                                        <i class="fas fa-car"></i>
+                                        Exterior Features
+                                    </h3>
+                                </div>
+                                <div class="detail-content">
+                                    <div class="feature-grid">
+                                        <div class="feature-item">
+                                            <i class="fas fa-check-circle"></i>
+                                            <span>LED Headlights with PDLS+</span>
+                                        </div>
+                                        <div class="feature-item">
+                                            <i class="fas fa-check-circle"></i>
+                                            <span>Carbon Fiber Roof</span>
+                                        </div>
+                                        <div class="feature-item">
+                                            <i class="fas fa-check-circle"></i>
+                                            <span>Sport Exhaust System</span>
+                                        </div>
+                                        <div class="feature-item">
+                                            <i class="fas fa-check-circle"></i>
+                                            <span>20" Turbo Wheels</span>
+                                        </div>
+                                        <div class="feature-item">
+                                            <i class="fas fa-check-circle"></i>
+                                            <span>Ceramic Composite Brakes</span>
+                                        </div>
+                                        <div class="feature-item">
+                                            <i class="fas fa-check-circle"></i>
+                                            <span>Adaptive Aerodynamics</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="detail-card">
+                                <div class="detail-header">
+                                    <h3 class="detail-title">
+                                        <i class="fas fa-couch"></i>
+                                        Interior Features
+                                    </h3>
+                                </div>
+                                <div class="detail-content">
+                                    <div class="feature-grid">
+                                        <div class="feature-item">
+                                            <i class="fas fa-check-circle"></i>
+                                            <span>18-Way Power Sport Seats</span>
+                                        </div>
+                                        <div class="feature-item">
+                                            <i class="fas fa-check-circle"></i>
+                                            <span>Alcantara Interior Package</span>
+                                        </div>
+                                        <div class="feature-item">
+                                            <i class="fas fa-check-circle"></i>
+                                            <span>10.9" PCM Touchscreen</span>
+                                        </div>
+                                        <div class="feature-item">
+                                            <i class="fas fa-check-circle"></i>
+                                            <span>Bose Surround Sound</span>
+                                        </div>
+                                        <div class="feature-item">
+                                            <i class="fas fa-check-circle"></i>
+                                            <span>Climate Control</span>
+                                        </div>
+                                        <div class="feature-item">
+                                            <i class="fas fa-check-circle"></i>
+                                            <span>Sport Chrono Package</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="detail-card">
+                                <div class="detail-header">
+                                    <h3 class="detail-title">
+                                        <i class="fas fa-history"></i>
+                                        Vehicle History
+                                    </h3>
+                                </div>
+                                <div class="detail-content">
+                                    <div class="history-timeline">
+                                        <div class="timeline-item">
+                                            <div class="timeline-icon">
+                                                <i class="fas fa-star"></i>
+                                            </div>
+                                            <div class="timeline-content">
+                                                <h5>Vehicle Purchased New</h5>
+                                                <p>March 2023 - Porsche Beverly Hills</p>
+                                                <span class="timeline-badge">Original Owner</span>
+                                            </div>
+                                        </div>
+                                        <div class="timeline-item">
+                                            <div class="timeline-icon">
+                                                <i class="fas fa-tools"></i>
+                                            </div>
+                                            <div class="timeline-content">
+                                                <h5>First Service</h5>
+                                                <p>September 2023 - 1,200 miles</p>
+                                                <span class="timeline-badge">Authorized Dealer</span>
+                                            </div>
+                                        </div>
+                                        <div class="timeline-item">
+                                            <div class="timeline-icon">
+                                                <i class="fas fa-shield-alt"></i>
+                                            </div>
+                                            <div class="timeline-content">
+                                                <h5>Clean Title</h5>
+                                                <p>No accidents or damage reported</p>
+                                                <span class="timeline-badge success">Verified</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="detail-card">
+                                <div class="detail-header">
+                                    <h3 class="detail-title">
+                                        <i class="fas fa-user-tie"></i>
+                                        Seller Information
+                                    </h3>
+                                </div>
+                                <div class="detail-content">
+                                    <div class="seller-info">
+                                        <div class="seller-avatar">
+                                            <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&auto=format&fit=crop&w=150&q=80"
+                                                alt="Seller">
+                                        </div>
+                                        <div class="seller-details">
+                                            <h5>Michael Thompson</h5>
+                                            <div class="seller-rating">
+                                                <div class="stars">
+                                                    <i class="fas fa-star"></i>
+                                                    <i class="fas fa-star"></i>
+                                                    <i class="fas fa-star"></i>
+                                                    <i class="fas fa-star"></i>
+                                                    <i class="fas fa-star"></i>
+                                                </div>
+                                                <span>(4.9/5 - 127 reviews)</span>
+                                            </div>
+                                            <p>Premium car collector with 15+ years of experience. All vehicles come with
+                                                detailed documentation and service records.</p>
+                                            <div class="seller-stats">
+                                                <div class="stat">
+                                                    <span class="stat-number">47</span>
+                                                    <span class="stat-label">Cars Sold</span>
+                                                </div>
+                                                <div class="stat">
+                                                    <span class="stat-number">100%</span>
+                                                    <span class="stat-label">Positive Feedback</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="sticky-sidebar">
+                            <div class="auction-card">
+                                <div class="auction-header">
+                                    <p class="auction-id mb-1">#AU-2024-0156</p>
+                                    <h3>2023 Porsche 911 Turbo S</h3>
+                                </div>
+                                <div class="car-subtitle">
+                                    <span class="badge-custom">Luxury</span>
+                                    <span class="badge-custom">Sports Car</span>
+                                    <span class="badge-custom">Certified</span>
+                                </div>
+                                <div class="current-bid">
+                                    <span class="bid-label mb-0">Current Bid</span>
+                                    <span class="bid-amount">$185,500</span>
+                                    <span class="bid-count">23 bids</span>
+                                </div>
+                                <div class="action-buttons mb-2">
+                                    <button class="btn-icon active" data-bs-toggle="tooltip" title="Add to Watchlist">
                                         <i class="far fa-heart"></i>
                                     </button>
                                     <button class="btn-icon" data-bs-toggle="tooltip" title="Share">
@@ -65,251 +327,6 @@
                                         <i class="fas fa-print"></i>
                                     </button>
                                 </div>
-                            </div>
-                        </div>
-
-                        <div class="spec-grid">
-                            <div class="spec-item">
-                                <i class="fas fa-calendar-alt"></i>
-                                <div>
-                                    <span class="spec-label">Year</span>
-                                    <span class="spec-value">2023</span>
-                                </div>
-                            </div>
-                            <div class="spec-item">
-                                <i class="fas fa-tachometer-alt"></i>
-                                <div>
-                                    <span class="spec-label">Mileage</span>
-                                    <span class="spec-value">2,450 miles</span>
-                                </div>
-                            </div>
-                            <div class="spec-item">
-                                <i class="fas fa-cogs"></i>
-                                <div>
-                                    <span class="spec-label">Transmission</span>
-                                    <span class="spec-value">8-Speed PDK</span>
-                                </div>
-                            </div>
-                            <div class="spec-item">
-                                <i class="fas fa-gas-pump"></i>
-                                <div>
-                                    <span class="spec-label">Fuel Type</span>
-                                    <span class="spec-value">Premium Gasoline</span>
-                                </div>
-                            </div>
-                            <div class="spec-item">
-                                <i class="fas fa-road"></i>
-                                <div>
-                                    <span class="spec-label">Drivetrain</span>
-                                    <span class="spec-value">AWD</span>
-                                </div>
-                            </div>
-                            <div class="spec-item">
-                                <i class="fas fa-palette"></i>
-                                <div>
-                                    <span class="spec-label">Color</span>
-                                    <span class="spec-value">GT Silver Metallic</span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="detail-sections">
-                            <div class="detail-card">
-                                <h3 class="detail-title">
-                                    <i class="fas fa-engine"></i>
-                                    Engine & Performance
-                                </h3>
-                                <div class="row g-3">
-                                    <div class="col-md-6">
-                                        <div class="detail-item">
-                                            <span class="detail-label">Engine</span>
-                                            <span class="detail-value">3.8L Twin-Turbo Flat-6</span>
-                                        </div>
-                                        <div class="detail-item">
-                                            <span class="detail-label">Horsepower</span>
-                                            <span class="detail-value">640 HP @ 6,750 RPM</span>
-                                        </div>
-                                        <div class="detail-item">
-                                            <span class="detail-label">Torque</span>
-                                            <span class="detail-value">590 lb-ft @ 2,500 RPM</span>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="detail-item">
-                                            <span class="detail-label">0-60 mph</span>
-                                            <span class="detail-value">2.6 seconds</span>
-                                        </div>
-                                        <div class="detail-item">
-                                            <span class="detail-label">Top Speed</span>
-                                            <span class="detail-value">205 mph</span>
-                                        </div>
-                                        <div class="detail-item">
-                                            <span class="detail-label">Quarter Mile</span>
-                                            <span class="detail-value">10.5 seconds</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="detail-card">
-                                <h3 class="detail-title">
-                                    <i class="fas fa-car"></i>
-                                    Exterior Features
-                                </h3>
-                                <div class="feature-grid">
-                                    <div class="feature-item">
-                                        <i class="fas fa-check-circle"></i>
-                                        <span>LED Headlights with PDLS+</span>
-                                    </div>
-                                    <div class="feature-item">
-                                        <i class="fas fa-check-circle"></i>
-                                        <span>Carbon Fiber Roof</span>
-                                    </div>
-                                    <div class="feature-item">
-                                        <i class="fas fa-check-circle"></i>
-                                        <span>Sport Exhaust System</span>
-                                    </div>
-                                    <div class="feature-item">
-                                        <i class="fas fa-check-circle"></i>
-                                        <span>20" Turbo Wheels</span>
-                                    </div>
-                                    <div class="feature-item">
-                                        <i class="fas fa-check-circle"></i>
-                                        <span>Ceramic Composite Brakes</span>
-                                    </div>
-                                    <div class="feature-item">
-                                        <i class="fas fa-check-circle"></i>
-                                        <span>Adaptive Aerodynamics</span>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="detail-card">
-                                <h3 class="detail-title">
-                                    <i class="fas fa-couch"></i>
-                                    Interior Features
-                                </h3>
-                                <div class="feature-grid">
-                                    <div class="feature-item">
-                                        <i class="fas fa-check-circle"></i>
-                                        <span>18-Way Power Sport Seats</span>
-                                    </div>
-                                    <div class="feature-item">
-                                        <i class="fas fa-check-circle"></i>
-                                        <span>Alcantara Interior Package</span>
-                                    </div>
-                                    <div class="feature-item">
-                                        <i class="fas fa-check-circle"></i>
-                                        <span>10.9" PCM Touchscreen</span>
-                                    </div>
-                                    <div class="feature-item">
-                                        <i class="fas fa-check-circle"></i>
-                                        <span>Bose Surround Sound</span>
-                                    </div>
-                                    <div class="feature-item">
-                                        <i class="fas fa-check-circle"></i>
-                                        <span>Climate Control</span>
-                                    </div>
-                                    <div class="feature-item">
-                                        <i class="fas fa-check-circle"></i>
-                                        <span>Sport Chrono Package</span>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="detail-card">
-                                <h3 class="detail-title">
-                                    <i class="fas fa-history"></i>
-                                    Vehicle History
-                                </h3>
-                                <div class="history-timeline">
-                                    <div class="timeline-item">
-                                        <div class="timeline-icon">
-                                            <i class="fas fa-star"></i>
-                                        </div>
-                                        <div class="timeline-content">
-                                            <h5>Vehicle Purchased New</h5>
-                                            <p>March 2023 - Porsche Beverly Hills</p>
-                                            <span class="timeline-badge">Original Owner</span>
-                                        </div>
-                                    </div>
-                                    <div class="timeline-item">
-                                        <div class="timeline-icon">
-                                            <i class="fas fa-tools"></i>
-                                        </div>
-                                        <div class="timeline-content">
-                                            <h5>First Service</h5>
-                                            <p>September 2023 - 1,200 miles</p>
-                                            <span class="timeline-badge">Authorized Dealer</span>
-                                        </div>
-                                    </div>
-                                    <div class="timeline-item">
-                                        <div class="timeline-icon">
-                                            <i class="fas fa-shield-alt"></i>
-                                        </div>
-                                        <div class="timeline-content">
-                                            <h5>Clean Title</h5>
-                                            <p>No accidents or damage reported</p>
-                                            <span class="timeline-badge success">Verified</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="detail-card">
-                                <h3 class="detail-title">
-                                    <i class="fas fa-user-tie"></i>
-                                    Seller Information
-                                </h3>
-                                <div class="seller-info">
-                                    <div class="seller-avatar">
-                                        <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&auto=format&fit=crop&w=150&q=80"
-                                            alt="Seller">
-                                    </div>
-                                    <div class="seller-details">
-                                        <h5>Michael Thompson</h5>
-                                        <div class="seller-rating">
-                                            <div class="stars">
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star"></i>
-                                            </div>
-                                            <span>(4.9/5 - 127 reviews)</span>
-                                        </div>
-                                        <p>Premium car collector with 15+ years of experience. All vehicles come with
-                                            detailed documentation and service records.</p>
-                                        <div class="seller-stats">
-                                            <div class="stat">
-                                                <span class="stat-number">47</span>
-                                                <span class="stat-label">Cars Sold</span>
-                                            </div>
-                                            <div class="stat">
-                                                <span class="stat-number">100%</span>
-                                                <span class="stat-label">Positive Feedback</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-lg-4">
-                        <div class="sticky-sidebar">
-                            <div class="auction-card">
-                                <div class="auction-header">
-                                    <h3>Current Auction</h3>
-                                    <span class="auction-id">#AU-2024-0156</span>
-                                </div>
-
-                                <div class="current-bid">
-                                    <span class="bid-label">Current Bid</span>
-                                    <span class="bid-amount">$185,500</span>
-                                    <span class="bid-count">23 bids</span>
-                                </div>
-
                                 <div class="bid-history">
                                     <div class="bid-item">
                                         <span class="bidder">J***n</span>
@@ -327,7 +344,6 @@
                                         <span class="bid-time">15 min ago</span>
                                     </div>
                                 </div>
-
                                 <div class="bid-actions">
                                     <div class="bid-input-group">
                                         <input type="number" class="form-control bid-input"
@@ -343,7 +359,6 @@
                                         Auto Bid
                                     </button>
                                 </div>
-
                                 <div class="auction-details">
                                     <div class="detail-row">
                                         <span>Reserve:</span>
@@ -404,7 +419,7 @@
                                         <small>*Based on 4.9% APR for qualified buyers</small>
                                     </div>
                                 </div>
-                                <button class="btn btn-outline-primary btn-sm">Get Pre-Approved</button>
+                                <button class="btn btn-primary btn-bid w-100">Get Pre-Approved</button>
                             </div>
 
                             <!-- Contact Card -->
@@ -412,17 +427,13 @@
                                 <h4><i class="fas fa-phone"></i> Need Help?</h4>
                                 <p>Our specialists are here to assist you</p>
                                 <div class="contact-options">
-                                    <button class="btn btn-outline-primary btn-sm">
+                                    <button class="btn btn-primary btn-bid">
                                         <i class="fas fa-phone"></i>
                                         Call Now
                                     </button>
-                                    <button class="btn btn-outline-primary btn-sm">
+                                    <button class="btn btn-outline-primary btn-auto-bid">
                                         <i class="fas fa-envelope"></i>
                                         Email
-                                    </button>
-                                    <button class="btn btn-outline-primary btn-sm">
-                                        <i class="fas fa-comments"></i>
-                                        Live Chat
                                     </button>
                                 </div>
                             </div>
@@ -432,5 +443,4 @@
             </div>
         </div>
     </div>
-
 </div>

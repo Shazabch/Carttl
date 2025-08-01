@@ -107,3 +107,21 @@ $(document).ready(function () {
         }
     });
 });
+
+$(document).ready(function () {
+  $('#openSearchBtn').on('click', function (e) {
+    e.preventDefault();
+    e.stopPropagation(); // prevent triggering the document click
+    $('.modern-car-search').addClass('active');
+  });
+
+  // Prevent click inside search box from closing it
+  $('.modern-car-search').on('click', function (e) {
+    e.stopPropagation();
+  });
+
+  // Click anywhere else removes the class
+  $(document).on('click', function () {
+    $('.modern-car-search').removeClass('active');
+  });
+});
