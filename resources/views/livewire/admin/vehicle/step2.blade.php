@@ -10,7 +10,7 @@
         <div class="row g-2">
             @foreach ($transmissions as $item)
                 <div class="col-6 col-sm-4 col-md-3">
-                    <label class="option-card {{ ($vehicleData['transmission_id'] ?? null) == $item->id ? 'selected' : '' }}">
+                    <label class="option-card  {{ ($vehicleData['transmission_id'] ?? null) == $item->id ? 'selected' : '' }}">
                         <input type="checkbox" class="d-none" wire:click="setSingleSelection('transmission_id', {{ $item->id }})">
                         <span class="option-name">{{ $item->name }}</span>
                     </label>
