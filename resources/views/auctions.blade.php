@@ -9,7 +9,7 @@
             <div class="row">
                 <!-- Filters Sidebar -->
                 <div class="col-lg-3">
-                    <div class="filters-sidebar">
+                    {{-- <div class="filters-sidebar">
                         <div class="filters-header">
                             <h4 class="p-20">Filters</h4>
                             <button class="btn-link">Clear All</button>
@@ -126,9 +126,122 @@
                                 </div>
                             </div>
                         </div>
+                    </div> --}}
+                    <div class="filter-box">
+                        <div class="bx-white">
+                            <div class="filter-header d-flex justify-content-between align-items-center mb-3">
+                                <h5>Filters</h5>
+                                <button class="btn btn-link p-0 text-danger">Reset All</button>
+                            </div>
+                            <div class="form-group mb-3">
+                                <select class="form-select form-select-sm">
+                                    <option>Any Year</option>
+                                    <option>2024</option>
+                                    <option>2023</option>
+                                    <option>2022</option>
+                                </select>
+                            </div>
+                            <div class="form-group mb-3">
+                                <select class="form-select filter-dropdown">
+                                    <option selected disabled>Make</option>
+                                    <option>Porsche</option>
+                                    <option>Ferrari</option>
+                                    <option>BMW</option>
+                                </select>
+                            </div>
+                            <div class="form-group mb-3">
+                                <select class="form-select filter-dropdown">
+                                    <option selected disabled>Model</option>
+                                    <option>911</option>
+                                    <option>Cayenne</option>
+                                    <option>Macan</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="accordion filter-accordion" id="mainAccordion">
+                            <!-- Price -->
+                            <div class="accordion-item mb-3">
+                                <h2 class="accordion-header" id="headingPrice">
+                                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapsePrice"
+                                        aria-expanded="true" aria-controls="collapsePrice">
+                                        Price
+                                    </button>
+                                </h2>
+                                <div id="collapsePrice" class="accordion-collapse collapse show">
+                                    <div class="accordion-body">
+                                        <div class="row g-2 mb-2">
+                                            <div class="col-6">
+                                                <input type="number" class="form-control form-control-sm" placeholder="Min">
+                                            </div>
+                                            <div class="col-6">
+                                                <input type="number" class="form-control form-control-sm" placeholder="Max">
+                                            </div>
+                                        </div>
+                                        <input type="range" class="form-range" min="0" max="1000000" value="250000">
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Mileage -->
+                            <div class="accordion-item mb-3">
+                                <h2 class="accordion-header" id="headingMileage">
+                                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseMileage"
+                                        aria-expanded="true" aria-controls="collapseMileage">
+                                        Mileage
+                                    </button>
+                                </h2>
+                                <div id="collapseMileage" class="accordion-collapse collapse show">
+                                    <div class="accordion-body">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="mileage" id="m1">
+                                            <label class="form-check-label" for="m1">Under 10,000 miles</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="mileage" id="m2">
+                                            <label class="form-check-label" for="m2">10,000 – 25,000 miles</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="mileage" id="m3">
+                                            <label class="form-check-label" for="m3">25,000 – 50,000 miles</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="mileage" id="m4">
+                                            <label class="form-check-label" for="m4">Over 50,000 miles</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Auction Status -->
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="headingAuction">
+                                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseAuction"
+                                        aria-expanded="true" aria-controls="collapseAuction">
+                                        Auction Status
+                                    </button>
+                                </h2>
+                                <div id="collapseAuction" class="accordion-collapse collapse show">
+                                    <div class="accordion-body">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="a1" checked>
+                                            <label class="form-check-label" for="a1">Live Auction</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="a2">
+                                            <label class="form-check-label" for="a2">Ending Soon</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="a3">
+                                            <label class="form-check-label" for="a3">Reserve Met</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="a4">
+                                            <label class="form-check-label" for="a4">Buy It Now</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
-
                 <!-- Main Content -->
                 <div class="col-lg-9">
                     <!-- Toolbar -->
