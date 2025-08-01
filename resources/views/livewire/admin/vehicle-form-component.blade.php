@@ -56,8 +56,8 @@
                 @if ($currentStep < 3)
                     <button class="btn btn-primary" wire:click="nextStep">Next</button>
                 @else
-                    {{-- On the last step, the button becomes "Save Vehicle" --}}
-                    <button class="btn btn-primary" wire:click="saveVehicle">Save Vehicle</button>
+                   
+                    <button class="btn btn-primary" wire:click="nextStep">Save Vehicle</button>
                 @endif
 
                 {{-- Your existing logic for showing Save button during editing --}}

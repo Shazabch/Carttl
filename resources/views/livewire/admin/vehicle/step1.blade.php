@@ -39,5 +39,15 @@
             <input type="number" step="0.01" class="form-control @error('vehicleData.price') is-invalid @enderror" wire:model.defer="vehicleData.price">
             @error('vehicleData.price') <div class="invalid-feedback">{{ $message }}</div> @enderror
         </div>
+         <div class="col-md-6 mb-3">
+            <label class="form-label">Engine</label>
+            <input type="text"  class="form-control @error('vehicleData.engine_type') is-invalid @enderror" wire:model.defer="vehicleData.engine_type">
+            @error('vehicleData.engine_type') <div class="invalid-feedback">{{ $message }}</div> @enderror
+        </div>
+         <div class="col-md-6 mb-3">
+            <label class="form-label">Top Speed</label>
+            <input type="number" step="0.01" class="form-control @error('vehicleData.top_speed') is-invalid @enderror" wire:model.defer="vehicleData.top_speed">
+            @error('vehicleData.top_speed') <div class="invalid-feedback">{{ $message }}</div> @enderror
+        </div>
     </div>
 </div>
