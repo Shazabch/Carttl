@@ -42,16 +42,22 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-md-6">
+        <div class="col-md-4">
             <div class="form-check form-switch p-3 border rounded">
                 <input class="form-check-input" type="checkbox" role="switch" id="negotiable" wire:model.defer="vehicleData.negotiable">
                 <label class="form-check-label" for="negotiable"><span class="fw-bold">Price is Negotiable</span></label>
             </div>
         </div>
-        <div class="col-md-6">
+        <div class="col-md-4">
             <div class="form-check form-switch p-3 border rounded">
                 <input class="form-check-input" type="checkbox" role="switch" id="is_featured" wire:model.defer="vehicleData.is_featured">
                 <label class="form-check-label" for="is_featured"><span class="fw-bold">Feature this Vehicle</span></label>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-check form-switch p-3 border rounded">
+                <input class="form-check-input" type="checkbox" role="switch" id="is_auction" wire:model.defer="vehicleData.is_auction">
+                <label class="form-check-label" for="is_auction"><span class="fw-bold">Is Auction</span></label>
             </div>
         </div>
     </div>

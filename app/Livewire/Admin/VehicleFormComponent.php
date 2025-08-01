@@ -36,29 +36,29 @@ class VehicleFormComponent extends Component
     protected function rules()
     {
         return [
-            'vehicleData.title' => 'required|string|max:255',
-            'vehicleData.brand_id' => 'required|exists:brands,id',
+            'vehicleData.title' => 'required',
+            'vehicleData.brand_id' => 'required',
             'vehicleData.vehicle_model_id' => 'required',
-            'vehicleData.year' => 'required|integer|digits:4|min:1900|max:' . (date('Y') + 1),
-            'vehicleData.price' => 'required|numeric|min:0',
-            'vehicleData.mileage' => 'required|integer|min:0',
-            'vehicleData.transmission_id' => 'required|exists:transmissions,id',
-            'vehicleData.fuel_type_id' => 'required|exists:fuel_types,id',
-            'vehicleData.body_type_id' => 'required|exists:body_types,id',
-            'vehicleData.condition' => 'required|in:new,used,certified',
-            'vehicleData.status' => 'required|in:draft,published,sold,pending',
-            'vehicleData.description' => 'nullable|string|max:5000',
-            'vehicleData.variant' => 'nullable|string|max:255',
+            'vehicleData.year' => 'required',
+            'vehicleData.price' => 'required',
+            'vehicleData.mileage' => 'required',
+            'vehicleData.transmission_id' => 'required',
+            'vehicleData.fuel_type_id' => 'required',
+            'vehicleData.body_type_id' => 'required',
+            'vehicleData.condition' => 'required',
+            'vehicleData.status' => 'required',
+            'vehicleData.description' => 'nullable',
+            'vehicleData.variant' => 'nullable',
             'vehicleData.engine_cc' => 'nullable|integer',
             'vehicleData.horsepower' => 'nullable|integer',
-            'vehicleData.torque' => 'nullable|string|max:255',
+            'vehicleData.torque' => 'nullable|string',
             'vehicleData.seats' => 'nullable|integer',
             'vehicleData.doors' => 'nullable|integer',
-            'vehicleData.color' => 'nullable|string|max:255',
-            'vehicleData.interior_color' => 'nullable|string|max:255',
-            'vehicleData.drive_type' => 'nullable|string|in:FWD,RWD,AWD,4WD',
-            'vehicleData.vin' => 'nullable|string|max:255',
-            'vehicleData.registration_no' => 'nullable|string|max:255',
+            'vehicleData.color' => 'nullable|string',
+            'vehicleData.interior_color' => 'nullable|string',
+            'vehicleData.drive_type' => 'nullable|string',
+            'vehicleData.vin' => 'nullable|string',
+            'vehicleData.registration_no' => 'nullable|string',
             'vehicleData.negotiable' => 'boolean',
             'vehicleData.is_featured' => 'boolean',
         ];
@@ -194,18 +194,18 @@ class VehicleFormComponent extends Component
         $rulesForStep = [];
         if ($step === 1) {
             $rulesForStep = [
-                'vehicleData.title' => 'required|string|max:255',
-                'vehicleData.brand_id' => 'required|exists:brands,id',
+                'vehicleData.title' => 'required|string',
+                'vehicleData.brand_id' => 'required',
                 'vehicleData.vehicle_model_id' => 'required',
-                'vehicleData.year' => 'required|integer|digits:4',
-                'vehicleData.price' => 'required|numeric|min:0',
+                'vehicleData.year' => 'required',
+                'vehicleData.price' => 'required',
             ];
         } elseif ($step === 2) {
             $rulesForStep = [
-                'vehicleData.mileage' => 'required|integer|min:0',
-                'vehicleData.transmission_id' => 'required|exists:transmissions,id',
-                'vehicleData.fuel_type_id' => 'required|exists:fuel_types,id',
-                'vehicleData.body_type_id' => 'required|exists:body_types,id',
+                'vehicleData.mileage' => 'required|integer',
+                'vehicleData.transmission_id' => 'required',
+                'vehicleData.fuel_type_id' => 'required',
+                'vehicleData.body_type_id' => 'required',
             ];
         } elseif ($step === 3) {
             $rulesForStep = [
