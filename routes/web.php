@@ -7,6 +7,7 @@ use App\Http\Controllers\admin\VehicleManagerController;
 use App\Http\Controllers\VehicleController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\LoginController;
+use App\Livewire\Admin\Inspection\GenerationComponent;
 use App\Models\Vehicle;
 use Illuminate\Support\Facades\Route;
 
@@ -65,6 +66,8 @@ Route::group(['prefix' => 'admin'], function () {
         Route::view('/testimonials', 'admin.testimonials.index')->name('admin.testimonials');
         Route::view('/inspection-enquiries', 'admin.inspection.index')->name('admin.inspection.enquiries');
         Route::view('/inspection-generate', 'admin.inspection.generate-report')->name('admin.inspection.generate');
+        Route::get('/inspection-generate/from-vehicle/{vehicle}',[VehicleManagerController::class, 'generateInspectionVehicle'])->name('admin.inspection.generate.from-vehicle');
+        Route::get('/inspection-generate/from-enquiry/{enquiry}',[VehicleManagerController::class, 'generateInspectionEnquiry'])->name('admin.inspection.generate.from-enquiry');
 
 
     });

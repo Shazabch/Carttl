@@ -44,6 +44,9 @@
                             <td>{{ $item->email }}</td>
                             <td>{{ $item->created_at->format('M d, Y H:i A') }}</td>
                             <td>
+                                <a href="{{ route('admin.inspection.generate.from-enquiry', ['enquiry' => $item->id]) }}" class="btn btn-sm btn-primary">
+                                    Create Inspection
+                                </a>
                                 <button class="btn btn-sm btn-info" wire:click="view({{ $item->id }})">
                                     <i class="fas fa-eye"></i> View
                                 </button>
