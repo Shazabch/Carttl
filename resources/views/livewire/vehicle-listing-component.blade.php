@@ -2,7 +2,7 @@
 <section class="ox-hidden section-auction">
         <div class="card-slider-wrap">
             <div class="row mb-5 align-items-end">
-                <div class="col-lg-8">
+                <div class="col-lg-8 mb-4 mb-lg-0">
                     <h2 class="h-35 fw-700">Featured {{$section}}</h2>
                     <p class="text-secondary mb-0">Looking for your next ride? Check out our featured cars—great deals on the most popular models, all in one place..</p>
                 </div>
