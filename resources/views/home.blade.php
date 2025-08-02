@@ -238,13 +238,15 @@
                     <div class="filter-bar mt-4">
                         <form class="">
                             <div class="row align-items-center g-2">
-                                <div  class="col-lg-12">
+                                <div class="col-lg-12">
                                     <ul class="nav filter-tabs" id="auctionTabs" role="tablist">
                                         <li class="nav-item" role="presentation">
-                                            <button class="nav-link active" id="buy-tab" data-bs-toggle="tab" data-bs-target="#buy" type="button" role="tab">Buy</button>
+                                            <button class="nav-link active" id="buy-tab" data-bs-toggle="tab"
+                                                data-bs-target="#buy" type="button" role="tab">Buy</button>
                                         </li>
                                         <li class="nav-item" role="presentation">
-                                            <button class="nav-link" id="bid-tab" data-bs-toggle="tab" data-bs-target="#bid" type="button" role="tab">Bid</button>
+                                            <button class="nav-link" id="bid-tab" data-bs-toggle="tab"
+                                                data-bs-target="#bid" type="button" role="tab">Bid</button>
                                         </li>
                                     </ul>
                                 </div>
@@ -331,7 +333,9 @@
                                 </div>
                             </div>
                             <div>
-                                <div class="advanced-filters-toggle d-flex align-items-center mt-3 ms-auto" data-bs-toggle="collapse" data-bs-target="#advancedFilters" aria-expanded="false" aria-controls="advancedFilters">
+                                <div class="advanced-filters-toggle d-flex align-items-center mt-3 ms-auto"
+                                    data-bs-toggle="collapse" data-bs-target="#advancedFilters" aria-expanded="false"
+                                    aria-controls="advancedFilters">
                                     <span>Advanced Filters</span>
                                     <i class="fas fa-chevron-down ms-2"></i>
                                 </div>
@@ -445,10 +449,9 @@
     </div>
 
     <!-- Featured Section -->
-  
-    @livewire('vehicle-listing-component',['section' => 'Auctions'])
-    @livewire('vehicle-listing-component',['section' => 'Vehicles'])
-    
+
+    @livewire('vehicle-listing-component', ['section' => 'Vehicles'])
+
     <!-- CTA 2 -->
     <section class="main-section ox-hidden">
         <div class="container">
@@ -488,6 +491,9 @@
         </div>
     </section>
     <!-- SERVICES -->
+
+    @livewire('vehicle-listing-component', ['section' => 'Auctions'])
+
     <section class="our-services ox-hidden">
         <div class="container">
             <div class="row justify-content-center mb-5">
@@ -604,8 +610,10 @@
                     </p>
                     <a href="{{ route('book-inspection') }}" class="btn-main white">
                         Book Now
-                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="#f59e0b" viewBox="0 0 14 14">
-                            <path d="M11.6654 3.97592L1.64141 13.9999L-0.00537109 12.3531L10.0174 2.32914H1.18372V-0.00012207H13.9946V12.8108H11.6654V3.97592Z" />
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="#f59e0b"
+                            viewBox="0 0 14 14">
+                            <path
+                                d="M11.6654 3.97592L1.64141 13.9999L-0.00537109 12.3531L10.0174 2.32914H1.18372V-0.00012207H13.9946V12.8108H11.6654V3.97592Z" />
                         </svg>
                     </a>
                 </div>
