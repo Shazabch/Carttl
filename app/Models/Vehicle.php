@@ -157,5 +157,15 @@ class Vehicle extends Model
     {
         return $this->belongsToMany(Feature::class, 'vehicle_features', 'vehicle_id', 'feature_id');
     }
-   
+    // app/Models/Vehicle.php
+
+    public function bids()
+    {
+        return $this->hasMany(VehicleBid::class)->orderBy('amount', 'desc');
+    }
+
+    public function highestBid()
+    {
+        return $this->hasOne(VehicleBid::class)->ofMany('amount', 'max');
+    }
 }
