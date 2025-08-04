@@ -81,7 +81,7 @@ Sell your car
 <section class="section-why-benefit">
     <div class="container">
         <div class="row align-items-center">
-            <div class="col-lg-5">
+            <div class="col-lg-5 mb-4 mb-lg-0">
                 <div class="benefit-wrap">
                     <img src="{{asset('images/banners/sell-your-car.webp')}}" alt="">
                 </div>

@@ -49,7 +49,7 @@
 <footer>
   <div class="container-fluid">
     <div class="footer-top">
-      <div class="row row-cols-xl-4 row-cols-lg-4 row-cols-md-3 row-cols-sm-3 row-cols-1 justify-content-center g-lg-4 gy-5"> 
+      <div class="row row-cols-xl-4 row-cols-lg-4 row-cols-md-3 row-cols-sm-3 row-cols-2 justify-content-center g-lg-4 gy-5"> 
         <div class="col d-flex justify-content-lg-start">
           <div id="nav_menu-2" class="footer-widget widget_nav_menu">
             <div class="menu-container">
@@ -175,7 +175,7 @@
     <!-- Footer Bottom -->
     <div class="footer-btm">
       <div class="copyright-area">
-        <p>Copyright 2024 <a href="#">GoldenX</a> Inc. All Rights Reserved</p>
+        <p>Copyright {{date('Y')}} <a href="#">GoldenX</a> Inc. All Rights Reserved</p>
       </div>
       <div class="social-area">
         <h6>Follow Drivco:</h6>

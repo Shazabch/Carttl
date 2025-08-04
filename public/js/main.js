@@ -125,3 +125,25 @@ $(document).ready(function () {
     $('.modern-car-search').removeClass('active');
   });
 });
+
+$(function () {
+  $("#slider-range").slider({
+    range: true,
+    min: 0,
+    max: 10000,
+    values: [1000, 9000],
+    slide: function (event, ui) {
+      $("#min_price").val(ui.values[0]);
+      $("#max_price").val(ui.values[1]);
+    }
+  });
+
+  $("#min_price").val($("#slider-range").slider("values", 0));
+  $("#max_price").val($("#slider-range").slider("values", 1));
+
+  $("#price-range-submit").click(function () {
+    const minPrice = $("#min_price").val();
+    const maxPrice = $("#max_price").val();
+    $("#searchResults").html(`<p>Showing results from <strong>$${minPrice}</strong> to <strong>$${maxPrice}</strong></p>`);
+  });
+});

@@ -34,19 +34,19 @@
                 <div class="col-lg-6 d-flex flex-column gap-4">
                     <!-- Single Side Post -->
                     @foreach ($blogs as $item)
-                        <div class="side-post row align-items-center" data-aos="fade-left" data-aos-delay="0"
+                        <div class="side-post row" data-aos="fade-left" data-aos-delay="0"
                             data-aos-duration="1000" data-aos-easing="ease-out-cubic">
-                            <div class="col-sm-4 mb-3 mb-lg-0">
+                            <div class="col-4">
                                 <div class="side-post-img">
                                     <img src="{{ asset('storage/' . $item->image) }}" class="img-fluid" alt="">
                                 </div>
                             </div>
-                            <div class="col-sm-8">
+                            <div class="col-8">
                                 <div class="d-flex align-items-center mb-1 text-muted small">
                                     <i class="fas fa-calendar-alt me-2"></i>
                                     <span>{{ $this->formateDate($item->created_at) }}</span>
                                 </div>
-                                <h6 class="my-3 p-20 fw-600">{{ $item->title ?? '' }}
+                                <h6 class="my-sm-3 p-20 fw-600">{{ $item->title ?? '' }}
                                 </h6>
                                 <a href="{{ route('get-blog',$item->slug) }}"
                                     class="text-accent fw-semibold text-decoration-none d-flex align-items-center gap-2">

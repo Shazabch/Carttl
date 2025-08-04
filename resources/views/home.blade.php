@@ -546,7 +546,7 @@
                     <div class="service-card h-100">
                         <div class="service-card-inner">
                             <div class="icon-wrapper">
-                                <img src="{{ asset('images/icons/s3.svg') }}" alt="Airport Transfer" width="24">
+                                <img src="{{ asset('images/icons/car-inspection.svg') }}" alt="Airport Transfer" width="24">
                             </div>
                             <h5 class="p-20 fw-600">Car Inspections</h5>
                             <p class="text-muted mb-4">Book a professional inspection for peace of mind before you buy or
@@ -566,7 +566,7 @@
                     <div class="service-card h-100">
                         <div class="service-card-inner">
                             <div class="icon-wrapper">
-                                <img src="{{ asset('images/icons/s4.svg') }}" alt="Chauffeur" width="24">
+                                <img src="{{ asset('images/icons/auction.svg') }}" alt="Chauffeur" width="24">
                             </div>
                             <h5 class="p-20 fw-600">Live Auctions</h5>
                             <p class="text-muted mb-4">Join real-time auctions and experience the thrill of competitive
@@ -602,7 +602,7 @@
             <div class="row align-items-center">
                 <div class="col-lg-7 text-center text-lg-start" data-aos="fade-up" data-aos-delay="0"
                     data-aos-duration="1000" data-aos-easing="ease-out-cubic">
-                    <h2 class="h-35 fw-700">Ready to get your car inspected?<br />Schedule your inspection today!</h2>
+                    <h2 class="h-35 fw-700">Ready to get your car inspected? Schedule your inspection today!</h2>
                     <p class="cta-text p-20">
                         Our friendly customer service team is here to help. Contact us anytime for support and inquiries.
                     </p>

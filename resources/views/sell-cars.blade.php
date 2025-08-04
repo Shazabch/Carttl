@@ -124,7 +124,7 @@
                         </div>
                     </div> --}}
                     <div class="filter-box">
-                        <div class="bx-white">
+                        <div class="bx-white mb-4">
                             <div class="filter-header d-flex justify-content-between align-items-center mb-3">
                                 <h5>Filters</h5>
                                 <button class="btn btn-link p-0 text-danger">Reset All</button>
@@ -154,85 +154,60 @@
                                 </select>
                             </div>
                         </div>
-                        <div class="accordion filter-accordion" id="mainAccordion">
-                            <!-- Price -->
-                            <div class="accordion-item mb-3">
-                                <h2 class="accordion-header" id="headingPrice">
-                                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapsePrice"
-                                        aria-expanded="true" aria-controls="collapsePrice">
-                                        Price
-                                    </button>
-                                </h2>
-                                <div id="collapsePrice" class="accordion-collapse collapse show">
-                                    <div class="accordion-body">
-                                        <div class="row g-2 mb-2">
-                                            <div class="col-6">
-                                                <input type="number" class="form-control form-control-sm" placeholder="Min">
-                                            </div>
-                                            <div class="col-6">
-                                                <input type="number" class="form-control form-control-sm" placeholder="Max">
-                                            </div>
-                                        </div>
-                                        <input type="range" class="form-range" min="0" max="1000000" value="250000">
+                        <div class="filter-section">
+                            <!-- Price Filter -->
+                            <div class="filter-block mb-4">
+                                <h4 class="p-18 fw-500 mb-4">Price</h4>
+                                <div class="price-range-block">
+                                <div class="row g-2 mb-3">
+                                    <div class="col-6">
+                                    <input type="number" min="0" max="9900" oninput="validity.valid||(value='0');" id="min_price" placeholder="Min" class="form-control price-range-field" />
+                                    </div>
+                                    <div class="col-6">
+                                    <input type="number" min="0" max="10000" oninput="validity.valid||(value='10000');" id="max_price" placeholder="Max" class="form-control price-range-field" />
                                     </div>
                                 </div>
-                            </div>
-                            <!-- Mileage -->
-                            <div class="accordion-item mb-3">
-                                <h2 class="accordion-header" id="headingMileage">
-                                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseMileage"
-                                        aria-expanded="true" aria-controls="collapseMileage">
-                                        Mileage
-                                    </button>
-                                </h2>
-                                <div id="collapseMileage" class="accordion-collapse collapse show">
-                                    <div class="accordion-body">
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="radio" name="mileage" id="m1">
-                                            <label class="form-check-label" for="m1">Under 10,000 miles</label>
-                                        </div>
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="radio" name="mileage" id="m2">
-                                            <label class="form-check-label" for="m2">10,000 – 25,000 miles</label>
-                                        </div>
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="radio" name="mileage" id="m3">
-                                            <label class="form-check-label" for="m3">25,000 – 50,000 miles</label>
-                                        </div>
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="radio" name="mileage" id="m4">
-                                            <label class="form-check-label" for="m4">Over 50,000 miles</label>
-                                        </div>
-                                    </div>
+                                <div id="slider-range" class="price-filter-range" name="rangeInput"></div>
                                 </div>
                             </div>
-                            <!-- Auction Status -->
-                            <div class="accordion-item">
-                                <h2 class="accordion-header" id="headingAuction">
-                                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseAuction"
-                                        aria-expanded="true" aria-controls="collapseAuction">
-                                        Auction Status
-                                    </button>
-                                </h2>
-                                <div id="collapseAuction" class="accordion-collapse collapse show">
-                                    <div class="accordion-body">
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" id="a1" checked>
-                                            <label class="form-check-label" for="a1">Live Auction</label>
-                                        </div>
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" id="a2">
-                                            <label class="form-check-label" for="a2">Ending Soon</label>
-                                        </div>
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" id="a3">
-                                            <label class="form-check-label" for="a3">Reserve Met</label>
-                                        </div>
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" id="a4">
-                                            <label class="form-check-label" for="a4">Buy It Now</label>
-                                        </div>
-                                    </div>
+                            <!-- Mileage Filter -->
+                            <div class="filter-block mb-3">
+                                <h4 class="p-18 fw-500 mb-4">Mileage</h4>
+                                <div class="form-check mb-3">
+                                    <input class="form-check-input" type="radio" name="mileage" id="m1">
+                                    <label class="form-check-label" for="m1">Under 10,000 miles</label>
+                                </div>
+                                <div class="form-check mb-3">
+                                    <input class="form-check-input" type="radio" name="mileage" id="m2">
+                                    <label class="form-check-label" for="m2">10,000 – 25,000 miles</label>
+                                </div>
+                                <div class="form-check mb-3">
+                                    <input class="form-check-input" type="radio" name="mileage" id="m3">
+                                    <label class="form-check-label" for="m3">25,000 – 50,000 miles</label>
+                                </div>
+                                <div class="form-check mb-3">
+                                    <input class="form-check-input" type="radio" name="mileage" id="m4">
+                                    <label class="form-check-label" for="m4">Over 50,000 miles</label>
+                                </div>
+                            </div>
+                            <!-- Auction Status Filter -->
+                            <div class="filter-block mb-3 border-bottom-0">
+                                <h4 class="p-18 fw-500 mb-4">Auction Status</h4>
+                                <div class="form-check mb-3">
+                                    <input class="form-check-input" type="checkbox" id="a1" checked>
+                                    <label class="form-check-label" for="a1">Live Auction</label>
+                                </div>
+                                <div class="form-check mb-3">
+                                    <input class="form-check-input" type="checkbox" id="a2">
+                                    <label class="form-check-label" for="a2">Ending Soon</label>
+                                </div>
+                                <div class="form-check mb-3">
+                                    <input class="form-check-input" type="checkbox" id="a3">
+                                    <label class="form-check-label" for="a3">Reserve Met</label>
+                                </div>
+                                <div class="form-check mb-3">
+                                    <input class="form-check-input" type="checkbox" id="a4">
+                                    <label class="form-check-label" for="a4">Buy It Now</label>
                                 </div>
                             </div>
                         </div>
@@ -245,22 +220,11 @@
                                 <div class="view-options">
                                     <span class="me-3 text-muted">View:</span>
                                     <div class="btn-group" role="group">
-                                        <button type="button" class="btn btn-outline-warning btn-sm active"
-                                            data-view="grid-large">
+                                        <button type="button" class="btn btn-outline-warning btn-sm active" data-view="grid-large">
                                             <i class="fas fa-th-large"></i>
-                                        </button>
-                                        <button type="button" class="btn btn-outline-warning btn-sm" data-view="grid">
-                                            <i class="fas fa-th"></i>
-                                        </button>
-                                        <button type="button" class="btn btn-outline-warning btn-sm"
-                                            data-view="grid-small">
-                                            <i class="fas fa-grip-horizontal"></i>
                                         </button>
                                         <button type="button" class="btn btn-outline-warning btn-sm" data-view="list">
                                             <i class="fas fa-list"></i>
-                                        </button>
-                                        <button type="button" class="btn btn-outline-warning btn-sm" data-view="table">
-                                            <i class="fas fa-table"></i>
                                         </button>
                                     </div>
                                 </div>
@@ -320,20 +284,33 @@
                             </div>
                         </div>
                     </div>
-
                     <!-- Pagination -->
                     <nav class="mt-5">
-                        <ul class="pagination justify-content-center">
+                        <ul class="pagination justify-content-center gap-1">
                             <li class="page-item disabled">
-                                <a class="page-link" href="#"><i class="fas fa-chevron-left"></i></a>
+                                <a class="page-link rounded-circle d-flex align-items-center justify-content-center" href="#" aria-label="Previous">
+                                    <i class="fas fa-chevron-left"></i>
+                                </a>
                             </li>
-                            <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                            <li class="page-item"><a class="page-link" href="#">2</a></li>
-                            <li class="page-item"><a class="page-link" href="#">3</a></li>
-                            <li class="page-item"><a class="page-link" href="#">...</a></li>
-                            <li class="page-item"><a class="page-link" href="#">21</a></li>
+                            <li class="page-item active">
+                                <a class="page-link rounded" href="#">1</a>
+                            </li>
                             <li class="page-item">
-                                <a class="page-link" href="#"><i class="fas fa-chevron-right"></i></a>
+                                <a class="page-link rounded" href="#">2</a>
+                            </li>
+                            <li class="page-item">
+                                <a class="page-link rounded" href="#">3</a>
+                            </li>
+                            <li class="page-item disabled">
+                                <a class="page-link rounded" href="#">...</a>
+                            </li>
+                            <li class="page-item">
+                                <a class="page-link rounded" href="#">21</a>
+                            </li>
+                            <li class="page-item">
+                                <a class="page-link rounded-circle d-flex align-items-center justify-content-center" href="#" aria-label="Next">
+                                    <i class="fas fa-chevron-right"></i>
+                                </a>
                             </li>
                         </ul>
                     </nav>
