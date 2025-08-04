@@ -7,36 +7,54 @@
                     <div class="col-lg-8">
                         <div class="hero-gallery">
                             <div class="main-image-container">
-                                <img src="https://images.unsplash.com/photo-1544636331-e26879cd4d9b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80" alt="2023 Porsche 911 Turbo S" class="main-image" id="mainImage">
+                                <img src="https://images.unsplash.com/photo-1544636331-e26879cd4d9b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80"
+                                    alt="2023 Porsche 911 Turbo S" class="main-image" id="mainImage">
                                 <div class="image-overlay">
+                                      @if($selected_vehicle->live_auction)
                                     <div class="auction-status">
+                                       
                                         <span class="status-badge live">LIVE AUCTION</span>
+                                       
+                                        
                                         <div class="time-remaining">
                                             <i class="fas fa-clock"></i>
                                             <span id="countdown">2d 14h 32m</span>
                                         </div>
                                     </div>
+                                     @endif
                                     <div class="image-controls">
-                                        <button class="control-btn" id="prevImage"><i class="fas fa-chevron-left"></i></button>
-                                        <button class="control-btn" id="nextImage"><i class="fas fa-chevron-right"></i></button>
-                                        <button class="control-btn fullscreen-btn" id="fullscreenBtn"><i class="fas fa-expand"></i></button>
+                                        <button class="control-btn" id="prevImage"><i
+                                                class="fas fa-chevron-left"></i></button>
+                                        <button class="control-btn" id="nextImage"><i
+                                                class="fas fa-chevron-right"></i></button>
+                                        <button class="control-btn fullscreen-btn" id="fullscreenBtn"><i
+                                                class="fas fa-expand"></i></button>
                                     </div>
                                 </div>
                             </div>
                             <div class="thumbnail-gallery">
                                 <div class="thumbnail-container">
-                                    <img src="https://images.unsplash.com/photo-1544636331-e26879cd4d9b?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80" alt="Front view" class="thumbnail active">
-                                    <img src="https://images.unsplash.com/photo-1552519507-da3b142c6e3d?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80" alt="Side view" class="thumbnail">
-                                    <img src="https://images.unsplash.com/photo-1549399542-7e3f8b79c341?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80" alt="Interior" class="thumbnail">
-                                    <img src="https://images.unsplash.com/photo-1503376780353-7e6692767b70?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80" alt="Engine" class="thumbnail">
-                                    <img src="https://images.unsplash.com/photo-1542362567-b07e54358753?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80" alt="Dashboard" class="thumbnail">
-                                    <img src="https://images.unsplash.com/photo-1494976388531-d1058494cdd8?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80" alt="Rear view" class="thumbnail">
-                                    <img src="https://images.unsplash.com/photo-1494976388531-d1058494cdd8?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80" alt="Rear view" class="thumbnail">
-                                    <img src="https://images.unsplash.com/photo-1494976388531-d1058494cdd8?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80" alt="Rear view" class="thumbnail">
-                                    <img src="https://images.unsplash.com/photo-1494976388531-d1058494cdd8?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80" alt="Rear view" class="thumbnail">
+                                    <img src="https://images.unsplash.com/photo-1544636331-e26879cd4d9b?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80"
+                                        alt="Front view" class="thumbnail active">
+                                    <img src="https://images.unsplash.com/photo-1552519507-da3b142c6e3d?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80"
+                                        alt="Side view" class="thumbnail">
+                                    <img src="https://images.unsplash.com/photo-1549399542-7e3f8b79c341?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80"
+                                        alt="Interior" class="thumbnail">
+                                    <img src="https://images.unsplash.com/photo-1503376780353-7e6692767b70?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80"
+                                        alt="Engine" class="thumbnail">
+                                    <img src="https://images.unsplash.com/photo-1542362567-b07e54358753?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80"
+                                        alt="Dashboard" class="thumbnail">
+                                    <img src="https://images.unsplash.com/photo-1494976388531-d1058494cdd8?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80"
+                                        alt="Rear view" class="thumbnail">
+                                    <img src="https://images.unsplash.com/photo-1494976388531-d1058494cdd8?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80"
+                                        alt="Rear view" class="thumbnail">
+                                    <img src="https://images.unsplash.com/photo-1494976388531-d1058494cdd8?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80"
+                                        alt="Rear view" class="thumbnail">
+                                    <img src="https://images.unsplash.com/photo-1494976388531-d1058494cdd8?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80"
+                                        alt="Rear view" class="thumbnail">
                                 </div>
                             </div>
-                        </div>  
+                        </div>
                         <div class="detail-sections">
                             <div class="detail-card">
                                 <div class="detail-header">
@@ -51,7 +69,7 @@
                                                 <i class="fas fa-calendar-alt"></i>
                                                 <div>
                                                     <span class="spec-label">Year</span>
-                                                    <span class="spec-value">2023</span>
+                                                    <span class="spec-value">{{$selected_vehicle->year}}</span>
                                                 </div>
                                             </div>
                                         </div>
@@ -60,7 +78,7 @@
                                                 <i class="fas fa-tachometer-alt"></i>
                                                 <div>
                                                     <span class="spec-label">Mileage</span>
-                                                    <span class="spec-value">2,450 miles</span>
+                                                    <span class="spec-value">{{$selected_vehicle->mileage}} miles</span>
                                                 </div>
                                             </div>
                                         </div>
@@ -69,7 +87,8 @@
                                                 <i class="fas fa-cogs"></i>
                                                 <div>
                                                     <span class="spec-label">Transmission</span>
-                                                    <span class="spec-value">8-Speed PDK</span>
+                                                    <span
+                                                        class="spec-value">{{$selected_vehicle->transmission?->name}}</span>
                                                 </div>
                                             </div>
                                         </div>
@@ -78,7 +97,8 @@
                                                 <i class="fas fa-gas-pump"></i>
                                                 <div>
                                                     <span class="spec-label">Fuel Type</span>
-                                                    <span class="spec-value">Premium Gasoline</span>
+                                                    <span
+                                                        class="spec-value">{{$selected_vehicle->fuelType?->name}}</span>
                                                 </div>
                                             </div>
                                         </div>
@@ -87,7 +107,7 @@
                                                 <i class="fas fa-road"></i>
                                                 <div>
                                                     <span class="spec-label">Drivetrain</span>
-                                                    <span class="spec-value">AWD</span>
+                                                    <span class="spec-value">{{$selected_vehicle->drive_type}}</span>
                                                 </div>
                                             </div>
                                         </div>
@@ -96,7 +116,7 @@
                                                 <i class="fas fa-palette"></i>
                                                 <div>
                                                     <span class="spec-label">Color</span>
-                                                    <span class="spec-value">GT Silver Metallic</span>
+                                                    <span class="spec-value">{{$selected_vehicle->color}}</span>
                                                 </div>
                                             </div>
                                         </div>
@@ -114,15 +134,15 @@
                                         <div class="col-md-6">
                                             <div class="detail-item">
                                                 <span class="detail-label">Engine</span>
-                                                <span class="detail-value">3.8L Twin-Turbo Flat-6</span>
+                                                <span class="detail-value">{{$selected_vehicle->engine_type}}</span>
                                             </div>
                                             <div class="detail-item">
                                                 <span class="detail-label">Horsepower</span>
-                                                <span class="detail-value">640 HP @ 6,750 RPM</span>
+                                                <span class="detail-value">{{$selected_vehicle->horsepower}}HP</span>
                                             </div>
                                             <div class="detail-item">
                                                 <span class="detail-label">Torque</span>
-                                                <span class="detail-value">590 lb-ft @ 2,500 RPM</span>
+                                                <span class="detail-value">{{$selected_vehicle->torque}} RPM</span>
                                             </div>
                                         </div>
                                         <div class="col-md-6">
@@ -132,7 +152,7 @@
                                             </div>
                                             <div class="detail-item">
                                                 <span class="detail-label">Top Speed</span>
-                                                <span class="detail-value">205 mph</span>
+                                                <span class="detail-value">{{$selected_vehicle->top_speed}} mph</span>
                                             </div>
                                             <div class="detail-item">
                                                 <span class="detail-label">Quarter Mile</span>
@@ -281,7 +301,8 @@
                                                 </div>
                                                 <span>(4.9/5 - 127 reviews)</span>
                                             </div>
-                                            <p>Premium car collector with 15+ years of experience. All vehicles come with
+                                            <p>Premium car collector with 15+ years of experience. All vehicles come
+                                                with
                                                 detailed documentation and service records.</p>
                                             <div class="seller-stats">
                                                 <div class="stat">
@@ -300,6 +321,7 @@
                         </div>
                     </div>
                     <div class="col-lg-4">
+                        @if($selected_vehicle->is_auction)
                         <div class="sticky-sidebar">
                             <div class="auction-card">
                                 <div class="auction-header">
@@ -438,6 +460,122 @@
                                 </div>
                             </div>
                         </div>
+
+                        @else
+                        <div class="sticky-sidebar">
+                            <div class="auction-card">
+                                <div class="auction-header">
+                                    <h3>{{$selected_vehicle->title}}</h3>
+                                </div>
+                                <div class="car-subtitle">
+                                    <span class="badge-custom">Luxury</span>
+                                    <span class="badge-custom">Sports Car</span>
+                                    <span class="badge-custom">Certified</span>
+                                </div>
+                                <div class="current-bid">
+                                    <span class="bid-label mb-0">Price</span>
+                                    <span class="bid-amount">${{$selected_vehicle->price}}</span>
+
+                                </div>
+                                <div class="action-buttons mb-2">
+                                    <button class="btn-icon active" data-bs-toggle="tooltip" title="Add to Watchlist">
+                                        <i class="far fa-heart"></i>
+                                    </button>
+                                    <button class="btn-icon" data-bs-toggle="tooltip" title="Share">
+                                        <i class="fas fa-share-alt"></i>
+                                    </button>
+                                    <button class="btn-icon" data-bs-toggle="tooltip" title="Print">
+                                        <i class="fas fa-print"></i>
+                                    </button>
+                                </div>
+
+
+                                <div class="vehicle-purchase-form p-3">
+                                    <form>
+
+                                        <div class="mb-3">
+                                            <label for="name" class="form-label">Full Name</label>
+                                            <input type="text" name="name" id="name" class="form-control"
+                                                placeholder="Enter your full name" required>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="email" class="form-label">Email Address</label>
+                                            <input type="email" name="email" id="email" class="form-control"
+                                                placeholder="Enter your email" required>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="address" class="form-label">Address</label>
+                                            <textarea name="address" id="address" rows="2" class="form-control"
+                                                placeholder="Enter your address" required></textarea>
+                                        </div>
+
+                                    </form>
+                                </div>
+
+
+                            </div>
+
+                            <!-- Buy It Now Card -->
+                            <div class="buy-now-card">
+                                <h4>Buy It Now</h4>
+                                <div class="buy-now-price">${{$selected_vehicle->price}}</div>
+                                <!-- <p>Skip the auction and purchase immediately</p> -->
+                                <button class="btn btn-warning btn-buy-now">
+                                    <i class="fas fa-shopping-cart"></i>
+                                    Buy It Now
+                                </button>
+                            </div>
+
+                            <!-- Financing Card -->
+                            <div class="financing-card">
+                                <h4><i class="fas fa-calculator"></i> Financing Calculator</h4>
+                                <div class="financing-form">
+                                    <div class="form-group">
+                                        <label>Loan Amount</label>
+                                        <input type="number" class="form-control" value="185500">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Down Payment</label>
+                                        <input type="number" class="form-control" value="37100">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Term (months)</label>
+                                        <select class="form-select">
+                                            <option>36</option>
+                                            <option>48</option>
+                                            <option selected>60</option>
+                                            <option>72</option>
+                                        </select>
+                                    </div>
+                                    <div class="financing-result">
+                                        <div class="monthly-payment">
+                                            <span>Est. Monthly Payment</span>
+                                            <span class="amount">$2,847/mo</span>
+                                        </div>
+                                        <small>*Based on 4.9% APR for qualified buyers</small>
+                                    </div>
+                                </div>
+                                <button class="btn btn-primary btn-bid w-100">Get Pre-Approved</button>
+                            </div>
+
+                            <!-- Contact Card -->
+                            <div class="contact-card">
+                                <h4><i class="fas fa-phone"></i> Need Help?</h4>
+                                <p>Our specialists are here to assist you</p>
+                                <div class="contact-options">
+                                    <button class="btn btn-primary btn-bid">
+                                        <i class="fas fa-phone"></i>
+                                        Call Now
+                                    </button>
+                                    <button class="btn btn-outline-primary btn-auto-bid">
+                                        <i class="fas fa-envelope"></i>
+                                        Email
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        @endif
                     </div>
                 </div>
             </div>

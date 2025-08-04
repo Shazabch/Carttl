@@ -1,9 +1,12 @@
 <div>
     <h5>Specifications</h5> <hr>
     <div class="row">
-        <div class="col-md-4 mb-4"><label class="form-label">Mileage</label><input type="number" class="form-control @error('vehicleData.mileage') is-invalid @enderror" wire:model.defer="vehicleData.mileage">@error('vehicleData.mileage')<div class="invalid-feedback">{{ $message }}</div>@enderror</div>
+        <div class="col-md-4 mb-4"><label class="form-label">Mileage</label><input type="number" class="form-control @error('vehicleData.mileage') is-invalid @enderror" wire:model.defer="vehicleData.mileage">
+        @error('vehicleData.mileage')<div class="invalid-feedback">{{ $message }}</div>@enderror</div>
         <div class="col-md-4 mb-4"><label class="form-label">Engine (CC)</label><input type="number" class="form-control" wire:model.defer="vehicleData.engine_cc"></div>
+         @error('vehicleData.engine_cc') <div class="text-danger small mt-2">{{ $message }}</div> @enderror
         <div class="col-md-4 mb-4"><label class="form-label">Horsepower</label><input type="number" class="form-control" wire:model.defer="vehicleData.horsepower"></div>
+         @error('vehicleData.horsepower') <div class="text-danger small mt-2">{{ $message }}</div> @enderror
     </div>
     <div class="col-12 mb-4">
         <label class="form-label d-block">Transmission</label>

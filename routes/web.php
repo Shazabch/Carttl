@@ -5,14 +5,16 @@ use App\Http\Controllers\admin\DashboardController as AdminDashboardController;
 use App\Http\Controllers\admin\LoginController as AdminLoginController;
 use App\Http\Controllers\admin\VehicleManagerController;
 use App\Http\Controllers\VehicleController;
+use App\Http\Controllers\BlogController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\LoginController;
 use App\Models\Vehicle;
+use App\Models\Blog;
 use Illuminate\Support\Facades\Route;
 
 Route::view('/', 'home')->name('home');
-Route::view('/blog', 'blogs.index')->name('get-blog');
-Route::view('/blog/details', 'blogs.details')->name('get-blog-details');
+Route::get('/blog/{id}', [BlogController::class, 'blogDetails'])->name('get-blog');
+
 Route::view('/book-inspection', 'book-inspection')->name('book-inspection');
 
 Route::view('/car-auctions', 'auctions')->name('auctions');

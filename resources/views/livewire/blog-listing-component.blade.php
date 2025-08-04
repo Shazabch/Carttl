@@ -23,7 +23,7 @@
                                     <span>{{ $this->formateDate($featuredBlog->created_at) }}</span>
                                 </div>
                                 <h4 class="p-22 fw-600 my-3">{{ $featuredBlog->title ?? '' }}</h4>
-                                <a href="#" class="read-more-icon d-inline-block">
+                                <a href="{{ route('get-blog',$featuredBlog->id) }}" class="read-more-icon d-inline-block">
                                     <span class="icon-circle"><i class="fas fa-arrow-right"></i></span>
                                 </a>
                             </div>
@@ -48,7 +48,7 @@
                                 </div>
                                 <h6 class="my-3 p-20 fw-600">{{ $item->title ?? '' }}
                                 </h6>
-                                <a href="#"
+                                <a href="{{ route('get-blog',$item->id) }}"
                                     class="text-accent fw-semibold text-decoration-none d-flex align-items-center gap-2">
                                     Read Story
                                     <div class="icon-circle-sm">

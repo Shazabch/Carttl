@@ -14,7 +14,12 @@ class BlogController extends Controller
     {
         //
     }
+     
 
+     public function blogDetails($id){
+        return view('blogs.index',compact('id'));
+        
+    }
     /**
      * Show the form for creating a new resource.
      */

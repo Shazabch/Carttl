@@ -73,6 +73,7 @@ class VehicleFormComponent extends Component
         $this->vehicleData['is_featured'] = false;
         $this->vehicleData['condition'] = 'used';
         $this->vehicleData['status'] = 'draft';
+        $this->vehicleData['is_auction'] = false;
 
         // Pre-load data for dropdowns and selections
 

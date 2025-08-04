@@ -15,9 +15,9 @@ class VehicleListingComponent extends Component
     {
         $this->section=$section;
         if($section=='Auctions'){
-             $this->vehicles = Vehicle::all();
+             $this->vehicles = Vehicle::where('is_auction', 1)->get();
         }else{
-             $this->vehicles = Vehicle::all();
+             $this->vehicles = Vehicle::where('is_auction', 0)->get();;
         }
        
     }
