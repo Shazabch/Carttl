@@ -8,6 +8,7 @@ use App\Models\FuelType;
 use App\Models\Transmission;
 use App\Models\Vehicle;
 use App\Models\VehicleModel;
+use App\Models\Feature;
 use Illuminate\Support\Str;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -29,7 +30,15 @@ class VehicleFormComponent extends Component
     // --- Data for Dropdowns & Selections ---
     public $brands = [], $models = [], $bodyTypes = [], $fuelTypes = [], $transmissions = [];
 
-    protected $listeners = ['showCreateForm', 'showEditForm','addNewSelectOption' => 'handleAddNewSelectOption'];
+    protected $listeners = ['showCreateForm', 'showEditForm', 'addNewSelectOption' => 'handleAddNewSelectOption'];
+    public $allFeatures = [];
+    public $selectedFeatures = [];
+    public $exteriorFeatures = [];
+    public $tags = [];
+    public $interiorFeatures = [];
+
+
+
 
 
     // All rules point to the keys in the vehicleData array.
@@ -87,6 +96,10 @@ class VehicleFormComponent extends Component
         $this->bodyTypes = BodyType::all();
         $this->fuelTypes = FuelType::all();
         $this->transmissions = Transmission::all();
+        $this->allFeatures = Feature::where('type', 'simple')->get();
+        $this->exteriorFeatures = Feature::where('type', 'exterior')->get();
+        $this->interiorFeatures = Feature::where('type', 'interior')->get();
+        $this->tags = Feature::where('type', 'tag')->get();
     }
 
     // The hook now works reliably with the array.
@@ -145,6 +158,8 @@ class VehicleFormComponent extends Component
         }
         $this->currentStep = 1;
         $this->showForm = true;
+        $this->selectedFeatures = $vehicle->features->pluck('id')->toArray();
+
     }
 
 
@@ -159,7 +174,8 @@ class VehicleFormComponent extends Component
         }
 
         // Use updateOrCreate with the data array. This is clean and efficient.
-        Vehicle::updateOrCreate(['id' => $this->vehicle_id], $this->vehicleData);
+        $vehicle = Vehicle::updateOrCreate(['id' => $this->vehicle_id], $this->vehicleData);
+        $vehicle->features()->sync($this->selectedFeatures);
         $this->dispatch('success-notification', [
             'message' => $this->isEditing ? 'Vehicle updated successfully.' : 'Vehicle created successfully.'
         ]);
@@ -225,7 +241,7 @@ class VehicleFormComponent extends Component
             $newItem = Brand::create([
                 'name' => $newItemText,
             ]);
-        } else if($list === 'models' && !empty($newItemText)) {
+        } else if ($list === 'models' && !empty($newItemText)) {
             $brandId = data_get($this, 'vehicleData.brand_id');
             if (!$brandId) {
                 session()->flash('error', 'Please select a brand first.');

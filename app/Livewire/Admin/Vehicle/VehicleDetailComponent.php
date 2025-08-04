@@ -10,6 +10,9 @@ class VehicleDetailComponent extends Component
     public Vehicle $vehicle;
 
     public $showForm = false;
+    public $interiorFeatures;
+    public $exteriorFeatures;
+    public $tags;
 
     protected $listeners = ['vehicleSaved' => '$refresh', 'cancelForm' => 'cancel'];
 
@@ -25,13 +28,17 @@ class VehicleDetailComponent extends Component
     public function mount($vehicleId)
     {
         // Eager load all relationships for performance
-        $this->vehicle = Vehicle::find($vehicleId)->load([
+        $this->vehicle = Vehicle::with('features')->find($vehicleId)->load([
             'brand',
             'vehicleModel',
             'bodyType',
             'fuelType',
             'transmission'
         ]);
+
+        $this->exteriorFeatures = $this->vehicle->features->where('type', 'exterior');
+        $this->interiorFeatures = $this->vehicle->features->where('type', 'interior');
+        $this->tags = $this->vehicle->features->where('type', 'tag');
     }
 
     public function render()
