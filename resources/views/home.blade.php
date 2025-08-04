@@ -238,13 +238,15 @@
                     <div class="filter-bar mt-4">
                         <form class="">
                             <div class="row align-items-center g-2">
-                                <div  class="col-lg-12">
+                                <div class="col-lg-12">
                                     <ul class="nav filter-tabs" id="auctionTabs" role="tablist">
                                         <li class="nav-item" role="presentation">
-                                            <button class="nav-link active" id="buy-tab" data-bs-toggle="tab" data-bs-target="#buy" type="button" role="tab">Buy</button>
+                                            <button class="nav-link active" id="buy-tab" data-bs-toggle="tab"
+                                                data-bs-target="#buy" type="button" role="tab">Buy</button>
                                         </li>
                                         <li class="nav-item" role="presentation">
-                                            <button class="nav-link" id="bid-tab" data-bs-toggle="tab" data-bs-target="#bid" type="button" role="tab">Bid</button>
+                                            <button class="nav-link" id="bid-tab" data-bs-toggle="tab"
+                                                data-bs-target="#bid" type="button" role="tab">Bid</button>
                                         </li>
                                     </ul>
                                 </div>
@@ -331,14 +333,16 @@
                                 </div>
                             </div>
                             <div>
-                                <div class="advanced-filters-toggle d-flex align-items-center mt-3 ms-auto" data-bs-toggle="collapse" data-bs-target="#advancedFilters" aria-expanded="false" aria-controls="advancedFilters">
+                                <div class="advanced-filters-toggle d-flex align-items-center mt-3 ms-auto"
+                                    data-bs-toggle="collapse" data-bs-target="#advancedFilters" aria-expanded="false"
+                                    aria-controls="advancedFilters">
                                     <span>Advanced Filters</span>
                                     <i class="fas fa-chevron-down ms-2"></i>
                                 </div>
                             </div>
                             <div class="collapse advanced-filters mt-3" id="advancedFilters">
                                 <div class="row g-3">
-                                    <div class="col-md-3">
+                                    <div class="col-md-3 col-6">
                                         <label class="form-label">Body Style</label>
                                         <div class="form-check">
                                             <input class="form-check-input" type="checkbox" id="coupe">
@@ -357,7 +361,7 @@
                                             <label class="form-check-label" for="suv">SUV</label>
                                         </div>
                                     </div>
-                                    <div class="col-md-3">
+                                    <div class="col-md-3 col-6">
                                         <label class="form-label">Transmission</label>
                                         <div class="form-check">
                                             <input class="form-check-input" type="checkbox" id="automatic">
@@ -372,7 +376,7 @@
                                             <label class="form-check-label" for="semiauto">Semi-Auto</label>
                                         </div>
                                     </div>
-                                    <div class="col-md-3">
+                                    <div class="col-md-3 col-6">
                                         <label class="form-label">Drivetrain</label>
                                         <div class="form-check">
                                             <input class="form-check-input" type="checkbox" id="rwd">
@@ -387,7 +391,7 @@
                                             <label class="form-check-label" for="fwd">FWD</label>
                                         </div>
                                     </div>
-                                    <div class="col-md-3">
+                                    <div class="col-md-3 col-6">
                                         <label class="form-label">Features</label>
                                         <div class="form-check">
                                             <input class="form-check-input" type="checkbox" id="oneowner">
@@ -445,10 +449,7 @@
     </div>
 
     <!-- Featured Section -->
-  
-    @livewire('vehicle-listing-component',['section' => 'Auctions'])
-    @livewire('vehicle-listing-component',['section' => 'Vehicles'])
-    
+    @livewire('vehicle-listing-component', ['section' => 'Vehicles'])
     <!-- CTA 2 -->
     <section class="main-section ox-hidden">
         <div class="container">
@@ -488,6 +489,9 @@
         </div>
     </section>
     <!-- SERVICES -->
+
+    @livewire('vehicle-listing-component', ['section' => 'Auctions'])
+
     <section class="our-services ox-hidden">
         <div class="container">
             <div class="row justify-content-center mb-5">
@@ -505,7 +509,7 @@
                                 <img src="{{ asset('images/icons/s1.svg') }}" alt="Car with Driver" width="24">
                             </div>
                             <h5 class="p-20 fw-600">Sell Your Car</h5>
-                            <p class="text-muted mb-4">Get the best value—list your car and connect with serious buyers in
+                            <p class="text-muted">Get the best value—list your car and connect with serious buyers in
                                 minutes.</p>
                             <a href="" class="arrow-btn">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="#f59e0b"
@@ -604,8 +608,10 @@
                     </p>
                     <a href="{{ route('book-inspection') }}" class="btn-main white">
                         Book Now
-                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="#f59e0b" viewBox="0 0 14 14">
-                            <path d="M11.6654 3.97592L1.64141 13.9999L-0.00537109 12.3531L10.0174 2.32914H1.18372V-0.00012207H13.9946V12.8108H11.6654V3.97592Z" />
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="#f59e0b"
+                            viewBox="0 0 14 14">
+                            <path
+                                d="M11.6654 3.97592L1.64141 13.9999L-0.00537109 12.3531L10.0174 2.32914H1.18372V-0.00012207H13.9946V12.8108H11.6654V3.97592Z" />
                         </svg>
                     </a>
                 </div>
@@ -621,8 +627,7 @@
     <section class="section-faq ox-hidden">
         <div class="container">
             <div class="row align-items-center">
-                <div class="col-lg-5 mb-4 mb-lg-0" data-aos="fade-up" data-aos-delay="0" data-aos-duration="1000"
-                    data-aos-easing="ease-out-cubic">
+                <div class="col-lg-5 mb-4 mb-lg-0" data-aos="fade-up" data-aos-delay="0" data-aos-duration="1000" data-aos-anchor-placement="top-bottom">>
                     <div class="faq-img">
                         <img src="{{ asset('images/faq.webp') }}" class="img-fluid rounded-4" alt="">
                     </div>
@@ -698,12 +703,12 @@
     <!-- CTA 3 -->
     <section class="ft-cta py-5">
         <div class="container">
-            <div class="row align-items-center">
+            <div class="row align-items-center pb-4">
                 <div class="col-lg-9">
                     <h2 class="h-40 fw-600">Ready to Sell Your Car?</h2>
-                    <p class="mb-4">Get the best value fast — simple, secure, and hassle-free.</p>
+                    <p class="mb-0">Get the best value fast — simple, secure, and hassle-free.</p>
                 </div>
-                <div class="col-lg-3">
+                <div class="col-lg-3 text-end">
                     <a href="{{ route('sell-car') }}" class="btn-main">
                         Let's Go
                         <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="#f59e0b"

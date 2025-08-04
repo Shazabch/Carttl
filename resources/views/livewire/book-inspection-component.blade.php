@@ -137,6 +137,27 @@
                                     </div>
                                     <div class="col-lg-6 mb-3">
                                         <div class="form-group">
+                                            <label for="vehicleModel" class="form-label">Make</label>
+                                            <input type="text" class="form-control" id="vehicleModel"
+                                            placeholder="e.g. Corolla, Civic, Swift" wire:model="make">
+                                            @error('make')
+                                            <small class="text-danger">{{ $message }}</small>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6 mb-3">
+                                        <div class="form-group">
+                                            <label for="modelYear" class="form-label">Model Year</label>
+                                            <input type="number" class="form-control" id="modelYear"
+                                            placeholder="e.g. 2022" min="1990" max="2099"
+                                            wire:model="year">
+                                            @error('year')
+                                            <small class="text-danger">{{ $message }}</small>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-12 mb-3">
+                                        <div class="form-group">
                                             <label for="vehicleType" class="form-label">Vehicle Type</label>
                                             <select class="form-select" id="vehicleType" wire:model="type">
                                                 <option value="" selected disabled>Select vehicle type</option>
@@ -150,28 +171,7 @@
                                             @enderror
                                         </div>
                                     </div>
-                                    <div class="col-lg-6 mb-3">
-                                        <div class="form-group">
-                                            <label for="modelYear" class="form-label">Model Year</label>
-                                            <input type="number" class="form-control" id="modelYear"
-                                                placeholder="e.g. 2022" min="1990" max="2099"
-                                                wire:model="year">
-                                            @error('year')
-                                                <small class="text-danger">{{ $message }}</small>
-                                            @enderror
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-6 mb-3">
-                                        <div class="form-group">
-                                            <label for="vehicleModel" class="form-label">Make</label>
-                                            <input type="text" class="form-control" id="vehicleModel"
-                                                placeholder="e.g. Corolla, Civic, Swift" wire:model="make">
-                                            @error('make')
-                                                <small class="text-danger">{{ $message }}</small>
-                                            @enderror
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-6 mb-3">
+                                    {{-- <div class="col-lg-6 mb-3">
                                         <div class="form-group">
                                             <label for="model" class="form-label">Model</label>
                                             <input type="number" class="form-control" id="model"
@@ -181,7 +181,7 @@
                                                 <small class="text-danger">{{ $message }}</small>
                                             @enderror
                                         </div>
-                                    </div>
+                                    </div> --}}
                                     <div class="col-lg-12 mt-4">
                                         <button type="submit" class="btn-main dark justify-content-center w-100 py-3 p-20 fw-500">Submit Booking</button>
                                     </div>

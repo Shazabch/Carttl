@@ -35,6 +35,9 @@
                             <td>${{ number_format($vehicle->price, 2) }}</td>
                             <td><span class="badge bg-primary text-white">{{ Str::ucfirst($vehicle->status) }}</span></td>
                             <td>
+                                <a href="{{ route('admin.inspection.generate.from-vehicle', ['vehicle' => $vehicle->id]) }}" class="btn btn-sm btn-primary">
+                                    Create Inspection
+                                </a>
                                 <a href="{{ route('admin.vehicles.details', ['id' => $vehicle->id]) }}" class="btn btn-sm btn-secondary">
                                     <i class="fas fa-eye"></i> Details
                                 </a>

@@ -21,8 +21,9 @@
 
     <div class="card-body" style="background-color: #f8f9fa;">
         <div class="space-y-4">
+
             @if($currentStep === 1)
-            @include('livewire.admin.inspection.sections.section-basic-info') {{-- <--- ADD THIS LINE --}}
+            @include('livewire.admin.inspection.sections.section-basic-info')
             @include('livewire.admin.inspection.sections.section-exterior')
             @endif
             @if($currentStep === 2)

@@ -1,4 +1,3 @@
-{{-- resources/views/livewire/admin/inspection/sections/section-basic-info.blade.php --}}
 
 <div class="form-section">
     <div class="form-section-header">
@@ -6,7 +5,6 @@
     </div>
     <div class="form-section-body">
         <div class="row">
-            {{-- We use the 'input-text' partial for most of these --}}
             <div class="col-md-4">
                 @include('livewire.admin.inspection.sections.partials.input-text', ['label' => 'Make', 'property' => 'make'])
             </div>
