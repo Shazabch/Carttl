@@ -10,18 +10,18 @@
                                 <img src="https://images.unsplash.com/photo-1544636331-e26879cd4d9b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80"
                                     alt="2023 Porsche 911 Turbo S" class="main-image" id="mainImage">
                                 <div class="image-overlay">
-                                      @if($selected_vehicle->live_auction)
+                                    @if($selected_vehicle->live_auction)
                                     <div class="auction-status">
-                                       
+
                                         <span class="status-badge live">LIVE AUCTION</span>
-                                       
-                                        
+
+
                                         <div class="time-remaining">
                                             <i class="fas fa-clock"></i>
                                             <span id="countdown">2d 14h 32m</span>
                                         </div>
                                     </div>
-                                     @endif
+                                    @endif
                                     <div class="image-controls">
                                         <button class="control-btn" id="prevImage"><i
                                                 class="fas fa-chevron-left"></i></button>
@@ -171,30 +171,13 @@
                                 </div>
                                 <div class="detail-content">
                                     <div class="feature-grid">
+                                        @foreach($exteriorFeatures as $feature)
                                         <div class="feature-item">
                                             <i class="fas fa-check-circle"></i>
-                                            <span>LED Headlights with PDLS+</span>
+                                            <span>{{$feature->name}}</span>
                                         </div>
-                                        <div class="feature-item">
-                                            <i class="fas fa-check-circle"></i>
-                                            <span>Carbon Fiber Roof</span>
-                                        </div>
-                                        <div class="feature-item">
-                                            <i class="fas fa-check-circle"></i>
-                                            <span>Sport Exhaust System</span>
-                                        </div>
-                                        <div class="feature-item">
-                                            <i class="fas fa-check-circle"></i>
-                                            <span>20" Turbo Wheels</span>
-                                        </div>
-                                        <div class="feature-item">
-                                            <i class="fas fa-check-circle"></i>
-                                            <span>Ceramic Composite Brakes</span>
-                                        </div>
-                                        <div class="feature-item">
-                                            <i class="fas fa-check-circle"></i>
-                                            <span>Adaptive Aerodynamics</span>
-                                        </div>
+                                        @endforeach
+
                                     </div>
                                 </div>
                             </div>
@@ -206,31 +189,14 @@
                                     </h3>
                                 </div>
                                 <div class="detail-content">
-                                    <div class="feature-grid">
+                                     <div class="feature-grid">
+                                        @foreach($interiorFeatures as $feature)
                                         <div class="feature-item">
                                             <i class="fas fa-check-circle"></i>
-                                            <span>18-Way Power Sport Seats</span>
+                                            <span>{{$feature->name}}</span>
                                         </div>
-                                        <div class="feature-item">
-                                            <i class="fas fa-check-circle"></i>
-                                            <span>Alcantara Interior Package</span>
-                                        </div>
-                                        <div class="feature-item">
-                                            <i class="fas fa-check-circle"></i>
-                                            <span>10.9" PCM Touchscreen</span>
-                                        </div>
-                                        <div class="feature-item">
-                                            <i class="fas fa-check-circle"></i>
-                                            <span>Bose Surround Sound</span>
-                                        </div>
-                                        <div class="feature-item">
-                                            <i class="fas fa-check-circle"></i>
-                                            <span>Climate Control</span>
-                                        </div>
-                                        <div class="feature-item">
-                                            <i class="fas fa-check-circle"></i>
-                                            <span>Sport Chrono Package</span>
-                                        </div>
+                                        @endforeach
+
                                     </div>
                                 </div>
                             </div>
@@ -329,9 +295,9 @@
                                     <h3>2023 Porsche 911 Turbo S</h3>
                                 </div>
                                 <div class="car-subtitle">
-                                    <span class="badge-custom">Luxury</span>
-                                    <span class="badge-custom">Sports Car</span>
-                                    <span class="badge-custom">Certified</span>
+                                    @foreach($tags as $feature)
+                                    <span class="badge-custom">{{$feature->name}}</span>
+                                    @endforeach
                                 </div>
                                 <div class="current-bid">
                                     <span class="bid-label mb-0">Current Bid</span>
@@ -468,9 +434,9 @@
                                     <h3>{{$selected_vehicle->title}}</h3>
                                 </div>
                                 <div class="car-subtitle">
-                                    <span class="badge-custom">Luxury</span>
-                                    <span class="badge-custom">Sports Car</span>
-                                    <span class="badge-custom">Certified</span>
+                                    @foreach($tags as $feature)
+                                    <span class="badge-custom">{{$feature->name}}</span>
+                                    @endforeach
                                 </div>
                                 <div class="current-bid">
                                     <span class="bid-label mb-0">Price</span>
