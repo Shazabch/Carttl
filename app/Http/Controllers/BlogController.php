@@ -14,11 +14,12 @@ class BlogController extends Controller
     {
         //
     }
-     
 
-     public function blogDetails($id){
-        return view('blogs.index',compact('id'));
-        
+
+    public function blogDetails($slug)
+    {
+
+        return view('blogs.index',['slug' => $slug]);
     }
     /**
      * Show the form for creating a new resource.

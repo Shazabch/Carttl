@@ -14,7 +14,7 @@ use App\Models\Blog;
 use Illuminate\Support\Facades\Route;
 
 Route::view('/', 'home')->name('home');
-Route::get('/blog/{id}', [BlogController::class, 'blogDetails'])->name('get-blog');
+Route::get('/blog/{slug}', [BlogController::class, 'blogDetails'])->name('get-blog');
 
 Route::view('/book-inspection', 'book-inspection')->name('book-inspection');
 

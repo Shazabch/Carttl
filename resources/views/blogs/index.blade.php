@@ -11,5 +11,5 @@
 @append
 
 @section('content')
-@livewire('blog-detail-component',['id' => $id])
+@livewire('blog-detail-component',['slug' => $slug])
 @endsection
