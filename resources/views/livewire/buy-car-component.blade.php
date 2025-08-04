@@ -1,6 +1,6 @@
 <div>
      @if ($formSubmitted)
-        <div class="card shadow-lg border-0 rounded-lg text-center p-4 p-md-5">
+        <div class="card  border-0 rounded-lg text-center p-4 p-md-5">
             <div class="card-body">
                 <div class="fa-4x text-success mb-4">
                     <i class="fas fa-check-circle fa-beat"></i>
