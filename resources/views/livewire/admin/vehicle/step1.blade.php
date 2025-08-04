@@ -50,7 +50,6 @@
             @error('vehicleData.top_speed') <div class="invalid-feedback">{{ $message }}</div> @enderror
         </div>
 
-    </div>
-   
 
+    </div>
 </div>

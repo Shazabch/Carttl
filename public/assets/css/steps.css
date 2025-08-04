@@ -1,81 +1,120 @@
-/* Custom Styles for Livewire Wizard */
-.wizard-progress {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    position: relative;
-    width: 80%;
-    margin: 2rem auto; /* Center the progress bar */
-}
+  /*
+    |--------------------------------------------------------------------------
+    | Wizard Stepper Styles (Matches the screenshot)
+    |--------------------------------------------------------------------------
+    */
+    .wizard-progress {
+        position: relative;
+        display: flex;
+        justify-content: space-between;
+        width: 80%;
+        margin: 0 auto;
+    }
 
-.wizard-progress::before {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 0;
-    transform: translateY(-50%);
-    height: 4px;
-    width: 100%;
-    background-color: #e9ecef; /* Light gray line */
-    z-index: 1;
-}
+    /* The gray line underneath */
+    .wizard-progress::before {
+        content: '';
+        position: absolute;
+        top: 19px; /* Vertically center with the icon */
+        left: 0;
+        width: 100%;
+        height: 4px;
+        background-color: #e0e0e0;
+        z-index: 1;
+    }
 
-.wizard-progress .progress-bar-line {
-    position: absolute;
-    top: 50%;
-    left: 0;
-    transform: translateY(-50%);
-    height: 4px;
-    background-color: #0d6efd; /* Bootstrap primary color */
-    z-index: 2;
-    transition: width 0.4s ease-in-out;
-}
+    /* The blue progress line that grows */
+    .progress-bar-line {
+        position: absolute;
+        top: 19px; /* Match the gray line */
+        left: 0;
+        height: 4px;
+        background-color: #0d6efd; /* Bootstrap Primary Blue */
+        z-index: 2;
+        transition: width 0.4s ease;
+    }
 
-.wizard-step {
-    position: relative;
-    z-index: 3;
-    text-align: center;
-}
+    .wizard-step {
+        position: relative;
+        z-index: 3;
+        text-align: center;
+        color: #adb5bd; /* Default gray color for text */
+    }
 
-.step-icon {
-    height: 40px;
-    width: 40px;
-    background-color: #e9ecef; /* Light gray circle */
-    border: 3px solid #e9ecef;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: bold;
-    color: #495057;
-    transition: all 0.4s ease-in-out;
-}
+    .step-icon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background-color: #fff;
+        border: 2px solid #adb5bd; /* Default gray border */
+        margin: 0 auto 10px auto;
+        font-size: 1.2rem;
+        font-weight: bold;
+        transition: all 0.4s ease;
+    }
 
-.step-label {
-    margin-top: 0.5rem;
-    font-size: 0.9rem;
-    color: #6c757d; /* Muted text */
-    font-weight: 500;
-}
+    .step-label {
+        font-size: 0.9rem;
+        font-weight: 500;
+    }
 
-/* Active and Completed Step Styles */
-.wizard-step.active .step-icon {
-    background-color: #fff;
-    border-color: #0d6efd;
-    color: #0d6efd;
-}
+    /* --- Step States --- */
 
-.wizard-step.active .step-label {
-    color: #0d6efd;
-    font-weight: bold;
-}
+    /* Active Step */
+    .wizard-step.active .step-icon {
+        border-color: #0d6efd;
+        color: #0d6efd;
+    }
+    .wizard-step.active .step-label {
+        color: #0d6efd;
+        font-weight: bold;
+    }
 
-.wizard-step.completed .step-icon {
-    background-color: #0d6efd;
-    border-color: #0d6efd;
-    color: #fff;
-}
+    /* Completed Step */
+    .wizard-step.completed .step-icon {
+        background-color: #0d6efd;
+        border-color: #0d6efd;
+        color: #fff;
+    }
+    .wizard-step.completed .step-label {
+        color: #212529; /* Standard text color */
+    }
 
-.wizard-step.completed .step-label {
-    color: #212529; /* Dark text for completed */
-}
+
+    /*
+    |--------------------------------------------------------------------------
+    | Form Field Styles (Kept from previous version)
+    |--------------------------------------------------------------------------
+    */
+    .option-card {
+        display: block;
+        padding: 0.75rem 1rem;
+        border: 1px solid gray;
+        border-radius: 20px;
+        text-align: center;
+        cursor: pointer;
+        transition: all 0.2s ease-in-out;
+        position: relative;
+        background-color: white;
+    }
+    .option-card:hover {
+        border-color: blue;
+    }
+    .option-card.selected {
+        border-color: gray;
+        background-color: gray;
+        color: white;
+        font-weight: 500;
+        box-shadow: 0 0 0 2px var(--bs-primary-border-subtle);
+    }
+    /* You can use a checkmark icon or a simple border highlight */
+    .option-card.selected::after {
+        content: '';
+        position: absolute;
+        top: -2px; right: -2px; bottom: -2px; left: -2px;
+        border: 2px solid var(--bs-primary);
+        border-radius: inherit;
+    }

@@ -157,5 +157,16 @@ class Vehicle extends Model
     {
         return $this->belongsToMany(Feature::class, 'vehicle_features', 'vehicle_id', 'feature_id');
     }
-   
+    public function coverImage()
+    {
+
+        return $this->hasOne(VehicleImage::class)->where('is_cover', true)->withDefault(function ($image, $vehicle) {
+
+            $image->path = $vehicle->images()->first()->path ?? 'default_image.png';
+        });
+    }
+    public function images()
+    {
+        return $this->hasMany(VehicleImage::class);
+    }
 }

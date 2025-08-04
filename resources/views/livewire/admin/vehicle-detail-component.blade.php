@@ -24,6 +24,12 @@
                                 <i class="fas fa-photo-video mx-2 text-dark"></i> Details
                             </a>
                         </li>
+                         <li class="nav-item mb-2">
+                            <a class="nav-link {{ $activeTab == 'assets' ? 'active' : '' }}"
+                                wire:click.prevent="setActiveTab('assets')" href="#">
+                                <i class="fas fa-photo-video mx-2 text-dark"></i> Assets
+                            </a>
+                        </li>
                         <li class="nav-item mb-2">
                             <a class="nav-link {{ $activeTab == 'history' ? 'active' : '' }}"
                                 wire:click.prevent="setActiveTab('history')" href="#">

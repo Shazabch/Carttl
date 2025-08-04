@@ -10,12 +10,15 @@ use App\Models\Vehicle;
 use App\Models\VehicleModel;
 use App\Models\Feature;
 use Illuminate\Support\Str;
+use Livewire\Attributes\On;
 use Livewire\Component;
+use Livewire\Features\SupportFileUploads\WithFileUploads;
 use Livewire\WithPagination;
 
 class VehicleFormComponent extends Component
 {
     use WithPagination;
+    use WithFileUploads;
 
     // --- Component State ---
     public $showForm = false;
@@ -37,6 +40,8 @@ class VehicleFormComponent extends Component
     public $tags = [];
     public $interiorFeatures = [];
 
+    public $images = [];
+    public $existingImages = [];
 
 
 
@@ -159,23 +164,31 @@ class VehicleFormComponent extends Component
         $this->currentStep = 1;
         $this->showForm = true;
         $this->selectedFeatures = $vehicle->features->pluck('id')->toArray();
+        $this->existingImages = $vehicle->images->map(function ($image) {
+            return [
+                'name' => basename($image->path),
+                'url' => asset('storage/' . $image->path)
+            ];
+        })->all();
 
     }
 
 
     public function saveVehicle()
     {
-        // Run the full validation as a final check before saving
-        $this->validate();
 
-        // Add the slug if we are creating a new vehicle
+        $this->validate();
         if (!$this->isEditing) {
             $this->vehicleData['slug'] = Str::slug($this->vehicleData['title']);
         }
-
-        // Use updateOrCreate with the data array. This is clean and efficient.
         $vehicle = Vehicle::updateOrCreate(['id' => $this->vehicle_id], $this->vehicleData);
         $vehicle->features()->sync($this->selectedFeatures);
+         if (!empty($this->images)) {
+            foreach ($this->images as $imageFile) {
+                $path = $imageFile->store('vehicle_images', 'public');
+                $vehicle->images()->create(['path' => $path]);
+            }
+        }
         $this->dispatch('success-notification', [
             'message' => $this->isEditing ? 'Vehicle updated successfully.' : 'Vehicle created successfully.'
         ]);

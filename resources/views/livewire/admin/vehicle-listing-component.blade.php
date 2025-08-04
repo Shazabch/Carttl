@@ -18,6 +18,7 @@
                 <table class="table table-bordered table-hover">
                     <thead>
                         <tr>
+                            <th>Image</th>
                             <th>Title</th>
                             <th>Brand / Model</th>
                             <th>Year</th>
@@ -29,6 +30,14 @@
                     <tbody>
                         @forelse ($vehicles as $vehicle)
                         <tr wire:key="{{ $vehicle->id }}">
+                             <td>
+                                <img
+                                    src="{{ asset('storage/' . $vehicle->coverImage->path) }}"
+                                    alt="{{ $vehicle->title }}"
+                                    class="rounded"
+                                    style="width: 60px; height: 60px; object-fit: cover;"
+                                >
+                            </td>
                             <td>{{ $vehicle->title }}</td>
                             <td>{{ $vehicle->brand?->name }} / {{ $vehicle->vehicleModel?->name }}</td>
                             <td>{{ $vehicle->year }}</td>
