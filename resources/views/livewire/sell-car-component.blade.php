@@ -147,14 +147,13 @@
 
                 {{-- STEP 3: Images --}}
                 @if ($currentStep === 3)
-                    <div id="step-3">
+                  <div id="step-3">
                         <h5 class="p-20 fw-600 mb-4">Upload Images</h5>
-                        <div class="col-lg-12" wire:ignore>
-                            <div class="form-group mb-3">
-                                <label class="form-label">Vehicle Images (up to 6)</label>
-                                <input type="file" wire:model="images" multiple id="imageUpload" class="filepond">
-                            </div>
-                            @error('images') <div class="text-danger small mt-1">{{ $message }}</div> @enderror
+                        <div class="col-lg-12">
+                            {{-- This is our new, clean, reusable component --}}
+                            <x-multi-image-uploader wire:model="images" />
+
+                            {{-- The validation errors still work perfectly --}}
                             @error('images.*') <div class="text-danger small mt-1">{{ $message }}</div> @enderror
                         </div>
                     </div>

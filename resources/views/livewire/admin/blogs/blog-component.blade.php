@@ -29,7 +29,7 @@
 
                         <div class="mb-3">
                             <label for="content" class="form-label">Content</label>
-                            <textarea class="form-control @error('content') is-invalid @enderror" id="content" rows="10" wire:model.defer="content"></textarea>
+                            <x-ck-editor wire:model="content" />
                             @error('content') <div class="invalid-feedback">{{ $message }}</div> @enderror
                         </div>
                     </div>
@@ -39,21 +39,12 @@
                         <div class="mb-3">
 
                             <!-- Image Upload -->
-                            <div class="mb-3 position-relative">
-                                <label for="image" class="form-label">Image</label>
-                                <div class="position-relative">
-                                    <x-filepond-input wire:model="image" allowImagePreview imagePreviewMaxHeight="200"
-                                        allowFileTypeValidation acceptedFileTypes="['image/jpeg', 'image/png','image/jpg']"
-                                        allowFileSizeValidation maxFileSize="20mb" />
-                                </div>
-                                @error('image') <small class="text-danger">{{ $message }}</small> @enderror
-                            </div>
-
-                            <div class="mt-3">
-                                @if ($isEditing && $editingBlog->image)
-                                <p>Current Image:</p>
-                                <img src="{{ asset('storage/' . $editingBlog->image) }}" class="img-fluid rounded">
-                                @endif
+                            <div class="mb-3">
+                                <x-image-preview-input
+                                    wire:model="image"
+                                    label="Featured Image"
+                                    :existing-image="$isEditing && $editingBlog->image ? asset('storage/' . $editingBlog->image) : null" />
+                                @error('image') <small class="text-danger d-block mt-1">{{ $message }}</small> @enderror
                             </div>
                         </div>
                         <hr>
@@ -144,6 +135,9 @@
 </div>
 
 @push('scripts')
+
+<script src="https://cdn.ckeditor.com/ckeditor5/41.0.0/classic/ckeditor.js"></script>
+
 <script>
     // Listen for the 'livewire:initialized' event to ensure Livewire is ready
     document.addEventListener('livewire:initialized', () => {
