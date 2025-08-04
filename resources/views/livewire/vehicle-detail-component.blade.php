@@ -189,7 +189,7 @@
                                     </h3>
                                 </div>
                                 <div class="detail-content">
-                                     <div class="feature-grid">
+                                    <div class="feature-grid">
                                         @foreach($interiorFeatures as $feature)
                                         <div class="feature-item">
                                             <i class="fas fa-check-circle"></i>
@@ -456,41 +456,14 @@
                                 </div>
 
 
-                                <div class="vehicle-purchase-form p-3">
-                                    <form>
-
-                                        <div class="mb-3">
-                                            <label for="name" class="form-label">Full Name</label>
-                                            <input type="text" name="name" id="name" class="form-control"
-                                                placeholder="Enter your full name" required>
-                                        </div>
-                                        <div class="mb-3">
-                                            <label for="email" class="form-label">Email Address</label>
-                                            <input type="email" name="email" id="email" class="form-control"
-                                                placeholder="Enter your email" required>
-                                        </div>
-                                        <div class="mb-3">
-                                            <label for="address" class="form-label">Address</label>
-                                            <textarea name="address" id="address" rows="2" class="form-control"
-                                                placeholder="Enter your address" required></textarea>
-                                        </div>
-
-                                    </form>
-                                </div>
 
 
                             </div>
-
-                            <!-- Buy It Now Card -->
-                            <div class="buy-now-card">
-                                <h4>Buy It Now</h4>
-                                <div class="buy-now-price">${{$selected_vehicle->price}}</div>
-                                <!-- <p>Skip the auction and purchase immediately</p> -->
-                                <button class="btn btn-warning btn-buy-now">
-                                    <i class="fas fa-shopping-cart"></i>
-                                    Buy It Now
-                                </button>
+                            <div class="auction-card">
+                                @livewire('buy-car-component',['selected_vehicle' => $selected_vehicle])
                             </div>
+
+
 
                             <!-- Financing Card -->
                             <div class="financing-card">
