@@ -19,7 +19,7 @@
                 <table class="table table-hover align-middle">
                     <thead class="table-light">
                         <tr>
-                            <th>#</th>
+                            <th>#</th> 
                             <th>Name & Number</th>
                             <th>Email</th>
                             <th>Brand & Model</th>

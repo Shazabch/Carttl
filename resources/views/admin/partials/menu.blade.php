@@ -51,7 +51,7 @@
                          </li>
 
                          <li class="menu-item " aria-haspopup="true">
-                             <a href="#" class="menu-link">
+                             <a href="{{ route('admin.purchase.list') }}" class="menu-link">
                                  <i class="menu-bullet menu-bullet-dot"><span></span></i>
                                  <span class="menu-text">Purchase Enquiries</span>
                              </a>
