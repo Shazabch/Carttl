@@ -22,6 +22,7 @@
         this.$wire.addDamage(x, y, bodyPart);
     }
 }" style="position: relative;" class="container">
+<link rel="stylesheet" href="{{ asset('css/car-damage-assessment.css') }}">
     <div class="header">
         <h1>Exterior Condition Assessment</h1>
     </div>
@@ -243,3 +244,5 @@
         </div>
     </div>
 </div>
+
+

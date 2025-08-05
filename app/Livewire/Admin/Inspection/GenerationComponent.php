@@ -23,6 +23,7 @@ class GenerationComponent extends Component
     public $currentStep = 1;
     public $search = null;
     public $report_id = null;
+    public $inspectionId;
 
     public $showDetails = false;
     public ?VehicleInspectionReport $reportInView = null;
@@ -158,9 +159,14 @@ class GenerationComponent extends Component
         // $this->validate();
         $this->reportData['vehicle_id'] = $this->linkedVehicleId;
         $this->reportData['inspection_enquiry_id'] = $this->linkedEnquiryId;
-        VehicleInspectionReport::updateOrCreate(['id' => $this->report_id], $this->reportData);
-        session()->flash('success', $this->isEditing ? 'Report updated successfully.' : 'Report created successfully.');
-        $this->cancel();
+        $inspection = VehicleInspectionReport::updateOrCreate(['id' => $this->report_id], $this->reportData);
+        $this->inspectionId = $inspection->id;
+        if ($this->currentStep == 3) {
+            $this->currentStep++;
+        } else {
+            session()->flash('success', $this->isEditing ? 'Report updated successfully.' : 'Report created successfully.');
+            $this->cancel();
+        }
     }
 
     public function cancel()

@@ -10,6 +10,8 @@ class CarDamage extends Model
     use HasFactory;
 
     protected $fillable = [
+        'inspection_id',
+        'vehicle_id',
         'type',
         'body_part',
         'severity',
