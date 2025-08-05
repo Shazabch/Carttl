@@ -164,7 +164,7 @@ class VehicleFormComponent extends Component
         $this->currentStep = 1;
         $this->showForm = true;
         $this->selectedFeatures = $vehicle->features->pluck('id')->toArray();
-        $this->existingImages = $vehicle->images->map(function ($image) {
+        $this->existingImages = $vehicle->images?->map(function ($image) {
             return [
                 'name' => basename($image->path),
                 'url' => asset('storage/' . $image->path)

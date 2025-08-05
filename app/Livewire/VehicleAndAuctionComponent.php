@@ -46,7 +46,11 @@ class VehicleAndAuctionComponent extends Component
         if ($this->section == 'Auctions') {
             $vehiclesQuery->where('is_auction', 1);
         } else {
-            // $vehiclesQuery->where('is_auction', 0);
+
+            $vehiclesQuery->where(function ($q) {
+                $q->where('is_auction', 0)
+                    ->orWhereNull('is_auction');
+            });
         }
         if ($this->year) {
             $vehiclesQuery->where('year', $this->year);
@@ -54,6 +58,7 @@ class VehicleAndAuctionComponent extends Component
 
 
         $vehicles = $vehiclesQuery->paginate(10);
+
 
         return view('livewire.vehicle-and-auction-component', [
             'vehicles' => $vehicles,

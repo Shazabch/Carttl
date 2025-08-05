@@ -165,4 +165,8 @@ class Vehicle extends Model
     {
         return $this->hasOne(VehicleBid::class)->latestOfMany();
     }
+     public function images(): HasMany
+    {
+        return $this->hasMany(VehicleImage::class);
+    }
 }
