@@ -1,8 +1,4 @@
-@extends('layouts.guest')
-@section('title')
-    Car Auctions
-@endsection
-@section('content')
+<div>
     <div class="car-listing-section">
         <div class="container-fluid">
             <div class="row">
@@ -67,14 +63,13 @@
                         <!-- Year Filter -->
                         <div class="filter-group">
                             <h6 class="filter-title">Year</h6>
-                            <select class="form-select form-select-sm">
-                                <option>Any Year</option>
-                                <option>2024</option>
-                                <option>2023</option>
-                                <option>2022</option>
-                                <option>2021</option>
-                                <option>2020</option>
-                            </select>
+                           <select wire:model.live="year" class="form-select">
+                            <option value="">Any Year</option>
+                           <option value="2024">2024</option>
+                            <option value="2023">2023</option>
+                           <option value="2022">2022</option>
+                          </select>
+
                         </div>
 
                         <!-- Mileage Filter -->
@@ -159,15 +154,15 @@
                             <div class="filter-block mb-4">
                                 <h4 class="p-18 fw-500 mb-4">Price</h4>
                                 <div class="price-range-block">
-                                <div class="row g-2 mb-3">
-                                    <div class="col-6">
-                                    <input type="number" min="0" max="9900" oninput="validity.valid||(value='0');" id="min_price" placeholder="Min" class="form-control price-range-field" />
+                                    <div class="row g-2 mb-3">
+                                        <div class="col-6">
+                                            <input type="number" min="0" max="9900" oninput="validity.valid||(value='0');" id="min_price" placeholder="Min" class="form-control price-range-field" />
+                                        </div>
+                                        <div class="col-6">
+                                            <input type="number" min="0" max="10000" oninput="validity.valid||(value='10000');" id="max_price" placeholder="Max" class="form-control price-range-field" />
+                                        </div>
                                     </div>
-                                    <div class="col-6">
-                                    <input type="number" min="0" max="10000" oninput="validity.valid||(value='10000');" id="max_price" placeholder="Max" class="form-control price-range-field" />
-                                    </div>
-                                </div>
-                                <div id="slider-range" class="price-filter-range" name="rangeInput"></div>
+                                    <div id="slider-range" class="price-filter-range" name="rangeInput"></div>
                                 </div>
                             </div>
                             <!-- Mileage Filter -->
@@ -249,12 +244,13 @@
                     <div class="car-listings" id="carListings">
                         <div class="row g-4" id="gridView">
                             <!-- Car Card 1 -->
-                            @include('components.guest.listing-card')
-
-                            <!-- Car Card 2 -->
-
-
-                            <!-- Add more car cards as needed -->
+                            @foreach($vehicles as $item)
+                            @if($section=='Vehicles')
+                            @include('components.guest.listing-card-vehicle')
+                            @else
+                            @include('components.guest.listing-card-auction')
+                            @endif
+                            @endforeach
                         </div>
 
                         <!-- List View (Hidden by default) -->
@@ -284,98 +280,12 @@
                             </div>
                         </div>
                     </div>
-                    <!-- Pagination -->
-                    <nav class="mt-5">
-                        <ul class="pagination justify-content-center gap-1">
-                            <li class="page-item disabled">
-                                <a class="page-link rounded-circle d-flex align-items-center justify-content-center" href="#" aria-label="Previous">
-                                    <i class="fas fa-chevron-left"></i>
-                                </a>
-                            </li>
-                            <li class="page-item active">
-                                <a class="page-link rounded" href="#">1</a>
-                            </li>
-                            <li class="page-item">
-                                <a class="page-link rounded" href="#">2</a>
-                            </li>
-                            <li class="page-item">
-                                <a class="page-link rounded" href="#">3</a>
-                            </li>
-                            <li class="page-item disabled">
-                                <a class="page-link rounded" href="#">...</a>
-                            </li>
-                            <li class="page-item">
-                                <a class="page-link rounded" href="#">21</a>
-                            </li>
-                            <li class="page-item">
-                                <a class="page-link rounded-circle d-flex align-items-center justify-content-center" href="#" aria-label="Next">
-                                    <i class="fas fa-chevron-right"></i>
-                                </a>
-                            </li>
-                        </ul>
-                    </nav>
+                    <div class="mt-3">
+                        {{ $vehicles->links() }}
+                    </div>
+
                 </div>
             </div>
         </div>
     </div>
-@endsection
-<script>
-    // ===== VIEW SWITCHING FUNCTIONALITY ===== 
-    document.addEventListener('DOMContentLoaded', function() {
-        const viewButtons = document.querySelectorAll('[data-view]');
-        const gridView = document.getElementById('gridView');
-        const listView = document.getElementById('listView');
-
-        viewButtons.forEach(button => {
-            button.addEventListener('click', function() {
-                // Remove active class from all buttons
-                viewButtons.forEach(btn => btn.classList.remove('active'));
-                // Add active class to clicked button
-                this.classList.add('active');
-
-                const view = this.getAttribute('data-view');
-
-                switch (view) {
-                    case 'grid-large':
-                        gridView.className = 'row g-4';
-                        gridView.querySelectorAll('.col-md-6').forEach(col => {
-                            col.className = 'col-lg-6';
-                        });
-                        showGridView();
-                        break;
-                    case 'grid':
-                        gridView.className = 'row g-4';
-                        gridView.querySelectorAll('.col-lg-6').forEach(col => {
-                            col.className = 'col-md-6 col-lg-4';
-                        });
-                        showGridView();
-                        break;
-                    case 'grid-small':
-                        gridView.className = 'row g-3';
-                        gridView.querySelectorAll('.col-md-6').forEach(col => {
-                            col.className = 'col-md-4 col-lg-3';
-                        });
-                        showGridView();
-                        break;
-                    case 'list':
-                        showListView();
-                        break;
-                    case 'table':
-                        // Implement table view
-                        showGridView();
-                        break;
-                }
-            });
-        });
-
-        function showGridView() {
-            gridView.classList.remove('d-none');
-            listView.classList.add('d-none');
-        }
-
-        function showListView() {
-            gridView.classList.add('d-none');
-            listView.classList.remove('d-none');
-        }
-    });
-</script>
+</div>

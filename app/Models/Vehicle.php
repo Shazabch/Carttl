@@ -157,5 +157,12 @@ class Vehicle extends Model
     {
         return $this->belongsToMany(Feature::class, 'vehicle_features', 'vehicle_id', 'feature_id');
     }
-
+    public function bids()
+    {
+        return $this->hasMany(VehicleBid::class);
+    }
+    public function latestBid()
+    {
+        return $this->hasOne(VehicleBid::class)->latestOfMany();
+    }
 }

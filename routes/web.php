@@ -19,7 +19,7 @@ Route::get('/blog/{slug}', [BlogController::class, 'blogDetails'])->name('get-bl
 Route::view('/book-inspection', 'book-inspection')->name('book-inspection');
 
 Route::view('/car-auctions', 'auctions')->name('auctions');
-Route::view('/buy-cars', 'sell-cars')->name('buy-cars');
+Route::view('/buy-cars', 'buy-cars')->name('buy-cars');
 Route::view('/sell-car', 'sell-car')->name('sell-car');
 Route::view('/car-favorites', 'favorites')->name('favorites');
 Route::get('/car-detail/{id}', [VehicleController::class, 'vehicleDetails'])->name('car-detail-page');

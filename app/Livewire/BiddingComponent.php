@@ -32,7 +32,7 @@ class BiddingComponent extends Component
         $this->tags = $this->selected_vehicle->features->where('type', 'tag');
         $this->totalBids = VehicleBid::where('vehicle_id', $this->selected_vehicle->id)->count();
         $this->highestBid = VehicleBid::where('vehicle_id', $this->selected_vehicle->id)->max('bid_amount') ?? 0;
-        $this->bids = VehicleBid::orderBy('id', 'desc')->take(3)->get();
+        $this->bids = VehicleBid::orderBy('id', 'desc')->where('vehicle_id', $this->selected_vehicle->id)->take(3)->get();
     }
     public function saveBid()
     {

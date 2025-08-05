@@ -1,13 +1,10 @@
 @extends('layouts.guest')
 @section('title')
-    Car Auctions
+    Car Listings
 @endsection
-
 @section('content')
-     @livewire('vehicle-and-auction-component', ['section' => 'Auctions'])
+    @livewire('vehicle-and-auction-component', ['section' => 'Vehicles'])
 @endsection
-
-
 <script>
     // ===== VIEW SWITCHING FUNCTIONALITY ===== 
     document.addEventListener('DOMContentLoaded', function() {
