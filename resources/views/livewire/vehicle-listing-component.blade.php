@@ -1,8 +1,10 @@
 <div>
-<section class="ox-hidden section-auction">
+
+    <section class="ox-hidden section-auction">
         <div class="card-slider-wrap">
             <div class="row mb-5 align-items-end">
                 <div class="col-lg-8 mb-4 mb-lg-0">
+
                     <h2 class="h-35 fw-700">Featured {{$section}}</h2>
                     <p class="text-secondary mb-0">Looking for your next ride? Check out our featured cars—great deals on the most popular models, all in one place..</p>
                 </div>
@@ -11,8 +13,8 @@
                 </div>
             </div>
             <div class="cars-card-slider owl-carousel owl-theme">
-            @foreach($vehicles as $item)
-             @if($section=='Vehicles')
+                @foreach($vehicles as $item)
+                @if($section=='Vehicles')
                 <div class="car-box-card" data-aos="fade-left" data-aos-delay="0" data-aos-duration="1000" data-aos-easing="ease-out-cubic">
                     <div class="car-box-card-images">
                         <div class="car-box-card-images-inner">
@@ -37,39 +39,39 @@
                             <h3>{{$item->title}}</h3>
                             <div class="car-box-specs">
                                 <div class="spec_item">
-                                    <img src="{{asset('images/icons/eng.png')}}" alt="">
+                                    <img src="{{asset('images/icons/meter.png')}}" alt="">
                                     <span>{{$item->engine_type}}</span>
                                 </div>
                                 <div class="spec_item">
-                                    <img src="{{asset('images/icons/clr.png')}}" alt="">
+                                    <img src="{{asset('images/icons/time.png')}}" alt="">
                                     <span>{{$item->color}}</span>
                                 </div>
                                 <div class="spec_item">
-                                    <img src="{{asset('images/icons/dtype.png')}}" alt="">
+                                    <img src="{{asset('images/icons/user-check.png')}}" alt="">
                                     <span>{{$item->drive_type}}</span>
                                 </div>
                             </div>
                         </div>
-                        
-                        
-                           <div class="car-box-price-and-specs">
+
+
+                        <div class="car-box-price-and-specs">
                             <div class="car-box-price">
                                 <h4 class="mb-0">Price</h4>
-                                <h4 class="mb-0 car-box-price-text">{{$item->price}}</h4>
+                                <h4 class="mb-0 car-box-price-text"> {{format_currency($item->price)}}</h4>
                             </div>
                         </div>
-                         
-                        
+
+
                         <div class="mt-3">
                             <a href="#" class="view-detail-btn">Buy Now</a>
                         </div>
-                         <div class="mt-1">
+                        <div class="mt-1">
                             <a href="{{ route('car-detail-page',$item->id) }}" class="view-detail-btn">View Detail</a>
                         </div>
                     </div>
                 </div>
                 @else
-                 <div class="car-box-card" data-aos="fade-left" data-aos-delay="0" data-aos-duration="1000" data-aos-easing="ease-out-cubic">
+                <div class="car-box-card" data-aos="fade-left" data-aos-delay="0" data-aos-duration="1000" data-aos-easing="ease-out-cubic">
                     <div class="car-box-card-images">
                         <div class="car-box-card-images-inner">
                             <a href="{{ route('car-detail-page',$item->id) }}" class="car-box-card-imag-item">
@@ -106,23 +108,23 @@
                                 </div>
                             </div>
                         </div>
-                        
-                         
-                           <div class="car-box-price-and-specs">
+
+
+                        <div class="car-box-price-and-specs">
                             <div class="car-box-price">
                                 <h4 class="mb-0">Current Bid:</h4>
-                                <h4 class="mb-0 car-box-price-text">AED 78,000.00</h4>
+                                <h4 class="mb-0 car-box-price-text">{{ $item->latestBid ? format_currency($item->latestBid->bid_amount) : 'No bids yet' }}</h4>
                             </div>
                         </div>
-                        
-                      
-                         <div class="mt-3">
+
+
+                        <div class="mt-3">
                             <a href="{{ route('car-detail-page',$item->id) }}" class="view-detail-btn">View Detail</a>
                         </div>
                     </div>
                 </div>
                 @endif
-            @endforeach
+                @endforeach
             </div>
         </div>
     </section>
