@@ -10,7 +10,9 @@ use App\Models\Transmission;
 use App\Models\VehicleInspectionReport;
 use App\Models\VehicleModel;
 use App\Models\Vehicle;
+use App\Models\VehicleDocument;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Facades\Storage;
 use Livewire\Component;
 use Livewire\WithPagination;
 use Livewire\Attributes\On;
@@ -178,15 +180,28 @@ class GenerationComponent extends Component
         $this->reportInView = null;
         $this->reset(['reportData']);
     }
+
     public function generatePdf($reportId)
     {
         $report = VehicleInspectionReport::findOrFail($reportId);
-        $pdf = Pdf::loadView('admin.inspection.report-pdf-template', ['report' => $report]);
-        $pdf->setPaper('a4', 'portrait');
-        $filename = 'inspection-report-' . $report->id . '-' . $report->vin . '.pdf';
-        return response()->streamDownload(function () use ($pdf) {
-            echo $pdf->stream();
-        }, $filename);
+        if ($report->vehicle_id) {
+            $directory = 'inspection_pdf';
+            // Generate PDF
+            $pdf = Pdf::loadView('admin.inspection.report-pdf-template', ['report' => $report])->setPaper('a4', 'portrait')->setOption('defaultFont', 'Arial');
+            // Ensure the directory exists
+            if (!Storage::disk('public')->exists($directory)) {
+                Storage::disk('public')->makeDirectory($directory);
+            }
+            $filename = 'inspection_' . $report->id  . '_' . now()->format('Ymd_His') . '.pdf';
+            $filepath = $directory . '/' . $filename;
+            Storage::disk('public')->put($filepath, $pdf->output());
+            $vehicleDoc = new VehicleDocument();
+            $vehicleDoc->vehicle_id  =  $report->vehicle_id;
+            $vehicleDoc->file_path = $filepath;
+            $vehicleDoc->type = 'InspectionReport';
+            $vehicleDoc->save();
+        }
+        $this->reset();
     }
 
     #[On('deleteReport')]
