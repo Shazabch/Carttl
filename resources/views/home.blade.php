@@ -627,7 +627,7 @@
     <section class="section-faq ox-hidden">
         <div class="container">
             <div class="row align-items-center">
-                <div class="col-lg-5 mb-4 mb-lg-0" data-aos="fade-up" data-aos-delay="0" data-aos-duration="1000" data-aos-anchor-placement="top-bottom">>
+                <div class="col-lg-5 mb-4 mb-lg-0" data-aos="fade-up" data-aos-delay="0" data-aos-duration="1000" data-aos-anchor-placement="top-bottom">
                     <div class="faq-img">
                         <img src="{{ asset('images/faq.webp') }}" class="img-fluid rounded-4" alt="">
                     </div>

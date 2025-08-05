@@ -1,19 +1,32 @@
 <div class="card">
-    <div class="card-header bg-light border-0 pt-4 pb-0">
-        {{-- Wizard Progress Bar --}}
-        <div class="wizard-progress">
-            <div class="progress-bar-line" style="width: {{ ($currentStep - 1) * 50 }}%;"></div>
+    <div class="card-header bg-light border-0 pt-4 pb-0 d-flex justify-content-center">
+        <div class="wizard-progress" style="margin: auto !important;">
+            <div class="progress-bar-line" style="width: {{ (($currentStep - 1) / (4 - 1)) * 100 }}%;"></div>
             <div class="wizard-step @if($currentStep == 1) active @elseif($currentStep > 1) completed @endif">
-                <div class="step-icon">@if($currentStep > 1) <i class="fas fa-check"></i> @else 1 @endif</div>
-                <div class="step-label">Exterior & Tires</div>
+                <div class="step-icon">
+                    @if($currentStep > 1) <i class="fas fa-check"></i> @else <i class="fas fa-car-side"></i> @endif
+                </div>
+                <div class="step-label d-none d-md-block">Exterior & Tires</div>
             </div>
             <div class="wizard-step @if($currentStep == 2) active @elseif($currentStep > 2) completed @endif">
-                <div class="step-icon">@if($currentStep > 2) <i class="fas fa-check"></i> @else 2 @endif</div>
-                <div class="step-label">Specs & Interior</div>
+                <div class="step-icon">
+                    @if($currentStep > 2) <i class="fas fa-check"></i> @else  <i class="fas fa-cogs"></i> @endif
+                </div>
+                <div class="step-label d-none d-md-block">Mechanical</div>
             </div>
-            <div class="wizard-step @if($currentStep == 3) active @endif">
-                <div class="step-icon">3</div>
-                <div class="step-label">Mechanical</div>
+            <div class="wizard-step @if($currentStep == 3) active @elseif($currentStep > 3) completed @endif">
+                <div class="step-icon">
+                    @if($currentStep > 3) <i class="fas fa-check"></i> @else <i class="fas fa-sliders-h"></i> @endif
+                </div>
+                <div class="step-label d-none d-md-block">Specs & Interior</div>
+            </div>
+            <div class="wizard-step @if($currentStep == 4) active @endif">
+                <div class="step-icon">
+                    {{-- No checkmark needed on the last active step --}}
+
+                     <i class="fas fa-car"></i>
+                </div>
+                <div class="step-label d-none d-md-block">Damage Assessment</div>
             </div>
         </div>
         <hr class="mt-4">
@@ -21,13 +34,12 @@
 
     <div class="card-body" style="background-color: #f8f9fa;">
         <div class="space-y-4">
-
             @if($currentStep === 1)
             @include('livewire.admin.inspection.sections.section-basic-info')
             @include('livewire.admin.inspection.sections.section-exterior')
             @endif
-            @if($currentStep === 2)
 
+            @if($currentStep === 2)
             @include('livewire.admin.inspection.sections.section-tires')
             @include('livewire.admin.inspection.sections.section-car-specs')
             @endif
@@ -35,6 +47,9 @@
             @include('livewire.admin.inspection.sections.section-interior')
             @include('livewire.admin.inspection.sections.section-engine')
             @include('livewire.admin.inspection.sections.section-brakes')
+            @endif
+            @if($currentStep === 4)
+            @livewire('car-damage-assessment', ['inspectionId' => $inspectionId], key('damage-assessment-for-inspection-' . $inspectionId))
             @endif
         </div>
     </div>

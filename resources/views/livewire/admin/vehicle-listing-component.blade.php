@@ -31,12 +31,14 @@
                         @forelse ($vehicles as $vehicle)
                         <tr wire:key="{{ $vehicle->id }}">
                              <td>
+                                @if($vehicle->coverImage)
                                 <img
-                                    src="{{ asset('storage/' . $vehicle->coverImage->path) }}"
+                                    src="{{ asset('storage/' . $vehicle->coverImage?->path) }}"
                                     alt="{{ $vehicle->title }}"
                                     class="rounded"
                                     style="width: 60px; height: 60px; object-fit: cover;"
                                 >
+                                @endif
                             </td>
                             <td>{{ $vehicle->title }}</td>
                             <td>{{ $vehicle->brand?->name }} / {{ $vehicle->vehicleModel?->name }}</td>

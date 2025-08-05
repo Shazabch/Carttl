@@ -1,12 +1,3 @@
 <div>
-     <div class="card-header">
-        <h5 class="mb-0">Manage Vehicle Inspection</h5>
-    </div>
-    <div class="card-body">
-        @if (session()->has('success'))
-            <div class="alert alert-success">{{ session('success') }}</div>
-        @endif
-
-    </div>
      @livewire('admin.inspection.generation-component', ['vehicleId' => $vehicleId])
 </div>

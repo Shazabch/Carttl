@@ -8,6 +8,7 @@ use App\Models\CarDamage;
 class CarDamageAssessment extends Component
 {
     public $damages = [];
+    public $inspectionId;
     public $currentDamageType = 'a';
     public $currentSeverity = 'low';
     public $mode = 'add';
@@ -38,7 +39,11 @@ class CarDamageAssessment extends Component
 
     public function mount()
     {
-        $this->damages = CarDamage::all()->toArray();
+        $this->loadDamages();
+    }
+    private function loadDamages()
+    {
+        $this->damages = CarDamage::where('inspection_id', $this->inspectionId)->get()->toArray();
     }
 
     public function setMode($mode)
@@ -61,6 +66,7 @@ class CarDamageAssessment extends Component
         $this->validate();
 
         $damage = CarDamage::create([
+            'inspection_id' => $this->inspectionId,
             'type' => $this->currentDamageType,
             'body_part' => $bodyPart,
             'severity' => $this->currentSeverity,
@@ -69,28 +75,30 @@ class CarDamageAssessment extends Component
             'remark' => '',
         ]);
         $this->damages = CarDamage::all()->toArray();
+        $this->loadDamages();
         $this->dispatch('damageAdded');
     }
 
     public function removeDamage($id)
     {
-        CarDamage::find($id)?->delete();
-        $this->damages = CarDamage::all()->toArray();
+
+        CarDamage::where('inspection_id', $this->inspectionId)->find($id)?->delete();
+        $this->loadDamages();
     }
 
     public function updateRemark($id, $remark)
     {
-        $damage = CarDamage::find($id);
+        $damage = CarDamage::where('inspection_id', $this->inspectionId)->find($id);
         if ($damage) {
             $damage->remark = $remark;
             $damage->save();
-            $this->damages = CarDamage::all()->toArray();
+            $this->loadDamages();
         }
     }
 
     public function clearAll()
     {
-        CarDamage::truncate();
+        CarDamage::where('inspection_id', $this->inspectionId)->delete();
         $this->damages = [];
     }
 
