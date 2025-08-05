@@ -2370,6 +2370,7 @@ footer .footer-center ul {
     box-shadow: 0px 0px 0px 0px rgba(255, 255, 255, 0);
     border-radius: 20px;
     background-color: var(--light-2);
+
 }
 
 .item-wrap-stars {
@@ -2390,6 +2391,7 @@ footer .footer-center ul {
     padding: 0px 0px 30px 0px;
     border-bottom: 1px solid #33333342;
     margin-bottom: 30px;
+    min-height: 180px !important;
 }
 
 .item-wrap-content p {
@@ -2401,8 +2403,9 @@ footer .footer-center ul {
     overflow: hidden;
     display: -webkit-box;
     -webkit-box-orient: vertical;
-    -webkit-line-clamp: 5; 
+    -webkit-line-clamp: 5;
     text-overflow: ellipsis;
+
 }
 
 .item-wrap-details {
@@ -2658,28 +2661,28 @@ footer .footer-center ul {
 }
 @keyframes cc-calto-action-ripple {
     0% {
-        -webkit-box-shadow: 
-            0 4px 10px rgba(215, 178, 54, 0.6), 
-            0 0 0 0 rgba(215, 178, 54, 0.6), 
-            0 0 0 5px rgba(215, 178, 54, 0.6), 
+        -webkit-box-shadow:
+            0 4px 10px rgba(215, 178, 54, 0.6),
+            0 0 0 0 rgba(215, 178, 54, 0.6),
+            0 0 0 5px rgba(215, 178, 54, 0.6),
             0 0 0 10px rgba(215, 178, 54, 0.6);
-        box-shadow: 
-            0 4px 10px rgba(215, 178, 54, 0.6), 
-            0 0 0 0 rgba(215, 178, 54, 0.6), 
-            0 0 0 5px rgba(215, 178, 54, 0.6), 
+        box-shadow:
+            0 4px 10px rgba(215, 178, 54, 0.6),
+            0 0 0 0 rgba(215, 178, 54, 0.6),
+            0 0 0 5px rgba(215, 178, 54, 0.6),
             0 0 0 10px rgba(215, 178, 54, 0.6);
     }
 
     100% {
-        -webkit-box-shadow: 
-            0 4px 10px rgba(215, 178, 54, 0.6), 
-            0 0 0 5px rgba(215, 178, 54, 0.6), 
-            0 0 0 10px rgba(215, 178, 54, 0.6), 
+        -webkit-box-shadow:
+            0 4px 10px rgba(215, 178, 54, 0.6),
+            0 0 0 5px rgba(215, 178, 54, 0.6),
+            0 0 0 10px rgba(215, 178, 54, 0.6),
             0 0 0 20px rgba(215, 178, 54, 0);
-        box-shadow: 
-            0 4px 10px rgba(215, 178, 54, 0.6), 
-            0 0 0 5px rgba(215, 178, 54, 0.6), 
-            0 0 0 10px rgba(215, 178, 54, 0.6), 
+        box-shadow:
+            0 4px 10px rgba(215, 178, 54, 0.6),
+            0 0 0 5px rgba(215, 178, 54, 0.6),
+            0 0 0 10px rgba(215, 178, 54, 0.6),
             0 0 0 20px rgba(215, 178, 54, 0);
     }
 }
@@ -3121,7 +3124,7 @@ footer .footer-center ul {
     overflow: hidden;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
 }
-.ui-state-default, 
+.ui-state-default,
 .ui-widget-content .ui-state-default{
 	border: 1px solid var(--accent);
 	background: var(--accent);

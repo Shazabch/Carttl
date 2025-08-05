@@ -27,6 +27,7 @@ class GenerationComponent extends Component
 
     public $showDetails = false;
     public ?VehicleInspectionReport $reportInView = null;
+    protected string $paginationTheme = 'bootstrap';
 
     public array $reportData = [];
 
@@ -117,7 +118,7 @@ class GenerationComponent extends Component
         // $this->validateStep($this->currentStep);
         if ($this->currentStep < 3) {
             $this->currentStep++;
-        } elseif ($this->currentStep == 3) {
+        } elseif ($this->currentStep == 3 || $this->currentStep == 4) {
             $this->saveReport();
         }
     }
@@ -164,6 +165,7 @@ class GenerationComponent extends Component
         if ($this->currentStep == 3) {
             $this->currentStep++;
         } else {
+
             session()->flash('success', $this->isEditing ? 'Report updated successfully.' : 'Report created successfully.');
             $this->cancel();
         }

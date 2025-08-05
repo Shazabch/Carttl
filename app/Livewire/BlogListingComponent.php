@@ -14,8 +14,8 @@ class BlogListingComponent extends Component
 
     public function mount()
     {
-        $this->featuredBlog = Blog::orderBy('id', 'desc')->first();
-        $this->blogs = Blog::orderBy('id', 'desc')->skip(1)->take(3)->get();
+        $this->featuredBlog = Blog::orderBy('id', 'desc')->where('is_published',1)->first();
+        $this->blogs = Blog::orderBy('id', 'desc')->where('is_published',1)->skip(1)->take(3)->get();
     }
     public function formateDate($date)
     {

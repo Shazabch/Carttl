@@ -12,7 +12,7 @@ class TestimonialListingComponent extends Component
 
     public function mount()
     {
-        $this->testimonials = Testimonial::all();
+        $this->testimonials = Testimonial::where('status',1)->get();
     }
 
     public function render()
