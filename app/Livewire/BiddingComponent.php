@@ -44,7 +44,7 @@ class BiddingComponent extends Component
                 'bid_amount'     => $this->current_bid,
                 'max_bid'     => $this->max_bid,
                 'vehicle_id' => $this->selected_vehicle->id,
-                'user_id'    => 1,
+                'user_id'    => auth()->id(),
             ]);
 
 
