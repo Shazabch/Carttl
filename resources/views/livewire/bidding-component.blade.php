@@ -11,7 +11,7 @@
         </div>
         <div class="current-bid">
             <span class="bid-label mb-0">Current Bid</span>
-            <span class="bid-amount">${{$highestBid}}</span>
+            <span class="bid-amount">{{format_currency($highestBid)}}</span>
             <span class="bid-count">{{$totalBids}} bids</span>
         </div>
         <div class="action-buttons mb-2">

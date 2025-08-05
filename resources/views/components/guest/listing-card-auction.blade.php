@@ -43,7 +43,7 @@
                            <div class="car-box-price-and-specs">
                             <div class="car-box-price">
                                 <h4 class="mb-0">Current Bid:</h4>
-                                <h4 class="mb-0 car-box-price-text">{{ $item->latestBid ? '$'.$item->latestBid->bid_amount : 'No bids yet' }}</h4>
+                                <h4 class="mb-0 car-box-price-text">{{ $item->latestBid ? format_currency($item->latestBid->bid_amount) : 'No bids yet' }}</h4>
                             </div>
                         </div>
                         
