@@ -39,15 +39,15 @@
                             <h3>{{$item->title}}</h3>
                             <div class="car-box-specs">
                                 <div class="spec_item">
-                                    <img src="{{asset('images/icons/meter.png')}}" alt="">
+                                    <img src="{{asset('images/icons/meter.svg')}}" alt="">
                                     <span>{{$item->engine_type}}</span>
                                 </div>
                                 <div class="spec_item">
-                                    <img src="{{asset('images/icons/time.png')}}" alt="">
+                                    <img src="{{asset('images/icons/time.svg')}}" alt="">
                                     <span>{{$item->color}}</span>
                                 </div>
                                 <div class="spec_item">
-                                    <img src="{{asset('images/icons/user-check.png')}}" alt="">
+                                    <img src="{{asset('images/icons/user-check.svg')}}" alt="">
                                     <span>{{$item->drive_type}}</span>
                                 </div>
                             </div>
@@ -62,10 +62,10 @@
                         </div>
 
 
+                        <!-- <div class="mt-3">
+                            <a href="{{ route('car-detail-page',$item->id) }}" class="view-detail-btn">Buy Now</a>
+                        </div> -->
                         <div class="mt-3">
-                            <a href="#" class="view-detail-btn">Buy Now</a>
-                        </div>
-                        <div class="mt-1">
                             <a href="{{ route('car-detail-page',$item->id) }}" class="view-detail-btn">View Detail</a>
                         </div>
                     </div>

@@ -294,7 +294,7 @@
                             <!-- Buy It Now Card -->
                             <div class="buy-now-card">
                                 <h4>Buy It Now</h4>
-                                <div class="buy-now-price">$225,000</div>
+                                <div class="buy-now-price">{{format_currency($selected_vehicle->price)}}</div>
                                 <p>Skip the auction and purchase immediately</p>
                                 <button class="btn btn-warning btn-buy-now">
                                     <i class="fas fa-shopping-cart"></i>
@@ -364,7 +364,7 @@
                                 </div>
                                 <div class="current-bid">
                                     <span class="bid-label mb-0">Price</span>
-                                    <span class="bid-amount">${{$selected_vehicle->price}}</span>
+                                    <span class="bid-amount">{{format_currency($selected_vehicle->price)}}</span>
 
                                 </div>
                                 <div class="action-buttons mb-2">
