@@ -100,11 +100,11 @@
                                 </div>
                                 <div class="spec_item">
                                     <img src="{{asset('images/icons/time.svg')}}" alt="">
-                                    <span>End In 1d</span>
+                                    <span>Ends In {{ \Carbon\Carbon::parse($item->auction_end_date)->shortAbsoluteDiffForHumans() }}</span>
                                 </div>
                                 <div class="spec_item">
                                     <img src="{{asset('images/icons/user-check.svg')}}" alt="">
-                                    <span>8 Bids</span>
+                                    <span>{{ $item->bids->count() ?? 0 }}  Bids</span>
                                 </div>
                             </div>
                         </div>
