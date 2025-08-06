@@ -1,7 +1,7 @@
 <div>
 
     @if($showForm)
-    <div class="card shadow-sm" style="background-color: #f8f9fa;">
+    <div class="card shadow-sm">
         <div class="card-header bg-white border-0 pt-4 pb-0">
             {{-- Wizard Progress Bar --}}
             <div class="wizard-progress">
@@ -31,6 +31,7 @@
                 </div>
             </div>
             <hr class="mt-4 mb-0">
+
         </div>
         <div class="card-body py-4">
             <div>
