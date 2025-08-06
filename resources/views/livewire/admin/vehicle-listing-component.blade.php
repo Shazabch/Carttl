@@ -6,14 +6,13 @@
             <div class="col-md-4">
                 <input type="text" class="form-control" placeholder="Search by Title, VIN..." wire:model.live.debounce.300ms="search">
             </div>
+
             <button class="btn btn-primary" wire:click="addNew">
                 <i class="fas fa-plus-circle me-1"></i> Add Vehicle
             </button>
         </div>
         <div class="card-body">
-            @if (session()->has('success'))
-            <div class="alert alert-success">{{ session('success') }}</div>
-            @endif
+
             <div class="table-responsive">
                 <table class="table table-bordered table-hover">
                     <thead>
@@ -24,6 +23,7 @@
                             <th>Year</th>
                             <th>Price</th>
                             <th>Status</th>
+                            <th>Type</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
@@ -45,10 +45,11 @@
                             <td>{{ $vehicle->year }}</td>
                             <td>${{ number_format($vehicle->price, 2) }}</td>
                             <td><span class="badge bg-primary text-white">{{ Str::ucfirst($vehicle->status) }}</span></td>
+                            <td><span class="badge {{ $vehicle->is_auction ? "bg-dark":"bg-warning text-dark" }} text-white">{{ $vehicle->is_auction ? "Auction":"Vehicle" }}</span></td>
                             <td>
-                                <a href="{{ route('admin.inspection.generate.from-vehicle', ['vehicle' => $vehicle->id]) }}" class="btn btn-sm btn-primary">
+                                <!-- <a href="{{ route('admin.inspection.generate.from-vehicle', ['vehicle' => $vehicle->id]) }}" class="btn btn-sm btn-primary">
                                     Create Inspection
-                                </a>
+                                </a> -->
                                 <a href="{{ route('admin.vehicles.details', ['id' => $vehicle->id]) }}" class="btn btn-sm btn-secondary">
                                     <i class="fas fa-eye"></i> Details
                                 </a>

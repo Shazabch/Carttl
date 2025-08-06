@@ -2,7 +2,9 @@
     <h5>Details & Publishing</h5> <hr>
     <div class="row">
         <div class="col-md-6 mb-4"><label class="form-label">VIN</label><input type="text" class="form-control" wire:model.defer="vehicleData.vin"></div>
+         @error('vehicleData.vin') <div class="text-danger small mt-2">{{ $message }}</div> @enderror
         <div class="col-md-6 mb-4"><label class="form-label">Registration No.</label><input type="text" class="form-control" wire:model.defer="vehicleData.registration_no"></div>
+         @error('vehicleData.registration_no') <div class="text-danger small mt-2">{{ $message }}</div> @enderror
     </div>
     <div class="row">
         <div class="col-md-6 mb-4">
@@ -46,12 +48,14 @@
             <div class="form-check form-switch p-3 border rounded">
                 <input class="form-check-input" type="checkbox" role="switch" id="negotiable" wire:model.defer="vehicleData.negotiable">
                 <label class="form-check-label" for="negotiable"><span class="fw-bold">Price is Negotiable</span></label>
+                 @error('vehicleData.negotiable') <div class="text-danger small mt-2">{{ $message }}</div> @enderror
             </div>
         </div>
         <div class="col-md-4">
             <div class="form-check form-switch p-3 border rounded">
                 <input class="form-check-input" type="checkbox" role="switch" id="is_featured" wire:model.defer="vehicleData.is_featured">
                 <label class="form-check-label" for="is_featured"><span class="fw-bold">Feature this Vehicle</span></label>
+
             </div>
         </div>
         <div class="col-md-4">

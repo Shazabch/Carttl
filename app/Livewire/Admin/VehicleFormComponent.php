@@ -26,6 +26,7 @@ class VehicleFormComponent extends Component
     public $currentStep = 1;
     public $search = '';
     public $vehicle_id = null;
+    public $years = [];
 
     // --- Form Data Holder ---
     public array $vehicleData = [];
@@ -105,6 +106,13 @@ class VehicleFormComponent extends Component
         $this->exteriorFeatures = Feature::where('type', 'exterior')->get();
         $this->interiorFeatures = Feature::where('type', 'interior')->get();
         $this->tags = Feature::where('type', 'tag')->get();
+        $this->years = range(date('Y'), 1950);
+        $this->years = array_map(function ($year) {
+            return [
+                'id' => $year,
+                'text' => $year,
+            ];
+        }, $this->years);
     }
 
     // The hook now works reliably with the array.
@@ -161,6 +169,7 @@ class VehicleFormComponent extends Component
         if ($this->vehicleData['brand_id']) {
             $this->models = VehicleModel::where('brand_id', $this->vehicleData['brand_id'])->get();
         }
+
         $this->currentStep = 1;
         $this->showForm = true;
         $this->selectedFeatures = $vehicle->features->pluck('id')->toArray();
@@ -170,6 +179,7 @@ class VehicleFormComponent extends Component
                 'url' => asset('storage/' . $image->path)
             ];
         })->all();
+         $this->dispatch('re-init-select-2-component');
 
     }
 
@@ -183,15 +193,13 @@ class VehicleFormComponent extends Component
         }
         $vehicle = Vehicle::updateOrCreate(['id' => $this->vehicle_id], $this->vehicleData);
         $vehicle->features()->sync($this->selectedFeatures);
-         if (!empty($this->images)) {
+        if (!empty($this->images)) {
             foreach ($this->images as $imageFile) {
                 $path = $imageFile->store('vehicle_images', 'public');
                 $vehicle->images()->create(['path' => $path]);
             }
         }
-        $this->dispatch('success-notification', [
-            'message' => $this->isEditing ? 'Vehicle updated successfully.' : 'Vehicle created successfully.'
-        ]);
+        $this->dispatch('success-notification', message: $this->isEditing ? 'Vehicle updated successfully.' : 'Vehicle created successfully.');
         $this->dispatch('vehicleSaved');
 
         $this->cancel();
@@ -209,7 +217,8 @@ class VehicleFormComponent extends Component
     public function delete($id)
     {
         Vehicle::findOrFail($id)->delete();
-        session()->flash('success', 'Vehicle deleted successfully.');
+
+        $this->dispatch('success-notification', message: 'Vehicle deleted successfully.');
     }
 
     public function setSingleSelection(string $property, $value)
@@ -229,10 +238,11 @@ class VehicleFormComponent extends Component
                 'vehicleData.vehicle_model_id' => 'required',
                 'vehicleData.year' => 'required',
                 'vehicleData.price' => 'required',
+                'vehicleData.mileage' => 'required|integer',
             ];
         } elseif ($step === 2) {
             $rulesForStep = [
-                'vehicleData.mileage' => 'required|integer',
+
                 'vehicleData.transmission_id' => 'required',
                 'vehicleData.fuel_type_id' => 'required',
                 'vehicleData.body_type_id' => 'required',

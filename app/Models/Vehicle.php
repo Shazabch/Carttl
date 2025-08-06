@@ -133,7 +133,7 @@ class Vehicle extends Model
      */
     public function inspections(): HasMany
     {
-        return $this->hasMany(Inspection::class);
+        return $this->hasMany(VehicleInspectionReport::class);
     }
 
     /**
@@ -157,15 +157,17 @@ class Vehicle extends Model
     {
         return $this->belongsToMany(Feature::class, 'vehicle_features', 'vehicle_id', 'feature_id');
     }
+
     public function bids()
     {
-        return $this->hasMany(VehicleBid::class);
+        return $this->hasMany(VehicleBid::class)->orderBy('created_at', 'desc');
     }
+
     public function latestBid()
     {
         return $this->hasOne(VehicleBid::class)->latestOfMany();
     }
-     public function images(): HasMany
+    public function images(): HasMany
     {
         return $this->hasMany(VehicleImage::class);
     }

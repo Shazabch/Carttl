@@ -18,7 +18,8 @@ class VehicleListingComponent extends Component
 
     public $showForm = false;
     public $search = '';
-    protected $listeners = ['vehicleSaved' => '$refresh','cancelForm' => 'cancel', 'deleteVehicle' => 'delete'];
+    protected string $paginationTheme = 'bootstrap';
+    protected $listeners = ['vehicleSaved' => '$refresh', 'cancelForm' => 'cancel', 'deleteVehicle' => 'delete'];
     public function mount() {}
     public function addNew()
     {
@@ -39,9 +40,7 @@ class VehicleListingComponent extends Component
     {
         Vehicle::findOrFail($id)->delete();
 
-          $this->dispatch('success-notification', [
-                'message' => 'Vehicle deleted successfully.'
-            ]);
+         $this->dispatch('success-notification', message: 'Vehicle deleted successfully.');
     }
     public function render()
     {

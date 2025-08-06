@@ -33,11 +33,8 @@
             <hr class="mt-4 mb-0">
         </div>
         <div class="card-body py-4">
-            {{-- The content for each step is loaded here --}}
             <div>
                 @if ($currentStep == 1)
-
-                    {{-- The h5 title is now part of the step include --}}
                     @include('livewire.admin.vehicle.step1')
                 @elseif ($currentStep == 2)
                     @include('livewire.admin.vehicle.step2')
