@@ -64,18 +64,19 @@ class VehicleFormComponent extends Component
             'vehicleData.status' => 'required',
             'vehicleData.description' => 'nullable',
             'vehicleData.variant' => 'nullable',
-            'vehicleData.engine_cc' => 'nullable|integer',
-            'vehicleData.horsepower' => 'nullable|integer',
-            'vehicleData.torque' => 'nullable|string',
-            'vehicleData.seats' => 'nullable|integer',
-            'vehicleData.doors' => 'nullable|integer',
-            'vehicleData.color' => 'nullable|string',
-            'vehicleData.interior_color' => 'nullable|string',
-            'vehicleData.drive_type' => 'nullable|string',
-            'vehicleData.vin' => 'nullable|string',
-            'vehicleData.registration_no' => 'nullable|string',
+            'vehicleData.engine_cc' => 'nullable',
+            'vehicleData.horsepower' => 'nullable',
+            'vehicleData.torque' => 'nullable',
+            'vehicleData.seats' => 'nullable',
+            'vehicleData.doors' => 'nullable',
+            'vehicleData.color' => 'nullable',
+            'vehicleData.interior_color' => 'nullable',
+            'vehicleData.drive_type' => 'nullable',
+            'vehicleData.vin' => 'nullable',
+            'vehicleData.registration_no' => 'nullable',
             'vehicleData.negotiable' => 'boolean',
             'vehicleData.is_featured' => 'boolean',
+            'vehicleData.is_auction' => 'boolean',
         ];
     }
 
@@ -86,19 +87,14 @@ class VehicleFormComponent extends Component
         $this->vehicleData = (new Vehicle())->getAttributes();
         $this->vehicleData['negotiable'] = false;
         $this->vehicleData['is_featured'] = false;
+        $this->vehicleData['is_auction'] = false;
         $this->vehicleData['condition'] = 'used';
         $this->vehicleData['status'] = 'draft';
-        $this->vehicleData['is_auction'] = false;
+
 
         // Pre-load data for dropdowns and selections
 
         $this->brands =  Brand::orderBy('name')->get();
-        $this->brands = $this->brands->map(function ($brand) {
-            return [
-                'id' => $brand->id,
-                'text' => $brand->name,
-            ];
-        })->toArray();
         $this->bodyTypes = BodyType::all();
         $this->fuelTypes = FuelType::all();
         $this->transmissions = Transmission::all();
@@ -106,31 +102,19 @@ class VehicleFormComponent extends Component
         $this->exteriorFeatures = Feature::where('type', 'exterior')->get();
         $this->interiorFeatures = Feature::where('type', 'interior')->get();
         $this->tags = Feature::where('type', 'tag')->get();
-        $this->years = range(date('Y'), 1950);
-        $this->years = array_map(function ($year) {
-            return [
-                'id' => $year,
-                'text' => $year,
-            ];
-        }, $this->years);
+
     }
 
     // The hook now works reliably with the array.
     public function updatedVehicleDataBrandId($value)
     {
+         $this->vehicleData['vehicle_model_id'] = null; // Reset vehicle_model_id in our data array
         if ($value) {
             $this->models = VehicleModel::where('brand_id', $value)->get();
-
-            $this->models = $this->models->map(function ($model) {
-                return [
-                    'id' => $model->id,
-                    'text' => $model->name,
-                ];
-            })->toArray();
         } else {
             $this->models = [];
         }
-        $this->vehicleData['vehicle_model_id'] = null; // Reset vehicle_model_id in our data array
+
     }
 
     // --- WIZARD CONTROLS ---
@@ -166,10 +150,10 @@ class VehicleFormComponent extends Component
         $this->vehicle_id = $vehicleId;
         $this->vehicleData = $vehicle->toArray();
 
+
         if ($this->vehicleData['brand_id']) {
             $this->models = VehicleModel::where('brand_id', $this->vehicleData['brand_id'])->get();
         }
-
         $this->currentStep = 1;
         $this->showForm = true;
         $this->selectedFeatures = $vehicle->features->pluck('id')->toArray();
@@ -179,8 +163,6 @@ class VehicleFormComponent extends Component
                 'url' => asset('storage/' . $image->path)
             ];
         })->all();
-         $this->dispatch('re-init-select-2-component');
-
     }
 
 
@@ -238,7 +220,8 @@ class VehicleFormComponent extends Component
                 'vehicleData.vehicle_model_id' => 'required',
                 'vehicleData.year' => 'required',
                 'vehicleData.price' => 'required',
-                'vehicleData.mileage' => 'required|integer',
+                'vehicleData.mileage' => 'required',
+                'vehicleData.engine_type' => 'nullable',
             ];
         } elseif ($step === 2) {
             $rulesForStep = [
@@ -294,7 +277,7 @@ class VehicleFormComponent extends Component
             ->with('brand', 'vehicleModel')
             ->latest()
             ->paginate(10);
-        $this->dispatch('re-init-select-2-component');
+
         return view('livewire.admin.vehicle-form-component', compact('vehicles'));
     }
 }

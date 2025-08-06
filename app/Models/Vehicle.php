@@ -2,11 +2,13 @@
 
 namespace App\Models;
 
+use App\Enums\MileageRange;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Support\Str;
 
 class Vehicle extends Model
@@ -34,8 +36,10 @@ class Vehicle extends Model
         'price' => 'decimal:2',
         'negotiable' => 'boolean',
         'is_featured' => 'boolean',
+        'is_auction' => 'boolean',
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
+
     ];
 
     /**
@@ -170,5 +174,18 @@ class Vehicle extends Model
     public function images(): HasMany
     {
         return $this->hasMany(VehicleImage::class);
+    }
+
+    public function coverImage(): HasOne
+    {
+        return $this->hasOne(VehicleImage::class)->where('is_cover', true);
+    }
+    public function getMileageLabelAttribute()
+    {
+        try {
+            return MileageRange::from((int) $this->mileage)->label();
+        } catch (\ValueError $e) {
+            return 'Unknown mileage';
+        }
     }
 }
