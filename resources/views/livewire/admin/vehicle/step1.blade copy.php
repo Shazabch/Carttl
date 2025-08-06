@@ -9,24 +9,23 @@
         </div>
         <div class="col-md-4 mb-3">
             <label class="form-label">Brand</label>
-            <select id="vehicle-brand-select" wire:model.live="vehicleData.brand_id" class="form-control">
-                <option value="">Select brand</option>
-                @foreach($brands as $m)
-                <option value="{{ $m->id }}">{{ $m->name }}</option>
-                @endforeach
-            </select>
+            <x-select3
+                id="select-brand-vehicle"
+                dataArray="brands"
+                wire:model.live="vehicleData.brand_id"
+                placeholder="Select one"
+                :allowAdd="true" />
             @error('vehicleData.brand_id') <div class="text-danger small mt-2">{{ $message }}</div> @enderror
 
         </div>
         <div class="col-md-4 mb-3">
             <label class="form-label">Model</label>
-            <select id="vehicle-model-select" wire:model.live="vehicleData.vehicle_model_id" class="form-control">
-                <option value="">Select model</option>
-                @foreach($models as $m)
-                <option value="{{ $m->id }}">{{ $m->name }}</option>
-                @endforeach
-            </select>
-
+            <x-select3
+                id="select-vmodels-vehicle"
+                dataArray="models"
+                wire:model="vehicleData.vehicle_model_id"
+                placeholder="Select one"
+                :allowAdd="true" />
             @error('vehicleData.vehicle_model_id') <div class="text-danger small mt-2">{{ $message }}</div> @enderror
 
         </div>
@@ -35,7 +34,7 @@
             <select class="form-control @error('vehicleData.year') is-invalid @enderror" wire:model.defer="vehicleData.year">
                 <option value="">Select Year</option>
                 @for ($year = date('Y'); $year >= 1900; $year--)
-                <option value="{{ $year }}" {{ (isset($vehicleData['year']) && $vehicleData['year'] == $year) ? 'selected' : '' }}>{{ $year }}</option>
+                    <option value="{{ $year }}" {{ (isset($vehicleData['year']) && $vehicleData['year'] == $year) ? 'selected' : '' }}>{{ $year }}</option>
                 @endfor
             </select>
             @error('vehicleData.year') <div class="invalid-feedback">{{ $message }}</div> @enderror
@@ -46,12 +45,8 @@
             @error('vehicleData.price') <div class="invalid-feedback">{{ $message }}</div> @enderror
         </div>
         <div class="col-md-4 mb-3">
-            <label class="form-label">Engine</label>
-            <select name="engine_displacement" class="form-control" wire:model.defer="vehicleData.engine_type">
-                @foreach(\App\Enums\EngineDisplacement::options() as $value => $label)
-                <option value="{{ $value }}">{{ $label }}</option>
-                @endforeach
-            </select>
+            <label class="form-label">Engine Type</label>
+            <input type="text" class="form-control @error('vehicleData.engine_type') is-invalid @enderror" wire:model.defer="vehicleData.engine_type">
             @error('vehicleData.engine_type') <div class="invalid-feedback">{{ $message }}</div> @enderror
         </div>
         <div class="col-md-4 mb-3">
@@ -62,12 +57,7 @@
 
         <div class="col-md-4 mb-4">
             <label class="form-label">Mileage</label>
-            <select name="mileage" class="form-control" wire:model="vehicleData.mileage">
-                @foreach(\App\Enums\MileageRange::options() as $value => $label)
-                <option value="{{ $value }}">{{ $label }}</option>
-                @endforeach
-            </select>
-
+            <input type="number" class="form-control @error('vehicleData.mileage') is-invalid @enderror" wire:model.defer="vehicleData.mileage">
             @error('vehicleData.mileage')<div class="invalid-feedback">{{ $message }}</div>@enderror
         </div>
         <div class="col-md-4 mb-4">
@@ -77,21 +67,9 @@
         </div>
         @error('vehicleData.engine_cc') <div class="text-danger small mt-2">{{ $message }}</div> @enderror
         <div class="col-md-4 mb-4">
-            <label class="form-label">Horsepower</label><input type="number" class="form-control" wire:model="vehicleData.horsepower">
+            <label class="form-label">Horsepower</label><input type="number" class="form-control" wire:model.defer="vehicleData.horsepower">
         </div>
         @error('vehicleData.horsepower') <div class="text-danger small mt-2">{{ $message }}</div> @enderror
-
-        <div class="col-md-4 mb-4">
-            <label class="form-label">Vehicle Identification No.</label>
-            <input type="text" class="form-control" wire:model.defer="vehicleData.vin">
-             @error('vehicleData.vin') <div class="text-danger small mt-2">{{ $message }}</div> @enderror
-        </div>
-        @error('vehicleData.vin') <div class="text-danger small mt-2">{{ $message }}</div> @enderror
-        <div class="col-md-4 mb-4">
-            <label class="form-label">Registration No.</label>
-            <input type="text" class="form-control" wire:model.defer="vehicleData.registration_no">
-        </div>
-        @error('vehicleData.registration_no') <div class="text-danger small mt-2">{{ $message }}</div> @enderror
 
 
 
