@@ -12,6 +12,8 @@
         <div class="current-bid">
             <span class="bid-label mb-0">Current Bid</span>
             <span class="bid-amount">{{format_currency($highestBid)}}</span>
+            <span class="bid-label mb-0">Starting Bid</span>
+            <span class="bid-amount">{{format_currency($selected_vehicle->starting_bid_amount)}}</span>
             <span class="bid-count">{{$totalBids}} bids</span>
         </div>
         <div class="action-buttons mb-2">
@@ -25,16 +27,18 @@
                 <i class="fas fa-print"></i>
             </button>
         </div>
+
+        @if($bids->count() > 0)
         <div class="bid-history">
             @foreach($bids as $bid)
             <div class="bid-item">
-                <span class="bidder">{{$bid->user->name}}</span>
-                <span class="bid-amount">{{format_currency($bid->bid_amount)}}</span>
+                <span class="bidder">{{ $bid->user->name }}</span>
+                <span class="bid-amount">{{ format_currency($bid->bid_amount) }}</span>
                 <span class="bid-time">{{ \Carbon\Carbon::parse($bid->created_at)->diffForHumans() }}</span>
             </div>
             @endforeach
-
         </div>
+        @endif
         <div class="bid-actions">
             <div class="bid-input-group">
                 <input type="number" wire:model="current_bid" class="form-control bid-input"
@@ -75,16 +79,9 @@
             </div>
             <div class="detail-row">
                 <span>Ends:</span>
-                <span>Dec 28, 2024 at 3:00 PM PST</span>
+                <span>Ends In {{ \Carbon\Carbon::parse($selected_vehicle->auction_end_date)->format('M d, Y \a\t g:i A') }}</span>
             </div>
-            <div class="detail-row">
-                <span>Location:</span>
-                <span>Beverly Hills, CA</span>
-            </div>
-            <div class="detail-row">
-                <span>Shipping:</span>
-                <span>Buyer Arranges</span>
-            </div>
+            
         </div>
     </div>
 </div>

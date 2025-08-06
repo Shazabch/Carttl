@@ -30,7 +30,7 @@
                                 </div>
                                 <div class="spec_item">
                                     <img src="{{asset('images/icons/time.svg')}}" alt="">
-                                    <span>End In {{ \Carbon\Carbon::parse($item->auction_end_date)->shortAbsoluteDiffForHumans() }}</span>
+                                    <span>Ends In {{ \Carbon\Carbon::parse($item->auction_end_date)->shortAbsoluteDiffForHumans() }}</span>
                                 </div>
                                 <div class="spec_item">
                                     <img src="{{asset('images/icons/user-check.svg')}}" alt="">

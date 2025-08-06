@@ -7,13 +7,13 @@
                     <div class="col-lg-8">
                         <div class="hero-gallery">
                             <div class="main-image-container">
-                                <img src="{{ asset('storage/' . $selected_vehicle->images->is_cover) }}" alt="Cover Image">
+                                <img src="{{asset('images/c38ec63b-c441-4574-8b3a-8c69a2aa9595.webp')}}" alt="Cover Image">
 
                                     alt="2023 Porsche 911 Turbo S" class="main-image" id="mainImage">
                                 <div class="image-overlay">
                                     @if($selected_vehicle->live_auction)
                                     <div class="auction-status">
-
+ 
                                         <span class="status-badge live">LIVE AUCTION</span>
 
 
@@ -149,7 +149,7 @@
                                         <div class="col-md-6">
                                             <div class="detail-item">
                                                 <span class="detail-label">0-60 mph</span>
-                                                <span class="detail-value">2.6 seconds</span>
+                                                <span class="detail-value">{{$selected_vehicle->zero_to_sixty}} seconds</span>
                                             </div>
                                             <div class="detail-item">
                                                 <span class="detail-label">Top Speed</span>
@@ -157,7 +157,7 @@
                                             </div>
                                             <div class="detail-item">
                                                 <span class="detail-label">Quarter Mile</span>
-                                                <span class="detail-value">10.5 seconds</span>
+                                                <span class="detail-value">{{$selected_vehicle->quater_mile}} seconds</span>
                                             </div>
                                         </div>
                                     </div>

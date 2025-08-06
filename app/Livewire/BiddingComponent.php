@@ -17,49 +17,57 @@ class BiddingComponent extends Component
     public $max_bid;
     public $formSubmitted;
     public $bids = [];
-    protected function rules()
-    {
-        return [
 
-            'current_bid' => 'required',
-
-            'max_bid' => 'required',
-        ];
-    }
     public function mount($selected_vehicle)
     {
         $this->selected_vehicle = $selected_vehicle;
         $this->tags = $this->selected_vehicle->features->where('type', 'tag');
+
         $this->totalBids = VehicleBid::where('vehicle_id', $this->selected_vehicle->id)->count();
         $this->highestBid = VehicleBid::where('vehicle_id', $this->selected_vehicle->id)->max('bid_amount') ?? 0;
-        $this->bids = VehicleBid::orderBy('id', 'desc')->where('vehicle_id', $this->selected_vehicle->id)->take(3)->get();
+
+        $this->bids = VehicleBid::with('user')
+            ->where('vehicle_id', $this->selected_vehicle->id)
+            ->latest()
+            ->take(3)
+            ->get();
     }
+
     public function saveBid()
     {
+        $vehicle = $this->selected_vehicle;
 
-        $this->validate();
+       
+        $highestBid = VehicleBid::where('vehicle_id', $vehicle->id)->max('bid_amount');
+        $minimumBid = $highestBid ? $highestBid + 1 : $vehicle->starting_bid_amount;
+
+       
+        $this->validate([
+            'current_bid' => "required|numeric|min:$minimumBid",
+            'max_bid'     => "nullable|numeric|gte:current_bid",
+        ], [
+            'current_bid.min' => "Your bid must be greater than $" . number_format($minimumBid),
+        ]);
+
         try {
-
             VehicleBid::create([
-                'bid_amount'     => $this->current_bid,
-                'max_bid'     => $this->max_bid,
-                'vehicle_id' => $this->selected_vehicle->id,
+                'bid_amount' => $this->current_bid,
+                'max_bid'    => $this->max_bid,
+                'vehicle_id' => $vehicle->id,
                 'user_id'    => auth()->id(),
             ]);
 
+            
 
-            session()->flash('message', 'Your bid has been placed successfully!');
-
-
+           
             $this->reset(['current_bid', 'max_bid']);
-
-            $this->mount($this->selected_vehicle);
+            $this->mount($vehicle); 
         } catch (\Exception $e) {
-
             Log::error('Bid placement failed: ' . $e->getMessage());
             session()->flash('error', 'An unexpected error occurred. Please try again later.');
         }
     }
+
     public function render()
     {
         return view('livewire.bidding-component');
