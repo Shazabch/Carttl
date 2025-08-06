@@ -2,7 +2,7 @@
     <div class="auction-card">
         <div class="auction-header">
             <p class="auction-id mb-1">#AU-2024-0156</p>
-            <h3>2023 Porsche 911 Turbo S</h3>
+            <h3>{{$selected_vehicle->title}}</h3>
         </div>
         <div class="car-subtitle">
             @foreach($tags as $feature)

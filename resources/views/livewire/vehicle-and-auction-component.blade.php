@@ -143,7 +143,14 @@
 
                         <!-- List View (Hidden by default) -->
                         <div class="list-view d-none" id="listView">
-                            <div class="car-list-item">
+                             @foreach($vehicles as $item)
+                            @if($section=='Vehicles')
+                            @include('components.guest.listing-card-vehicle-list-view')
+                            @else
+                            @include('components.guest.listing-card-auction-list-view')
+                            @endif
+                            @endforeach
+                            <!-- <div class="car-list-item">
                                 <div class="row align-items-center">
                                     <div class="col-md-3">
                                         <img src="https://placehold.co/300x200/1e293b/f8fafc?text=Porsche+911"
@@ -165,7 +172,7 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            </div> -->
                         </div>
                     </div>
                     <div class="mt-3">
