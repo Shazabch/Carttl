@@ -7,7 +7,8 @@
                     <div class="col-lg-8">
                         <div class="hero-gallery">
                             <div class="main-image-container">
-                                <img src="https://images.unsplash.com/photo-1544636331-e26879cd4d9b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80"
+                                <img src="{{ asset('storage/' . $selected_vehicle->images->is_cover) }}" alt="Cover Image">
+
                                     alt="2023 Porsche 911 Turbo S" class="main-image" id="mainImage">
                                 <div class="image-overlay">
                                     @if($selected_vehicle->live_auction)
