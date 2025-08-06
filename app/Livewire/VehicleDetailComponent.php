@@ -14,7 +14,7 @@ class VehicleDetailComponent extends Component
 
     public function mount($id)
     {
-        $this->selected_vehicle = Vehicle::with('features')->findOrFail($id);
+        $this->selected_vehicle = Vehicle::with('features','images')->findOrFail($id);
         $this->exteriorFeatures = $this->selected_vehicle->features->where('type', 'exterior');
         $this->interiorFeatures = $this->selected_vehicle->features->where('type', 'interior');
         $this->tags = $this->selected_vehicle->features->where('type', 'tag');
