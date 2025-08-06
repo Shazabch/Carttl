@@ -7,13 +7,11 @@
                     <div class="col-lg-8">
                         <div class="hero-gallery">
                             <div class="main-image-container">
-                                <img src="{{asset('images/c38ec63b-c441-4574-8b3a-8c69a2aa9595.webp')}}" alt="Cover Image">
-
-                                    alt="2023 Porsche 911 Turbo S" class="main-image" id="mainImage">
+                                <img src="{{$mainImage ? asset('storage/'.$mainImage) : asset('images/c38ec63b-c441-4574-8b3a-8c69a2aa9595.webp')}}" alt="2023 Porsche 911 Turbo S" class="main-image" id="mainImage">
                                 <div class="image-overlay">
                                     @if($selected_vehicle->live_auction)
                                     <div class="auction-status">
- 
+
                                         <span class="status-badge live">LIVE AUCTION</span>
 
 
@@ -35,24 +33,12 @@
                             </div>
                             <div class="thumbnail-gallery">
                                 <div class="thumbnail-container">
-                                    <img src="https://images.unsplash.com/photo-1544636331-e26879cd4d9b?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80"
-                                        alt="Front view" class="thumbnail active">
-                                    <img src="https://images.unsplash.com/photo-1552519507-da3b142c6e3d?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80"
-                                        alt="Side view" class="thumbnail">
-                                    <img src="https://images.unsplash.com/photo-1549399542-7e3f8b79c341?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80"
-                                        alt="Interior" class="thumbnail">
-                                    <img src="https://images.unsplash.com/photo-1503376780353-7e6692767b70?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80"
-                                        alt="Engine" class="thumbnail">
-                                    <img src="https://images.unsplash.com/photo-1542362567-b07e54358753?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80"
-                                        alt="Dashboard" class="thumbnail">
-                                    <img src="https://images.unsplash.com/photo-1494976388531-d1058494cdd8?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80"
-                                        alt="Rear view" class="thumbnail">
-                                    <img src="https://images.unsplash.com/photo-1494976388531-d1058494cdd8?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80"
-                                        alt="Rear view" class="thumbnail">
-                                    <img src="https://images.unsplash.com/photo-1494976388531-d1058494cdd8?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80"
-                                        alt="Rear view" class="thumbnail">
-                                    <img src="https://images.unsplash.com/photo-1494976388531-d1058494cdd8?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80"
-                                        alt="Rear view" class="thumbnail">
+
+                                    @foreach($selected_vehicle->images as $image)
+                                    <img src="{{asset('storage/'.$image->path)}}" alt="Thumbnail" class="thumbnail"
+                                        data-full="{{asset('storage/'.$image->path)}}">
+                                    @endforeach
+
                                 </div>
                             </div>
                         </div>
@@ -117,7 +103,7 @@
                                                 <i class="fas fa-palette"></i>
                                                 <div>
                                                     <span class="spec-label">Color</span>
-                                                    <span class="spec-value">{{$selected_vehicle->color}}</span>
+                                                    <span class="spec-value">{{$selected_vehicle->getColorLabelAttribute()}}</span>
                                                 </div>
                                             </div>
                                         </div>
@@ -172,9 +158,13 @@
                                 </div>
                                 <div class="detail-content">
                                     <div class="feature-grid">
-                                        @foreach($exteriorFeatures as $feature)
+                                        @foreach($allexteriorFeatures as $feature)
                                         <div class="feature-item">
+                                            @if(in_array($feature->name, $exteriorFeatures))
                                             <i class="fas fa-check-circle"></i>
+                                            @else
+                                            <i class="fas fa-times-circle text-danger"></i>
+                                            @endif
                                             <span>{{$feature->name}}</span>
                                         </div>
                                         @endforeach
@@ -191,9 +181,13 @@
                                 </div>
                                 <div class="detail-content">
                                     <div class="feature-grid">
-                                        @foreach($interiorFeatures as $feature)
+                                        @foreach($allinteriorFeatures as $feature)
                                         <div class="feature-item">
+                                            @if(in_array($feature->name, $interiorFeatures))
                                             <i class="fas fa-check-circle"></i>
+                                            @else
+                                            <i class="fas fa-times-circle text-danger"></i>
+                                            @endif
                                             <span>{{$feature->name}}</span>
                                         </div>
                                         @endforeach
@@ -253,11 +247,11 @@
                                 <div class="detail-content">
                                     <div class="seller-info">
                                         <div class="seller-avatar">
-                                            <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&auto=format&fit=crop&w=150&q=80"
+                                            <img src="{{ asset('images/favicon@72x.ico') }}"
                                                 alt="Seller">
                                         </div>
                                         <div class="seller-details">
-                                            <h5>Michael Thompson</h5>
+                                            <h5>Admin</h5>
                                             <div class="seller-rating">
                                                 <div class="stars">
                                                     <i class="fas fa-star"></i>
@@ -290,7 +284,7 @@
                     <div class="col-lg-4">
                         @if($selected_vehicle->is_auction)
                         <div class="sticky-sidebar">
-                             @livewire('bidding-component',['selected_vehicle' => $selected_vehicle])
+                            @livewire('bidding-component',['selected_vehicle' => $selected_vehicle])
 
                             <!-- Buy It Now Card -->
                             <div class="buy-now-card">

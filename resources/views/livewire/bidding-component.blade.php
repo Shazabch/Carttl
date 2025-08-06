@@ -1,19 +1,38 @@
 <div>
     <div class="auction-card">
-        <div class="auction-header">
-            <p class="auction-id mb-1">#AU-2024-0156</p>
-            <h3>{{$selected_vehicle->title}}</h3>
+        <div class="auction-header d-flex justify-content-between align-items-center mb-3">
+            <div class="div">
+                <p class="auction-id mb-1">#AU-2024-0156</p>
+                <h3>{{$selected_vehicle->title}}</h3>
+            </div>
+            <div class="div">
+                <!-- Timer for auction ends  -->
+                <div class="auction-timer">
+                    <div class="auction-timer" id="auctionTimer">
+                        <span id="hours">00</span>h :
+                        <span id="minutes">00</span>m :
+                        <span id="seconds">00</span>s
+                    </div>
+                </div>
+            </div>
         </div>
         <div class="car-subtitle">
             @foreach($tags as $feature)
             <span class="badge-custom">{{$feature->name}}</span>
             @endforeach
         </div>
+        <div class="current-bid d-flex justify-content-between align-items-center mb-3">
+            <div class="div">
+                <span class="bid-label mb-0">Current Bid</span>
+                <span class="bid-amount">{{format_currency($highestBid)}}</span>
+
+            </div>
+            <div class="div">
+                <span class="bid-label mb-0">Starting Bid</span>
+                <span class="bid-amount">{{format_currency($selected_vehicle->starting_bid_amount)}}</span>
+            </div>
+        </div>
         <div class="current-bid">
-            <span class="bid-label mb-0">Current Bid</span>
-            <span class="bid-amount">{{format_currency($highestBid)}}</span>
-            <span class="bid-label mb-0">Starting Bid</span>
-            <span class="bid-amount">{{format_currency($selected_vehicle->starting_bid_amount)}}</span>
             <span class="bid-count">{{$totalBids}} bids</span>
         </div>
         <div class="action-buttons mb-2">
@@ -81,7 +100,38 @@
                 <span>Ends:</span>
                 <span>Ends In {{ \Carbon\Carbon::parse($selected_vehicle->auction_end_date)->format('M d, Y \a\t g:i A') }}</span>
             </div>
-            
+
         </div>
     </div>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // Get auction end time from backend
+            const auctionEndTime = new Date("{{ \Carbon\Carbon::parse($selected_vehicle->auction_end_date)->format('Y-m-d H:i:s') }}").getTime();
+
+            function updateTimer() {
+                const now = new Date().getTime();
+                const distance = auctionEndTime - now;
+
+                if (distance <= 0) {
+                    document.getElementById("auctionTimer").innerHTML = "Auction Ended";
+                    clearInterval(timerInterval);
+                    return;
+                }
+
+                // Time calculations
+                const hours = String(Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))).padStart(2, '0');
+                const minutes = String(Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60))).padStart(2, '0');
+                const seconds = String(Math.floor((distance % (1000 * 60)) / 1000)).padStart(2, '0');
+
+                // Display
+                document.getElementById("hours").textContent = hours;
+                document.getElementById("minutes").textContent = minutes;
+                document.getElementById("seconds").textContent = seconds;
+            }
+
+            const timerInterval = setInterval(updateTimer, 1000);
+            updateTimer();
+        });
+    </script>
+
 </div>

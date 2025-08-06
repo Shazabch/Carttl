@@ -114,12 +114,21 @@
             @enderror
         </div>
 
+        <div class="col-md-4 mb-3">
+            <label class="form-label">Auction End Date</label>
+            <input type="datetime-local" class="form-control @error('vehicleData.auction_end_date') is-invalid @enderror"
+                wire:model.defer="vehicleData.auction_end_date">
+            @error('vehicleData.auction_end_date')
+            <div class="invalid-feedback">{{ $message }}</div>
+            @enderror
+        </div>
+
         {{-- 0-60 mph --}}
         <div class="col-md-4 mb-3">
             <label class="form-label">0-60 mph (seconds)</label>
-            <input type="number" step="0.01" class="form-control @error('vehicleData.zero_to_sixtys') is-invalid @enderror"
-                wire:model.defer="vehicleData.zero_to_sixtys">
-            @error('vehicleData.zero_to_sixtys')
+            <input type="number" step="0.01" class="form-control @error('vehicleData.zero_to_sixty') is-invalid @enderror"
+                wire:model.defer="vehicleData.zero_to_sixty">
+            @error('vehicleData.zero_to_sixty')
             <div class="invalid-feedback">{{ $message }}</div>
             @enderror
         </div>

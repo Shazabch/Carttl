@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Enums\MileageRange;
+use App\Enums\VehicleColor;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -39,6 +40,7 @@ class Vehicle extends Model
         'is_auction' => 'boolean',
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
+        'auction_end_date' => 'datetime',
 
     ];
 
@@ -186,6 +188,14 @@ class Vehicle extends Model
             return MileageRange::from((int) $this->mileage)->label();
         } catch (\ValueError $e) {
             return 'Unknown mileage';
+        }
+    }
+    public function getColorLabelAttribute()
+    {
+        try {
+            return VehicleColor::from((string) $this->color)->label();
+        } catch (\ValueError $e) {
+            return '';
         }
     }
 }

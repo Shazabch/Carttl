@@ -528,7 +528,7 @@
     margin: 0;
     font-family: 'DM Sans';
 }
-.auction-id {       
+.auction-id {
     display: block;
     color: var(--detail-gray-600);
     font-size: 0.9rem;
@@ -543,8 +543,8 @@
 
 .bid-amount {
     display: block;
-    font-size: 2.5rem;
-    font-weight: 700;
+    font-size: 1.5rem;
+    font-weight: 600;
     color: var(--detail-accent);
     font-family: 'DM Sans';
 }
