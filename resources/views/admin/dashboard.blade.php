@@ -19,14 +19,16 @@
             <!--end::Info-->
             <!--begin::Toolbar-->
             <div class="d-flexs align-items-center">
-
+              
             </div>
             <!--end::Toolbar-->
         </div>
     </div>
+    
     <div class="row mx-2">
         <div class="col-12">
-            {{-- @livewire('admin.users-management-component') --}}
+            
+        @livewire('admin.admin-dashboard-component')
         </div>
     </div>
 @endsection

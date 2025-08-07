@@ -9,9 +9,9 @@ use Illuminate\Http\Request;
 
 class VehicleManagerController extends Controller
 {
-    public function index()
+    public function index($type)
     {
-        return view('admin.vehicles.index');
+        return view('admin.vehicles.index',compact('type'));
     }
     public function details($id)
     {
