@@ -5,7 +5,7 @@
             <div class="row mb-5 align-items-end">
                 <div class="col-lg-8 mb-4 mb-lg-0">
 
-                    <h2 class="h-35 fw-700">Featured {{$section}}</h2>
+                    <h2 class="h-35 fw-700">{{$title}}</h2>
                     <p class="text-secondary mb-0">Looking for your next ride? Check out our featured cars—great deals on the most popular models, all in one place..</p>
                 </div>
                 <div class="col-lg-4 text-end">
@@ -23,12 +23,34 @@
                             </a>
                         </div>
                         <div class="overlap-car-box-card">
-                            <div class="car-box-type p-left">
+                            <div class="car-box-type p-left d-flex align-items-center gap-2">
+                                @if($item->is_hot)
                                 <span class="car-box-badge">
                                     <img src="{{asset('images/icons/fire.svg')}}" alt="">
                                     Hot Bid
                                 </span>
+                                @endif
+                                @if($item->inspected_by)
+                                <span class="car-box-badge bg-primary text-light">
+                                    <img src="{{asset('images/icons/star.svg')}}" alt="">
+                                    Inspected
+                                </span>
+                                @endif
+                                @if(!$item->is_auction && $item->status == 'sold')
+                                <span class="car-box-badge bg-custom-primary text-light" style="background-color: #d7b236;">
+                                    <i class="fas fa-check mx-2"></i>
+                                    <span>Sold</span>
+                                </span>
+                                @endif
+                                @if($item->condition)
+                                <span class="car-box-badge bg-secondary text-light">
+                                    <i class="fas fa-car mx-2"></i>
+                                    <span>{{ucfirst($item->condition)}}</span>
+                                </span>
+                                @endif
+
                             </div>
+
                             <div class="wishlist-btn">
                                 <i class="far fa-heart"></i>
                             </div>
@@ -39,16 +61,16 @@
                             <h3>{{$item->title}}</h3>
                             <div class="car-box-specs">
                                 <div class="spec_item">
-                                    <img src="{{asset('images/icons/meter.svg')}}" alt="">
+                                    <i class="fas fa-tachometer-alt"></i>
                                     <span>{{$item->engine_type}}</span>
                                 </div>
                                 <div class="spec_item">
-                                    <img src="{{asset('images/icons/time.svg')}}" alt="">
+                                    <i class="fas fa-palette"></i>
                                     <span>{{$item->color}}</span>
                                 </div>
                                 <div class="spec_item">
-                                    <img src="{{asset('images/icons/user-check.svg')}}" alt="">
-                                    <span>{{$item->drive_type}}</span>
+                                    <i class="fas fa-user"></i>
+                                    <span>{{$item->seats}}</span>
                                 </div>
                             </div>
                         </div>
@@ -104,7 +126,7 @@
                                 </div>
                                 <div class="spec_item">
                                     <img src="{{asset('images/icons/user-check.svg')}}" alt="">
-                                    <span>{{ $item->bids->count() ?? 0 }}  Bids</span>
+                                    <span>{{ $item->bids->count() ?? 0 }} Bids</span>
                                 </div>
                             </div>
                         </div>

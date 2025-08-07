@@ -298,6 +298,7 @@ section {
     text-shadow: 0 0 20px rgba(245, 158, 11, 0.3);
 }
 
+
 .navbar-brand:hover {
     transform: translateY(-2px);
     color: #fff !important;
@@ -2564,6 +2565,11 @@ footer .footer-center ul {
 }
 .section-auction .spec_item{
     background-color: var(--accent);
+    color: white;
+}
+.car-box-specs .spec_item{
+    background-color: var(--accent);
+    color: white;
 }
 .spec_item img {
     width: 14px !important;

@@ -227,7 +227,7 @@
                     <div class="banner-content" data-aos="fade-up" data-aos-delay="400" data-aos-duration="1000"
                         data-aos-easing="ease-out-cubic">
                         <h5 class="banner-text-sm">Buy. Sell. Auction</h5>
-                        <h1 class="banner-heading mt-4 mb-3">Your Trusted Destination to Buy, Sell & Auction Cars</h1>
+                        <h1 class="banner-heading mt-4 mb-3">Sell Your Car in 60 Minutes Get Your Free Car Evaluation</h1>
                         <p class="p-text">From finding your dream ride to getting the best deal for your car,<br> we're here
                             to make it easy and hassle-free.</p>
                     </div>
@@ -449,7 +449,7 @@
     </div>
 
     <!-- Featured Section -->
-    @livewire('vehicle-listing-component', ['section' => 'Vehicles'])
+    @livewire('vehicle-listing-component', ['section' => 'Vehicles','type' => 'featured'])
     <!-- CTA 2 -->
     <section class="main-section ox-hidden">
         <div class="container">
@@ -490,7 +490,7 @@
     </section>
     <!-- SERVICES -->
 
-    @livewire('vehicle-listing-component', ['section' => 'Auctions'])
+    @livewire('vehicle-listing-component', ['section' => 'Vehicles','type' => 'sold'])
 
     <section class="our-services ox-hidden">
         <div class="container">
