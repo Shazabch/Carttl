@@ -18,9 +18,17 @@ class VehicleListingComponent extends Component
 
     public $showForm = false;
     public $search = '';
+    public $type;
     protected string $paginationTheme = 'bootstrap';
     protected $listeners = ['vehicleSaved' => '$refresh', 'cancelForm' => 'cancel', 'deleteVehicle' => 'delete'];
-    public function mount() {}
+    public function mount($type)
+    {
+        $this->type = $type;
+
+        if ($this->type == 'add') {
+            $this->addNew();
+        }
+    }
     public function addNew()
     {
         $this->showForm = true;
@@ -40,13 +48,33 @@ class VehicleListingComponent extends Component
     {
         Vehicle::findOrFail($id)->delete();
 
-         $this->dispatch('success-notification', message: 'Vehicle deleted successfully.');
+        $this->dispatch('success-notification', message: 'Vehicle deleted successfully.');
     }
     public function render()
     {
-        $vehicles = Vehicle::where('title', 'like', '%' . $this->search . '%')
-            ->orWhere('vin', 'like', '%' . $this->search . '%')
-            ->with('brand', 'vehicleModel')
+        $query = Vehicle::query();
+
+        // Apply status filter based on type
+        if ($this->type == 'sold') {
+            $query->where('status', 'sold');
+        } elseif ($this->type == 'listed') {
+            $query->where('status', 'published');
+        } elseif ($this->type == 'pending') {
+            $query->where('status', 'pending');
+        } elseif ($this->type == 'draft') {
+            $query->where('status', 'draft');
+        }
+
+        // Apply search filter with proper grouping
+        if (!empty($this->search)) {
+            $query->where(function ($q) {
+                $q->where('title', 'like', '%' . $this->search . '%')
+                    ->orWhere('vin', 'like', '%' . $this->search . '%');
+            });
+        }
+
+        // Get results with relations and pagination
+        $vehicles = $query->with(['brand', 'vehicleModel'])
             ->latest()
             ->paginate(10);
 

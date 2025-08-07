@@ -120,31 +120,31 @@
 
                          <!-- Sale Management Link -->
                          <li class="menu-item " aria-haspopup="true">
-                             <a href="{{ route('admin.vehicles') }}" class="menu-link">
+                             <a href="{{ route('admin.vehicles','add') }}" class="menu-link">
                                  <i class="menu-bullet menu-bullet-dot"><span></span></i>
                                  <span class="menu-text">Add Vehicle</span>
                              </a>
                          </li>
                          <li class="menu-item " aria-haspopup="true">
-                             <a href="{{ route('admin.vehicles') }}" class="menu-link">
+                             <a href="{{ route('admin.vehicles','all') }}" class="menu-link">
                                  <i class="menu-bullet menu-bullet-dot"><span></span></i>
                                  <span class="menu-text">All Vehicles</span>
                              </a>
                          </li>
                          <li class="menu-item " aria-haspopup="true">
-                             <a href="{{ route('admin.submissions') }}" class="menu-link">
+                             <a href="{{ route('admin.vehicles','listed') }}" class="menu-link">
                                  <i class="menu-bullet menu-bullet-dot"><span></span></i>
                                  <span class="menu-text">Listed Vehicles</span>
                              </a>
                          </li>
                          <li class="menu-item " aria-haspopup="true">
-                             <a href="{{ route('admin.submissions') }}" class="menu-link">
+                             <a href="{{ route('admin.vehicles','pending') }}" class="menu-link">
                                  <i class="menu-bullet menu-bullet-dot"><span></span></i>
                                  <span class="menu-text">Pending Vehicles</span>
                              </a>
                          </li>
                          <li class="menu-item " aria-haspopup="true">
-                             <a href="{{ route('admin.submissions') }}" class="menu-link">
+                             <a href="{{ route('admin.vehicles','sold') }}" class="menu-link">
                                  <i class="menu-bullet menu-bullet-dot"><span></span></i>
                                  <span class="menu-text">Sold Vehicles</span>
                              </a>

@@ -5,7 +5,8 @@
         <div class="row">
             <div class="col">
                 <livewire:admin.vehicle-form-component />
-                <livewire:admin.vehicle-listing-component />
+              
+                @livewire('admin.vehicle-listing-component',['type' => $type])
             </div>
         </div>
     </div>
