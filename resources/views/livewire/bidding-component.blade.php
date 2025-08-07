@@ -13,16 +13,7 @@
             <span class="badge-custom">{{$feature->name}}</span>
             @endforeach
         </div>
-        <div class="auction-header d-flex justify-content-between align-items-end mb-3">
-            <div></div>
-            <div class="auction-timer text-end">
-                <div class="badge-custom px-3 py-2 rounded">
-                    <span id="hours" class="fw-bold">00</span><small>h</small> :
-                    <span id="minutes" class="fw-bold">00</span><small>m</small> :
-                    <span id="seconds" class="fw-bold">00</span><small>s</small>
-                </div>
-            </div>
-        </div>
+
         <div class="current-bid d-flex justify-content-between align-items-center mb-3">
             <div class="div">
                 <span class="bid-label mb-0">Current Bid</span>
@@ -47,6 +38,24 @@
             <button class="btn-icon" data-bs-toggle="tooltip" title="Print">
                 <i class="fas fa-print"></i>
             </button>
+        </div>
+        <div class="auction-header">
+
+            <div class="auction-timer  d-flex justify-content-center gap-3 align-items-end mb-3">
+                <div class="px-3 py-2 d-flex gap-2">
+                    <div class="badge-custom p-3">
+                        <span id="hours" class="fw-bold">00</span><small> h</small>
+                    </div>
+                    <span>:</span>
+                    <div class="badge-custom p-3">
+                        <span id="minutes" class="fw-bold">00</span><small> m</small>
+                    </div>
+                    <span>:</span>
+                    <div class="badge-custom p-3">
+                        <span id="seconds" class="fw-bold">00</span><small> s</small>
+                    </div>
+                </div>
+            </div>
         </div>
 
         @if($bids->count() > 0)
