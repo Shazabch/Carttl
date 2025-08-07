@@ -16,6 +16,8 @@ class BuyCarComponent extends Component
     public $email;
     public $address;
 
+    public $is_auction = 0;
+
     protected $rules = [
         'name' => 'required',
         'phone' => 'required',
@@ -23,8 +25,9 @@ class BuyCarComponent extends Component
         'address' => 'nullable',
     ];
     public bool $formSubmitted = false;
-    public function mount($selected_vehicle){
+    public function mount($selected_vehicle,$is_auction = 0){
         $this->selected_vehicle=$selected_vehicle;
+        $this->is_auction=$is_auction;
     }
     public function saveBuyEnquiry()
     {
@@ -39,6 +42,7 @@ class BuyCarComponent extends Component
              
         ]);
         $this->formSubmitted = true;
+         $this->dispatch('closeBuyNowModal');
         session()->flash('message', 'Your inquiry has been submitted successfully!');
 
        

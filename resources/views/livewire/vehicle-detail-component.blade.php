@@ -291,11 +291,15 @@
                                 <h4>Buy It Now</h4>
                                 <div class="buy-now-price">{{format_currency($selected_vehicle->price)}}</div>
                                 <p>Skip the auction and purchase immediately</p>
-                                <button class="btn btn-warning btn-buy-now">
-                                    <i class="fas fa-shopping-cart"></i>
-                                    Buy It Now
+                                <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#buyNowModal">
+                                    <i class="fas fa-shopping-cart"></i> Buy It Now
                                 </button>
+
                             </div>
+                            <!-- buy now modal -->
+                            <!-- Modal -->
+
+
 
                             <!-- Financing Card -->
                             <div class="financing-card">
@@ -378,12 +382,11 @@
 
 
                             </div>
+                            @if($selected_vehicle->status !== 'sold')
                             <div class="auction-card">
                                 @livewire('buy-car-component',['selected_vehicle' => $selected_vehicle])
                             </div>
-
-
-
+                            @endif
                             <!-- Financing Card -->
                             <div class="financing-card">
                                 <h4><i class="fas fa-calculator"></i> Financing Calculator</h4>
@@ -439,4 +442,30 @@
             </div>
         </div>
     </div>
+    <div class="modal fade" id="buyNowModal" tabindex="-1" aria-labelledby="buyNowModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <h5 class="modal-title" id="buyNowModalLabel">Buy This Vehicle</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+
+                <div class="modal-body">
+                    @livewire('buy-car-component', ['selected_vehicle' => $selected_vehicle,'is_auction' => 1])
+
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            Livewire.on('closeBuyNowModal', () => {
+                const modal = bootstrap.Modal.getInstance(document.getElementById('buyNowModal'));
+                if (modal) modal.hide();
+            });
+        });
+    </script>
 </div>
