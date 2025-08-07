@@ -5,21 +5,23 @@
                 <p class="auction-id mb-1">#AU-2024-0156</p>
                 <h3>{{$selected_vehicle->title}}</h3>
             </div>
-            <div class="div">
-                <!-- Timer for auction ends  -->
-                <div class="auction-timer">
-                    <div class="auction-timer" id="auctionTimer">
-                        <span id="hours">00</span>h :
-                        <span id="minutes">00</span>m :
-                        <span id="seconds">00</span>s
-                    </div>
-                </div>
-            </div>
+
         </div>
+
         <div class="car-subtitle">
             @foreach($tags as $feature)
             <span class="badge-custom">{{$feature->name}}</span>
             @endforeach
+        </div>
+        <div class="auction-header d-flex justify-content-between align-items-end mb-3">
+            <div></div>
+            <div class="auction-timer text-end">
+                <div class="badge-custom px-3 py-2 rounded">
+                    <span id="hours" class="fw-bold">00</span><small>h</small> :
+                    <span id="minutes" class="fw-bold">00</span><small>m</small> :
+                    <span id="seconds" class="fw-bold">00</span><small>s</small>
+                </div>
+            </div>
         </div>
         <div class="current-bid d-flex justify-content-between align-items-center mb-3">
             <div class="div">
