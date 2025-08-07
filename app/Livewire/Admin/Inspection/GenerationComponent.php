@@ -68,15 +68,25 @@ class GenerationComponent extends Component
             $this->reportData[$field] = [];
         }
     }
+    public function updatedReportDataMake($value)
+    {
+        $this->reportData['model'] = null;
+        if ($value) {
+            $this->models = VehicleModel::where('brand_id', $value)->get();
+        } else {
+            $this->models = [];
+        }
+    }
 
     public function mount($vehicleId = null, $enquiryId = null)
     {
 
         $this->initializeReportData();
-        $this->brands =  Brand::orderBy('name')->get()->map(fn($b) => ['id' => $b->id, 'text' => $b->name])->toArray();
+        $this->brands =  Brand::orderBy('name')->get();
         $this->bodyTypes = BodyType::all();
         $this->fuelTypes = FuelType::all();
         $this->transmissions = Transmission::all();
+
         if ($vehicleId) {
             $this->linkedVehicleId = $vehicleId;
         }
