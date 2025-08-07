@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\MileageRange;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -52,5 +53,14 @@ class SaleEnquiry extends Model
     public function vehicleModel(): BelongsTo
     {
         return $this->belongsTo(VehicleModel::class, 'make_id');
+    }
+
+     public function getMileageLabelAttribute()
+    {
+        try {
+            return MileageRange::from((int) $this->mileage)->label();
+        } catch (\ValueError $e) {
+            return 'Unknown mileage';
+        }
     }
 }

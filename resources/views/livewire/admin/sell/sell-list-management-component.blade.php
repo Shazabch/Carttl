@@ -19,10 +19,10 @@
                 <table class="table table-hover align-middle">
                     <thead class="table-light">
                         <tr>
-                            <th>#</th> 
+                            <th>#</th>
                             <th>Name & Number</th>
                             <th>Email</th>
-                            <th>Brand & Model</th>
+                            <th>Brand & Model & Year</th>
                             <th>Mileage</th>
                             <th>Images</th>
                             <th class="text-center">Received</th>
@@ -42,9 +42,11 @@
                             </td>
                             <td>
                                 <div class="fw-bold">{{ $enquiry->brand?->name ?? 'N/A' }}</div>
-                                <small class="text-muted">{{ $enquiry->vehicleModel?->name ?? 'N/A' }}</small>
+                                <div class="fw-bold">{{ $enquiry->vehicleModel?->name ?? 'N/A' }}</div>
+
+                                <small class="text-dark">{{ $enquiry->year ?? 'N/A' }}</small>
                             </td>
-                            <td>{{ number_format($enquiry->mileage) }} km</td>
+                            <td>{{ $enquiry->getMileageLabelAttribute() }}</td>
                             <td>
                                 @if($enquiry->imageSet)
                                 <div class="d-flex flex-wrap gap-1">
@@ -83,6 +85,8 @@
                                             <dl class="row">
                                                 <dt class="col-sm-4">Full Name:</dt>
                                                 <dd class="col-sm-8">{{ $enquiry->name }}</dd>
+                                                <dt class="col-sm-4">Email:</dt>
+                                                <dd class="col-sm-8">{{ $enquiry->email ?? 'N/A' }}</dd>
 
                                                 <dt class="col-sm-4">Number:</dt>
                                                 <dd class="col-sm-8">{{ $enquiry->number }}</dd>
@@ -90,17 +94,21 @@
                                                 <dt class="col-sm-4">Brand:</dt>
                                                 <dd class="col-sm-8">{{ $enquiry->brand?->name ?? 'N/A' }}</dd>
 
+                                                 <dt class="col-sm-4">Year:</dt>
+                                                <dd class="col-sm-8">{{ $enquiry->year ?? 'N/A' }}</dd>
+
+
                                                 <dt class="col-sm-4">Model:</dt>
                                                 <dd class="col-sm-8">{{ $enquiry->vehicleModel?->name ?? 'N/A' }}</dd>
 
                                                 <dt class="col-sm-4">Mileage:</dt>
-                                                <dd class="col-sm-8">{{ number_format($enquiry->mileage) }} km</dd>
+                                                <dd class="col-sm-8">{{ $enquiry->getMileageLabelAttribute()}}</dd>
 
                                                 <dt class="col-sm-4">Specification:</dt>
                                                 <dd class="col-sm-8">{{ $enquiry->specification }}</dd>
 
-                                                <dt class="col-sm-4">FAQ:</dt>
-                                                <dd class="col-sm-8 fst-italic">"{{ $enquiry->faq }}"</dd>
+                                                <!-- <dt class="col-sm-4">FAQ:</dt>
+                                                <dd class="col-sm-8 fst-italic">"{{ $enquiry->faq }}"</dd> -->
 
                                                 @if($enquiry->notes)
                                                 <dt class="col-sm-4">Notes:</dt>

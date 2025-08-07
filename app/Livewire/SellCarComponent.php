@@ -13,11 +13,12 @@ class SellCarComponent extends Component
 {
     use WithFileUploads;
 
-    // Step 1: Personal Info
-    public $name, $number,$email;
+    // Step 1: Car Details
+    public $brand_id, $make_id, $year, $mileage, $specification, $faq, $notes;
 
-    // Step 2: Car Details
-    public $brand_id, $make_id, $mileage, $specification, $faq, $notes;
+    // Step 2: Personal Info
+    public $name, $number, $email;
+
 
     // Step 3: Images
     public $images = [];
@@ -49,19 +50,21 @@ class SellCarComponent extends Component
     public function getRules()
     {
         if ($this->currentStep === 1) {
+
+            return [
+                'brand_id'      => 'required|exists:brands,id',
+                'make_id'       => 'required|exists:vehicle_models,id',
+                'year'       => 'required',
+                'mileage'       => 'required|numeric|min:0',
+                'specification' => 'required|string|min:5',
+                'faq'           => 'nullable',
+                'notes'         => 'nullable',
+            ];
+        } elseif ($this->currentStep === 2) {
             return [
                 'name'   => 'required',
                 'number' => 'required',
                 'email' => 'required',
-            ];
-        } elseif ($this->currentStep === 2) {
-            return [
-                'brand_id'      => 'required|exists:brands,id',
-                'make_id'       => 'required|exists:vehicle_models,id',
-                'mileage'       => 'required|numeric|min:0',
-                'specification' => 'required|string|min:5',
-                'faq'           => 'required|string',
-                'notes'         => 'nullable|string|min:10',
             ];
         }
         return []; // No validation needed for step 3 navigation
@@ -91,10 +94,11 @@ class SellCarComponent extends Component
             'email'        => 'required',
             'brand_id'      => 'required|exists:brands,id',
             'make_id'       => 'required|exists:vehicle_models,id',
+            'year'       => 'required',
             'mileage'       => 'required|numeric|min:0',
             'specification' => 'required|string|min:5',
-            'faq'           => 'required|string',
-            'notes'         => 'nullable|string|min:10',
+            'faq'           => 'nullable',
+            'notes'         => 'nullable',
             'images'        => 'required|array|min:1|max:6',
             'images.*'      => 'image|max:2048',
         ]);
@@ -106,9 +110,10 @@ class SellCarComponent extends Component
             'number'        => $this->number,
             'brand_id'      => $this->brand_id,
             'make_id'       => $this->make_id,
+            'year'       => $this->year,
             'mileage'       => $this->mileage,
             'specification' => $this->specification,
-            'faq'           => $this->faq,
+            // 'faq'           => $this->faq,
             'notes'         => $this->notes,
         ]);
 

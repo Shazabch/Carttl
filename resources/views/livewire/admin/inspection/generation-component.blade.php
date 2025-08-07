@@ -291,6 +291,27 @@
             border-color: #dc3545;
         }
 
+        .btn-group-toggle .btn.active-primary {
+            background-color: #d7b236;
+            /* Bootstrap Danger Red */
+            color: white;
+            border-color: #d7b236;
+        }
+
+        .btn-group-toggle .btn.active-warning {
+            background-color: #f6e86dff;
+            /* Bootstrap Danger Red */
+            color: white;
+            border-color: #f6e86dff;
+        }
+
+        .btn-group-toggle .btn.active-warning-2 {
+            background-color: #b1602ed7;
+            /* Bootstrap Danger Red */
+            color: white;
+            border-color: #b1602ed7;
+        }
+
 
         /* --- Multi-Select Tags (e.g., Paint Condition) --- */
         .tag {
@@ -311,6 +332,10 @@
 
         .tag-red {
             background-color: #dc3545;
+        }
+
+        .tag-primary {
+            background-color: #d7b236;
         }
 
         .tag-green {

@@ -167,7 +167,6 @@ class GenerationComponent extends Component
         if ($this->currentStep == 3) {
             $this->currentStep++;
         } else {
-
             session()->flash('success', $this->isEditing ? 'Report updated successfully.' : 'Report created successfully.');
             $this->cancel();
         }
