@@ -25,7 +25,7 @@
                 <div class="line {{ $currentStep >= 3 ? 'filled' : '' }}"></div>
 
                 {{-- Step 3: Condition Details --}}
-                <div class="step {{ $currentStep == 3 ? 'active' : '' }}">
+                <div class="step {{ $currentStep >= 3 ? 'active' : '' }}">
                     <div class="icon">
                         <i class="fas fa-clipboard-check"></i>
                     </div>
@@ -33,7 +33,7 @@
                 </div>
                 <div class="line {{ $currentStep >= 4 ? 'filled' : '' }}"></div>
 
-                {{-- Step 4: Condition Details --}}
+
                 <div class="step {{ $currentStep == 4 ? 'active' : '' }}">
                     <div class="icon">
                         <i class="fas fa-clipboard-check"></i>
@@ -74,10 +74,9 @@
                     <button class="btn btn-primary" wire:click="nextStep">Save Vehicle</button>
                     @endif
 
-                    {{-- Your existing logic for showing Save button during editing --}}
                     @if($isEditing && $currentStep < 3)
                         <button class="btn btn-success" wire:click="saveVehicle">Save Vehicle</button>
-                        @endif
+                    @endif
             </div>
         </div>
     </div>

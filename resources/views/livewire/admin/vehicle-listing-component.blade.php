@@ -43,7 +43,7 @@
                             <td>{{ $vehicle->title }}</td>
                             <td>{{ $vehicle->brand?->name }} / {{ $vehicle->vehicleModel?->name }}</td>
                             <td>{{ $vehicle->year }}</td>
-                            <td>${{ number_format($vehicle->price, 2) }}</td>
+                            <td>{{ format_currency($vehicle->price) }}</td>
                             <td><span class="badge bg-primary text-white">{{ Str::ucfirst($vehicle->status) }}</span></td>
                             <td><span class="badge {{ $vehicle->is_auction ? "bg-dark":"bg-warning text-dark" }} text-white">{{ $vehicle->is_auction ? "Auction":"Vehicle" }}</span></td>
                             <td>
