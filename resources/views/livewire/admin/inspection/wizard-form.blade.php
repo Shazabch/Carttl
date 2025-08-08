@@ -34,6 +34,14 @@
             {{-- Step 4: Damage Assessment --}}
             <div class="step {{ $currentStep == 4 ? 'active' : '' }}">
                 <div class="icon">
+                    <i class="fas fa-camera"></i>
+                </div>
+                <p>Images</p>
+            </div>
+            <div class="line {{ $currentStep >= 4 ? 'filled' : '' }}"></div>
+            {{-- Step 4: Damage Assessment --}}
+            <div class="step {{ $currentStep == 5 ? 'active' : '' }}">
+                <div class="icon">
                     <i class="fas fa-car"></i>
                 </div>
                 <p>Damage Assessment</p>
@@ -60,6 +68,11 @@
             @include('livewire.admin.inspection.sections.section-brakes')
             @endif
             @if($currentStep === 4)
+            @if($inspectionId)
+            <livewire:admin.inspection.section-assets-component :inspectionId="$inspectionId" />
+            @endif
+            @endif
+            @if($currentStep === 5)
             @livewire('car-damage-assessment', ['inspectionId' => $inspectionId], key('damage-assessment-for-inspection-' . $inspectionId))
             @endif
         </div>

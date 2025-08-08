@@ -93,6 +93,7 @@ class GenerationComponent extends Component
         if ($enquiryId) {
             $this->linkedEnquiryId = $enquiryId;
         }
+
     }
     private function loadDataFromVehicle(int $vehicleId)
     {
@@ -130,7 +131,7 @@ class GenerationComponent extends Component
         // $this->validateStep($this->currentStep);
         if ($this->currentStep < 3) {
             $this->currentStep++;
-        } elseif ($this->currentStep == 3 || $this->currentStep == 4) {
+        } elseif ($this->currentStep == 3 || $this->currentStep == 4 || $this->currentStep == 5) {
             $this->saveReport();
         }
     }
@@ -158,6 +159,7 @@ class GenerationComponent extends Component
         $this->isEditing = true;
         $report = VehicleInspectionReport::findOrFail($reportId);
         $this->report_id = $reportId;
+        $this->inspectionId = $reportId;
         $this->reportData = $report->toArray();
         $this->currentStep = 1;
         $this->showForm = true;
@@ -176,7 +178,7 @@ class GenerationComponent extends Component
         $this->reportData['inspection_enquiry_id'] = $this->linkedEnquiryId;
         $inspection = VehicleInspectionReport::updateOrCreate(['id' => $this->inspectionId], $this->reportData);
         $this->inspectionId = $inspection->id;
-        if ($this->currentStep == 3) {
+        if ($this->currentStep == 3 || $this->currentStep == 4) {
             $this->currentStep++;
         } else {
             session()->flash('success', $this->isEditing ? 'Report updated successfully.' : 'Report created successfully.');

@@ -8,7 +8,7 @@
             </div>
             <div class="d-flex align-items-center">
 
-                <a href="{{ route('admin.vehicles') }}" class="btn btn-secondary">
+                <a href="{{ route('admin.vehicles', $vehicle->status) }}" class="btn btn-secondary">
                     <i class="fas fa-arrow-left me-1"></i> Back to List
                 </a>
                 <button class="btn btn-outline-primary mx-2" wire:click.prevent="cycleSidebarState" title="Toggle Sidebar View">

@@ -59,6 +59,7 @@
                     <thead>
                         <tr>
                             <th>ID</th>
+                            <th>Image</th>
                             <th>Make & Model</th>
                             <th>VIN</th>
                             <th>Inspected At</th>
@@ -69,6 +70,15 @@
                         @forelse($reports as $report)
                         <tr>
                             <td>{{ $report->id }}</td>
+                            <td>
+                                @if($report->coverImage)
+                                <img
+                                    src="{{ asset('storage/' . $report->coverImage?->path) }}"
+                                    alt="{{ $report->title }}"
+                                    class="rounded"
+                                    style="width: 60px; height: 60px; object-fit: cover;">
+                                @endif
+                            </td>
                             <td>{{ $report->brand?->name }} {{ $report->vehicleModel?->name }}</td>
                             <td>{{ $report->vin }}</td>
                             <td>{{ $report->created_at->format('M d, Y') }}</td>

@@ -102,28 +102,27 @@ class VehicleFormComponent extends Component
         $this->exteriorFeatures = Feature::where('type', 'exterior')->get();
         $this->interiorFeatures = Feature::where('type', 'interior')->get();
         $this->tags = Feature::where('type', 'tag')->get();
-
     }
 
     // The hook now works reliably with the array.
     public function updatedVehicleDataBrandId($value)
     {
-         $this->vehicleData['vehicle_model_id'] = null; // Reset vehicle_model_id in our data array
+        $this->vehicleData['vehicle_model_id'] = null; // Reset vehicle_model_id in our data array
         if ($value) {
             $this->models = VehicleModel::where('brand_id', $value)->get();
         } else {
             $this->models = [];
         }
-
     }
 
     // --- WIZARD CONTROLS ---
     public function nextStep()
     {
         $this->validateStep($this->currentStep);
+
         if ($this->currentStep < 3) {
             $this->currentStep++;
-        } elseif ($this->currentStep == 3) {
+        } elseif ($this->currentStep == 3 || $this->currentStep == 4) {
             $this->saveVehicle();
         }
     }
@@ -175,16 +174,20 @@ class VehicleFormComponent extends Component
         }
         $vehicle = Vehicle::updateOrCreate(['id' => $this->vehicle_id], $this->vehicleData);
         $vehicle->features()->sync($this->selectedFeatures);
+        $this->vehicle_id = $vehicle->id;
         if (!empty($this->images)) {
             foreach ($this->images as $imageFile) {
                 $path = $imageFile->store('vehicle_images', 'public');
                 $vehicle->images()->create(['path' => $path]);
             }
         }
-        $this->dispatch('success-notification', message: $this->isEditing ? 'Vehicle updated successfully.' : 'Vehicle created successfully.');
-        $this->dispatch('vehicleSaved');
-
-        $this->cancel();
+        if ($this->currentStep == 3) {
+            $this->currentStep++;
+        } else {
+            $this->dispatch('success-notification', message: $this->isEditing ? 'Vehicle updated successfully.' : 'Vehicle created successfully.');
+            $this->dispatch('vehicleSaved');
+            $this->cancel();
+        }
     }
 
     public function cancel()
@@ -234,6 +237,10 @@ class VehicleFormComponent extends Component
             $rulesForStep = [
                 'vehicleData.condition' => 'nullable',
                 'vehicleData.status' => 'nullable',
+            ];
+        } elseif ($step === 4) {
+            $rulesForStep = [
+                'vehicleData.condition' => 'nullable',
             ];
         }
 
