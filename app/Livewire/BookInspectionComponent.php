@@ -24,7 +24,7 @@ class BookInspectionComponent extends Component
     {
         return [
             'name' => 'required',
-            'phone' => 'required',
+            'phone'    => ['required', 'regex:/^\+9715(0|2|4|5|6|8)\d{7}$/'],
             'email' => 'required',
             'type' => 'required',
             'date' => 'required',
@@ -36,17 +36,27 @@ class BookInspectionComponent extends Component
 
         ];
     }
+
+    public function messages()
+    {
+        return [
+            'phone.required' => 'Number is required.',
+            'phone.regex' => 'Please enter a valid Dubai mobile number starting with +9715.',
+        ];
+    }
+
     public function saveInspection()
     {
         $validatedData = $this->validate();
+        dd('adsf');
         InspectionEnquiry::create($validatedData);
 
         $this->dispatch('success-notification', message: 'Record Saved Successfully');
         $this->formSubmitted = true;
     }
-     public function resetForm()
+    public function resetForm()
     {
-         $this->reset(['name', 'phone', 'email', 'type', 'date', 'time', 'location', 'year', 'make','model']);
+        $this->reset(['name', 'phone', 'email', 'type', 'date', 'time', 'location', 'year', 'make', 'model']);
         $this->formSubmitted = false; // Set the switch back to false
 
     }

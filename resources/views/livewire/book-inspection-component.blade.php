@@ -42,7 +42,8 @@
                                     we’ll handle the rest.
                                 </p>
                             </div>
-                            <div class="bx-box" data-aos="fade-up" data-aos-delay="100" data-aos-duration="1000" data-aos-easing="ease-out-cubic">
+                            <div class="bx-box" data-aos="fade-up" data-aos-delay="100" data-aos-duration="1000"
+                                data-aos-easing="ease-out-cubic">
                                 <div class="bx-box-body">
                                     <div class="mb-3">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="65" height="65"
@@ -89,12 +90,15 @@
                                     </div>
                                     <div class="col-lg-6 mb-3">
                                         <div class="form-group">
-                                            <label for="phone" class="form-label">Phone Number</label>
-                                            <input type="tel" class="form-control" id="phone"
-                                                placeholder="e.g. 0300 1234567" wire:model="phone">
-                                            @error('phone')
-                                                <small class="text-danger">{{ $message }}</small>
-                                            @enderror
+                                            <div x-data="dubaiPhoneMask()" class="form-group mb-3">
+                                                <label for="phone" class="mt-1 form-label">Phone Number</label>
+                                                <input type="tel" id="phone" class="form-control"
+                                                    placeholder="+971 5xxxxxxxx" x-model="phone" @input="formatPhone"
+                                                    wire:model.lazy="phone">
+                                                @error('phone')
+                                                    <div class="text-danger small mt-1">{{ $message }}</div>
+                                                @enderror
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="col-lg-6 mb-3">
@@ -119,7 +123,8 @@
                                     <div class="col-lg-6 mb-3">
                                         <div class="form-group">
                                             <label for="time" class="form-label">Preferred Time</label>
-                                            <input type="time" class="form-control" id="time" wire:model="time">
+                                            <input type="time" class="form-control" id="time"
+                                                wire:model="time">
                                             @error('time')
                                                 <small class="text-danger">{{ $message }}</small>
                                             @enderror
@@ -139,9 +144,9 @@
                                         <div class="form-group">
                                             <label for="vehicleModel" class="form-label">Make</label>
                                             <input type="text" class="form-control" id="vehicleModel"
-                                            placeholder="e.g. Corolla, Civic, Swift" wire:model="make">
+                                                placeholder="e.g. Corolla, Civic, Swift" wire:model="make">
                                             @error('make')
-                                            <small class="text-danger">{{ $message }}</small>
+                                                <small class="text-danger">{{ $message }}</small>
                                             @enderror
                                         </div>
                                     </div>
@@ -149,10 +154,10 @@
                                         <div class="form-group">
                                             <label for="modelYear" class="form-label">Model Year</label>
                                             <input type="number" class="form-control" id="modelYear"
-                                            placeholder="e.g. 2022" min="1990" max="2099"
-                                            wire:model="year">
+                                                placeholder="e.g. 2022" min="1990" max="2099"
+                                                wire:model="year">
                                             @error('year')
-                                            <small class="text-danger">{{ $message }}</small>
+                                                <small class="text-danger">{{ $message }}</small>
                                             @enderror
                                         </div>
                                     </div>
@@ -183,7 +188,9 @@
                                         </div>
                                     </div> --}}
                                     <div class="col-lg-12 mt-4">
-                                        <button type="submit" class="btn-main dark justify-content-center w-100 py-3 p-20 fw-500">Submit Booking</button>
+                                        <button type="submit"
+                                            class="btn-main dark justify-content-center w-100 py-3 p-20 fw-500">Submit
+                                            Booking</button>
                                     </div>
                                 </div>
                             </form>

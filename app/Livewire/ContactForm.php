@@ -22,7 +22,7 @@ class ContactForm extends Component
     #[Rule('required|email')]
     public $email = '';
 
-    #[Rule('nullable|string|min:10')]
+    #[Rule(['required', 'regex:/^\+9715(0|2|4|5|6|8)\d{7}$/'])]
     public $phone = '';
 
     #[Rule('required|min:10')]
@@ -32,6 +32,14 @@ class ContactForm extends Component
     public $terms = true;
 
     public bool $formSubmitted = false;
+
+    public function messages()
+    {
+        return [
+            'phone.required' => 'Number is required.',
+            'phone.regex' => 'Please enter a valid Dubai mobile number starting with +9715.',
+        ];
+    }
 
 
     public function submit()
@@ -53,7 +61,7 @@ class ContactForm extends Component
             $recipients = User::role(['admin', 'super-admin'])->get();
             Notification::send($recipients, new EnquirySubmitNotification($enquiry));
             Notification::route('mail', $enquiry->email)
-                    ->notify(new EnquiryReceivedConfirmation($enquiry));
+                ->notify(new EnquiryReceivedConfirmation($enquiry));
             session()->flash('success', 'Thank you! Your message has been received and saved.');
             $this->formSubmitted = true;
 
