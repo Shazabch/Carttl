@@ -38,7 +38,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('dashboard', [DashboardController::class, 'index'])->name('account.dashboard');
     Route::get('/account-settings', [DashboardController::class, 'accountSettings'])->name('account-settings');
     Route::get('/notification-settings', [DashboardController::class, 'notificationSettings'])->name('notification-settings');
-    Route::get('/security', [DashboardController::class, 'security'])->name('security');
+    Route::get('/biddings', [DashboardController::class, 'bidding'])->name('biddings');
     Route::get('/my-ads', [DashboardController::class, 'myAds'])->name('my-ads');
     Route::get('/my-searches', [DashboardController::class, 'mySearches'])->name('my-searches');
     Route::get('/my-job-applications', [DashboardController::class, 'myJobApplications'])->name('my-job-applications');

@@ -4,7 +4,7 @@
     <div class="card border-0 shadow-sm">
         <div class="card-header bg-light"><h5 class="mb-0">Notification</h5></div>
         <div class="card-body">
-            <p>Manage your account Notification</p>
+            <p>Manage your account Notifications</p>
         </div>
     </div>
 @endsection

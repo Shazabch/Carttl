@@ -153,11 +153,11 @@
                     <div
                         class="container-fluid d-flex flex-column flex-md-row align-items-center justify-content-between">
                         <!--begin::Copyright-->
-                        <div class="text-dark order-2 order-md-1">
+                        <!-- <div class="text-dark order-2 order-md-1">
                             <a target="_blank" href="https://majesticsofts.com/"
                                 class="text-muted font-weight-bold mr-2">Developed By : <b class="text-info">Majestic
                                     Softs</b></a>
-                        </div>
+                        </div> -->
                         <!--end::Copyright-->
                         <!--begin::Nav-->
                         <div class="nav nav-dark">

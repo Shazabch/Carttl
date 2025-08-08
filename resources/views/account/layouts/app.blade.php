@@ -15,23 +15,23 @@
                         <i class="fas fa-user-circle fa-fw"></i> Profile
                     </a>
 
-                    <a href="{{ route('account-settings') }}" class="list-group-item list-group-item-action {{ request()->routeIs('account-settings') ? 'active' : '' }}">
+                    <!-- <a href="{{ route('account-settings') }}" class="list-group-item list-group-item-action {{ request()->routeIs('account-settings') ? 'active' : '' }}">
                         <i class="fas fa-cog fa-fw"></i> Account Settings
-                    </a>
+                    </a> -->
                     <a href="{{ route('notification-settings') }}" class="list-group-item list-group-item-action {{ request()->routeIs('notification-settings') ? 'active' : '' }}">
                         <i class="fas fa-bell fa-fw"></i> Notifications
                     </a>
-                    <a href="{{ route('security') }}" class="list-group-item list-group-item-action {{ request()->routeIs('security') ? 'active' : '' }}">
-                        <i class="fas fa-shield-alt fa-fw"></i> Security
+                    <a href="{{ route('biddings') }}" class="list-group-item list-group-item-action {{ request()->routeIs('biddings') ? 'active' : '' }}">
+                        <i class="fas fa-shield-alt fa-fw"></i> Biddings
                     </a>
-                    <a href="{{ route('my-ads') }}" class="list-group-item list-group-item-action {{ request()->routeIs('my-ads') ? 'active' : '' }}">
+                    <!-- <a href="{{ route('my-ads') }}" class="list-group-item list-group-item-action {{ request()->routeIs('my-ads') ? 'active' : '' }}">
                         <i class="fas fa-bullhorn fa-fw"></i> My Ads
-                    </a>
+                    </a> -->
                     <a href="{{ route('my-job-applications') }}" class="list-group-item list-group-item-action {{ request()->routeIs('my-job-applications') ? 'active' : '' }}">
-                        <i class="fas fa-briefcase fa-fw"></i> My Job Applications
+                        <i class="fas fa-briefcase fa-fw"></i> My Applications
                     </a>
                     <a href="{{ route('car-appointments') }}" class="list-group-item list-group-item-action {{ request()->routeIs('car-appointments') ? 'active' : '' }}">
-                        <i class="fas fa-calendar-check fa-fw"></i> Car Appointments
+                        <i class="fas fa-calendar-check fa-fw"></i>Inspection Reports
                     </a>
                     <a class="list-group-item list-group-item-action logout-link" href="{{ route('account.logout') }}">
                         <i class="fas fa-sign-out-alt fa-fw"></i> Logout
@@ -74,11 +74,7 @@
 
         {{-- The "More" button to trigger the offcanvas menu --}}
         {{-- It's active if ANY of the routes inside the offcanvas are active --}}
-        <a class="mobile-nav-item {{ request()->routeIs(['security', 'account-settings', 'notification-settings', 'my-job-applications']) ? 'active' : '' }}"
-            data-bs-toggle="offcanvas" href="#mobileMenu" role="button" aria-controls="mobileMenu">
-            <i class="fas fa-bars"></i>
-            <span>More</span>
-        </a>
+        
     </nav>
 
     {{-- The Offcanvas Menu that slides up from the bottom --}}
@@ -90,9 +86,7 @@
         <div class="offcanvas-body p-0">
             {{-- We reuse the same list-group styling for consistency --}}
             <div class="list-group list-group-flush dashboard-sidebar">
-                <a href="{{ route('security') }}" class="list-group-item list-group-item-action {{ request()->routeIs('security') ? 'active' : '' }}">
-                    <i class="fas fa-shield-alt fa-fw"></i> Security
-                </a>
+               
                 <a href="{{ route('account-settings') }}" class="list-group-item list-group-item-action {{ request()->routeIs('account-settings') ? 'active' : '' }}">
                     <i class="fas fa-cog fa-fw"></i> Account Settings
                 </a>

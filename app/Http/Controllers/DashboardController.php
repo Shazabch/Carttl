@@ -26,9 +26,9 @@ class DashboardController extends Controller
         return view('account.notification-settings');
     }
 
-    public function security(): View
+    public function bidding(): View
     {
-        return view('account.security');
+        return view('account.biddings');
     }
 
     public function myAds(): View
