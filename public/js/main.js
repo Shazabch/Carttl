@@ -147,3 +147,76 @@ $(function () {
     $("#searchResults").html(`<p>Showing results from <strong>$${minPrice}</strong> to <strong>$${maxPrice}</strong></p>`);
   });
 });
+
+
+$(function () {
+    function goToStep(step) {
+        $('.step-section').removeClass('active');
+        $('#' + step).addClass('active');
+    }
+
+    // Step 1 click
+    $('.brand-card').on('click', function () {
+        let brand = $(this).data('brand');
+        $('#brandInput').val(brand); // store in hidden field
+        if (brand === "All Brands") {
+            goToStep('step2');
+        } else {
+            goToStep('step3');
+        }
+    });
+
+    // Step 2 search
+    $('#brandSearch').on('keyup', function () {
+        let val = $(this).val().toLowerCase();
+        $('#brandList li').filter(function () {
+            $(this).toggle($(this).text().toLowerCase().indexOf(val) > -1);
+        });
+    });
+
+    // Step 2 brand selection
+    $('#brandList li').on('click', function () {
+        let brand = $(this).data('brand');
+        $('#brandInput').val(brand);
+        goToStep('step3');
+    });
+
+    // Step 3 model selection
+    $('#modelList li').on('click', function () {
+        let model = $(this).data('model');
+        $('#modelInput').val(model);
+        goToStep('step4');
+    });
+
+    // Step 4 year selection
+    $('#yearList li').on('click', function () {
+        let year = $(this).data('year');
+        $('#yearInput').val(year);
+        goToStep('step5');
+    });
+
+    // Step 5 -> Step 6
+    $('#step5Next').on('click', function () {
+        // Store mileage/specification/notes
+        $('#mileageInput').val($('#step5 select[name="mileage"]').val());
+        $('#specInput').val($('#step5 input[type="text"]').val());
+        $('#notesInput').val($('#step5 textarea').val());
+
+        goToStep('step6');
+    });
+
+    // Step 6 final submit
+    $('#finalSubmit').on('click', function () {
+        $('#nameInput').val($('#step6 input[placeholder="Enter your full name"]').val());
+        $('#phoneInput').val($('#step6 input[placeholder="Enter your contact number"]').val());
+        $('#emailInput').val($('#step6 input[placeholder="Enter your Email"]').val());
+
+        $('#sellCarForm').submit();
+    });
+
+    // Back buttons
+    $('.back-btn').on('click', function () {
+        let prevStep = $(this).data('prev');
+        goToStep(prevStep);
+    });
+});

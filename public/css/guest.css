@@ -1590,8 +1590,8 @@ footer::before {
     display: flex;
     align-items: center;
     justify-content: center;
-    padding-top: 100px;
-    padding-bottom: 80px;
+    padding-top: 70px;
+    padding-bottom: 70px;
 }
 
 .bg-video {
@@ -2890,7 +2890,12 @@ footer .footer-center ul {
     background-size: 20px 20px;
     background-repeat: no-repeat;
 }
-
+.theme_list.white li::before{
+    filter: brightness(100);
+}
+.theme_list.white li {
+    color: #fff;
+}
 .blog-content-body .blog-thumbnail,
 .blog-content-body img {
     width: 100%;
@@ -3186,15 +3191,161 @@ footer .footer-center ul {
     border-radius: 10px;
 }
 
-.filter-heading {
-
-}
 
 .filter-block {
   margin-bottom: 20px;
   border-bottom: 1px solid #eee;
   padding-bottom: 20px;
 }
+
+/* FORM WIDGET */
+.home-banner .form-widget {
+    max-width: 500px;
+    margin-left: auto;
+    min-height: 600px;
+    max-height: 600px;
+    border-radius: 20px;
+}
+.form-widget-head {
+    background: var(--accent);
+    padding: 40px 30px;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.banner-text ul {
+    padding-left: 20px;
+    margin: 0;
+}
+.banner-text ul li {
+    font-size: 14px;
+}
+.form-widget-head img {
+    width: 177px;
+    height: 90px;
+    object-fit: contain;
+}
+/* Step container */
+.form-widget-wrapper {
+    background: #fff;
+    padding: 20px;
+    border-bottom-left-radius: 20px;
+    border-bottom-right-radius: 20px;
+    box-shadow: 0px 4px 15px rgba(0,0,0,0.05);
+    max-height: 449px;
+    overflow-y: auto;
+}
+/* Step navigation */
+.step-section {
+    display: none;
+    animation: fadeIn 0.3s ease;
+}
+.step-section.active {
+    display: block;
+}
+@keyframes fadeIn {
+    from {opacity: 0;}
+    to {opacity: 1;}
+}
+/* Brand Grid */
+.brand-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 5px;
+    text-align: center;
+    background-color: #fbfbfc;
+    padding: 10px;
+    border-radius: 10px;
+}
+.form-widget .theme_btn,
+.form-widget .btn-main {
+    border-radius: 10px !important;
+}
+.form-widget .theme_btn::after{
+    border-radius: 10px;
+}
+.brand-card {
+    border: 1px solid transparent;
+    border-radius: 10px;
+    padding: 10px;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+.brand-card h5{
+    font-size: 13px;
+    font-weight: 300;
+    margin-top: 5px;
+    margin-bottom: 0;
+}
+.brand-card img {
+    width: 40px;
+    height: 40px;
+    object-fit: contain;
+}
+.brand-card:hover, .brand-card.selected {
+    border-color: var(--accent);
+    background: #f0f6ff;
+}
+/* List view */
+.search-box {
+    margin: 15px 0;
+}
+.brand-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+.brand-list li {
+    padding: 12px;
+    border-bottom: 1px solid #eee;
+    cursor: pointer;
+}
+.brand-list li:hover {
+    background: #f0f6ff;
+}
+
+/* Bottom button */
+.back-btn {
+    background: #fff;
+    border: none;
+    color: #000;
+    margin-bottom: 15px;
+    gap: 2px;
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+    padding: 6px 12px;
+    border-radius: 10px;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    margin-left: auto;
+}
+.back-btn i {
+    margin-right: 5px;
+    font-size: 13px;
+    color: #000;
+}
+.form-widget-wrapper {
+    overflow-y: auto; /* Enables vertical scroll if needed */
+    scrollbar-width: thin; /* For Firefox */
+    scrollbar-color: #888 transparent; /* thumb | track */
+}
+/* For Chrome, Edge, Safari */
+.form-widget-wrapper::-webkit-scrollbar {
+    width: 7px;
+}
+.form-widget-wrapper::-webkit-scrollbar-track {
+    background: transparent; /* or any track color you want */
+}
+.form-widget-wrapper::-webkit-scrollbar-thumb {
+    background-color: #888; /* thumb color */
+    border-radius: 4px; /* rounded edges */
+}
+.form-widget-wrapper::-webkit-scrollbar-thumb:hover {
+    background-color: #555; /* darker on hover */
+}
+
 
 /* ===== RESPONSIVE DESIGN ===== */
 @media (max-width: 992px) {
