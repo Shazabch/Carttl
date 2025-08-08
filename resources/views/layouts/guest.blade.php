@@ -28,6 +28,8 @@
     <link rel="stylesheet" href="{{ asset('owl/owl.theme.default.min.css') }}">
     <link rel="stylesheet" href="{{ asset('css/guest.css') }}">
     <link rel="stylesheet" href="{{ asset('css/car-detail.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/customer-dashboard.css') }}">
+    @stack('styles')
 </head>
 
 <body>

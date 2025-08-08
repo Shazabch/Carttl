@@ -1,0 +1,226 @@
+/* ===== THEME VARIABLES & BASE STYLES ===== */
+:root {
+    --primary: #3a3221;
+    --secondary: #4c4c4c;
+    --accent: #d7b236;
+    --accent-hover: #bd9731;
+    --light: #f8fafc;
+    --dark: #020617;
+    --gray-100: #f1f5f9;
+    --gray-200: #e2e8f0;
+    --gray-600: #475569;
+    --gray-700: #334155;
+    --white: #ffffff;
+    --danger: #ef4444;
+    --light-2: #fcf6dd;
+}
+
+body {
+    background-color: var(--light);
+    font-family: 'Poppins', sans-serif;
+    color: var(--secondary);
+}
+
+/* ===== DASHBOARD SIDEBAR STYLING ===== */
+.dashboard-sidebar .card {
+    border: none;
+    background-color: var(--white);
+    border-radius: 0.75rem;
+    box-shadow: 0 4px 25px rgba(0, 0, 0, 0.05);
+}
+.btn-primary{
+    background-color: var(--accent) !important;
+    border: #bd9731 !important;
+}
+.bg-primary{
+    background-color: var(--accent) !important;
+}
+.text-primary{
+    color: var(--accent) !important;
+}
+
+.dashboard-sidebar .card-header {
+    background-color: transparent;
+    border-bottom: 1px solid var(--gray-100);
+    padding: 1.25rem;
+}
+
+.dashboard-sidebar .card-header h5 {
+    color: var(--primary);
+    font-weight: 600;
+    margin-bottom: 0;
+}
+
+.dashboard-sidebar .list-group-item {
+    border: none;
+    padding: 0.9rem 1.25rem;
+    color: var(--gray-700);
+    font-weight: 500;
+    transition: all 0.2s ease-in-out;
+    border-left: 4px solid transparent; /* inactive state indicator */
+    margin-bottom: 2px;
+}
+
+.dashboard-sidebar .list-group-item i.fa-fw {
+    margin-right: 0.75rem;
+    color: var(--gray-600);
+    transition: color 0.2s ease-in-out;
+}
+
+.dashboard-sidebar .list-group-item:hover,
+.dashboard-sidebar .list-group-item:focus {
+    background-color: var(--gray-100);
+    color: var(--primary);
+    border-left-color: var(--accent-hover);
+}
+
+.dashboard-sidebar .list-group-item.active {
+    background: linear-gradient(90deg, var(--light-2), var(--white));
+    color: var(--primary);
+    font-weight: 600;
+    border-left-color: var(--accent);
+}
+
+.dashboard-sidebar .list-group-item.active i.fa-fw {
+    color: var(--accent);
+}
+
+/* Special style for Logout button */
+.dashboard-sidebar .list-group-item.logout-link:hover {
+    background-color: rgba(239, 68, 68, 0.1);
+    color: var(--danger);
+    border-left-color: var(--danger);
+}
+.dashboard-sidebar .list-group-item.logout-link:hover i {
+    color: var(--danger);
+}
+
+
+/* ===== DASHBOARD CONTENT STYLING ===== */
+.dashboard-content .card {
+    border: none;
+    border-radius: 0.75rem;
+    box-shadow: 0 4px 25px rgba(0, 0, 0, 0.05);
+    min-height: 500px;
+}
+
+.dashboard-content .card-header {
+    background-color: var(--white);
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid var(--gray-100);
+}
+
+.dashboard-content .card-header h5 {
+    color: var(--primary);
+    font-weight: 600;
+    margin-bottom: 0;
+}
+
+.dashboard-content .card-body {
+    padding: 1.5rem;
+}
+
+/* Custom Accent Button */
+.btn-accent {
+    background-color: var(--accent);
+    color: var(--white);
+    border: none;
+    font-weight: 600;
+    padding: 0.6rem 1.5rem;
+    border-radius: 0.5rem;
+    transition: all 0.2s ease;
+}
+
+.btn-accent:hover {
+    background-color: var(--accent-hover);
+    color: var(--white);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+
+
+
+
+/* ===== MOBILE & RESPONSIVE STYLING ===== */
+
+/*
+  The bottom navigation bar itself.
+  - Fixed to the bottom, full width.
+  - Visible only on mobile screens (display: flex).
+  - Hidden on medium screens and up (d-md-none in HTML).
+*/
+.mobile-bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 1030; /* High z-index to stay on top */
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    background-color: var(--white);
+    padding: 0.5rem 0;
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.08); /* Shadow to separate from content */
+    border-top: 1px solid var(--gray-200);
+}
+
+/*
+  Styling for each item in the bottom navigation.
+*/
+.mobile-nav-item {
+    display: flex;
+    flex-direction: column; /* Stack icon and text vertically */
+    align-items: center;
+    justify-content: center;
+    flex-grow: 1;
+    text-decoration: none;
+    color: var(--gray-600);
+    padding: 0.25rem 0;
+    transition: color 0.2s ease-in-out;
+}
+
+.mobile-nav-item i {
+    font-size: 1.25rem; /* Icon size */
+    margin-bottom: 3px;
+}
+
+.mobile-nav-item span {
+    font-size: 0.7rem; /* Text size */
+    font-weight: 500;
+}
+
+/*
+  The active state for a bottom navigation item.
+  - Uses the --accent color.
+*/
+.mobile-nav-item.active {
+    color: var(--accent);
+}
+
+/*
+  Adds padding to the bottom of the body on mobile
+  to prevent the bottom nav from overlapping the last bit of content.
+*/
+@media (max-width: 767.98px) {
+    body {
+        padding-bottom: 70px; /* Adjust this value based on your bottom nav height */
+    }
+}
+
+/*
+  Styling for the "More" offcanvas menu.
+*/
+.offcanvas-bottom {
+    height: auto !important; /* Let content determine height */
+    max-height: 80vh;
+    border-top-left-radius: 1rem;
+    border-top-right-radius: 1rem;
+}
+.offcanvas-header {
+    border-bottom: 1px solid var(--gray-200);
+}
+.offcanvas-body .list-group-item {
+    font-size: 1rem;
+    padding: 1rem 1.25rem;
+}
