@@ -23,13 +23,15 @@
     {{-- <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet"> --}}
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.css" type="text/css" media="all" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.css" type="text/css"
+        media="all" />
     <link rel="stylesheet" href="{{ asset('owl/owl.carousel.min.css') }}">
     <link rel="stylesheet" href="{{ asset('owl/owl.theme.default.min.css') }}">
     <link rel="stylesheet" href="{{ asset('css/guest.css') }}">
     <link rel="stylesheet" href="{{ asset('css/car-detail.css') }}">
     <link rel="stylesheet" href="{{ asset('css/customer-dashboard.css') }}">
     @stack('styles')
+    @livewireStyles
 </head>
 
 <body>
@@ -48,8 +50,12 @@
 
 
     <!-- Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js" type="text/javascript"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.inputmask/5.0.9/jquery.inputmask.min.js"
+        integrity="sha512-F5Ul1uuyFlGnIT1dk2c4kB4DBdi5wnBJjVhL7gQlGh46Xn0VhvD8kgxLtjdZ5YN83gybk/aASUAlpdoWUjRR3g=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js" type="text/javascript"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script src="{{ asset('owl/owl.carousel.min.js') }}"></script>
@@ -71,6 +77,30 @@
             }
         });
     </script>
+
+    <script>
+        function dubaiPhoneMask() {
+            return {
+                phone: '',
+                formatPhone() {
+                    // Remove non-digits
+                    let digits = this.phone.replace(/\D/g, '');
+
+                    // Always start with +9715
+                    if (!digits.startsWith('9715')) {
+                        digits = '9715' + digits.replace(/^971?5?/, '');
+                    }
+
+                    // Limit to +971 5 + 8 more digits
+                    digits = digits.substring(0, 12);
+
+                    // Add + at start
+                    this.phone = '+' + digits;
+                }
+            }
+        }
+    </script>
+    @livewireScripts
 </body>
 
 </html>
