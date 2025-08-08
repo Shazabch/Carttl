@@ -85,8 +85,7 @@ class VehicleAndAuctionComponent extends Component
         } else {
 
             $vehiclesQuery->where(function ($q) {
-                $q->where('is_auction', 0)
-                    ->orWhereNull('is_auction');
+                $q->where('is_auction', 0)->where('status','!=', 'sold')->orWhereNull('is_auction');
             });
         }
         switch ($this->sortBy) {

@@ -42,9 +42,8 @@
 
 
     </div>
+     @if(auth()->id())
     @if($is_auction)
-
-   
     <button wire:click="saveBuyEnquiry" class="btn btn-warning btn-buy-now">
         <i class="fas fa-shopping-cart"></i>
         Buy It Now
@@ -55,7 +54,6 @@
         </span>
     </button>
     @else
-
     <!-- Buy It Now Card -->
     <div class="buy-now-card">
         <h4>Buy It Now</h4>
@@ -66,6 +64,14 @@
             Buy It Now
         </button>
     </div>
+    @endif
+    @else
+    <a href="/login" class="btn btn-warning btn-buy-now">
+                
+                Signin & Buy It Now <div class="spinner"></div>
+            </a>
+
+
     @endif
     @endif
 </div>
