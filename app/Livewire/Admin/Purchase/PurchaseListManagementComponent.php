@@ -40,7 +40,7 @@ class PurchaseListManagementComponent extends Component
 
     public function render()
     {
-        $purchaseEnquiries = PurchaseEnquiry::with('vehicle')
+        $purchaseEnquiries = PurchaseEnquiry::with('vehicle','imageSet')
             ->when($this->vehicleId, function ($query) {
                 $query->where('vehicle_id', $this->vehicleId);
             })

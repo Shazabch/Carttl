@@ -44,7 +44,7 @@
                             <h5 class="card-title text-dark">Auctions</h5>
                             <h3 class="fw-bold mb-2">{{ $auctionCount }}</h3>
                             <p class="card-text">Active and upcoming vehicle auctions</p>
-                            <a href="#" class="btn btn-sm btn-warning">Manage Auctions</a>
+                            <a href="{{ route('admin.vehicles','all') }}" class="btn btn-sm btn-warning">Manage Auctions</a>
                         </div>
                         <div class="icon-container text-warning" style="font-size: 2.5rem;">
                             <i class="fas fa-gavel"></i>

@@ -31,6 +31,15 @@
                     </div>
                     <p>Condition Details</p>
                 </div>
+                <div class="line {{ $currentStep >= 4 ? 'filled' : '' }}"></div>
+
+                {{-- Step 4: Condition Details --}}
+                <div class="step {{ $currentStep == 4 ? 'active' : '' }}">
+                    <div class="icon">
+                        <i class="fas fa-clipboard-check"></i>
+                    </div>
+                    <p>Upload Images</p>
+                </div>
             </div>
 
             <hr class="mt-4 mb-0">
@@ -44,6 +53,8 @@
                 @include('livewire.admin.vehicle.step2')
                 @elseif ($currentStep == 3)
                 @include('livewire.admin.vehicle.step3')
+                @elseif ($currentStep == 4)
+                @include('livewire.admin.vehicle.step4')
                 @endif
             </div>
         </div>
