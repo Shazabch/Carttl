@@ -6,7 +6,7 @@
         <div class="row">
             <div class="col-md-4">
                 <label class="form-label">Brand</label>
-                <select id="vehicle-brand-select" wire:model.live="reportData.make" class="form-control">
+                <select id="vehicle-brand-select" wire:model.live="reportData.make" class="form-control @error('reportData.make') is-invalid @enderror">
                     <option value="">Select brand</option>
                     @foreach($brands as $m)
                     <option value="{{ $m->id }}">{{ $m->name }}</option>
@@ -17,7 +17,7 @@
 
             <div class="col-md-4">
                 <label class="form-label">Model</label>
-                <select id="vehicle-model-select" wire:model.live="reportData.model" class="form-control">
+                <select id="vehicle-model-select" wire:model.live="reportData.model" class="form-control @error('reportData.model') is-invalid @enderror">
                     <option value="">Select model</option>
                     @foreach($models as $m)
                     <option value="{{ $m->id }}">{{ $m->name }}</option>
@@ -28,7 +28,7 @@
 
             <div class="col-md-4">
                 <label class="form-label">Year</label>
-                <select class="form-control @error('year') is-invalid @enderror" wire:model.defer="reportData.year">
+                <select class="form-control @error('reportData.year') is-invalid @enderror" wire:model="reportData.year">
                     <option value="">Select Year</option>
                     @for ($year = date('Y'); $year >= 1900; $year--)
                     <option value="{{ $year }}" {{ (isset($vehicleData['year']) && $vehicleData['year'] == $year) ? 'selected' : '' }}>
@@ -41,7 +41,7 @@
 
             <div class="col-md-4">
                 <label class="form-label">Mileage / Odometer</label>
-                <select name="mileage" class="form-control" wire:model="reportData.odometer">
+                <select name="mileage" class="form-control @error('reportData.odometer') is-invalid @enderror" wire:model="reportData.odometer">
                     @foreach(\App\Enums\MileageRange::options() as $value => $label)
                     <option value="{{ $value }}">{{ $label }}</option>
                     @endforeach
