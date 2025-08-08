@@ -1,0 +1,242 @@
+/* =================================================================== */
+/*                          Wizard Progress Bar                        */
+/* =================================================================== */
+.custom-progress {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.custom-progress .step {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex: 1;
+    position: relative;
+}
+
+.custom-progress .step .icon {
+    background-color: #f5f5f5;
+    color: var(--accent);
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    transition: all 0.3s ease;
+}
+
+.custom-progress .step.active .icon {
+    background-color: #bd9731;
+    color: #fff;
+    box-shadow: 0 0 0 4px rgba(255, 193, 7, 0.2);
+}
+.custom-progress .step.active .icon i{
+
+    color: #fff;
+
+}
+
+.custom-progress .step p {
+    margin-top: 10px;
+    font-weight: 500;
+    font-size: 14px;
+    text-align: center;
+    color: #444;
+}
+
+.custom-progress .line {
+    height: 4px;
+    background-color: #e0e0e0;
+    flex: 1;
+    margin: 0 10px;
+    border-radius: 2px;
+    transition: background-color 0.3s ease;
+}
+
+.custom-progress .line.filled {
+    background-color: #bd9731;
+}
+
+/* =================================================================== */
+/*                          Form Element Styling                       */
+/* =================================================================== */
+.space-y-4>*:not(:last-child) {
+    margin-bottom: 1.5rem;
+    /* Creates space between sections */
+}
+
+.form-section {
+    background: #fff;
+    border-radius: 0.5rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    border: 1px solid #dee2e6;
+}
+
+.form-section-header {
+    background-color: #bd9731;
+    /* Deep Purple */
+    color: white;
+    padding: 1rem 1.25rem;
+    border-top-left-radius: calc(0.5rem - 1px);
+    border-top-right-radius: calc(0.5rem - 1px);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.form-section-header h5 {
+    margin-bottom: 0;
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+.form-section-body {
+    padding: 1.5rem;
+}
+
+.form-item {
+    background-color: #f8f9fa;
+    /* Very light grey */
+    border: 1px solid #e9ecef;
+    padding: 1rem;
+    border-radius: 0.375rem;
+    margin-bottom: 1rem;
+    /* Space between items inside a section */
+}
+
+.form-section-body .row>div:last-child .form-item,
+.form-section-body>.form-item:last-child {
+    margin-bottom: 0;
+}
+
+.form-item-label {
+    font-weight: 600;
+    color: #495057;
+    margin-bottom: 0.75rem;
+    display: block;
+    font-size: 0.9rem;
+}
+
+
+/* --- Single Toggle Buttons (Yes/No, Available/Unavailable) --- */
+.btn-group-toggle .btn {
+    border: 1px solid #ced4da;
+    box-shadow: none !important;
+    /* Remove Bootstrap's default focus shadow */
+}
+
+/* Style for selected "positive" options */
+.btn-group-toggle .btn.active-green {
+    background-color: #198754;
+    /* Bootstrap Success Green */
+    color: white;
+    border-color: #198754;
+}
+
+/* Style for selected "negative" options */
+.btn-group-toggle .btn.active-red {
+    background-color: #dc3545;
+    /* Bootstrap Danger Red */
+    color: white;
+    border-color: #dc3545;
+}
+
+.btn-group-toggle .btn.active-primary {
+    background-color: #bd9731;
+    /* Bootstrap Danger Red */
+    color: white;
+    border-color: #bd9731;
+}
+
+.btn-group-toggle .btn.active-warning {
+    background-color: #f6e86dff;
+    /* Bootstrap Danger Red */
+    color: white;
+    border-color: #f6e86dff;
+}
+
+.btn-group-toggle .btn.active-warning-2 {
+    background-color: #b1602ed7;
+    /* Bootstrap Danger Red */
+    color: white;
+    border-color: #b1602ed7;
+}
+
+
+/* --- Multi-Select Tags (e.g., Paint Condition) --- */
+.tag {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.3em 0.75em;
+    font-size: 85%;
+    font-weight: 700;
+    line-height: 1;
+    color: #fff;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: baseline;
+    border-radius: 0.375rem;
+    margin-right: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.tag-red {
+    background-color: #dc3545;
+}
+
+.tag-primary {
+    background-color: #bd9731;
+}
+
+.tag-green {
+    background-color: #198754;
+}
+
+.tag-gray {
+    background-color: #6c757d;
+}
+
+.tag-blue {
+    background-color: #0d6efd;
+}
+
+.tag-purple {
+    background-color: #bd9731;
+}
+
+
+/* --- Modal Select Button and Styling --- */
+.select-response-btn {
+    background-color: #bd9731;
+    /* Indigo/Purple */
+    color: white;
+    width: 100%;
+}
+
+.select-response-btn:hover {
+    background-color: #5a3d99;
+    color: white;
+}
+
+.min-h-25px {
+    min-height: 25px;
+    /* Ensures the container doesn't collapse when empty */
+}
+
+/* Ensure the modal appears above everything */
+.modal-backdrop {
+    z-index: 1040;
+}
+
+.modal {
+    z-index: 1050;
+}
+
+[x-cloak] {
+    display: none !important;
+}

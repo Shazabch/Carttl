@@ -15,7 +15,7 @@
                 @include('livewire.admin.inspection.sections.partials.toggle-single', ['label' => 'Side steps', 'property' => 'sideSteps', 'options' => ['Available', 'Not Available']])
             </div>
             <div class="col-md-6">
-                @include('livewire.admin.inspection.sections.partials.input-text', ['label' => 'wheels Type', 'property' => 'wheelsType'])
+                @include('livewire.admin.inspection.sections.partials.input-text', ['label' => 'Wheels Type', 'property' => 'wheelsType'])
             </div>
             <div class="col-md-6">
                 @include('livewire.admin.inspection.sections.partials.input-text', ['label' => 'Rims size (Front)', 'property' => 'rimsSizeFront'])

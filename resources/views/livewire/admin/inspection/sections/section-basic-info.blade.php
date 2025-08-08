@@ -1,4 +1,3 @@
-
 <div class="form-section">
     <div class="form-section-header">
         <h5>Basic Vehicle Information</h5>
@@ -6,17 +5,50 @@
     <div class="form-section-body">
         <div class="row">
             <div class="col-md-4">
-                @include('livewire.admin.inspection.sections.partials.input-text', ['label' => 'Make', 'property' => 'make'])
+                <label class="form-label">Brand</label>
+                <select id="vehicle-brand-select" wire:model.live="reportData.make" class="form-control">
+                    <option value="">Select brand</option>
+                    @foreach($brands as $m)
+                    <option value="{{ $m->id }}">{{ $m->name }}</option>
+                    @endforeach
+                </select>
+                @error('reportData.make') <div class="text-danger small mt-2">{{ $message }}</div> @enderror
             </div>
+
             <div class="col-md-4">
-                @include('livewire.admin.inspection.sections.partials.input-text', ['label' => 'Model', 'property' => 'model']) {{-- Assuming 'trim' is the model --}}
+                <label class="form-label">Model</label>
+                <select id="vehicle-model-select" wire:model.live="reportData.model" class="form-control">
+                    <option value="">Select model</option>
+                    @foreach($models as $m)
+                    <option value="{{ $m->id }}">{{ $m->name }}</option>
+                    @endforeach
+                </select>
+                @error('reportData.model') <div class="text-danger small mt-2">{{ $message }}</div> @enderror
             </div>
+
             <div class="col-md-4">
-                @include('livewire.admin.inspection.sections.partials.input-text', ['label' => 'Year', 'property' => 'year'])
+                <label class="form-label">Year</label>
+                <select class="form-control @error('year') is-invalid @enderror" wire:model.defer="reportData.year">
+                    <option value="">Select Year</option>
+                    @for ($year = date('Y'); $year >= 1900; $year--)
+                    <option value="{{ $year }}" {{ (isset($vehicleData['year']) && $vehicleData['year'] == $year) ? 'selected' : '' }}>
+                        {{ $year }}
+                    </option>
+                    @endfor
+                </select>
+                @error('reportData.year') <div class="invalid-feedback">{{ $message }}</div> @enderror
             </div>
+
             <div class="col-md-4">
-                @include('livewire.admin.inspection.sections.partials.input-text', ['label' => 'Mileage / Odometer', 'property' => 'odometer'])
+                <label class="form-label">Mileage / Odometer</label>
+                <select name="mileage" class="form-control" wire:model="reportData.odometer">
+                    @foreach(\App\Enums\MileageRange::options() as $value => $label)
+                    <option value="{{ $value }}">{{ $label }}</option>
+                    @endforeach
+                </select>
+                @error('reportData.odometer')<div class="invalid-feedback">{{ $message }}</div>@enderror
             </div>
+
             <div class="col-md-4">
                 @include('livewire.admin.inspection.sections.partials.input-text', ['label' => 'Engine CC', 'property' => 'engine_cc'])
             </div>
@@ -35,7 +67,7 @@
             <div class="col-md-4">
                 @include('livewire.admin.inspection.sections.partials.input-text', ['label' => 'Specs (e.g., GCC, US)', 'property' => 'specs'])
             </div>
-             <div class="col-md-4">
+            <div class="col-md-4">
                 @include('livewire.admin.inspection.sections.partials.input-text', ['label' => 'Registered Emirate', 'property' => 'registerEmirates'])
             </div>
             <div class="col-md-4">

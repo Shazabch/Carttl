@@ -36,10 +36,7 @@
                 @include('livewire.admin.inspection.sections.partials.input-text', ['label' => 'Tires size', 'property' => 'tiresSize'])
             </div>
             <div class="col-md-6">
-                @include('livewire.admin.inspection.sections.partials.toggle-single', ['label' => 'Spare tire', 'property' => 'spareTire', 'options' => ['Available', 'Not Available'],'optionClasses' => [
-                'Available' => 'active-green',
-                'Not Available' => 'active-red',
-                ]])
+                @include('livewire.admin.inspection.sections.partials.toggle-single', ['label' => 'Spare tire', 'property' => 'spareTire', 'options' => ['Available', 'Not Available']])
             </div>
         </div>
     </div>
