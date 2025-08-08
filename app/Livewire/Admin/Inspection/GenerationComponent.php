@@ -81,7 +81,7 @@ class GenerationComponent extends Component
     public function mount($vehicleId = null, $enquiryId = null)
     {
 
-        $this->initializeReportData();
+
         $this->brands =  Brand::orderBy('name')->get();
         $this->bodyTypes = BodyType::all();
         $this->fuelTypes = FuelType::all();
@@ -140,6 +140,7 @@ class GenerationComponent extends Component
     }
     public function showCreateForm()
     {
+        $this->initializeReportData();
         $this->isEditing = false;
         $this->currentStep = 1;
         $this->showForm = true;
@@ -153,6 +154,7 @@ class GenerationComponent extends Component
 
     public function showEditForm($reportId)
     {
+        $this->initializeReportData();
         $this->isEditing = true;
         $report = VehicleInspectionReport::findOrFail($reportId);
         $this->report_id = $reportId;
@@ -172,7 +174,7 @@ class GenerationComponent extends Component
         // $this->validate();
         $this->reportData['vehicle_id'] = $this->linkedVehicleId;
         $this->reportData['inspection_enquiry_id'] = $this->linkedEnquiryId;
-        $inspection = VehicleInspectionReport::updateOrCreate(['id' => $this->report_id], $this->reportData);
+        $inspection = VehicleInspectionReport::updateOrCreate(['id' => $this->inspectionId], $this->reportData);
         $this->inspectionId = $inspection->id;
         if ($this->currentStep == 3) {
             $this->currentStep++;
@@ -192,24 +194,27 @@ class GenerationComponent extends Component
 
     public function generatePdf($reportId)
     {
-        $report = VehicleInspectionReport::findOrFail($reportId);
-        if ($report->vehicle_id) {
-            $directory = 'inspection_pdf';
-            // Generate PDF
-            $pdf = Pdf::loadView('admin.inspection.report-pdf-template', ['report' => $report])->setPaper('a4', 'portrait')->setOption('defaultFont', 'Arial');
-            // Ensure the directory exists
-            if (!Storage::disk('public')->exists($directory)) {
-                Storage::disk('public')->makeDirectory($directory);
-            }
-            $filename = 'inspection_' . $report->id  . '_' . now()->format('Ymd_His') . '.pdf';
-            $filepath = $directory . '/' . $filename;
-            Storage::disk('public')->put($filepath, $pdf->output());
+        $reportInView = VehicleInspectionReport::findOrFail($reportId);
+        $directory = 'inspection_pdf';
+        // Generate PDF
+        $pdf = Pdf::loadView('admin.inspection.report-pdf-template', ['reportInView' => $reportInView])->setPaper('a4', 'portrait')->setOption('defaultFont', 'Arial');
+        // Ensure the directory exists
+        if (!Storage::disk('public')->exists($directory)) {
+            Storage::disk('public')->makeDirectory($directory);
+        }
+        $filename = 'inspection_' . $reportInView->id  . '_' . now()->format('Ymd_His') . '.pdf';
+        $filepath = $directory . '/' . $filename;
+        Storage::disk('public')->put($filepath, $pdf->output());
+        if ($reportInView->vehicle_id) {
             $vehicleDoc = new VehicleDocument();
-            $vehicleDoc->vehicle_id  =  $report->vehicle_id;
+            $vehicleDoc->vehicle_id  =  $reportInView->vehicle_id;
             $vehicleDoc->file_path = $filepath;
             $vehicleDoc->type = 'InspectionReport';
             $vehicleDoc->save();
         }
+        $reportInView->file_path = $filepath;
+        $reportInView->save();
+        $this->dispatch('success-notification', message: 'Report Generated Successfully');
         $this->reset();
     }
 
@@ -217,7 +222,8 @@ class GenerationComponent extends Component
     public function deleteReport($id)
     {
         VehicleInspectionReport::findOrFail($id)->delete();
-        session()->flash('success', 'Report deleted successfully.');
+
+        $this->dispatch('success-notification', message: 'Item Deleted Successfully');
     }
 
     public function setSingleSelection(string $property, $value)

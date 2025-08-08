@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>Inspection Report #{{ $report->id }}</title>
+    <title>Inspection reportInView #{{ $reportInView->id }}</title>
     <style>
         /* General PDF-friendly styles */
         body {
@@ -29,7 +29,7 @@
             font-size: 22px;
         }
 
-        .report-section {
+        .reportInView-section {
             border: 1px solid #ddd;
             margin-bottom: 15px;
             border-radius: 4px;
@@ -117,37 +117,37 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1>Vehicle Inspection Report</h1>
-            <p>Report ID: {{ $report->id }} | Date: {{ $report->created_at->format('F d, Y') }}</p>
+            <h1>Vehicle Inspection reportInView</h1>
+            <p>reportInView ID: {{ $reportInView->id }} | Date: {{ $reportInView->created_at->format('F d, Y') }}</p>
         </div>
 
         {{-- Vehicle Details Section using a table --}}
-        <div class="report-section">
+        <div class="reportInView-section">
             <div class="section-title">Vehicle Information</div>
             <div class="section-body">
                 <table class="details-table">
                     <tr>
                         <td>
-                            <div class="item"><span class="item-label">Make</span> <span class="item-value">{{ $report->make ?? 'N/A' }}</span></div>
+                            <div class="item"><span class="item-label">Make</span> <span class="item-value">{{ $reportInView->brand?->name ?? 'N/A' }}</span></div>
                         </td>
                         <td>
-                            <div class="item"><span class="item-label">Model</span> <span class="item-value">{{ $report->model ?? 'N/A' }}</span></div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <div class="item"><span class="item-label">Year</span> <span class="item-value">{{ $report->year ?? 'N/A' }}</span></div>
-                        </td>
-                        <td>
-                            <div class="item"><span class="item-label">VIN</span> <span class="item-value">{{ $report->vin ?? 'N/A' }}</span></div>
+                            <div class="item"><span class="item-label">Model</span> <span class="item-value">{{ $reportInView->vehicleModel?->name ?? 'N/A' }}</span></div>
                         </td>
                     </tr>
                     <tr>
                         <td>
-                            <div class="item"><span class="item-label">Odometer</span> <span class="item-value">{{ $report->odometer ?? 'N/A' }}</span></div>
+                            <div class="item"><span class="item-label">Year</span> <span class="item-value">{{ $reportInView->year ?? 'N/A' }}</span></div>
                         </td>
                         <td>
-                            <div class="item"><span class="item-label">Color</span> <span class="item-value">{{ $report->color ?? 'N/A' }}</span></div>
+                            <div class="item"><span class="item-label">VIN</span> <span class="item-value">{{ $reportInView->vin ?? 'N/A' }}</span></div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="item"><span class="item-label">Odometer</span> <span class="item-value">{{ $reportInView->getOdometerLabelAttribute() ?? 'N/A' }}</span></div>
+                        </td>
+                        <td>
+                            <div class="item"><span class="item-label">Color</span> <span class="item-value">{{ $reportInView->color ?? 'N/A' }}</span></div>
                         </td>
                     </tr>
                 </table>
@@ -172,13 +172,13 @@
         $sectionData = [];
         foreach ($fields as $field) {
         if (true) {
-        $sectionData[$field] = $report->{$field} ?? 'N/A';
+        $sectionData[$field] = $reportInView->{$field} ?? 'N/A';
         }
         }
         @endphp
 
         @if(!empty($sectionData))
-        <div class="report-section">
+        <div class="reportInView-section">
             <div class="section-title">{{ $sectionName }}</div>
             <div class="section-body">
                 <table class="details-table">
@@ -215,7 +215,7 @@
         @endif
         @endforeach
 
-        <livewire:admin.inspection.car-damage-view :inspectionId="$report->id" />
+        <livewire:admin.inspection.car-damage-view :inspectionId="$reportInView->id" />
     </div>
 </body>
 

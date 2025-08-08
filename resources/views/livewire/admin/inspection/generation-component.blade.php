@@ -25,7 +25,7 @@
             <div>
                 {{-- This button now calls a Livewire action --}}
                 <button wire:click="generatePdf({{ $reportInView->id }})" class="btn btn-danger">
-                    <i class="fas fa-file-pdf"></i> Download PDF
+                    <i class="fas fa-file-pdf"></i> Generate PDF Report
                 </button>
                 <button wire:click="cancel" class="btn btn-secondary">Back to List</button>
             </div>
@@ -69,7 +69,7 @@
                         @forelse($reports as $report)
                         <tr>
                             <td>{{ $report->id }}</td>
-                            <td>{{ $report->make }} {{ $report->model }}</td>
+                            <td>{{ $report->brand?->name }} {{ $report->vehicleModel?->name }}</td>
                             <td>{{ $report->vin }}</td>
                             <td>{{ $report->created_at->format('M d, Y') }}</td>
                             <td>
@@ -77,14 +77,15 @@
                                 <button wire:click="showReportDetails({{ $report->id }})" class="btn btn-sm btn-outline-info" title="View Details">
                                     <i class="fas fa-eye"></i>
                                 </button>
-                                <button wire:click="generatePdf({{ $report->id }})" class="btn btn-sm btn-outline-danger" title="Download PDF">
+                                @if($report->file_path)
+                                <a href="{{asset('storage/'.$report->file_path)}}" target="_blank" class="btn btn-sm btn-outline-danger" title="Download PDF">
                                     <i class="fas fa-file-pdf"></i>
-                                </button>
+                                </a>
+                                @endif
                                 <button wire:click="showEditForm({{ $report->id }})" class="btn btn-sm btn-outline-primary" title="Edit">
                                     <i class="fas fa-edit"></i>
                                 </button>
-                                <button wire:click="deleteReport({{ $report->id }})"
-                                    wire:confirm="Are you sure?"
+                                <button wire:click.prevent="$dispatch('confirmDelete', { id: {{ $report->id }} })"
                                     class="btn btn-sm btn-outline-danger" title="Delete">
                                     <i class="fas fa-trash"></i>
                                 </button>

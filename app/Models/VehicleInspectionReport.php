@@ -2,8 +2,14 @@
 
 namespace App\Models;
 
+use App\Enums\MileageRange;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class VehicleInspectionReport extends Model
 {
@@ -19,6 +25,7 @@ class VehicleInspectionReport extends Model
      */
     protected $casts = [
         'inspected_at' => 'datetime',
+        'odometer' => 'integer',
         'paintCondition' => 'array',
         'frontLeftTire' => 'array',
         'frontRightTire' => 'array',
@@ -43,5 +50,23 @@ class VehicleInspectionReport extends Model
     public function inspector()
     {
         return $this->belongsTo(User::class, 'inspector_id');
+    }
+    public function brand(): BelongsTo
+    {
+        return $this->belongsTo(Brand::class, 'make');
+    }
+
+
+    public function vehicleModel(): BelongsTo
+    {
+        return $this->belongsTo(VehicleModel::class, 'model');
+    }
+    public function getOdometerLabelAttribute()
+    {
+        try {
+            return MileageRange::from((int) $this->odometer)->label();
+        } catch (\ValueError $e) {
+            return 'Unknown mileage';
+        }
     }
 }
