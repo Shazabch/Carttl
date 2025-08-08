@@ -16,9 +16,16 @@
             <a href="#" class="header-icon" id="openSearchBtn">
                 <img src="{{ asset('images/icons/search.svg') }}" alt="">
             </a>
-            <a href="{{ route('account.login') }}" class="header-icon">
+           @if(auth()->id())
+             <a href="{{ route('account.dashboard') }}" class="header-icon">
                 <img src="{{ asset('images/icons/user.svg') }}" alt="">
             </a>
+          @else
+           <a href="/login" class="header-icon">
+                <img src="{{ asset('images/icons/user.svg') }}" alt="">
+            </a>
+
+          @endif
             <a href="{{ route('favorites') }}" class="header-icon">
                 <img src="{{ asset('images/icons/heart.svg') }}" alt="">
             </a>

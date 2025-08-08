@@ -22,17 +22,17 @@
                     <div class="row g-3">
                         <div class="col-md-6">
                             <label for="name" class="form-label">Full Name</label>
-                            <input type="text" class="form-control @error('name') is-invalid @enderror" id="name" wire:model.defer="name">
+                            <input type="text" class="form-control @error('name')  @enderror" id="name" wire:model.defer="name">
                             @error('name') <div class="invalid-feedback">{{ $message }}</div> @enderror
                         </div>
                         <div class="col-md-6">
                             <label for="email" class="form-label">Email Address</label>
-                            <input type="email" class="form-control @error('email') is-invalid @enderror" id="email" wire:model.defer="email">
+                            <input type="email" class="form-control @error('email') @enderror" id="email" wire:model.defer="email">
                             @error('email') <div class="invalid-feedback">{{ $message }}</div> @enderror
                         </div>
                         <div class="col-12">
                             <label for="phone" class="form-label">Phone Number (Optional)</label>
-                            <input type="tel" class="form-control @error('phone') is-invalid @enderror" id="phone" wire:model.defer="phone">
+                            <input type="tel" class="form-control @error('phone')  @enderror" id="phone" wire:model.defer="phone">
                             @error('phone') <div class="invalid-feedback">{{ $message }}</div> @enderror
                         </div>
                         <div class="col-12">
