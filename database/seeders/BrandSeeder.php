@@ -4,76 +4,38 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use App\Models\Brand;
+use App\Models\VehicleModel;
+use Illuminate\Support\Facades\File;
 
 class BrandSeeder extends Seeder
 {
+    
     public function run(): void
     {
+       
+        $json = File::get(database_path('data/brands.json'));
+        $brandsData = json_decode($json);
 
-
-
-        // ...existing code...
-        $brands = [
-            "Toyota",
-            "Honda",
-            "Ford",
-            "BMW",
-            "Audi",
-            "Hyundai",
-            "Kia",
-            "Nissan",
-            "Chevrolet",
-            "Mercedes-Benz",
-            "Lexus",
-            "Land Rover",
-            "Jaguar",
-            "Volkswagen",
-            "Porsche",
-            "Rolls-Royce",
-            "Bentley",
-            "Maserati",
-            "Ferrari",
-            "Lamborghini",
-            "Suzuki",
-            "Mazda",
-            "Mitsubishi",
-            "Jeep",
-            "GMC",
-            "Cadillac",
-            "Dodge",
-            "Chrysler",
-            "Subaru",
-            "Peugeot",
-            "Renault",
-            "Fiat",
-            "Mini",
-            "Infiniti",
-            "Genesis",
-            "Tesla",
-            "Volvo",
-            "Isuzu",
-            "SsangYong",
-            "Alfa Romeo",
-            "Aston Martin",
-            "Bugatti",
-            "McLaren",
-            "Opel",
-            "Skoda",
-            "Citroën",
-            "Haval",
-            "MG",
-            "BYD",
-            "Geely",
-            "Great Wall",
-            "Changan",
-            "Lincoln",
-            "Ram",
-            "Seat",
-            "Polestar"
-        ];
-        //
-        foreach ($brands as $name) {
-            Brand::create(['name' => $name]);
+        foreach ($brandsData as $brandData) {
+           
+            Brand::updateOrCreate(
+                [
+                    'name' => $brandData->name 
+                ],
+                [
+                
+                    "name" => $brandData->name,
+                    "image_source" => $brandData->image->source,
+                    "image_thumb" => $brandData->image->thumb,
+                    "image_optimized" => $brandData->image->optimized,
+                    "image_original" => $brandData->image->original,
+                    "local_thumb" => $brandData->image->localThumb,
+                    "local_optimized" => $brandData->image->localOptimized,
+                    "local_original" => $brandData->image->localOriginal
+                ]
+            );
         }
+
+       
     }
 }

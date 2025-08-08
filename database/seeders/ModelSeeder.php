@@ -12,7 +12,7 @@ class ModelSeeder extends Seeder
 {
     public function run(): void
     {
-        $modelsByBrand = [
+       $modelsByBrand = [
             "Toyota" => ["Corolla", "Camry", "RAV4", "Land Cruiser", "Hilux"],
             "Honda" => ["Civic", "Accord", "CR-V", "Jazz", "HR-V"],
             "Ford" => ["Mustang", "F-150", "Escape", "Explorer", "Ranger"],
@@ -57,7 +57,7 @@ class ModelSeeder extends Seeder
             "Bugatti" => ["Chiron", "Veyron", "Divo"],
             "McLaren" => ["720S", "GT", "Artura"],
             "Opel" => ["Corsa", "Astra", "Insignia"],
-            "Skoda" => ["Octavia", "Superb", "Kodiaq", "Fabia"],
+            "Škoda" => ["Octavia", "Superb", "Kodiaq", "Fabia"],
             "Citroën" => ["C3", "C4", "Berlingo", "C5 Aircross"],
             "Haval" => ["H6", "Jolion", "H9"],
             "MG" => ["MG3", "ZS", "HS", "MG5"],
@@ -67,9 +67,10 @@ class ModelSeeder extends Seeder
             "Changan" => ["Alsvin", "CS35 Plus", "Eado"],
             "Lincoln" => ["Aviator", "Navigator", "Corsair"],
             "Ram" => ["1500", "2500", "3500"],
-            "Seat" => ["Ibiza", "Leon", "Ateca", "Arona"],
+            "SEAT" => ["Ibiza", "Leon", "Ateca", "Arona"],
             "Polestar" => ["Polestar 2", "Polestar 3"]
         ];
+
 
 
         foreach ($modelsByBrand as $brandName => $models) {
@@ -86,3 +87,4 @@ class ModelSeeder extends Seeder
         }
     }
 }
+
