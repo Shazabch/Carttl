@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\VehicleBid;
 use Illuminate\View\View;
 use Illuminate\Http\Request;
 
@@ -27,8 +28,12 @@ class DashboardController extends Controller
     }
 
     public function bidding(): View
-    {
-        return view('account.biddings');
+    {  
+        $user_id=Auth()->user()->id;
+        
+        $bids=VehicleBid::find($user_id)->paginate('20') ;
+        
+        return view('account.biddings',compact('bids'));
     }
 
     public function myAds(): View
