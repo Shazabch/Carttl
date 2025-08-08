@@ -36,7 +36,7 @@
 
                 <div class="step {{ $currentStep == 4 ? 'active' : '' }}">
                     <div class="icon">
-                        <i class="fas fa-clipboard-check"></i>
+                        <i class="fas fa-camera"></i>
                     </div>
                     <p>Upload Images</p>
                 </div>

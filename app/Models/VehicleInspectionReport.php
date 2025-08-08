@@ -55,7 +55,15 @@ class VehicleInspectionReport extends Model
     {
         return $this->belongsTo(Brand::class, 'make');
     }
+    public function images(): HasMany
+    {
+        return $this->hasMany(VehicleInspectionImage::class);
+    }
 
+    public function coverImage(): HasOne
+    {
+        return $this->hasOne(VehicleInspectionImage::class)->where('is_cover', true);
+    }
 
     public function vehicleModel(): BelongsTo
     {
