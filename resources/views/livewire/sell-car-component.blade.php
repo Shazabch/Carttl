@@ -37,6 +37,7 @@
                 </div>
                 <p>Personal Details</p>
             </div>
+            @if(false)
             <div class="line {{ $currentStep == 3 ? 'filled' : '' }}"></div>
             <div class="step {{ $currentStep == 3 ? 'active' : '' }}">
                 <div class="icon">
@@ -46,6 +47,7 @@
                 </div>
                 <p>Upload Images</p>
             </div>
+            @endif
         </div>
         <form wire:submit.prevent="save" novalidate>
             {{-- STEP 1: Car Details --}}
@@ -108,7 +110,7 @@
                         </div>
                     </div>
 
-                     {{-- <div class="col-lg-6">
+                    {{-- <div class="col-lg-6">
                         <div class="form-group mb-3">
                             <label class="form-label">Common Question</label>
                             <select wire:model.lazy="faq" class="form-select">
@@ -118,97 +120,99 @@
                                 <option value="Do you offer Trade-In?">Do you offer Trade-In?</option>
                                 <option value="How is my car valued?">How is my car valued?</option>
                             </select>
-                            @error('faq') <div class="text-danger small mt-1">{{ $message }}</div> @enderror
-                        </div>
-                    </div>--}}
-                    <div class="col-lg-6">
-                        <div class="form-group mb-3">
-                            <label class="form-label">Additional Notes</label>
-                            <textarea wire:model.lazy="notes" class="form-control" rows="1" placeholder="Any additional notes..."></textarea>
-                            @error('notes') <div class="text-danger small mt-1">{{ $message }}</div> @enderror
-                        </div>
-                    </div>
-                </div>
+                            @error('faq') <div class="text-danger small mt-1">{{ $message }}
+                </div> @enderror
             </div>
-            @endif
-            {{-- STEP 2: Personal Info --}}
-            @if ($currentStep === 2)
-            <div id="step-1">
-                <h5 class="p-20 fw-600 mb-4">Personal Details</h5>
-                <div class="row">
-                    <div class="col-lg-6">
-                        <div class="form-group mb-3">
-                            <label class="form-label">Full Name</label>
-                            <input type="text" wire:model.lazy="name" class="form-control" placeholder="Enter your full name">
-                            @error('name') <div class="text-danger small mt-1">{{ $message }}</div> @enderror
-                        </div>
-                    </div>
-
-                    <div class="col-lg-6">
-                        <div class="form-group mb-3">
-                            <label class="form-label">Contact Number</label>
-                            <input type="text" wire:model.lazy="number" class="form-control" placeholder="Enter your contact number">
-                            @error('number') <div class="text-danger small mt-1">{{ $message }}</div> @enderror
-                        </div>
-                    </div>
-                    <div class="col-lg-12">
-                        <div class="form-group">
-                            <label class="form-label">Email</label>
-                            <input type="email" wire:model.lazy="email" class="form-control" placeholder="Enter your Email">
-                            @error('email') <div class="text-danger small mt-1">{{ $message }}</div> @enderror
-                        </div>
-                    </div>
-                </div>
-            </div>
-            @endif
-
-
-
-            {{-- STEP 3: Images --}}
-            @if ($currentStep === 3)
-            <div id="step-3">
-                <h5 class="p-20 fw-600 mb-4">Upload Images</h5>
-                <div class="col-lg-12">
-                    {{-- This is our new, clean, reusable component --}}
-                    <x-multi-image-uploader wire:model="images" />
-
-                    {{-- The validation errors still work perfectly --}}
-                    @error('images.*') <div class="text-danger small mt-1">{{ $message }}</div> @enderror
-                </div>
-            </div>
-            @endif
-
-            <!-- Navigation Buttons -->
-            <div class="mt-4 d-flex justify-content-between">
-                @if ($currentStep > 1)
-                <button type="button" class="btn-main gray" wire:click="previousStep">
-                    <i class="fas fa-arrow-left me-2"></i> Previous
-                </button>
-                @else
-                <div></div> {{-- Empty div to keep "Next" on the right --}}
-                @endif
-
-                @if ($currentStep < 3)
-                    <button type="button" class="btn-main dark" wire:click="nextStep">
-                    Next <i class="fas fa-arrow-right ms-2"></i>
-                    </button>
-                    @endif
-
-                    @if ($currentStep === 3)
-                    <button type="submit" class="btn btn-success" wire:loading.attr="disabled" wire:target="save">
-                        <span wire:loading.remove wire:target="save">
-                            <i class="fas fa-paper-plane me-2"></i> Submit Enquiry
-                        </span>
-                        <span wire:loading wire:target="save">
-                            <span class="spinner-border spinner-border-sm me-1" role="status" aria-hidden="true"></span>
-                            Submitting...
-                        </span>
-                    </button>
-                    @endif
-            </div>
-        </form>
+    </div>--}}
+    <div class="col-lg-6">
+        <div class="form-group mb-3">
+            <label class="form-label">Additional Notes</label>
+            <textarea wire:model.lazy="notes" class="form-control" rows="1" placeholder="Any additional notes..."></textarea>
+            @error('notes') <div class="text-danger small mt-1">{{ $message }}</div> @enderror
+        </div>
     </div>
+</div>
+</div>
+@endif
+{{-- STEP 2: Personal Info --}}
+@if ($currentStep === 2)
+<div id="step-1">
+    <h5 class="p-20 fw-600 mb-4">Personal Details</h5>
+    <div class="row">
+        <div class="col-lg-6">
+            <div class="form-group mb-3">
+                <label class="form-label">Full Name</label>
+                <input type="text" wire:model.lazy="name" class="form-control" placeholder="Enter your full name">
+                @error('name') <div class="text-danger small mt-1">{{ $message }}</div> @enderror
+            </div>
+        </div>
+
+        <div class="col-lg-6">
+            <div class="form-group mb-3">
+                <label class="form-label">Contact Number</label>
+                <input type="text" wire:model.lazy="number" class="form-control" placeholder="Enter your contact number">
+                @error('number') <div class="text-danger small mt-1">{{ $message }}</div> @enderror
+            </div>
+        </div>
+        <div class="col-lg-12">
+            <div class="form-group">
+                <label class="form-label">Email</label>
+                <input type="email" wire:model.lazy="email" class="form-control" placeholder="Enter your Email">
+                @error('email') <div class="text-danger small mt-1">{{ $message }}</div> @enderror
+            </div>
+        </div>
+    </div>
+</div>
+@endif
+
+
+@if(false)
+{{-- STEP 3: Images --}}
+@if ($currentStep === 3)
+<div id="step-3">
+    <h5 class="p-20 fw-600 mb-4">Upload Images</h5>
+    <div class="col-lg-12">
+        {{-- This is our new, clean, reusable component --}}
+        <x-multi-image-uploader wire:model="images" />
+
+        {{-- The validation errors still work perfectly --}}
+        @error('images.*') <div class="text-danger small mt-1">{{ $message }}</div> @enderror
+    </div>
+</div>
+@endif
+@endif
+
+<!-- Navigation Buttons -->
+<div class="mt-4 d-flex justify-content-between">
+    @if ($currentStep > 1)
+    <button type="button" class="btn-main gray" wire:click="previousStep">
+        <i class="fas fa-arrow-left me-2"></i> Previous
+    </button>
+    @else
+    <div></div> {{-- Empty div to keep "Next" on the right --}}
     @endif
+
+    @if ($currentStep < 2)
+        <button type="button" class="btn-main dark" wire:click="nextStep">
+        Next <i class="fas fa-arrow-right ms-2"></i>
+        </button>
+        @endif
+
+        @if ($currentStep === 2)
+        <button type="submit" class="btn btn-success" wire:loading.attr="disabled" wire:target="save">
+            <span wire:loading.remove wire:target="save">
+                <i class="fas fa-paper-plane me-2"></i> Submit Enquiry
+            </span>
+            <span wire:loading wire:target="save">
+                <span class="spinner-border spinner-border-sm me-1" role="status" aria-hidden="true"></span>
+                Submitting...
+            </span>
+        </button>
+        @endif
+</div>
+</form>
+</div>
+@endif
 </div>
 
 @push('scripts')
