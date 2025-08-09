@@ -29,11 +29,12 @@ class DashboardController extends Controller
 
     public function bidding(): View
     {
-        $user_id = auth()->id;
-        if (isset($user_id)) {
-            $bids = VehicleBid::find($user_id)->get();
+        $user_id = auth()->id();
+
+        if ($user_id) {
+            $bids = VehicleBid::where('user_id', $user_id)->get();
         } else {
-            $bids = [];
+            $bids = collect(); // empty collection, avoids errors in Blade
         }
 
         return view('account.biddings', compact('bids'));
