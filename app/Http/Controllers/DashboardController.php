@@ -28,12 +28,15 @@ class DashboardController extends Controller
     }
 
     public function bidding(): View
-    {  
-        $user_id=Auth()->user()->id;
-        
-        $bids=VehicleBid::find($user_id)->paginate('20') ;
-        
-        return view('account.biddings',compact('bids'));
+    {
+        $user_id = Auth()->user()->id;
+        if (isset($user_id)) {
+            $bids = VehicleBid::find($user_id)->paginate('20');
+        } else {
+            $bids = [];
+        }
+
+        return view('account.biddings', compact('bids'));
     }
 
     public function myAds(): View
