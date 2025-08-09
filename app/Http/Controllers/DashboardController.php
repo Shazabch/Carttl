@@ -29,7 +29,7 @@ class DashboardController extends Controller
 
     public function bidding(): View
     {
-        $user_id = Auth()->id;
+        $user_id = auth()->id;
         if (isset($user_id)) {
             $bids = VehicleBid::find($user_id)->get();
         } else {
