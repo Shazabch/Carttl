@@ -29,7 +29,7 @@ class DashboardController extends Controller
 
     public function bidding(): View
     {
-        $user_id = Auth()->user()->id;
+        $user_id = Auth()->id;
         if (isset($user_id)) {
             $bids = VehicleBid::find($user_id)->get();
         } else {
@@ -38,6 +38,7 @@ class DashboardController extends Controller
 
         return view('account.biddings', compact('bids'));
     }
+
 
     public function myAds(): View
     {
