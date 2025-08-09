@@ -31,7 +31,7 @@ class DashboardController extends Controller
     {
         $user_id = Auth()->user()->id;
         if (isset($user_id)) {
-            $bids = VehicleBid::find($user_id)->paginate('20');
+            $bids = VehicleBid::find($user_id)->get();
         } else {
             $bids = [];
         }
