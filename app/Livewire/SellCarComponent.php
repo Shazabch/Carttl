@@ -30,7 +30,7 @@ class SellCarComponent extends Component
 
     public function mount()
     {
-        $this->brands = Brand::orderBy('name')->get();
+        $this->brands = Brand::orderBy('name')->where('is_active',1)->get();
         $this->models = collect();
     }
 
