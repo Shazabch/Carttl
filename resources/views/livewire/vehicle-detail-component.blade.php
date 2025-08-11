@@ -367,9 +367,7 @@
 
                                 </div>
                                 <div class="action-buttons mb-2">
-                                    <button class="btn-icon active" data-bs-toggle="tooltip" title="Add to Watchlist">
-                                        <i class="far fa-heart"></i>
-                                    </button>
+                                      <livewire:favorite-button-detail-component :vehicleId="$selected_vehicle->id" />
                                     <button class="btn-icon" data-bs-toggle="tooltip" title="Share">
                                         <i class="fas fa-share-alt"></i>
                                     </button>

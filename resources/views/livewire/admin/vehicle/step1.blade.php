@@ -2,6 +2,14 @@
 
     <div class="row">
         <fieldset class="col-12 mb-4">
+            <legend class="form-label">Vehicle Type</legend>
+
+            <div class="col-md-4 mb-3">
+                <label class="form-label">&nbsp;</label>
+                @include('livewire.admin.vehicle.partials.toggle-single', ['label' => '', 'property' => 'is_auction', 'options' => [ 0 => 'Vehicle',1 => 'Auction']])
+            </div>
+        </fieldset>
+        <fieldset class="col-12 mb-4">
             <legend class="form-label">General Details</legend>
             <div class="row">
                 <div class="col-md-12 mb-3">

@@ -73,7 +73,7 @@
                         @error('vehicleData.condition') <div class="text-danger small mt-2">{{ $message }}</div> @enderror
                     </div>
                     <div class="col-md-12 mb-4">
-                        <label class="form-label d-block">Status</label>
+                        <label class="form-label d-block">Listing Status</label>
                         <div class="row g-2">
                             @foreach (['draft', 'published', 'sold', 'pending'] as $status)
                             <div class="col-sm-3 col-6 col-md-2">
@@ -100,107 +100,102 @@
     </fieldset>
 
     {{-- Switches --}}
-   <fieldset>
-    <legend class="form-label">Options</legend>
+    <fieldset>
+        <legend class="form-label">Options</legend>
 
-    <div class="row">
-        {{-- Starting Bid Amount --}}
-        <div class="col-md-4 mb-3">
-            <label class="form-label">Starting Bid Amount (AED)</label>
-            <input type="number" step="0.01" class="form-control @error('vehicleData.starting_bid_amount') is-invalid @enderror"
-                wire:model.defer="vehicleData.starting_bid_amount">
-            @error('vehicleData.starting_bid_amount')
-            <div class="invalid-feedback">{{ $message }}</div>
-            @enderror
-        </div>
+        <div class="row">
+            @if($vehicleData['is_auction'])
+            {{-- Starting Bid Amount --}}
+            <div class="col-md-4 mb-3">
+                <label class="form-label">Starting Bid Amount (AED)</label>
+                <input type="number" step="0.01" class="form-control @error('vehicleData.starting_bid_amount') is-invalid @enderror"
+                    wire:model.defer="vehicleData.starting_bid_amount">
+                @error('vehicleData.starting_bid_amount')
+                <div class="invalid-feedback">{{ $message }}</div>
+                @enderror
+            </div>
 
-        <div class="col-md-4 mb-3">
-            <label class="form-label">Auction End Date</label>
-            <input type="datetime-local" class="form-control @error('vehicleData.auction_end_date') is-invalid @enderror"
-                wire:model.defer="vehicleData.auction_end_date">
-            @error('vehicleData.auction_end_date')
-            <div class="invalid-feedback">{{ $message }}</div>
-            @enderror
-        </div>
+            <div class="col-md-4 mb-3">
+                <label class="form-label">Auction End Date</label>
+                <input type="datetime-local" class="form-control @error('vehicleData.auction_end_date') is-invalid @enderror"
+                    wire:model.defer="vehicleData.auction_end_date">
+                @error('vehicleData.auction_end_date')
+                <div class="invalid-feedback">{{ $message }}</div>
+                @enderror
+            </div>
+            @endif
 
-        {{-- 0-60 mph --}}
-        <div class="col-md-4 mb-3">
-            <label class="form-label">0-60 mph (seconds)</label>
-            <input type="number" step="0.01" class="form-control @error('vehicleData.zero_to_sixty') is-invalid @enderror"
-                wire:model.defer="vehicleData.zero_to_sixty">
-            @error('vehicleData.zero_to_sixty')
-            <div class="invalid-feedback">{{ $message }}</div>
-            @enderror
-        </div>
+            {{-- 0-60 mph --}}
+            <div class="col-md-4 mb-3">
+                <label class="form-label">0-60 mph (seconds)</label>
+                <input type="number" step="0.01" class="form-control @error('vehicleData.zero_to_sixty') is-invalid @enderror"
+                    wire:model.defer="vehicleData.zero_to_sixty">
+                @error('vehicleData.zero_to_sixty')
+                <div class="invalid-feedback">{{ $message }}</div>
+                @enderror
+            </div>
 
-        {{-- Quarter Mile --}}
-        <div class="col-md-4 mb-3">
-            <label class="form-label">Quarter Mile Time (seconds)</label>
-            <input type="number" step="0.01" class="form-control @error('vehicleData.quater_mile') is-invalid @enderror"
-                wire:model.defer="vehicleData.quater_mile">
-            @error('vehicleData.quater_mile')
-            <div class="invalid-feedback">{{ $message }}</div>
-            @enderror
-        </div>
-
-        {{-- Is Hot --}}
-        <div class="col-md-4 mb-3">
-            <label class="form-label">&nbsp;</label> <!-- Placeholder for vertical alignment -->
-            <div class="form-check form-switch p-3 border rounded">
-                <input class="form-check-input" type="checkbox" role="switch" id="is_hot"
-                    wire:model.defer="vehicleData.is_hot">
-                <label class="form-check-label fw-bold" for="is_hot">Hot Vehicle</label>
-                @error('vehicleData.is_hot')
-                <div class="text-danger small w-100 mt-1">{{ $message }}</div>
+            {{-- Quarter Mile --}}
+            <div class="col-md-4 mb-3">
+                <label class="form-label">Quarter Mile Time (seconds)</label>
+                <input type="number" step="0.01" class="form-control @error('vehicleData.quater_mile') is-invalid @enderror"
+                    wire:model.defer="vehicleData.quater_mile">
+                @error('vehicleData.quater_mile')
+                <div class="invalid-feedback">{{ $message }}</div>
                 @enderror
             </div>
         </div>
-
-        {{-- Inspected By --}}
-        <div class="col-md-4 mb-3">
-            <label class="form-label">&nbsp;</label> <!-- Placeholder for vertical alignment -->
-            <div class="form-check form-switch p-3 border rounded">
-                <input class="form-check-input" type="checkbox" role="switch" id="inspected_by"
-                    wire:model.defer="vehicleData.inspected_by">
-                <label class="form-check-label fw-bold" for="inspected_by">Inspected By</label>
-                @error('vehicleData.inspected_by')
-                <div class="text-danger small w-100 mt-1">{{ $message }}</div>
-                @enderror
+        <div class="row">
+            {{-- Is Hot --}}
+            <div class="col-md-4 mb-3">
+                <label class="form-label">&nbsp;</label> <!-- Placeholder for vertical alignment -->
+                <div class="form-check form-switch p-3 border rounded">
+                    <label class="form-check-label fw-bold" for="is_hot">@if($vehicleData['is_auction']) Hot Bid @else Hot Listing @endif</label>
+                    @include('livewire.admin.vehicle.partials.toggle-single', ['label' => '', 'property' => 'is_hot', 'options' => [ 0 => 'No',1 => 'Yes']])
+                    @error('vehicleData.is_hot')
+                    <div class="text-danger small w-100 mt-1">{{ $message }}</div>
+                    @enderror
+                </div>
             </div>
-        </div>
 
-        {{-- Price is Negotiable --}}
-        <div class="col-md-4 mb-3">
-            <label class="form-label">&nbsp;</label> <!-- Placeholder for vertical alignment -->
-            <div class="form-check form-switch p-3 border rounded">
-                <input class="form-check-input" type="checkbox" role="switch" id="negotiable"
-                    wire:model.defer="vehicleData.negotiable">
-                <label class="form-check-label fw-bold" for="negotiable">Price is Negotiable</label>
-                @error('vehicleData.negotiable')
-                <div class="text-danger small w-100 mt-1">{{ $message }}</div>
-                @enderror
-            </div>
-        </div>
+            {{-- Inspected By --}}
+            <div class="col-md-4 mb-3">
+                <label class="form-label">&nbsp;</label> <!-- Placeholder for vertical alignment -->
+                <div class="form-check form-switch p-3 border rounded">
 
-        {{-- Feature this Vehicle --}}
-        <div class="col-md-4 mb-3">
-            <label class="form-label">&nbsp;</label> <!-- Placeholder for vertical alignment -->
-            <div class="form-check form-switch p-3 border rounded">
-                <input class="form-check-input" type="checkbox" role="switch" id="is_featured"
-                    wire:model.defer="vehicleData.is_featured">
-                <label class="form-check-label fw-bold" for="is_featured">Feature this Vehicle</label>
+                    <label class="form-check-label fw-bold" for="inspected_by">Inspected By</label>
+                    @include('livewire.admin.vehicle.partials.toggle-single', ['label' => '', 'property' => 'inspected_by', 'options' => [ 0 => 'No',1 => 'Yes']])
+                    @error('vehicleData.inspected_by')
+                    <div class="text-danger small w-100 mt-1">{{ $message }}</div>
+                    @enderror
+                </div>
             </div>
-        </div>
 
-        {{-- Is Auction --}}
-        <div class="col-md-4 mb-3">
-            <label class="form-label">&nbsp;</label> <!-- Placeholder for vertical alignment -->
-            <div class="form-check form-switch p-3 border rounded">
-                <input class="form-check-input" type="checkbox" role="switch" id="is_auction"
-                    wire:model.live="vehicleData.is_auction">
-                <label class="form-check-label fw-bold" for="is_auction">Is Auction</label>
+            {{-- Price is Negotiable --}}
+            <div class="col-md-4 mb-3">
+                <label class="form-label">&nbsp;</label> <!-- Placeholder for vertical alignment -->
+                <div class="form-check form-switch p-3 border rounded">
+
+                    <label class="form-check-label fw-bold" for="negotiable">Price is Negotiable</label>
+                    @include('livewire.admin.vehicle.partials.toggle-single', ['label' => '', 'property' => 'negotiable', 'options' => [ 0 => 'No',1 => 'Yes']])
+                    @error('vehicleData.negotiable')
+                    <div class="text-danger small w-100 mt-1">{{ $message }}</div>
+                    @enderror
+                </div>
             </div>
+            @if(!$vehicleData['is_auction'])
+            {{-- Feature this Vehicle --}}
+            <div class="col-md-4 mb-3">
+                <label class="form-label">&nbsp;</label> <!-- Placeholder for vertical alignment -->
+                <div class="form-check form-switch p-3 border rounded">
+
+                    <label class="form-check-label fw-bold" for="is_featured">Do You want to list this on homepage?</label>
+                    @include('livewire.admin.vehicle.partials.toggle-single', ['label' => '', 'property' => 'is_featured', 'options' => [ 0 => 'No',1 => 'Yes']])
+                </div>
+            </div>
+            @endif
+
+
         </div>
-    </div>
-</fieldset>
+    </fieldset>
 </div>

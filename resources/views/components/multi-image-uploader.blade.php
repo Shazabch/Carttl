@@ -1,4 +1,4 @@
-@props(['existingImages' => []])
+@props(['existingImages' => [],'is_prev' => true])
 
 <div
     x-data="{
@@ -59,6 +59,7 @@
     </div>
 
     {{-- The Preview Gallery --}}
+    @if($is_prev)
     <div x-show="previews.length > 0">
         <div class="row g-3">
             <template x-for="preview in previews" :key="preview.name">
@@ -79,4 +80,5 @@
             </template>
         </div>
     </div>
+    @endif
 </div>

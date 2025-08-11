@@ -94,7 +94,8 @@ class VehicleFormComponent extends Component
 
         // Pre-load data for dropdowns and selections
 
-        $this->brands =  Brand::orderBy('name')->get();
+
+        $this->brands = Brand::orderBy('name')->where('is_active', 1)->get();
         $this->bodyTypes = BodyType::all();
         $this->fuelTypes = FuelType::all();
         $this->transmissions = Transmission::all();
@@ -210,6 +211,7 @@ class VehicleFormComponent extends Component
     {
         $currentValue = $this->vehicleData[$property] ?? null;
         $this->vehicleData[$property] = ($currentValue == $value) ? null : $value;
+
     }
 
     // Helper method to validate rules for a specific step.

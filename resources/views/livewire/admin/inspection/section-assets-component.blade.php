@@ -14,7 +14,7 @@
         <div class="mb-3 border p-3 rounded bg-light">
             <label for="new_images" class="form-label fw-bold">Upload New Images</label>
             {{-- We use wire:model.live so the updatedNewImages hook runs instantly --}}
-            <input type="file" id="new_images" class="form-control" wire:model.live="new_images" multiple>
+            <x-multi-image-uploader wire:model="new_images" :is_prev="false" />
 
             {{-- Shows a loading spinner while files are being uploaded --}}
             <div wire:loading wire:target="new_images" class="mt-2 text-primary">

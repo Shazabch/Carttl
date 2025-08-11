@@ -24,12 +24,7 @@
                         </div>
                         <div class="overlap-car-box-card">
                             <div class="car-box-type p-left d-flex align-items-center gap-2">
-                                @if($item->is_hot)
-                                <span class="car-box-badge">
-                                    <img src="{{asset('images/icons/fire.svg')}}" alt="">
-                                    Hot Bid
-                                </span>
-                                @endif
+
                                 @if($item->inspected_by)
                                 <span class="car-box-badge bg-primary text-light">
                                     <img src="{{asset('images/icons/star.svg')}}" alt="">
