@@ -11,6 +11,7 @@ use App\Models\User;
 use App\Models\Vehicle;
 use App\Models\VehicleModel;
 use App\Notifications\VehicleEnquiryNotification;
+use App\Notifications\VehicleEnquiryReceivedConfirmation;
 use Illuminate\Support\Facades\Notification;
 use Livewire\Attributes\Rule;
 
@@ -137,9 +138,15 @@ class SellCarComponent extends Component
             // 'faq'           => $this->faq,
             'notes'         => $this->notes,
             'type'         => 'sale',
+            'user_id'         => auth()->id(),
         ]);
          $recipients = User::role(['admin', 'super-admin'])->get();
-        Notification::send($recipients, new VehicleEnquiryNotification($enquiry));
+        // Notification::send($recipients, new VehicleEnquiryNotification($enquiry));
+         $user = User::where('email', $this->email)->first();
+        if ($user) {
+            Notification::send($user, new VehicleEnquiryReceivedConfirmation($enquiry));
+        }
+
         // Store images and prepare data for the images table
         $imagePaths = [];
         foreach ($this->images as $index => $image) {

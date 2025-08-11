@@ -27,8 +27,8 @@
                     <!-- <a href="{{ route('my-ads') }}" class="list-group-item list-group-item-action {{ request()->routeIs('my-ads') ? 'active' : '' }}">
                         <i class="fas fa-bullhorn fa-fw"></i> My Ads
                     </a> -->
-                    <a href="{{ route('my-job-applications') }}" class="list-group-item list-group-item-action {{ request()->routeIs('my-job-applications') ? 'active' : '' }}">
-                        <i class="fas fa-briefcase fa-fw"></i> My Applications
+                    <a href="{{ route('car-enquiries') }}" class="list-group-item list-group-item-action {{ request()->routeIs('car-enquiries') ? 'active' : '' }}">
+                        <i class="fas fa-briefcase fa-fw"></i> Car Enquiries
                     </a>
                     <a href="{{ route('car-appointments') }}" class="list-group-item list-group-item-action {{ request()->routeIs('car-appointments') ? 'active' : '' }}">
                         <i class="fas fa-calendar-check fa-fw"></i>Inspection Reports
@@ -93,8 +93,8 @@
                 <a href="{{ route('notification-settings') }}" class="list-group-item list-group-item-action {{ request()->routeIs('notification-settings') ? 'active' : '' }}">
                     <i class="fas fa-bell fa-fw"></i> Notifications
                 </a>
-                <a href="{{ route('my-job-applications') }}" class="list-group-item list-group-item-action {{ request()->routeIs('my-job-applications') ? 'active' : '' }}">
-                    <i class="fas fa-briefcase fa-fw"></i> Job Applications
+                <a href="{{ route('car-enquiries') }}" class="list-group-item list-group-item-action {{ request()->routeIs('car-enquiries') ? 'active' : '' }}">
+                    <i class="fas fa-briefcase fa-fw"></i> Car Enquiries
                 </a>
                 <a class="list-group-item list-group-item-action logout-link" href="{{ route('account.logout') }}">
                     <i class="fas fa-sign-out-alt fa-fw"></i> Logout

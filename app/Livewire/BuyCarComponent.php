@@ -6,7 +6,7 @@ use App\Models\User;
 use Livewire\Component;
 use App\Models\VehicleEnquiry;
 use App\Models\Vehicle;
-use App\Notifications\EnquiryReceivedConfirmation;
+use App\Notifications\VehicleEnquiryReceivedConfirmation;
 use App\Notifications\EnquirySubmitNotification;
 use App\Notifications\VehicleEnquiryNotification;
 use Illuminate\Support\Facades\Notification;
@@ -16,16 +16,16 @@ class BuyCarComponent extends Component
 {
     public $selected_vehicle;
     public $vehicleId;
-    
+
     public $name;
     #[Rule(['required', 'min:13', 'max:13'])]
     public $phone = '';
-    
+
     public $email;
     public $address;
 
     public $is_auction = 0;
-     public function messages()
+    public function messages()
     {
         return [
             'phone.required' => 'Number is required.',
@@ -39,31 +39,38 @@ class BuyCarComponent extends Component
         'address' => 'nullable',
     ];
     public bool $formSubmitted = false;
-    public function mount($selected_vehicle,$is_auction = 0){
-        $this->selected_vehicle=$selected_vehicle;
-        $this->is_auction=$is_auction;
+    public function mount($selected_vehicle, $is_auction = 0)
+    {
+        $this->selected_vehicle = $selected_vehicle;
+        $this->is_auction = $is_auction;
     }
     public function saveBuyEnquiry()
     {
         $this->validate();
 
-        $enquiry=VehicleEnquiry::create([
+        $enquiry = VehicleEnquiry::create([
             'name'       => $this->name,
             'phone'      => $this->phone,
             'email'      => $this->email,
             'address'    => $this->address,
+            'user_id'    => auth()->id(),
             'type'    => 'purchase',
             'vehicle_id' => $this->selected_vehicle->id,
-             
+
         ]);
         $recipients = User::role(['admin', 'super-admin'])->get();
-        Notification::send($recipients, new VehicleEnquiryNotification($enquiry));
-           
+        // Notification::send($recipients, new VehicleEnquiryNotification($enquiry));
+        $user = User::where('email', $this->email)->first();
+        if ($user) {
+            Notification::send($user, new VehicleEnquiryReceivedConfirmation($enquiry));
+        }
+
+        session()->flash('success', 'Thank you! Your message has been received and saved.');
         $this->formSubmitted = true;
-         $this->dispatch('closeBuyNowModal');
+        $this->dispatch('closeBuyNowModal');
         session()->flash('message', 'Your inquiry has been submitted successfully!');
 
-       
+
         $this->reset(['name', 'phone', 'email', 'address']);
     }
 

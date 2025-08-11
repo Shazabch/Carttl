@@ -41,7 +41,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/biddings', [DashboardController::class, 'bidding'])->name('biddings');
     Route::get('/my-ads', [DashboardController::class, 'myAds'])->name('my-ads');
     Route::get('/my-searches', [DashboardController::class, 'mySearches'])->name('my-searches');
-    Route::get('/my-job-applications', [DashboardController::class, 'myJobApplications'])->name('my-job-applications');
+    Route::get('/car-enquiries', [DashboardController::class, 'carEnquiries'])->name('car-enquiries');
     Route::get('/car-appointments', [DashboardController::class, 'carAppointments'])->name('car-appointments');
     Route::get('logout', [LoginController::class, 'logout'])->name('account.logout');
 });
