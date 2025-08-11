@@ -59,8 +59,8 @@ class BuyCarComponent extends Component
 
         ]);
         $recipients = User::role(['admin', 'super-admin'])->get();
-        // Notification::send($recipients, new VehicleEnquiryNotification($enquiry));
-        $user = User::where('email', $this->email)->first();
+        Notification::send($recipients, new VehicleEnquiryNotification($enquiry));
+        $user = auth()->user();
         if ($user) {
             Notification::send($user, new VehicleEnquiryReceivedConfirmation($enquiry));
         }

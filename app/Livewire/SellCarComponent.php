@@ -12,6 +12,7 @@ use App\Models\Vehicle;
 use App\Models\VehicleModel;
 use App\Notifications\VehicleEnquiryNotification;
 use App\Notifications\VehicleEnquiryReceivedConfirmation;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Notification;
 use Livewire\Attributes\Rule;
 
@@ -24,22 +25,22 @@ class SellCarComponent extends Component
 
     // Step 2: Personal Info
     public $name, $email;
-   
+
     public $phone = '';
     public function messages()
     {
         return [
-         
+
             'phone.required' => 'Number is required.',
             'phone.min' => 'Dubai mobile number must be exactly 13 characters.',
             'phone.max' => 'Dubai mobile number must be exactly 13 characters.',
             'phone.regex' => 'Please enter a valid Dubai mobile number starting with +9715.',
         ];
     }
-     protected $rules = [
+    protected $rules = [
         'name' => 'required',
         'phone' => 'required|min:13',
-      
+
     ];
 
     // Step 3: Images
@@ -59,11 +60,16 @@ class SellCarComponent extends Component
     // This runs when the brand_id is updated
     public function updatedBrandId($brand_id)
     {
-        if ($brand_id) {
-            $this->models = VehicleModel::where('brand_id', $brand_id)->orderBy('name')->get();
+        if (!Auth::check()) {
+            $this->dispatch('show-login-modal');
         } else {
-            $this->models = collect();
+            if ($brand_id) {
+                $this->models = VehicleModel::where('brand_id', $brand_id)->orderBy('name')->get();
+            } else {
+                $this->models = collect();
+            }
         }
+
 
         $this->reset('make_id');
     }
@@ -140,9 +146,9 @@ class SellCarComponent extends Component
             'type'         => 'sale',
             'user_id'         => auth()->id(),
         ]);
-         $recipients = User::role(['admin', 'super-admin'])->get();
-        // Notification::send($recipients, new VehicleEnquiryNotification($enquiry));
-         $user = User::where('email', $this->email)->first();
+        $recipients = User::role(['admin', 'super-admin'])->get();
+        Notification::send($recipients, new VehicleEnquiryNotification($enquiry));
+        $user = auth()->user();
         if ($user) {
             Notification::send($user, new VehicleEnquiryReceivedConfirmation($enquiry));
         }

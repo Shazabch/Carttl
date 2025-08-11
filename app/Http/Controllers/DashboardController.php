@@ -54,7 +54,7 @@ class DashboardController extends Controller
 
     public function carEnquiries(): View
     {
-        
+
           $user_id = auth()->id();
         if ($user_id) {
             $enquiries = VehicleEnquiry::where('user_id', $user_id)->get();

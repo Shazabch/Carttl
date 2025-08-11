@@ -46,6 +46,33 @@
     @yield('content')
 
     @include('components.guest.footer')
+    {{-- ======================================================= --}}
+    {{-- ============ START: Standard Bootstrap Modal ============ --}}
+    {{-- ======================================================= --}}
+    <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content text-center p-4">
+                <div class="modal-header border-0">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-4">
+                        <img src="{{ asset('images/icons/login.svg') }}" alt="Login Icon" class="mx-auto" style="height: 90px;">
+                    </div>
+                    <h3 class="modal-title fw-bold mb-2" id="loginModalLabel">Please Log In</h3>
+                    <p class="text-muted mb-4">You need to be logged in to continue. Please log in or create an account.</p>
+
+                    <div class=" text-center">
+                        <a href="{{ route('account.login') }}" class="btn-main text-center">Log In</a>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {{-- ======================================================= --}}
+    {{-- ============ END: Standard Bootstrap Modal ============== --}}
+    {{-- ======================================================= --}}
     <!-- Footer -->
 
 
@@ -75,6 +102,17 @@
             } else {
                 navbar.classList.remove('scrolled');
             }
+        });
+    </script>
+    <script>
+        // 1. Create a Bootstrap Modal instance
+        const loginModalElement = document.getElementById('loginModal');
+        const loginModal = new bootstrap.Modal(loginModalElement);
+
+        // 2. Listen for the global event dispatched by Livewire
+        window.addEventListener('show-login-modal', event => {
+            // 3. Use the Bootstrap API to show the modal
+            loginModal.show();
         });
     </script>
 

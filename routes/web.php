@@ -65,7 +65,7 @@ Route::group(['prefix' => 'admin'], function () {
         Route::view('/car-damage-test', 'carDamgeTest')->name('car.damage.test');
 
         Route::get('/submissions', [ContactSubmissionController::class, 'index'])->name('admin.submissions');
-        Route::get('/vehicles', [VehicleManagerController::class, 'index'])->name('admin.vehicles');
+        Route::get('/vehicles', [VehicleManagerController::class, 'index'])->name('admin.vehicles.all');
         Route::get('/vehicles/{type}', [VehicleManagerController::class, 'index'])->name('admin.vehicles');
         Route::get('/vehicles/{id}/details', [VehicleManagerController::class, 'details'])->name('admin.vehicles.details');
         Route::view('user', 'admin.user')->name('admin.user');
