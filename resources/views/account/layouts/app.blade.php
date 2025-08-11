@@ -63,15 +63,20 @@
             <i class="fas fa-user-circle"></i>
             <span>Profile</span>
         </a>
-        <a href="{{ route('my-ads') }}" class="mobile-nav-item {{ request()->routeIs('my-ads') ? 'active' : '' }}">
-            <i class="fas fa-bullhorn"></i>
-            <span>My Ads</span>
+        <a href="{{ route('notification-settings') }}" class="mobile-nav-item {{ request()->routeIs('notification-settings') ? 'active' : '' }}">
+            <i class="fas fa-bell"></i>
+            <span>Notifications</span>
         </a>
-        <a href="{{ route('car-appointments') }}" class="mobile-nav-item {{ request()->routeIs('car-appointments') ? 'active' : '' }}">
-            <i class="fas fa-calendar-check"></i>
-            <span>Bookings</span>
+        
+        <a href="{{ route('biddings') }}" class="mobile-nav-item {{ request()->routeIs('biddings') ? 'active' : '' }}">
+            <i class="fas fa-shield-alt"></i>
+            <span>Biddings</span>
         </a>
-
+         
+         <a href="#" class="mobile-nav-item" data-bs-toggle="offcanvas" data-bs-target="#mobileMenu" aria-controls="mobileMenu">
+        <i class="fas fa-ellipsis-h"></i>
+        <span>More</span>
+    </a>
         {{-- The "More" button to trigger the offcanvas menu --}}
         {{-- It's active if ANY of the routes inside the offcanvas are active --}}
         
@@ -87,15 +92,16 @@
             {{-- We reuse the same list-group styling for consistency --}}
             <div class="list-group list-group-flush dashboard-sidebar">
                
-                <a href="{{ route('account-settings') }}" class="list-group-item list-group-item-action {{ request()->routeIs('account-settings') ? 'active' : '' }}">
+                <!-- <a href="{{ route('account-settings') }}" class="list-group-item list-group-item-action {{ request()->routeIs('account-settings') ? 'active' : '' }}">
                     <i class="fas fa-cog fa-fw"></i> Account Settings
-                </a>
-                <a href="{{ route('notification-settings') }}" class="list-group-item list-group-item-action {{ request()->routeIs('notification-settings') ? 'active' : '' }}">
-                    <i class="fas fa-bell fa-fw"></i> Notifications
-                </a>
+                </a> -->
+               
                 <a href="{{ route('car-enquiries') }}" class="list-group-item list-group-item-action {{ request()->routeIs('car-enquiries') ? 'active' : '' }}">
                     <i class="fas fa-briefcase fa-fw"></i> Car Enquiries
                 </a>
+                <a href="{{ route('car-appointments') }}" class="list-group-item list-group-item-action {{ request()->routeIs('car-appointments') ? 'active' : '' }}">
+                        <i class="fas fa-calendar-check fa-fw"></i>Inspection Reports
+                    </a>
                 <a class="list-group-item list-group-item-action logout-link" href="{{ route('account.logout') }}">
                     <i class="fas fa-sign-out-alt fa-fw"></i> Logout
                 </a>

@@ -141,7 +141,7 @@ class SellCarComponent extends Component
             'user_id'         => auth()->id(),
         ]);
          $recipients = User::role(['admin', 'super-admin'])->get();
-        // Notification::send($recipients, new VehicleEnquiryNotification($enquiry));
+         Notification::send($recipients, new VehicleEnquiryNotification($enquiry));
          $user = User::where('email', $this->email)->first();
         if ($user) {
             Notification::send($user, new VehicleEnquiryReceivedConfirmation($enquiry));
