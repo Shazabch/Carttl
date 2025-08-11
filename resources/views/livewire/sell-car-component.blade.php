@@ -148,11 +148,14 @@
         </div>
 
         <div class="col-lg-6">
-            <div class="form-group mb-3">
-                <label class="form-label">Contact Number</label>
-                <input type="text" wire:model.lazy="number" class="form-control" placeholder="Enter your contact number">
-                @error('number') <div class="text-danger small mt-1">{{ $message }}</div> @enderror
-            </div>
+           <div x-data="dubaiPhoneMask()" class="form-group mb-3">
+            <label for="phone" class="mt-1 form-label">Phone Number</label>
+            <input type="tel" id="phone" class="form-control" placeholder="+971 5xxxxxxxx"
+                x-model="phone" @input="formatPhone" wire:model="phone">
+            @error('phone')
+            <div class="text-danger small mt-1">{{ $message }}</div>
+            @enderror
+        </div>
         </div>
         <div class="col-lg-12">
             <div class="form-group">

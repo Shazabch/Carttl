@@ -3,7 +3,7 @@
 namespace App\Livewire\Admin\Sell;
 
 use Livewire\WithPagination;
-use App\Models\SaleEnquiry;
+use App\Models\VehicleEnquiry;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Attributes\On;
 use Livewire\Component;
@@ -40,7 +40,7 @@ class SellListManagementComponent extends Component
     public function delete($enquiryId)
     {
 
-        $enquiry = SaleEnquiry::with('imageSet')->find($enquiryId);
+        $enquiry = VehicleEnquiry::with('imageSet')->find($enquiryId);
 
         if ($enquiry) {
             // Delete associated images from storage
@@ -64,7 +64,7 @@ class SellListManagementComponent extends Component
 
     public function render()
     {
-        $saleEnquiries = SaleEnquiry::with(['brand', 'vehicleModel', 'imageSet'])
+        $saleEnquiries = VehicleEnquiry::Where('type','sale')->with(['brand', 'vehicleModel', 'imageSet'])
             ->where(function ($query) {
                 $query->where('name', 'like', '%' . $this->search . '%')
                     ->orWhere('number', 'like', '%' . $this->search . '%')

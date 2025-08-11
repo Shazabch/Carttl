@@ -2,9 +2,15 @@
 
 namespace App\Livewire;
 
+use App\Models\User;
 use Livewire\Component;
-use App\Models\PurchaseEnquiry;
+use App\Models\VehicleEnquiry;
 use App\Models\Vehicle;
+use App\Notifications\EnquiryReceivedConfirmation;
+use App\Notifications\EnquirySubmitNotification;
+use App\Notifications\VehicleEnquiryNotification;
+use Illuminate\Support\Facades\Notification;
+use Livewire\Attributes\Rule;
 
 class BuyCarComponent extends Component
 {
@@ -12,12 +18,20 @@ class BuyCarComponent extends Component
     public $vehicleId;
     
     public $name;
-    public $phone;
+    #[Rule(['required', 'min:13', 'max:13'])]
+    public $phone = '';
+    
     public $email;
     public $address;
 
     public $is_auction = 0;
-
+     public function messages()
+    {
+        return [
+            'phone.required' => 'Number is required.',
+            'phone.regex' => 'Please enter a valid Dubai mobile number starting with +9715.',
+        ];
+    }
     protected $rules = [
         'name' => 'required',
         'phone' => 'required',
@@ -33,14 +47,18 @@ class BuyCarComponent extends Component
     {
         $this->validate();
 
-        PurchaseEnquiry::create([
+        $enquiry=VehicleEnquiry::create([
             'name'       => $this->name,
             'phone'      => $this->phone,
             'email'      => $this->email,
             'address'    => $this->address,
+            'type'    => 'purchase',
             'vehicle_id' => $this->selected_vehicle->id,
              
         ]);
+        $recipients = User::role(['admin', 'super-admin'])->get();
+        Notification::send($recipients, new VehicleEnquiryNotification($enquiry));
+           
         $this->formSubmitted = true;
          $this->dispatch('closeBuyNowModal');
         session()->flash('message', 'Your inquiry has been submitted successfully!');
