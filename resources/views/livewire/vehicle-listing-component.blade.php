@@ -51,9 +51,8 @@
 
                             </div>
 
-                            <div class="wishlist-btn">
-                                <i class="far fa-heart"></i>
-                            </div>
+
+                             <livewire:favorite-button-component :vehicleId="$item->id" />
                         </div>
                     </div>
                     <div class="car-box-card-content">

@@ -323,7 +323,7 @@
                                     <li data-model="Model 15">Model 15</li>
                                     <li data-model="Model 16">Model 16</li>
                                     <li data-model="Model 17">Model 17</li>
-                                    <li data-model="Model 18">Model 18</li> 
+                                    <li data-model="Model 18">Model 18</li>
                                 </ul>
                             </div>
                             <!-- Step 4 -->
