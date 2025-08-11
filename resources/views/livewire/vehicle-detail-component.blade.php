@@ -291,9 +291,17 @@
                                 <h4>Buy It Now</h4>
                                 <div class="buy-now-price">{{format_currency($selected_vehicle->price)}}</div>
                                 <p>Skip the auction and purchase immediately</p>
+                                @if(auth()->id())
                                 <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#buyNowModal">
                                     <i class="fas fa-shopping-cart"></i> Buy It Now
                                 </button>
+                                @else
+                                <a href="/login" class="btn btn-warning ">
+
+                                    Buy It Now <div class="spinner"></div>
+                                </a>
+                                @endif
+
 
                             </div>
                             <!-- buy now modal -->
@@ -367,7 +375,7 @@
 
                                 </div>
                                 <div class="action-buttons mb-2">
-                                      <livewire:favorite-button-detail-component :vehicleId="$selected_vehicle->id" />
+                                    <livewire:favorite-button-detail-component :vehicleId="$selected_vehicle->id" />
                                     <button class="btn-icon" data-bs-toggle="tooltip" title="Share">
                                         <i class="fas fa-share-alt"></i>
                                     </button>

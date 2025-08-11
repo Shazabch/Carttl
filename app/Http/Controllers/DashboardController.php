@@ -6,6 +6,7 @@ use App\Models\VehicleBid;
 use App\Models\VehicleEnquiry;
 use Illuminate\View\View;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class DashboardController extends Controller
 {
@@ -25,7 +26,10 @@ class DashboardController extends Controller
 
     public function notificationSettings(): View
     {
-        return view('account.notification-settings');
+        $notifications = Auth::user()->notifications()->get();
+        
+        return view('account.notification-settings',compact('notifications'));
+        
     }
 
     public function bidding(): View
@@ -57,12 +61,14 @@ class DashboardController extends Controller
 
           $user_id = auth()->id();
         if ($user_id) {
-            $enquiries = VehicleEnquiry::where('user_id', $user_id)->get();
+            $sale_enquiries = VehicleEnquiry::where('user_id', $user_id)->where('type', 'sale')->get();
+            $buy_enquiries = VehicleEnquiry::where('user_id', $user_id)->where('type', 'purchase')->get();
         } else {
-            $enquiries = collect(); // empty collection, avoids errors in Blade
+            $sale_enquiries = collect(); // empty collection, avoids errors in Blade
+            $buy_enquiries = collect(); // empty collection, avoids errors in Blade
         }
 
-        return view('account.car-enquiries', compact('enquiries'));
+        return view('account.car-enquiries', compact('sale_enquiries','buy_enquiries'));
     }
 
     public function carAppointments(): View
