@@ -2,12 +2,17 @@
 
 namespace App\Livewire;
 
-use App\Models\SaleEnquiry;
+use App\Models\VehicleEnquiry;
 use App\Models\SaleEnquiryImage;
 use Livewire\WithFileUploads;
 use Livewire\Component;
 use App\Models\Brand;
+use App\Models\User;
+use App\Models\Vehicle;
 use App\Models\VehicleModel;
+use App\Notifications\VehicleEnquiryNotification;
+use Illuminate\Support\Facades\Notification;
+use Livewire\Attributes\Rule;
 
 class SellCarComponent extends Component
 {
@@ -17,8 +22,24 @@ class SellCarComponent extends Component
     public $brand_id, $make_id, $year, $mileage, $specification, $faq, $notes;
 
     // Step 2: Personal Info
-    public $name, $number, $email;
-
+    public $name, $email;
+   
+    public $phone = '';
+    public function messages()
+    {
+        return [
+         
+            'phone.required' => 'Number is required.',
+            'phone.min' => 'Dubai mobile number must be exactly 13 characters.',
+            'phone.max' => 'Dubai mobile number must be exactly 13 characters.',
+            'phone.regex' => 'Please enter a valid Dubai mobile number starting with +9715.',
+        ];
+    }
+     protected $rules = [
+        'name' => 'required',
+        'phone' => 'required|min:13',
+      
+    ];
 
     // Step 3: Images
     public $images = [];
@@ -30,7 +51,7 @@ class SellCarComponent extends Component
 
     public function mount()
     {
-        $this->brands = Brand::orderBy('name')->where('is_active',1)->get();
+        $this->brands = Brand::orderBy('name')->where('is_active', 1)->get();
         $this->models = collect();
     }
 
@@ -63,7 +84,7 @@ class SellCarComponent extends Component
         } elseif ($this->currentStep === 2) {
             return [
                 'name'   => 'required',
-                'number' => 'required',
+                'phone' => 'required|min:13',
                 'email' => 'required',
             ];
         }
@@ -90,7 +111,7 @@ class SellCarComponent extends Component
         $validated = $this->validate([
 
             'name'          => 'required',
-            'number'        => 'required',
+            'phone'        => 'required',
             'email'        => 'required',
             'brand_id'      => 'required|exists:brands,id',
             'make_id'       => 'required|exists:vehicle_models,id',
@@ -104,10 +125,10 @@ class SellCarComponent extends Component
         ]);
 
         // Create the main enquiry record
-        $sale = SaleEnquiry::create([
+        $enquiry = VehicleEnquiry::create([
             'name'          => $this->name,
             'email'          => $this->email,
-            'number'        => $this->number,
+            'phone'        => $this->phone,
             'brand_id'      => $this->brand_id,
             'make_id'       => $this->make_id,
             'year'       => $this->year,
@@ -115,8 +136,10 @@ class SellCarComponent extends Component
             'specification' => $this->specification,
             // 'faq'           => $this->faq,
             'notes'         => $this->notes,
+            'type'         => 'sale',
         ]);
-
+         $recipients = User::role(['admin', 'super-admin'])->get();
+        Notification::send($recipients, new VehicleEnquiryNotification($enquiry));
         // Store images and prepare data for the images table
         $imagePaths = [];
         foreach ($this->images as $index => $image) {
@@ -127,7 +150,7 @@ class SellCarComponent extends Component
 
         // Create the associated image record
         SaleEnquiryImage::create(array_merge(
-            ['sale_enquiry_id' => $sale->id],
+            ['sale_enquiry_id' => $enquiry->id],
             $imagePaths
         ));
 

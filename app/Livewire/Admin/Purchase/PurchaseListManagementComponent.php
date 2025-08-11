@@ -3,7 +3,7 @@
 namespace App\Livewire\Admin\Purchase;
 
 use Livewire\WithPagination;
-use App\Models\PurchaseEnquiry;
+use App\Models\VehicleEnquiry;
 use Livewire\Component;
 
 class PurchaseListManagementComponent extends Component
@@ -29,7 +29,7 @@ class PurchaseListManagementComponent extends Component
     
     public function delete($enquiryId)
     {
-        $enquiry = PurchaseEnquiry::find($enquiryId);
+        $enquiry = VehicleEnquiry::find($enquiryId);
 
         if ($enquiry) {
             $enquiry->delete();
@@ -40,7 +40,7 @@ class PurchaseListManagementComponent extends Component
 
     public function render()
     {
-        $purchaseEnquiries = PurchaseEnquiry::with('vehicle','imageSet')
+        $purchaseEnquiries = VehicleEnquiry::Where('type','purchase')->with('vehicle','imageSet')
             ->when($this->vehicleId, function ($query) {
                 $query->where('vehicle_id', $this->vehicleId);
             })

@@ -21,12 +21,15 @@
             <input type="text" wire:model.lazy="name" class="form-control" placeholder="Enter your full name">
             @error('name') <div class="text-danger small mt-1">{{ $message }}</div> @enderror
         </div>
-        <div class="mb-3">
-            <label for="phone" class="form-label">Phone</label>
-            <input type="phone" wire:model.lazy="phone" name="phone" id="phone" class="form-control"
-                placeholder="Enter your phone" required>
-            @error('phone') <div class="text-danger small mt-1">{{ $message }}</div> @enderror
+        <div x-data="dubaiPhoneMask()" class="form-group mb-3">
+            <label for="phone" class="mt-1 form-label">Phone Number</label>
+            <input type="tel" id="phone" class="form-control" placeholder="+971 5xxxxxxxx"
+                x-model="phone" @input="formatPhone" wire:model="phone">
+            @error('phone')
+            <div class="text-danger small mt-1">{{ $message }}</div>
+            @enderror
         </div>
+
         <div class="mb-3">
             <label for="email" class="form-label">Email Address</label>
             <input type="email" wire:model.lazy="email" name="email" id="email" class="form-control"
@@ -42,7 +45,7 @@
 
 
     </div>
-     @if(auth()->id())
+    @if(auth()->id())
     @if($is_auction)
     <button wire:click="saveBuyEnquiry" class="btn btn-warning btn-buy-now">
         <i class="fas fa-shopping-cart"></i>
@@ -67,9 +70,9 @@
     @endif
     @else
     <a href="/login" class="btn btn-warning btn-buy-now">
-                
-                Signin & Buy It Now <div class="spinner"></div>
-            </a>
+
+        Signin & Buy It Now <div class="spinner"></div>
+    </a>
 
 
     @endif
