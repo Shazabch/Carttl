@@ -35,6 +35,15 @@
                             </a>
                         </li>
                         <li class="nav-item mb-2">
+                            <a class="nav-link {{ $activeTab == 'status' ? 'active' : '' }}"
+                                wire:click.prevent="setActiveTab('status')" href="#" title="status">
+                                <i class="fas fa-photo-video mx-2 text-dark"></i>
+                                @if ($sidebarState === 'full')
+                                Status
+                                @endif
+                            </a>
+                        </li>
+                         <li class="nav-item mb-2">
                             <a class="nav-link {{ $activeTab == 'assets' ? 'active' : '' }}"
                                 wire:click.prevent="setActiveTab('assets')" href="#" title="Assets">
                                 <i class="fas fa-photo-video mx-2 text-dark"></i>
@@ -123,9 +132,11 @@
                     @if ($activeTab == 'info')
                     <livewire:admin.vehicle.vehicle-detail-component :vehicleId="$vehicle->id" />
                     <livewire:admin.vehicle-form-component />
-
+                      @elseif ($activeTab == 'status')
+                    <livewire:admin.vehicle.vehicle-status-component :vehicleId="$vehicle->id" />
                     @elseif ($activeTab == 'assets')
                     <livewire:admin.vehicle.vehicle-assets-component :vehicleId="$vehicle->id" />
+                   
 
                     @elseif ($activeTab == 'history')
                     <livewire:admin.vehicle.vehicle-history-component :vehicleId="$vehicle->id" />
