@@ -24,7 +24,7 @@ class BookInspectionComponent extends Component
     {
         return [
             'name' => 'required',
-            'phone'    => ['required', 'regex:/^\+9715(0|2|4|5|6|8)\d{7}$/'],
+            'phone'    => ['required'],
             'email' => 'required',
             'type' => 'required',
             'date' => 'required',

@@ -3,152 +3,244 @@
 
 <head>
     <meta charset="utf-8">
-    <title>Inspection reportInView #{{ $reportInView->id }}</title>
+    <title>Inspection Report #{{ $reportInView->id }}</title>
+    
+    {{-- Google Fonts & Font Awesome for Icons --}}
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
     <style>
-        /* General PDF-friendly styles */
+        /* --- Customizable CSS Variables --- */
+        :root {
+            /* 
+            * IMPORTANT: Change this color to your brand's primary color.
+            */
+            --primary-color: #d7b236; /* <--- YOUR COLOR CODE HERE */
+
+            --font-family: 'Roboto', 'Helvetica', sans-serif;
+            --border-color: #dee2e6;
+            --background-light: #f8f9fa;
+            --text-dark: #212529;
+            --text-muted: #6c757d;
+
+            /* Status Pill Colors */
+            --status-good-bg: #d1e7dd;
+            --status-good-text: #0f5132;
+            --status-warning-bg: #fff3cd;
+            --status-warning-text: #664d03;
+            --status-danger-bg: #d7b236;
+            --status-danger-text: #842029;
+        }
+
         body {
-            font-family: 'Helvetica', sans-serif;
+            font-family: var(--font-family);
             font-size: 11px;
-            color: #333;
-            line-height: 1.4;
+            color: var(--text-dark);
+            background-color: #fff;
         }
 
         .container {
             width: 100%;
+            margin: 0 auto;
         }
 
+        /* --- Enhanced Header --- */
         .header {
-            text-align: center;
-            border-bottom: 2px solid #333;
-            padding-bottom: 10px;
-            margin-bottom: 20px;
+            padding-bottom: 15px;
+            margin-bottom: 30px;
+            border-bottom: 4px solid var(--primary-color);
+            /* Using table for robust PDF layout */
+            width: 100%;
+            border-collapse: collapse;
         }
-
-        .header h1 {
+        .header td {
+            vertical-align: middle;
+        }
+        .header-logo {
+            width: 160px;
+            text-align: left;
+        }
+        .header-logo img {
+            max-width: 150px;
+            max-height: 70px;
+        }
+        .header-details {
+            text-align: right;
+        }
+        .header-details h1 {
             margin: 0;
-            font-size: 22px;
+            font-size: 26px;
+            font-weight: 700;
+            color: var(--primary-color);
         }
-
-        .reportInView-section {
-            border: 1px solid #ddd;
-            margin-bottom: 15px;
-            border-radius: 4px;
+        .header-details p {
+            margin: 5px 0 0;
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+        
+        /* --- Card-Based Section Design --- */
+        .report-card {
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            margin-bottom: 20px;
             page-break-inside: avoid;
-            /* Important for preventing sections from splitting */
+            overflow: hidden; /* Ensures border-radius is respected */
         }
-
-        .section-title {
-            background-color: #343a40;
+        .card-header {
+            background-color: var(--primary-color);
             color: white;
-            padding: 8px 12px;
-            font-size: 14px;
-            font-weight: bold;
+            padding: 10px 15px;
+            font-size: 16px;
+            font-weight: 500;
+        }
+        .card-header .fa-solid {
+            margin-right: 10px;
+            font-size: 15px;
+        }
+        .card-body {
+            padding: 15px;
+            background-color: #fff;
         }
 
-        .section-body {
-            padding: 10px;
-        }
-
-        /* --- KEY FIX: Table-based layout for reliability --- */
+        /* --- Robust Table for Data --- */
         .details-table {
             width: 100%;
             border-collapse: collapse;
-            /* Removes space between table cells */
         }
-
+        .details-table tr {
+            border-bottom: 1px solid #f1f1f1;
+        }
+        .details-table tr:last-child {
+            border-bottom: none;
+        }
         .details-table td {
-            width: 50%;
+            padding: 12px 5px;
             vertical-align: top;
-            padding: 5px;
         }
-
-        .item {
-            margin-bottom: 5px;
-        }
-
+        
         .item-label {
-            font-weight: bold;
-            color: #555;
+            font-weight: 500;
+            color: var(--text-muted);
+            margin-bottom: 5px;
             display: block;
-            margin-bottom: 2px;
         }
-
         .item-value {
-            display: block;
-            padding: 6px;
-            background-color: #f8f9fa;
-            border: 1px solid #e9ecef;
-            border-radius: 3px;
-            min-height: 18px;
-            /* --- KEY FIX: Force long text to wrap --- */
-            word-wrap: break-word;
-            white-space: normal;
+            font-weight: 400;
+            font-size: 12px;
+            background-color: var(--background-light);
+            padding: 8px 10px;
+            border-radius: 2px;
+            border: 1px solid var(--border-color);
         }
-
         .item-value-list {
-            list-style-type: none;
-            padding-left: 0;
-            margin: 0;
+            list-style-type: none; padding-left: 0; margin: 0;
         }
-
         .item-value-list li {
             background-color: #e9ecef;
             color: #333;
-            padding: 3px 8px;
-            margin-bottom: 4px;
-            margin-right: 4px;
+            padding: 4px 10px;
+            margin: 2px;
             display: inline-block;
-            border-radius: 10px;
+            border-radius: 15px;
             font-size: 10px;
         }
 
+        /* --- Status Pills for Conditions --- */
+        .status-pill {
+            display: inline-block;
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-size: 11px;
+            font-weight: 500;
+            text-transform: capitalize;
+        }
+        .status-good {
+            background-color: var(--status-good-bg);
+            color: var(--status-good-text);
+        }
+        .status-warning {
+            background-color: var(--status-warning-bg);
+            color: var(--status-warning-text);
+        }
+        .status-danger {
+            background-color: var(--status-danger-bg);
+            color:white;
+            
+        }
+        
+        /* --- Footer --- */
         .footer {
             text-align: center;
             margin-top: 30px;
             font-size: 10px;
-            color: #777;
+            color: #aaa;
+            width: 100%;
             position: fixed;
-            /* Optional: fixes footer to bottom of each page */
             bottom: 0;
+            border-top: 1px solid #e0e0e0;
+            padding-top: 10px;
         }
     </style>
 </head>
 
 <body>
     <div class="container">
-        <div class="header">
-            <h1>Vehicle Inspection reportInView</h1>
-            <p>reportInView ID: {{ $reportInView->id }} | Date: {{ $reportInView->created_at->format('F d, Y') }}</p>
-        </div>
+        <table class="header">
+            <tr>
+                <td class="header-logo">
+                    {{-- IMPORTANT: Update the src path to your logo --}}
+                    <img src="{{asset('images/golden-x.png')}}" alt="Company Logo">
+                </td>
+                <td class="header-details">
+                    <h1>Vehicle Inspection Report</h1>
+                    <p>Report ID: #{{ $reportInView->id }} | Date: {{ $reportInView->created_at->format('F d, Y') }}</p>
+                </td>
+            </tr>
+        </table>
 
-        {{-- Vehicle Details Section using a table --}}
-        <div class="reportInView-section">
-            <div class="section-title">Vehicle Information</div>
-            <div class="section-body">
+        {{-- Vehicle Information Card --}}
+        <div class="report-card">
+            <div class="card-header"><i class="fa-solid fa-car"></i>Vehicle Information</div>
+            <div class="card-body">
                 <table class="details-table">
                     <tr>
-                        <td>
-                            <div class="item"><span class="item-label">Make</span> <span class="item-value">{{ $reportInView->brand?->name ?? 'N/A' }}</span></div>
-                        </td>
-                        <td>
-                            <div class="item"><span class="item-label">Model</span> <span class="item-value">{{ $reportInView->vehicleModel?->name ?? 'N/A' }}</span></div>
-                        </td>
+                        <td><div class="item-label">Make</div><div class="item-value">{{ $reportInView->brand?->name ?? 'N/A' }}</div></td>
+                        <td><div class="item-label">Trim</div><div class="item-value">{{ $reportInView->vehicleModel?->name ?? 'N/A' }}</div></td>
+                    </tr>
+                     <tr>
+                        <td><div class="item-label">Year</div><div class="item-value">{{ $reportInView->year ?? 'N/A' }}</div></td>
+                        <td><div class="item-label">VIN</div><div class="item-value">{{ $reportInView->vin ?? 'N/A' }}</div></td>
+                    </tr>
+                     <tr>
+                        <td><div class="item-label">Odometer</div><div class="item-value">{{ $reportInView->getOdometerLabelAttribute() ?? 'N/A' }}</div></td>
+                        <td><div class="item-label">Color</div><div class="item-value">{{ $reportInView->color ?? 'N/A' }}</div></td>
                     </tr>
                     <tr>
-                        <td>
-                            <div class="item"><span class="item-label">Year</span> <span class="item-value">{{ $reportInView->year ?? 'N/A' }}</span></div>
-                        </td>
-                        <td>
-                            <div class="item"><span class="item-label">VIN</span> <span class="item-value">{{ $reportInView->vin ?? 'N/A' }}</span></div>
-                        </td>
+                        <td><div class="item-label">No of Cylender</div><div class="item-value">{{ $reportInView->noOfCylinders ?? 'N/A' }}</div></td>
+                        <td><div class="item-label">Body Type</div><div class="item-value">{{ $reportInView->body_type ?? 'N/A' }}</div></td>
+                    </tr>
+                     <tr>
+                        <td><div class="item-label">Registered Emirates</div><div class="item-value">{{ $reportInView->registeredEmirates ?? 'N/A' }}</div></td>
+                        <td><div class="item-label">Specs</div><div class="item-value">{{ $reportInView->specs ?? 'N/A' }}</div></td>
                     </tr>
                     <tr>
-                        <td>
-                            <div class="item"><span class="item-label">Odometer</span> <span class="item-value">{{ $reportInView->getOdometerLabelAttribute() ?? 'N/A' }}</span></div>
-                        </td>
-                        <td>
-                            <div class="item"><span class="item-label">Color</span> <span class="item-value">{{ $reportInView->color ?? 'N/A' }}</span></div>
-                        </td>
+                        <td><div class="item-label">Transmission</div><div class="item-value">{{ $reportInView->transmission ?? 'N/A' }}</div></td>
+                        <td><div class="item-label">Horse Power</div><div class="item-value">{{ $reportInView->horsepower ?? 'N/A' }}</div></td>
+                    </tr>
+                    <tr>
+                        <td><div class="item-label">Color</div><div class="item-value">{{ $reportInView->color ?? 'N/A' }}</div></td>
+                        <td><div class="item-label">Warranty</div><div class="item-value">{{ $reportInView->warrantyAvailable ?? 'N/A' }}</div></td>
+                    </tr>
+                    <tr>
+                        <td><div class="item-label">Service History</div><div class="item-value">{{ $reportInView->serviceHistory ?? 'N/A' }}</div></td>
+                        <td><div class="item-label">No Of Keys</div><div class="item-value">{{ $reportInView->noOfKeys ?? 'N/A' }}</div></td>
+                    </tr>
+                    <tr>
+                        <td><div class="item-label">Mortgage</div><div class="item-value">{{ $reportInView->mortgage ?? 'N/A' }}</div></td>
+                        <td><div class="item-label">Warranty</div><div class="item-value">{{ $reportInView->warrantyAvailable ?? 'N/A' }}</div></td>
                     </tr>
                 </table>
             </div>
@@ -156,66 +248,77 @@
 
         {{-- Dynamic Sections Loop --}}
         @php
-        // ... (The $sections array definition remains the same)
         $sections = [
-        'Exterior' => ['paintCondition', 'convertible', 'blindSpot', 'sideSteps', 'wheelsType', 'rimsSizeFront', 'rimsSizeRear'],
-        'Tires' => ['tiresSize', 'spareTire', 'frontLeftTire', 'frontRightTire', 'rearLeftTire', 'rearRightTire'],
-        'Car Specs' => ['parkingSensors', 'keylessStart', 'seats', 'cooledSeats', 'heatedSeats', 'powerSeats', 'viveCamera', 'sunroofType', 'drive'],
-        'Interior & Electrical' => ['speedmeterCluster', 'headLining', 'seatControls', 'seatsCondition', 'centralLockOperation', 'sunroofCondition', 'windowsControl', 'cruiseControl', 'acCooling'],
-        'Engine & Transmission' => ['engineCondition', 'transmissionCondition', 'engineNoise', 'engineSmoke', 'fourWdSystemCondition', 'obdError', 'engineOil', 'gearOil'],
-        'Steering, Suspension & Brakes' => ['steeringOperation', 'wheelAlignment', 'brakePads', 'suspension', 'brakeDiscs', 'shockAbsorberOperation'],
+            'Exterior' => ['icon' => 'fa-solid fa-brush', 'fields' => ['paintCondition', 'convertible', 'blindSpot', 'sideSteps', 'wheelsType', 'rimsSizeFront', 'rimsSizeRear']],
+            'Tires' => ['icon' => 'fa-solid fa-circle-dot', 'fields' => ['tiresSize', 'spareTire', 'frontLeftTire', 'frontRightTire', 'rearLeftTire', 'rearRightTire']],
+            'Car Specs' => ['icon' => 'fa-solid fa-sliders', 'fields' => ['parkingSensors', 'keylessStart', 'seats', 'cooledSeats', 'heatedSeats', 'powerSeats', 'viveCamera', 'sunroofType', 'drive']],
+            'Interior & Electrical' => ['icon' => 'fa-solid fa-bolt', 'fields' => ['speedmeterCluster', 'headLining', 'seatControls', 'seatsCondition', 'centralLockOperation', 'sunroofCondition', 'windowsControl', 'cruiseControl', 'acCooling']],
+            'Engine & Transmission' => ['icon' => 'fa-solid fa-gears', 'fields' => ['engineCondition', 'transmissionCondition', 'engineNoise', 'engineSmoke', 'fourWdSystemCondition', 'obdError', 'engineOil', 'gearOil']],
+            'Steering, Suspension & Brakes' => ['icon' => 'fa-solid fa-car-burst', 'fields' => ['steeringOperation', 'wheelAlignment', 'brakePads', 'suspension', 'brakeDiscs', 'shockAbsorberOperation']],
         ];
+
+        // Keywords for status pill styling
+        $good_keywords = ['good', 'operational', 'ok', 'normal', 'passed', 'yes'];
+        $warning_keywords = ['fair', 'average', 'minor'];
         @endphp
 
-        @foreach($sections as $sectionName => $fields)
-        @php
-        $sectionData = [];
-        foreach ($fields as $field) {
-        if (true) {
-        $sectionData[$field] = $reportInView->{$field} ?? 'N/A';
-        }
-        }
-        @endphp
+        @foreach($sections as $sectionName => $sectionDetails)
+            @php
+            $sectionData = [];
+            foreach ($sectionDetails['fields'] as $field) {
+                if (isset($reportInView->{$field}) && $reportInView->{$field} !== '' && $reportInView->{$field} !== null) {
+                    $sectionData[$field] = $reportInView->{$field};
+                }
+            }
+            @endphp
 
-        @if(!empty($sectionData))
-        <div class="reportInView-section">
-            <div class="section-title">{{ $sectionName }}</div>
-            <div class="section-body">
-                <table class="details-table">
-                    @foreach(array_chunk($sectionData, 2, true) as $chunk)
-                    <tr>
-                        @foreach($chunk as $field => $data)
-                        <td>
-                            <div class="item">
-                                <span class="item-label">{{ Str::of($field)->kebab()->replace('-', ' ')->title() }}</span>
-                                @if(is_array($data))
-                                <div class="item-value">
-                                    <ul class="item-value-list">
-                                        @foreach($data as $value)
-                                        <li>{{ $value }}</li>
-                                        @endforeach
-                                    </ul>
-                                </div>
-                                @else
-                                <span class="item-value">{{ $data }}</span>
-                                @endif
-                            </div>
-                        </td>
-                        @endforeach
-                        {{-- Add an empty cell if there's only one item in the chunk --}}
-                        @if(count($chunk) < 2)
+            @if(!empty($sectionData))
+            <div class="report-card">
+                <div class="card-header"><i class="{{ $sectionDetails['icon'] }}"></i>{{ $sectionName }}</div>
+                <div class="card-body">
+                    <table class="details-table">
+                        @foreach(array_chunk($sectionData, 2, true) as $chunk)
+                        <tr>
+                            @foreach($chunk as $field => $data)
                             <td>
+                                <div class="item-label">{{ Str::of($field)->kebab()->replace('-', ' ')->title() }}</div>
+                                @php $value_lower = is_string($data) ? strtolower($data) : ''; @endphp
+
+                                @if(is_array($data))
+                                    <div class="item-value"><ul class="item-value-list">@foreach($data as $value)<li>{{ $value }}</li>@endforeach</ul></div>
+                                @elseif(in_array($value_lower, $good_keywords))
+                                    <div class="status-pill status-good">{{ $data }}</div>
+                                @elseif(in_array($value_lower, $warning_keywords))
+                                    <div class="status-pill status-warning">{{ $data }}</div>
+                                @elseif($value_lower != '')
+                                    {{-- Use danger for other non-empty text values that aren't good/warning --}}
+                                    <div class="status-pill status-danger">{{ $data }}</div>
+                                @else
+                                    <div class="item-value">{{ $data }}</div>
+                                @endif
                             </td>
-                            @endif
-                    </tr>
-                    @endforeach
-                </table>
+                            @endforeach
+                            {{-- Add an empty cell if the row is not full --}}
+                            @if(count($chunk) < 2) <td></td> @endif
+                        </tr>
+                        @endforeach
+                    </table>
+                </div>
             </div>
-        </div>
-        @endif
+            @endif
         @endforeach
 
-        <livewire:admin.inspection.car-damage-view :inspectionId="$reportInView->id" />
+        {{-- Car Damage View Section --}}
+        <div class="report-card">
+            <div class="card-header"><i class="fa-solid fa-triangle-exclamation"></i>Damage Assessment</div>
+            <div class="card-body">
+                <livewire:admin.inspection.car-damage-view :inspectionId="$reportInView->id" />
+            </div>
+        </div>
+
+        <div class="footer">
+            Vehicle Inspection Report &copy; {{ date('Y') }} Your Company Name. All Rights Reserved.
+        </div>
     </div>
 </body>
 

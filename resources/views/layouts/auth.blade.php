@@ -30,7 +30,7 @@
         }
 
         .auth-image {
-            background-image: url('https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgGlJgw6HpdxxezJBDriE3sdxVNQ_ZEH2Jmehyphenhyphenke-Vx50MKTBjW1lgW-pnwbFrtOgQXb0YvuqXXLp-CHP_vDDEmiqM9OX36JweogyR7G7mHkLRuW2EqNKV3R77rtwk7MnS0ccfgkZnK0w/s1280/Cars+Wallpaper+HD+1080p+Free+Download+for+Android+Mobile+%252817%2529.jpg');
+            background-image: url('images/login.png');
             background-size: cover;
             background-position: center;
             position: relative;
@@ -44,7 +44,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: linear-gradient(to right, rgba(2, 6, 23, 0.8), rgba(15, 23, 42, 0.4));
+            /* background: linear-gradient(to right, rgba(2, 6, 23, 0.8), rgba(15, 23, 42, 0.4)); */
         }
 
         .auth-image-content {

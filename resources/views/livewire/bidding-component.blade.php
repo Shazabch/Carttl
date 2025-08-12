@@ -74,13 +74,13 @@
                 <input type="number" wire:model="current_bid" class="form-control bid-input"
                     placeholder="Enter bid ">
                 @error('current_bid') <div class="text-danger small mt-1">{{ $message }}</div> @enderror
-                <span class="input-addon">USD</span>
+                <span class="input-addon">AED</span>
             </div>
             <div class="bid-input-group">
                 <input type="number" wire:model="max_bid" class="form-control bid-input"
                     placeholder="Enter Max Bid">
                 @error('max_bid') <div class="text-danger small mt-1">{{ $message }}</div> @enderror
-                <span class="input-addon">USD</span>
+                <span class="input-addon">AED</span>
             </div>
             @if(auth()->id())
             <button wire:click="saveBid" class="btn btn-primary btn-bid">
