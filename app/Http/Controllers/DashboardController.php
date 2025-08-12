@@ -61,8 +61,8 @@ class DashboardController extends Controller
 
           $user_id = auth()->id();
         if ($user_id) {
-            $sale_enquiries = VehicleEnquiry::where('user_id', $user_id)->where('type', 'sale')->get();
-            $buy_enquiries = VehicleEnquiry::where('user_id', $user_id)->where('type', 'purchase')->get();
+            $sale_enquiries = VehicleEnquiry::where('user_id', $user_id)->where('type', 'sale')->with('imageSet')->get();
+            $buy_enquiries = VehicleEnquiry::where('user_id', $user_id)->where('type', 'purchase')->with('imageSet')->get();
         } else {
             $sale_enquiries = collect(); // empty collection, avoids errors in Blade
             $buy_enquiries = collect(); // empty collection, avoids errors in Blade
