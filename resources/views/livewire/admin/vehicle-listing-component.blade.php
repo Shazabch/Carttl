@@ -19,7 +19,7 @@
                         <tr>
                             <th>Image</th>
                             <th>Title</th>
-                            <th>Brand / Model</th>
+                            <th>Make / Model</th>
                             <th>Year</th>
                             <th>Price</th>
                             <th>Status</th>

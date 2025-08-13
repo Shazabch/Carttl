@@ -8,7 +8,7 @@
                 <li>Instant payment</li>
             </ul>
         </div>
-        <img src="{{asset('images/cars-inspection.png')}}">
+        <img src="{{asset('images/GX.png')}}">
     </div>
     <div class="form-widget-wrapper">
         @if ($formSubmitted)
@@ -31,7 +31,7 @@
         <!-- Step 1: Select Featured Brand -->
         @if ($step === 1)
         <div class="step-section active">
-            <h6 class="p-16 fw-500 mb-3">Select your car brand to sell</h6>
+            <h6 class="p-16 fw-500 mb-3">Select your car Make to sell</h6>
             <div class="brand-grid">
                 @foreach ($featuredBrands as $brand)
                 <div class="brand-card" wire:click="selectBrand({{ $brand->id }})">
@@ -47,14 +47,20 @@
         <!-- Step 2: Select Any Brand (with Search) -->
         @if ($step === 2)
         <div class="step-section active">
-            <button class="back-btn" wire:click="goToStep(1)"><i class="fa-solid fa-chevron-left"></i> Back</button>
-            <h6>Select your car brand</h6>
-            <input type="text" class="form-control search-box" wire:model.live="brandSearch" placeholder="Search for your car’s brand">
+            <div class="row d-flex">
+                 <div class="col-6"></div>
+                 <button class="back-btn col-3" wire:click="goToStep(1)"><i class="fa-solid fa-chevron-left"></i> Back</button>
+                 <button class="back-btn btn-primary text-light  col-3" wire:click="goToStep(3)"><i class="fa-solid fa-chevron-right text-light"></i> Next</button>
+                 
+            </div>
+           
+            <h6>Select your car Make</h6>
+            <input type="text" class="form-control search-box" wire:model.live="brandSearch" placeholder="Search for your car’s make">
             <ul class="brand-list">
                 @forelse ($brands as $brand)
                 <li wire:click="selectBrand({{ $brand->id }})">{{ $brand->name }}</li>
                 @empty
-                <li>No brands found.</li>
+                <li>No Make found.</li>
                 @endforelse
             </ul>
         </div>
@@ -63,13 +69,18 @@
         <!-- Step 3: Select Model -->
         @if ($step === 3)
         <div class="step-section active">
-            <button class="back-btn" wire:click="goToStep(2)"><i class="fa-solid fa-chevron-left"></i> Back</button>
+             <div class="row d-flex">
+                 <div class="col-6"></div>
+                 <button class="back-btn col-3" wire:click="goToStep(2)"><i class="fa-solid fa-chevron-left"></i> Back</button>
+                 <button class="back-btn btn-primary text-light col-3" wire:click="goToStep(4)"><i class="fa-solid fa-chevron-right text-light"></i> Next</button>
+                 
+            </div>
             <h6>Select your car model</h6>
             <ul class="brand-list">
                 @forelse ($models as $model)
                 <li wire:click="selectModel({{ $model->id }})">{{ $model->name }}</li>
                 @empty
-                <li>No models found for this brand.</li>
+                <li>No models found for this Make.</li>
                 @endforelse
             </ul>
         </div>
@@ -78,7 +89,12 @@
         <!-- Step 4: Select Year -->
         @if ($step === 4)
         <div class="step-section active">
-            <button class="back-btn" wire:click="goToStep(3)"><i class="fa-solid fa-chevron-left"></i> Back</button>
+             <div class="row d-flex">
+                 <div class="col-6"></div>
+                 <button class="back-btn col-3" wire:click="goToStep(3)"><i class="fa-solid fa-chevron-left"></i> Back</button>
+                 <button class="back-btn btn-primary text-light col-3" wire:click="goToStep(5)"><i class="fa-solid fa-chevron-right text-light"></i> Next</button>
+                 
+            </div>
             <h6>Select your car year</h6>
             <ul class="brand-list" id="yearList">
                 @foreach ($years as $year)
@@ -91,7 +107,12 @@
         <!-- Step 5: Vehicle Details -->
         @if ($step === 5)
         <div class="step-section active">
-            <button class="back-btn" wire:click="goToStep(4)"><i class="fa-solid fa-chevron-left"></i> Back</button>
+             <div class="row d-flex">
+                 <div class="col-6"></div>
+                 <button class="back-btn col-3" wire:click="goToStep(4)"><i class="fa-solid fa-chevron-left"></i> Back</button>
+                 <button class="back-btn btn-primary text-light col-3" wire:click="goToStep(6)"><i class="fa-solid fa-chevron-right text-light"></i> Next</button>
+                 
+            </div>
             <h6>Fill This Information</h6>
             <div class="row">
                 <div class="col-lg-12">
@@ -132,19 +153,20 @@
         @if ($step === 6)
         <div class="step-section active">
             <button class="back-btn" wire:click="goToStep(5)"><i class="fa-solid fa-chevron-left"></i> Back</button>
+            
             <h6>Personal Details</h6>
             <div class="row">
                 <div class="col-lg-12">
-                    <div class="form-group mb-3">
+                    <div class="form-group mb-1">
                         <label class="form-label">Full Name</label>
                         <input type="text" class="form-control" wire:model.lazy="formData.name" placeholder="Enter your full name">
                         @error('formData.name') <span class="text-danger">{{ $message }}</span> @enderror
                     </div>
                 </div>
                 <div class="col-lg-12">
-                    <div class="form-group mb-3">
+                    <div class="form-group mb-1">
                         <label class="form-label">Contact Number</label>
-                        <div x-data="dubaiPhoneMask()" class="form-group mb-3">
+                        <div x-data="dubaiPhoneMask()" class="form-group mb-1">
 
                             <input type="tel" id="phone" class="form-control" placeholder="+971 5xxxxxxxx"
                                 x-model="phone" @input="formatPhone" wire:model.live="formData.phone">
@@ -153,7 +175,7 @@
                         </div>
                     </div>
                     <div class="col-lg-12">
-                        <div class="form-group mb-4">
+                        <div class="form-group mb-1">
                             <label class="form-label">Email</label>
                             <input type="email" class="form-control" wire:model.lazy="formData.email" placeholder="Enter your Email">
                             @error('formData.email') <span class="text-danger">{{ $message }}</span> @enderror

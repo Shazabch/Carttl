@@ -8,7 +8,7 @@
             @error('vehicleData.title') <div class="invalid-feedback">{{ $message }}</div> @enderror
         </div>
         <div class="col-md-4 mb-3">
-            <label class="form-label">Brand</label>
+            <label class="form-label">Make</label>
             <x-select3
                 id="select-brand-vehicle"
                 dataArray="brands"

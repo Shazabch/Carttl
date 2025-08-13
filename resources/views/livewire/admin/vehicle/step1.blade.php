@@ -19,9 +19,9 @@
                 </div>
 
                 <div class="col-md-4 mb-3">
-                    <label class="form-label">Brand</label>
+                    <label class="form-label">Make</label>
                     <select id="vehicle-brand-select" wire:model.live="vehicleData.brand_id" class="form-control">
-                        <option value="">Select brand</option>
+                        <option value="">Select Make</option>
                         @foreach($brands as $m)
                         <option value="{{ $m->id }}">{{ $m->name }}</option>
                         @endforeach

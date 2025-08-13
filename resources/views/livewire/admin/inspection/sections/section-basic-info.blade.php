@@ -5,7 +5,7 @@
     <div class="form-section-body">
         <div class="row">
             <div class="col-md-4">
-                <label class="form-label">Brand</label>
+                <label class="form-label">Make</label>
                 <select id="vehicle-brand-select" wire:model.live="reportData.make" class="form-control @error('reportData.make') is-invalid @enderror">
                     <option value="">Select brand</option>
                     @foreach($brands as $m)

@@ -22,7 +22,7 @@
                             <th>#</th>
                             <th>Name & Number</th>
                             <th>Email</th>
-                            <th>Brand & Model & Year</th>
+                            <th>Make & Model & Year</th>
                             <th>Mileage</th>
                             <th>Images</th>
                             <th class="text-center">Received</th>
@@ -91,7 +91,7 @@
                                                 <dt class="col-sm-4">Number:</dt>
                                                 <dd class="col-sm-8">{{ $enquiry->number }}</dd>
 
-                                                <dt class="col-sm-4">Brand:</dt>
+                                                <dt class="col-sm-4">Make:</dt>
                                                 <dd class="col-sm-8">{{ $enquiry->brand?->name ?? 'N/A' }}</dd>
 
                                                  <dt class="col-sm-4">Year:</dt>
