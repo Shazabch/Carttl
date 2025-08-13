@@ -16,6 +16,8 @@ use Illuminate\Support\Facades\Storage;
 use Livewire\Component;
 use Livewire\WithPagination;
 use Livewire\Attributes\On;
+use Illuminate\Support\Facades\File;
+use Spatie\Browsershot\Browsershot;
 
 class GenerationComponent extends Component
 {
@@ -244,9 +246,28 @@ class GenerationComponent extends Component
     public function generatePdf($reportId)
     {
         $reportInView = VehicleInspectionReport::findOrFail($reportId);
+        // Define the path where the image will be saved
+        $directoryPath = storage_path('app/public/damage-assessments');
+        $imagePath = $directoryPath . '/damage-report-' . $reportInView->id . '.png';
+
+        // Ensure the directory exists
+        File::ensureDirectoryExists($directoryPath);
+
+        // Render the special Livewire view to an HTML string
+        $html = view('pdf.inspection.damage-assessment-image', compact('reportInView'))->render();
+
+        // Use Browsershot to capture the component
+        Browsershot::html($html)
+            ->windowSize(1200, 800) // Give it enough space to render
+            ->setScreenshotType('png')
+            ->waitUntilNetworkIdle() // CRITICAL: Waits for Livewire's AJAX to finish!
+            ->save($imagePath);
+
+
+
         $directory = 'inspection_pdf';
         // Generate PDF
-        $pdf = Pdf::loadView('admin.inspection.report-pdf-template', ['reportInView' => $reportInView])->setPaper('a4', 'portrait')->setOption('defaultFont', 'Arial');
+        $pdf = Pdf::loadView('pdf.inspection.report-pdf-template', ['reportInView' => $reportInView])->setPaper('a4', 'portrait')->setOption('defaultFont', 'Arial');
         // Ensure the directory exists
         if (!Storage::disk('public')->exists($directory)) {
             Storage::disk('public')->makeDirectory($directory);

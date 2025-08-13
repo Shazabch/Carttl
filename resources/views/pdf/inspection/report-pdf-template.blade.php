@@ -340,10 +340,9 @@
         }
 
         .gallery-image {
-
-            width: 300px;
-            height: 300px;
-            /* object-fit: cover; */
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
             display: block;
         }
 
@@ -509,12 +508,8 @@
     <div class="container">
         <div class="header">
             <div class="header-logo">
-                {{-- Golden X Placeholder - Replace with actual logo when available --}}
-                <!-- <div class="golden-x-placeholder">
-                    GOLDEN X
-                </div> -->
-                {{-- Uncomment when you have the actual logo --}}
-                <img src="{{asset('images/golden-x.png')}}" alt="Golden X Logo">
+
+                <img src="{{ public_path('images/golden-x.png') }}" alt="Golden X Logo">
             </div>
 
             <div class="header-details">
@@ -838,19 +833,43 @@
         <div class="report-card">
             <div class="card-header"><i class="fa-solid fa-images"></i>Vehicle Images</div>
             <div class="card-body image-gallery">
-                <div class="row g-3">
-                    @forelse ($reportInView->images as $image)
-                    <div class="col-6 col-md-4 col-lg-3" wire:key="image-{{ $image->id }}">
-                        <div class="card h-100 shadow-sm">
-                            <div class="position-relative">
-                                <img src="{{ asset('storage/' . $image->path) }}" class="card-img-top" alt="Vehicle Image" style="aspect-ratio: 4 / 3; object-fit: cover;">
+                @php
+
+                $vehicleImages = $reportInView->images;
+
+                @endphp
+
+                @if($reportInView->images)
+                <div class="gallery-grid">
+                    @foreach($reportInView->images as $image)
+
+                    <div class="gallery-item">
+                        <img src="{{ storage_path('app/public/' . $image->path) }}"
+                            alt="{{ $image['title'] ?? 'Vehicle Image' }}"
+                            class="gallery-image">
+                        <div class="gallery-caption">
+                            <h4 class="gallery-title">
+                                <i class="fas fa-camera"></i>
+                                {{ 'Vehicle Image' }}
+                            </h4>
+                            <div class="gallery-meta">
+                                <span class="gallery-timestamp">
+                                    <i class="fas fa-clock"></i>
+                                    {{ isset($image->created_at) ? \Carbon\Carbon::parse($image['created_at'])->format('M d, Y') : 'N/A' }}
+                                </span>
+
                             </div>
                         </div>
                     </div>
-                    @empty
-
-                    @endforelse
+                    @endforeach
                 </div>
+                @else
+                <div class="no-images">
+                    <i class="fas fa-image"></i>
+                    <h3>No Images Available</h3>
+                    <p>No vehicle images have been uploaded for this inspection report.</p>
+                </div>
+                @endif
             </div>
         </div>
 
@@ -858,7 +877,7 @@
         <div class="report-card">
             <div class="card-header"><i class="fa-solid fa-triangle-exclamation"></i>Damage Assessment</div>
             <div class="card-body">
-                <livewire:admin.inspection.car-damage-view :inspectionId="$reportInView->id" />
+                @include('pdf.inspection.damage-report', ['damages' => $reportInView->damages])
             </div>
         </div>
 
