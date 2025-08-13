@@ -40,7 +40,7 @@
         </div>
         <div class="car-box-card-content">
             <div class="car-box-other-detail">
-                <h3>{{$item->title}}</h3>
+                <h3 class="title-line-clamp-2">{{$item->title}}</h3>
                 <div class="car-box-specs">
                     <div class="spec_item">
                         <i class="fas fa-tachometer-alt"></i>

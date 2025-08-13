@@ -2,8 +2,8 @@
     <div class="auction-card">
         <div class="auction-header d-flex justify-content-between align-items-center mb-3">
             <div class="div">
-                <p class="auction-id mb-1">#AU-2024-0156</p>
-                <h3>{{$selected_vehicle->title}}</h3>
+                <!-- <p class="auction-id mb-1">#AU-2024-0156</p> -->
+                <h3 class="title-line-clamp-2">{{$selected_vehicle->title}}</h3>
             </div>
 
         </div>
@@ -30,7 +30,7 @@
         </div>
         <div class="action-buttons mb-2">
 
-             <livewire:favorite-button-detail-component :vehicleId="$selected_vehicle->id" />
+            <livewire:favorite-button-detail-component :vehicleId="$selected_vehicle->id" />
 
             <button class="btn-icon" data-bs-toggle="tooltip" title="Share">
                 <i class="fas fa-share-alt"></i>
@@ -69,39 +69,47 @@
             @endforeach
         </div>
         @endif
-        <div class="bid-actions">
-            <div class="bid-input-group">
-                <input type="number" wire:model="current_bid" class="form-control bid-input"
-                    placeholder="Enter bid ">
-                @error('current_bid') <div class="text-danger small mt-1">{{ $message }}</div> @enderror
-                <span class="input-addon">AED</span>
+       <div class="bid-actions">
+    <div class="bid-input-group">
+        <input type="number"
+            wire:model="current_bid"
+            step="{{ self::BID_INCREMENT }}"
+            min="{{ $minimumNextBid }}"  {{-- This prevents using arrows to go below min --}}
+            @if(!auth()->id()) disabled @endif
+            class="form-control bid-input"
+            placeholder="Enter bid">
+        @error('current_bid') <div class="text-danger small mt-1">{{ $message }}</div> @enderror
+        <span class="input-addon">AED</span>
+    </div>
+
+    <div class="bid-input-group">
+        <input type="number"
+            wire:model="max_bid"
+            step="{{ self::BID_INCREMENT }}"
+            min="{{ $minimumMaxBid }}" {{-- UPDATED: Enforces 'greater than' on the client side --}}
+            @if(!auth()->id()) disabled @endif
+            class="form-control bid-input"
+            placeholder="Enter Max Bid">
+        @error('max_bid') <div class="text-danger small mt-1">{{ $message }}</div> @enderror
+        <span class="input-addon">AED</span>
+    </div>
+
+    @if(auth()->id())
+    <button wire:click="saveBid" class="btn btn-primary btn-bid">
+        <i class="fas fa-gavel"></i>
+        Place Bid <span wire:loading wire:target="saveBid">
+            <div class="spinner-border" role="status">
+                <span class="sr-only">Loading...</span>
             </div>
-            <div class="bid-input-group">
-                <input type="number" wire:model="max_bid" class="form-control bid-input"
-                    placeholder="Enter Max Bid">
-                @error('max_bid') <div class="text-danger small mt-1">{{ $message }}</div> @enderror
-                <span class="input-addon">AED</span>
-            </div>
-            @if(auth()->id())
-            <button wire:click="saveBid" class="btn btn-primary btn-bid">
-                <i class="fas fa-gavel"></i>
-                Place Bid <span wire:loading wire:target="saveBid">
-                    <div class="spinner-border" role="status">
-                        <span class="sr-only">Loading...</span>
-                    </div>
-                </span>
-            </button>
-            @else
-            <a href="/login" class="btn btn-primary btn-bid">
-                <i class="fas fa-gavel"></i>
-                Signin & Place Bid <div class="spinner"></div>
-            </a>
-            @endif
-            <!-- <button class="btn btn-outline-primary btn-auto-bid">
-                                        <i class="fas fa-robot"></i>
-                                        Auto Bid
-                                    </button> -->
-        </div>
+        </span>
+    </button>
+    @else
+    <a href="/login" class="btn btn-primary btn-bid">
+        <i class="fas fa-gavel"></i>
+        Signin & Place Bid
+    </a>
+    @endif
+</div>
         <div class="auction-details">
             <div class="detail-row">
                 <span>Reserve:</span>
@@ -111,7 +119,6 @@
                 <span>Ends:</span>
                 <span>Ends In {{ \Carbon\Carbon::parse($selected_vehicle->auction_end_date)->format('M d, Y \a\t g:i A') }}</span>
             </div>
-
         </div>
     </div>
     <script>
@@ -124,7 +131,12 @@
                 const distance = auctionEndTime - now;
 
                 if (distance <= 0) {
-                    document.getElementById("auctionTimer").innerHTML = "Auction Ended";
+                    // It's better to hide the timer or show "Ended"
+                    // Check if the element exists before trying to set its innerHTML
+                    const timerContainer = document.querySelector(".auction-timer");
+                    if (timerContainer) {
+                        timerContainer.innerHTML = "<span class='text-danger'>Auction Ended</span>";
+                    }
                     clearInterval(timerInterval);
                     return;
                 }
@@ -144,5 +156,4 @@
             updateTimer();
         });
     </script>
-
 </div>
