@@ -1,17 +1,24 @@
 <div class="form-section">
-    <div class="form-section-header"><h5>Engine & Transmission</h5></div>
+    <div class="form-section-header">
+        <h5>Engine & Transmission</h5>
+    </div>
     <div class="form-section-body">
         <div class="row">
-            <div class="col-md-6">@include('livewire.admin.inspection.sections.partials.toggle-single', ['label' => 'Engine Condition', 'property' => 'engineCondition', 'options' => ['Safe', 'At Risk', 'RTA passing recommended'],'optionClasses' => [
-                'Safe' => 'active-green',
-                'RTA passing recommended' => 'active-warning',
-                'At Risk' => 'active-red',
+            <div class="col-md-6">@include('livewire.admin.inspection.sections.partials.toggle-single', ['label' => 'Engine Oil', 'property' => 'engineOil', 'options' => ['No Leak', 'Minor Leak', 'Major Leak'],'optionClasses' => [
+                'No Leak' => 'active-green',
+                'Minor Leak' => 'active-warning',
+                'Major Leak' => 'active-red',
+                ]])</div>
+            <div class="col-md-6">@include('livewire.admin.inspection.sections.partials.toggle-single', ['label' => 'Gear Oil', 'property' => 'gearOil', 'options' => ['No Leak', 'Minor Leak', 'Major Leak'],'optionClasses' => [
+                'No Leak' => 'active-green',
+                'Minor Leak' => 'active-warning',
+                'Major Leak' => 'active-red',
                 ]])</div>
 
-            <div class="col-md-6">@include('livewire.admin.inspection.sections.partials.toggle-single', ['label' => 'Transmission condition', 'property' => 'transmissionCondition', 'options' => ['Safe', 'At Risk', 'RTA passing recommended'],'optionClasses' => [
-                'Safe' => 'active-green',
-                'RTA passing recommended' => 'active-warning',
-                'At Risk' => 'active-red',
+            <div class="col-md-6">@include('livewire.admin.inspection.sections.partials.toggle-single', ['label' => 'Gear Shifting', 'property' => 'gearshifting', 'options' => ['No Visible Fault', 'Judder', 'Hard'],'optionClasses' => [
+                'No Visible Fault' => 'active-green',
+                'Judder' => 'active-warning',
+                'Hard' => 'active-red',
                 ]])</div>
             <div class="col-md-6">@include('livewire.admin.inspection.sections.partials.toggle-single', ['label' => 'Engine noise', 'property' => 'engineNoise', 'options' => ['Tappet Noise', 'Abnormal Noise', 'Cranking Noise', 'No visible Fault'],'optionClasses' => [
                 'No visible Fault' => 'active-green',
@@ -29,6 +36,10 @@
                 ]])</div>
 
             <div class="col-md-6">@include('livewire.admin.inspection.sections.partials.toggle-single', ['label' => 'OBD Error', 'property' => 'obdError', 'options' => ['No Error', 'Minor Error', 'Major Error']])</div>
+
+            <div class="col-md-12">
+                @include('livewire.admin.inspection.sections.partials.input-text', ['label' => 'Remarks', 'property' => 'remarks'])
+            </div>
         </div>
     </div>
 </div>

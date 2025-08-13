@@ -21,12 +21,12 @@
 
             <div class="line {{ $currentStep >= 3 ? 'filled' : '' }}"></div>
 
-            {{-- Step 3: Specs & Interior --}}
+            {{-- Step 3: Specs --}}
             <div class="step {{ $currentStep >= 3 ? 'active' : '' }}">
                 <div class="icon">
                     <i class="fas fa-sliders-h"></i>
                 </div>
-                <p>Specs & Interior</p>
+                <p>Specs</p>
             </div>
 
             <div class="line {{ $currentStep == 4 ? 'filled' : '' }}"></div>
@@ -57,15 +57,14 @@
             @include('livewire.admin.inspection.sections.section-basic-info')
             @include('livewire.admin.inspection.sections.section-exterior')
             @endif
-
             @if($currentStep === 2)
-            @include('livewire.admin.inspection.sections.section-tires')
-            @include('livewire.admin.inspection.sections.section-car-specs')
-            @endif
-            @if($currentStep === 3)
-            @include('livewire.admin.inspection.sections.section-interior')
             @include('livewire.admin.inspection.sections.section-engine')
             @include('livewire.admin.inspection.sections.section-brakes')
+            @include('livewire.admin.inspection.sections.section-interior')
+            @endif
+            @if($currentStep === 3)
+            @include('livewire.admin.inspection.sections.section-tires')
+            @include('livewire.admin.inspection.sections.section-car-specs')
             @endif
             @if($currentStep === 4)
             @if($inspectionId)

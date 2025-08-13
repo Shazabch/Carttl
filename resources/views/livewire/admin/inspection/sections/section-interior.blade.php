@@ -11,6 +11,9 @@
             <div class="col-md-6">@include('livewire.admin.inspection.sections.partials.toggle-single', ['label' => 'Windows Control', 'property' => 'windowsControl', 'options' => ['No visible fault', 'STUCK', 'Noisy', 'N/A']])</div>
             <div class="col-md-6">@include('livewire.admin.inspection.sections.partials.toggle-single', ['label' => 'Cruise Control', 'property' => 'cruiseControl', 'options' => ['No visible fault', 'Not working', 'N/A']])</div>
             <div class="col-md-6">@include('livewire.admin.inspection.sections.partials.toggle-single', ['label' => 'A/C Cooling', 'property' => 'acCooling', 'options' => ['No visible fault', 'NOT COOLING', 'Comppreser NOT Working']])</div>
+            <div class="col-md-12">
+                @include('livewire.admin.inspection.sections.partials.input-text', ['label' => 'Comments', 'property' => 'comment_section2'])
+            </div>
         </div>
     </div>
 </div>

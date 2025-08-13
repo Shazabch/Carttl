@@ -35,6 +35,10 @@
                 'Hard' => 'active-warning',
                 'Spongy' => 'active-red'
                 ]])</div>
+
+            <div class="col-md-12">
+                @include('livewire.admin.inspection.sections.partials.input-text', ['label' => 'Comments', 'property' => 'comment_section1'])
+            </div>
         </div>
     </div>
 </div>

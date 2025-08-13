@@ -5,48 +5,56 @@
     <div class="form-section-body">
         <div class="row">
             <div class="col-md-4">
-                <label class="form-label">Brand</label>
-                <select id="vehicle-brand-select" wire:model.live="reportData.make" class="form-control @error('reportData.make') is-invalid @enderror">
-                    <option value="">Select brand</option>
-                    @foreach($brands as $m)
-                    <option value="{{ $m->id }}">{{ $m->name }}</option>
-                    @endforeach
-                </select>
-                @error('reportData.make') <div class="text-danger small mt-2">{{ $message }}</div> @enderror
+                <div class="form-item">
+                    <label class="form-label">Make</label>
+                    <select id="vehicle-brand-select" wire:model.live="reportData.make" class="form-control @error('reportData.make') is-invalid @enderror">
+                        <option value="">Select Make</option>
+                        @foreach($brands as $m)
+                        <option value="{{ $m->id }}">{{ $m->name }}</option>
+                        @endforeach
+                    </select>
+                    @error('reportData.make') <div class="text-danger small mt-2">{{ $message }}</div> @enderror
+                </div>
             </div>
 
             <div class="col-md-4">
-                <label class="form-label">Model</label>
-                <select id="vehicle-model-select" wire:model.live="reportData.model" class="form-control @error('reportData.model') is-invalid @enderror">
-                    <option value="">Select model</option>
-                    @foreach($models as $m)
-                    <option value="{{ $m->id }}">{{ $m->name }}</option>
-                    @endforeach
-                </select>
-                @error('reportData.model') <div class="text-danger small mt-2">{{ $message }}</div> @enderror
+                <div class="form-item">
+                    <label class="form-label">Model</label>
+                    <select id="vehicle-model-select" wire:model.live="reportData.model" class="form-control @error('reportData.model') is-invalid @enderror">
+                        <option value="">Select model</option>
+                        @foreach($models as $m)
+                        <option value="{{ $m->id }}">{{ $m->name }}</option>
+                        @endforeach
+                    </select>
+                    @error('reportData.model') <div class="text-danger small mt-2">{{ $message }}</div> @enderror
+                </div>
             </div>
 
             <div class="col-md-4">
-                <label class="form-label">Year</label>
-                <select class="form-control @error('reportData.year') is-invalid @enderror" wire:model="reportData.year">
-                    <option value="">Select Year</option>
-                    @for ($year = date('Y'); $year >= 1900; $year--)
-                    <option value="{{ $year }}" {{ (isset($vehicleData['year']) && $vehicleData['year'] == $year) ? 'selected' : '' }}>
-                        {{ $year }}
-                    </option>
-                    @endfor
-                </select>
-                @error('reportData.year') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                <div class="form-item">
+                    <label class="form-label">Year</label>
+                    <select class="form-control @error('reportData.year') is-invalid @enderror" wire:model="reportData.year">
+                        <option value="">Select Year</option>
+                        @for ($year = date('Y'); $year >= 1900; $year--)
+                        <option value="{{ $year }}" {{ (isset($vehicleData['year']) && $vehicleData['year'] == $year) ? 'selected' : '' }}>
+                            {{ $year }}
+                        </option>
+                        @endfor
+                    </select>
+                    @error('reportData.year') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                </div>
             </div>
 
             <div class="col-md-4">
-                <label class="form-label">Mileage / Odometer</label>
-                <select name="mileage" class="form-control @error('reportData.odometer') is-invalid @enderror" wire:model="reportData.odometer">
-                    @foreach(\App\Enums\MileageRange::options() as $value => $label)
-                    <option value="{{ $value }}">{{ $label }}</option>
-                    @endforeach
-                </select>
-                @error('reportData.odometer')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                <div class="form-item">
+                    <label class="form-label">Mileage / Odometer</label>
+                    <select name="mileage" class="form-control @error('reportData.odometer') is-invalid @enderror" wire:model="reportData.odometer">
+                        @foreach(\App\Enums\MileageRange::options() as $value => $label)
+                        <option value="{{ $value }}">{{ $label }}</option>
+                        @endforeach
+                    </select>
+                    @error('reportData.odometer')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                </div>
             </div>
 
             <div class="col-md-4">
@@ -72,6 +80,24 @@
             </div>
             <div class="col-md-4">
                 @include('livewire.admin.inspection.sections.partials.input-text', ['label' => 'Body Type', 'property' => 'body_type']) {{-- Use body_type as it's a string, not an ID --}}
+            </div>
+            <div class="col-md-4">
+                @include('livewire.admin.inspection.sections.partials.toggle-single', ['label' => 'Warranty', 'property' => 'warrantyAvailable', 'options' => ['Yes', 'No']])
+            </div>
+            <div class="col-md-4">
+                @include('livewire.admin.inspection.sections.partials.toggle-single', ['label' => 'Service Contract', 'property' => 'serviceContractAvailable', 'options' => ['Yes', 'No']])
+            </div>
+            <div class="col-md-4">
+                @include('livewire.admin.inspection.sections.partials.toggle-single', ['label' => 'Service History', 'property' => 'serviceHistory', 'options' => ['FDSH', 'FSH','Partial','No']])
+            </div>
+            <div class="col-md-4">
+                @include('livewire.admin.inspection.sections.partials.toggle-single', ['label' => 'No Of Keys', 'property' => 'noOfKeys', 'options' => ['1', '2','3','4','5']])
+            </div>
+            <div class="col-md-4">
+                @include('livewire.admin.inspection.sections.partials.toggle-single', ['label' => 'Mortgage', 'property' => 'mortgage', 'options' => ['Yes', 'No']])
+            </div>
+            <div class="col-md-4">
+                @include('livewire.admin.inspection.sections.partials.toggle-single', ['label' => 'Inspection', 'property' => 'is_inspection', 'options' => ['Yes', 'No']])
             </div>
         </div>
     </div>
