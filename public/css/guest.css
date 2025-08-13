@@ -20,7 +20,13 @@
     --header: #fff;
     --light-2: #fcf6dd;
 }
-
+.title-line-clamp-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2; 
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
 /* ===== BASE STYLES ===== */
 /* FONT SIZE */
 .h-44,

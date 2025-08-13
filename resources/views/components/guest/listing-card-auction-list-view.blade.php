@@ -8,7 +8,7 @@
                 class="img-fluid rounded" alt="Porsche 911">
         </div>
         <div class="col-md-6">
-            <h5 class="mb-2">{{$item->title}}</h5>
+            <h5 class="title-line-clamp-2 mb-2" >{{$item->title}}</h5>
             <div class="fw-bold mb-2 current-bid">Current Bid: {{ $item->latestBid ? format_currency($item->latestBid->bid_amount) : 'No bids yet' }}</div>
             <div class="d-flex gap-3 text-secondary small">
                 <span><i class="fas fa-tachometer-alt me-1"></i>{{$item->mileage}} miles</span>

@@ -8,7 +8,7 @@
                 <li>Instant payment</li>
             </ul>
         </div>
-        <img src="{{asset('images/GX.png')}}">
+        <img src="{{asset('images/sellcar.png')}}">
     </div>
     <div class="form-widget-wrapper">
         @if ($formSubmitted)
