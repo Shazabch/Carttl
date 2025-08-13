@@ -1,7 +1,5 @@
 <div>
-    <div x-data="{
-    tooltip: { show: false, x: 0, y: 0, damage: null }
-}" style="position: relative;" class="container">
+    <div class="container">
         <link rel="stylesheet" href="{{ asset('css/car-damage-assessment.css') }}">
         <div class="header">
             <h1>Exterior Condition Report</h1>
@@ -9,8 +7,7 @@
         <div class="main-content-view-only">
             <div class="car-section">
                 <div class="car-container">
-                    <svg viewBox="0 0 2560 1440" class="car-svg" x-ref="carSvg"
-                        style="width: 100%; height: auto;">
+                    <svg viewBox="0 0 2560 1440" class="car-svg" style="width: 100%; height: auto;">
                         <!-- Car Outline (SVG paths) -->
                         <style>
                             .s0 {
@@ -19,8 +16,28 @@
                                 stroke-miterlimit: 100;
                                 stroke-width: 4.2
                             }
+
+                            .damage-tooltip {
+                                position: absolute;
+                                background: #fff;
+                                border: 1px solid #333;
+                                padding: 8px;
+                                z-index: 100;
+                                min-width: 180px;
+                                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+                                border-radius: 4px;
+                                display: none;
+                                pointer-events: none;
+                            }
+
+                            .damage-point {
+                                cursor: help;
+                            }
+
+                            .damage-point:hover+.damage-tooltip {
+                                display: block;
+                            }
                         </style>
-                        <!-- ... (your SVG paths here) ... -->
 
                         <path id="Shape 1" class="s0"
                             d="m655.4 532.8c0 0-51.7 203-1.1 378l118.7-16.7c0 0-47.4-181.6-1-344.7z" />
@@ -85,106 +102,115 @@
                         <path id="Shape 22" fill-rule="evenodd" class="s0"
                             d="m717.6 1356c-66.2 0-119.6-44.3-119.6-99 0-54.8 53.4-99 119.6-99 66.2 0 119.6 44.2 119.6 99 0 54.7-53.4 99-119.6 99z" />
 
-                        <!-- Damage Anchors (View-Only) -->
+                        <!-- Damage Anchors (View-Only) with Bootstrap Tooltips -->
                         @foreach ($damages as $damage)
                         <g>
                             <circle cx="{{ $damage['x'] }}"
                                 cy="{{ $damage['y'] }}" r="35"
                                 fill="{{ $damageTypes[$damage['type']]['color'] }}"
-                                stroke="#333" stroke-width="4" style="cursor: help;"
-                                @mouseenter="
-                                    tooltip.show = true;
-                                    tooltip.x = {{ $damage['x'] }};
-                                    tooltip.y = {{ $damage['y'] }};
-                                    tooltip.damage = {{ json_encode($damage) }};
-                                "
-                                @mouseleave="tooltip.show = false"></circle>
+                                stroke="#333" stroke-width="4"
+                                class="damage-point"
+                                data-bs-toggle="tooltip"
+                                data-bs-placement="top"
+                                data-bs-html="true"
+                                title="<strong>Type:</strong> {{ $damage['type'] }}<br><strong>Severity:</strong> {{ $damage['severity'] }}<br><strong>Body Part:</strong> {{ $damage['body_part'] }}@if($damage['remark'])<br><strong>Remark:</strong> {{ $damage['remark'] }}@endif">
+                            </circle>
                             <text x="{{ $damage['x'] }}"
                                 y="{{ $damage['y'] }}" text-anchor="middle"
                                 dominant-baseline="central" fill="white" font-size="32"
-                                font-weight="bold">{{ strtoupper($damage['type']) }}</text>
+                                font-weight="bold" style="pointer-events: none;">{{ strtoupper($damage['type']) }}</text>
                         </g>
                         @endforeach
                     </svg>
-                    <!-- Tooltip -->
-                    <div x-show="tooltip.show" x-transition
-                        :style="`position: absolute; left: calc(${tooltip.x / 2560 * 100}% + 20px); top: calc(${tooltip.y / 1440 * 100}% - 20px); background: #fff; border: 1px solid #333; padding: 8px; z-index: 100; min-width: 180px; box-shadow: 0 2px 8px rgba(0,0,0,0.15);`"
-                        style="pointer-events: none;">
-                        <div><strong>Type:</strong> <span x-text="tooltip.damage?.type"></span></div>
-                        <div><strong>Severity:</strong> <span x-text="tooltip.damage?.severity"></span></div>
-                        <div><strong>Body Part:</strong> <span x-text="tooltip.damage?.body_part"></span></div>
-                        <template x-if="tooltip.damage?.remark">
-                            <div><strong>Remark:</strong> <span x-text="tooltip.damage?.remark"></span></div>
-                        </template>
-                    </div>
                 </div>
             </div>
+
             <div class="table-section">
                 <div class="table-header">
                     <h2>Damage Assessment Report</h2>
                 </div>
                 <div class="table-container">
-                    <table class="damage-table">
-                        <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>Damage Type</th>
-                                <th>Body Part</th>
-                                <th>Severity Level</th>
-                                <th>Position</th>
-                                <th>Remarks</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @forelse($damages as $damage)
-                            <tr>
-                                <td>#{{ $loop->iteration }}</td>
-                                <td>
-                                    <div class="damage-type-cell">
-                                        <div class="damage-type-indicator"
-                                            style="background-color: {{ $damageTypes[$damage['type']]['color'] }}">
-                                        </div>
-                                        <div>
-                                            <div><strong>{{ strtoupper($damage['type']) }}</strong></div>
-                                            <div style="font-size: 0.75rem; color: #6b7280;">
-                                                {{ $damageTypes[$damage['type']]['name'] }}
+                    <div class="table-responsive">
+                        <table class="table table-striped table-hover damage-table">
+                            <thead class="table-dark">
+                                <tr>
+                                    <th scope="col">ID</th>
+                                    <th scope="col">Damage Type</th>
+                                    <th scope="col">Body Part</th>
+                                    <th scope="col">Severity Level</th>
+                                    <th scope="col">Position</th>
+                                    <th scope="col">Remarks</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @forelse($damages as $damage)
+                                <tr>
+                                    <td><span class="badge bg-secondary">#{{ $loop->iteration }}</span></td>
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            <div class="damage-type-indicator me-2 rounded-circle"
+                                                style="width: 20px; height: 20px; background-color: {{ $damageTypes[$damage['type']]['color'] }};">
+                                            </div>
+                                            <div>
+                                                <div class="fw-bold">{{ strtoupper($damage['type']) }}</div>
+                                                <small class="text-muted">{{ $damageTypes[$damage['type']]['name'] }}</small>
                                             </div>
                                         </div>
-                                    </div>
-                                </td>
-                                <td>{{ $damage['body_part'] }}</td>
-                                <td>
-                                    <span class="severity-badge severity-{{ $damage['severity'] }}">
-                                        {{ $damage['severity'] }}
-                                    </span>
-                                </td>
-                                <td>
-                                    X: {{ round($damage['x']) }}<br>
-                                    Y: {{ round($damage['y']) }}
-                                </td>
-                                <td>
-                                    {{-- Display remark as static text, not an input --}}
-                                    <p class="remark-text">{{ $damage['remark'] ?? 'N/A' }}</p>
-                                </td>
-                            </tr>
-                            @empty
-                            <tr>
-                                <td colspan="6">
-                                    <div class="empty-state">
-                                        <div class="empty-state-icon">🚗</div>
-                                        <p>No damage points were recorded for this inspection.</p>
-                                    </div>
-                                </td>
-                            </tr>
-                            @endforelse
-                        </tbody>
-                    </table>
+                                    </td>
+                                    <td>{{ $damage['body_part'] }}</td>
+                                    <td>
+                                        @php
+                                        $badgeClass = match(strtolower($damage['severity'])) {
+                                        'minor' => 'bg-success',
+                                        'moderate' => 'bg-warning text-dark',
+                                        'major', 'severe' => 'bg-danger',
+                                        default => 'bg-info'
+                                        };
+                                        @endphp
+                                        <span class="badge {{ $badgeClass }}">
+                                            {{ ucfirst($damage['severity']) }}
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <small class="text-muted">
+                                            X: {{ round($damage['x']) }}<br>
+                                            Y: {{ round($damage['y']) }}
+                                        </small>
+                                    </td>
+                                    <td>
+                                        <p class="mb-0 small">{{ $damage['remark'] ?? 'N/A' }}</p>
+                                    </td>
+                                </tr>
+                                @empty
+                                <tr>
+                                    <td colspan="6" class="text-center py-5">
+                                        <div class="empty-state">
+                                            <div class="display-1 mb-3">🚗</div>
+                                            <p class="text-muted">No damage points were recorded for this inspection.</p>
+                                        </div>
+                                    </td>
+                                </tr>
+                                @endforelse
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
-    {{-- Add some basic styling for the new elements if needed --}}
+    {{-- Bootstrap Tooltip Initialization --}}
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize Bootstrap tooltips
+            var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+            var tooltipList = tooltipTriggerList.map(function(tooltipTriggerEl) {
+                return new bootstrap.Tooltip(tooltipTriggerEl);
+            });
+        });
+    </script>
+
+    {{-- Custom Styles --}}
     <style>
         .main-content-view-only {
             display: flex;
@@ -192,13 +218,35 @@
             gap: 2rem;
         }
 
-        .remark-text {
-            margin: 0;
-            padding: 8px;
-            font-size: 0.875rem;
-            color: #333;
-            white-space: pre-wrap;
-            /* To respect newlines if any */
+        .car-container {
+            position: relative;
+        }
+
+        .damage-point {
+            cursor: help;
+        }
+
+        .damage-type-indicator {
+            flex-shrink: 0;
+        }
+
+        .table-responsive {
+            border-radius: 0.375rem;
+            overflow: hidden;
+        }
+
+        .damage-table {
+            margin-bottom: 0;
+        }
+
+        .empty-state {
+            padding: 2rem;
+        }
+
+        /* Custom tooltip styling */
+        .tooltip-inner {
+            max-width: 250px;
+            text-align: left;
         }
     </style>
 </div>

@@ -52,12 +52,18 @@ class GenerationComponent extends Component
     protected function rules()
     {
         return [
-            'reportData.make' => 'required|string|max:255',
-            'reportData.model' => 'required|string|max:255',
-            'reportData.year' => 'required|integer|digits:4',
-            'reportData.vin' => 'required|string|max:255',
-            'reportData.odometer' => 'required|string',
-            'reportData.overallCondition' => 'required|string',
+            'reportData.make' => 'required',
+            'reportData.model' => 'required',
+            'reportData.year' => 'required|integer',
+
+        ];
+    }
+    protected function messages()
+    {
+        return [
+            'reportData.make' => 'Vehicle Make is required',
+            'reportData.model' => 'Vehicle Model is required',
+            'reportData.year' => 'Vehicle year cannot be null.',
         ];
     }
     private function initializeReportData()
@@ -82,7 +88,7 @@ class GenerationComponent extends Component
     {
 
 
-        $this->brands =  Brand::orderBy('name')->get();
+        $this->brands =  Brand::orderBy('name')->where('is_active', 1)->get();
         $this->bodyTypes = BodyType::all();
         $this->fuelTypes = FuelType::all();
         $this->transmissions = Transmission::all();
@@ -93,7 +99,6 @@ class GenerationComponent extends Component
         if ($enquiryId) {
             $this->linkedEnquiryId = $enquiryId;
         }
-
     }
     private function loadDataFromVehicle(int $vehicleId)
     {
@@ -128,12 +133,45 @@ class GenerationComponent extends Component
     }
     public function nextStep()
     {
-        // $this->validateStep($this->currentStep);
+        $this->validateStep($this->currentStep);
         if ($this->currentStep < 3) {
             $this->currentStep++;
-        } elseif ($this->currentStep == 3 || $this->currentStep == 4 || $this->currentStep == 5) {
+        } elseif ($this->currentStep >= 3) {
             $this->saveReport();
         }
+    }
+    private function validateStep(int $step)
+    {
+        $rulesForStep = [];
+        if ($step === 1) {
+            $rulesForStep = [
+                'reportData.make' => 'required',
+                'reportData.model' => 'required',
+                'reportData.year' => 'required|integer',
+
+            ];
+        } elseif ($step === 2) {
+            $rulesForStep = [
+
+                'reportData.make' => 'required',
+                'reportData.model' => 'required',
+                'reportData.year' => 'required|integer',
+            ];
+        } elseif ($step === 3) {
+            $rulesForStep = [
+                'reportData.make' => 'required',
+                'reportData.model' => 'required',
+                'reportData.year' => 'required|integer',
+            ];
+        } elseif ($step === 4) {
+            $rulesForStep = [
+                'reportData.make' => 'required',
+                'reportData.model' => 'required',
+                'reportData.year' => 'required|integer',
+            ];
+        }
+
+        $this->validate($rulesForStep);
     }
     public function prevStep()
     {
@@ -146,6 +184,7 @@ class GenerationComponent extends Component
         $this->currentStep = 1;
         $this->showForm = true;
         $this->showDetails = false;
+        $this->inspectionId = null;
         if ($this->linkedEnquiryId) {
             $this->loadDataFromEnquiry($this->linkedEnquiryId);
         } elseif ($this->linkedVehicleId) {
@@ -173,17 +212,25 @@ class GenerationComponent extends Component
     }
     public function saveReport()
     {
-        // $this->validate();
+        $this->validate();
         $this->reportData['vehicle_id'] = $this->linkedVehicleId;
         $this->reportData['inspection_enquiry_id'] = $this->linkedEnquiryId;
         $inspection = VehicleInspectionReport::updateOrCreate(['id' => $this->inspectionId], $this->reportData);
         $this->inspectionId = $inspection->id;
-        if ($this->currentStep == 3 || $this->currentStep == 4) {
+        if ($this->currentStep == 3) {
             $this->currentStep++;
         } else {
             session()->flash('success', $this->isEditing ? 'Report updated successfully.' : 'Report created successfully.');
             $this->cancel();
         }
+    }
+    public function saveReportDraft()
+    {
+        $this->validateStep($this->currentStep);
+        $this->reportData['vehicle_id'] = $this->linkedVehicleId;
+        $this->reportData['inspection_enquiry_id'] = $this->linkedEnquiryId;
+        $inspection = VehicleInspectionReport::updateOrCreate(['id' => $this->inspectionId], $this->reportData);
+        $this->inspectionId = $inspection->id;
     }
 
     public function cancel()

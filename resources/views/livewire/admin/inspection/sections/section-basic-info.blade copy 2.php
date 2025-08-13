@@ -66,7 +66,9 @@
             <div class="col-md-4">
                 @include('livewire.admin.inspection.sections.partials.input-text', ['label' => 'No. of Cylinders', 'property' => 'noOfCylinders'])
             </div>
-
+            <div class="col-md-4">
+                @include('livewire.admin.inspection.sections.partials.input-text', ['label' => 'Transmission', 'property' => 'transmission'])
+            </div>
             <div class="col-md-4">
                 @include('livewire.admin.inspection.sections.partials.input-text', ['label' => 'Color', 'property' => 'color'])
             </div>
@@ -78,9 +80,6 @@
             </div>
             <div class="col-md-4">
                 @include('livewire.admin.inspection.sections.partials.input-text', ['label' => 'Body Type', 'property' => 'body_type']) {{-- Use body_type as it's a string, not an ID --}}
-            </div>
-            <div class="col-md-4">
-                @include('livewire.admin.inspection.sections.partials.toggle-single', ['label' => 'Transmission', 'property' => 'transmission','options' => ['Automatic', 'Manual']])
             </div>
             <div class="col-md-4">
                 @include('livewire.admin.inspection.sections.partials.toggle-single', ['label' => 'Warranty', 'property' => 'warrantyAvailable', 'options' => ['Yes', 'No']])

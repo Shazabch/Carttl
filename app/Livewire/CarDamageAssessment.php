@@ -17,13 +17,13 @@ class CarDamageAssessment extends Component
     public $viewAllFaults = false;
     public $remark = '';
     public $damageTypes = [
-        'a' => ['name' => 'Scratch', 'color' => '#FF6B6B'],
-        'b' => ['name' => 'Multiple Scratches', 'color' => '#4ECDC4'],
-        'c' => ['name' => 'Cosmetic Paint', 'color' => '#45B7D1'],
-        'd' => ['name' => 'Chip', 'color' => '#F9CA24'],
-        'e' => ['name' => 'Dent', 'color' => '#F0932B'],
-        'f' => ['name' => 'Repainted', 'color' => '#9B59B6'],
-        'g' => ['name' => 'Repaired', 'color' => '#EB4D4B'],
+        'a' => ['name' => 'Scratch',       'color' => '#FF0000'], // Vivid Red (urgent)
+        'b' => ['name' => 'Multiple Scratches', 'color' => '#FF7F00'], // Bright Orange (clustered damage)
+        'c' => ['name' => 'Cosmetic Paint', 'color' => '#FFD700'], // Gold/Yellow (surface-level)
+        'd' => ['name' => 'Chip',          'color' => '#00AA00'], // Deep Green (localized damage)
+        'e' => ['name' => 'Dent',          'color' => '#0000FF'], // Pure Blue (structural)
+        'f' => ['name' => 'Repainted',     'color' => '#4B0082'], // Indigo (aftermarket work)
+        'g' => ['name' => 'Repaired',      'color' => '#b87bd2ff'], // Violet (repair history)
     ];
     public $severityLevels = [
         'low' => ['name' => 'Low', 'description' => 'Minor damage, cosmetic only'],

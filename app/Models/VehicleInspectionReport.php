@@ -77,4 +77,8 @@ class VehicleInspectionReport extends Model
             return 'Unknown mileage';
         }
     }
+    public function damages(): HasMany
+    {
+        return $this->hasMany(CarDamage::class, 'inspection_id');
+    }
 }
