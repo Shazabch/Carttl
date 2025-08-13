@@ -47,13 +47,13 @@
         <!-- Step 2: Select Any Brand (with Search) -->
         @if ($step === 2)
         <div class="step-section active">
-            <div class="row d-flex">
+            <div class="row d-flex ">
                  <div class="col-6"></div>
                  <button class="back-btn col-3" wire:click="goToStep(1)"><i class="fa-solid fa-chevron-left"></i> Back</button>
-                 <button class="back-btn btn-primary text-light  col-3" wire:click="goToStep(3)"><i class="fa-solid fa-chevron-right text-light"></i> Next</button>
-                 
+                 <button class="next-btn btn-primary text-light  col-3" wire:click="goToStep(3)">Next <i class="fa-solid fa-chevron-right text-light"></i> </button>
+
             </div>
-           
+
             <h6>Select your car Make</h6>
             <input type="text" class="form-control search-box" wire:model.live="brandSearch" placeholder="Search for your car’s make">
             <ul class="brand-list">
@@ -69,11 +69,11 @@
         <!-- Step 3: Select Model -->
         @if ($step === 3)
         <div class="step-section active">
-             <div class="row d-flex">
+             <div class="row d-flex ">
                  <div class="col-6"></div>
                  <button class="back-btn col-3" wire:click="goToStep(2)"><i class="fa-solid fa-chevron-left"></i> Back</button>
-                 <button class="back-btn btn-primary text-light col-3" wire:click="goToStep(4)"><i class="fa-solid fa-chevron-right text-light"></i> Next</button>
-                 
+                 <button class="next-btn btn-primary text-light col-3" wire:click="goToStep(4)">Next<i class="fa-solid fa-chevron-right text-light"></i></button>
+
             </div>
             <h6>Select your car model</h6>
             <ul class="brand-list">
@@ -89,11 +89,11 @@
         <!-- Step 4: Select Year -->
         @if ($step === 4)
         <div class="step-section active">
-             <div class="row d-flex">
+             <div class="row d-flex ">
                  <div class="col-6"></div>
                  <button class="back-btn col-3" wire:click="goToStep(3)"><i class="fa-solid fa-chevron-left"></i> Back</button>
-                 <button class="back-btn btn-primary text-light col-3" wire:click="goToStep(5)"><i class="fa-solid fa-chevron-right text-light"></i> Next</button>
-                 
+                 <button class="next-btn btn-primary text-light col-3" wire:click="goToStep(5)">Next <i class="fa-solid fa-chevron-right text-light"></i></button>
+
             </div>
             <h6>Select your car year</h6>
             <ul class="brand-list" id="yearList">
@@ -107,11 +107,11 @@
         <!-- Step 5: Vehicle Details -->
         @if ($step === 5)
         <div class="step-section active">
-             <div class="row d-flex">
+             <div class="row d-flex ">
                  <div class="col-6"></div>
                  <button class="back-btn col-3" wire:click="goToStep(4)"><i class="fa-solid fa-chevron-left"></i> Back</button>
-                 <button class="back-btn btn-primary text-light col-3" wire:click="goToStep(6)"><i class="fa-solid fa-chevron-right text-light"></i> Next</button>
-                 
+                 <button class="next-btn btn-primary text-light col-3" wire:click="goToStep(6)"> Next <i class="fa-solid fa-chevron-right text-light"></i></button>
+
             </div>
             <h6>Fill This Information</h6>
             <div class="row">
@@ -153,7 +153,7 @@
         @if ($step === 6)
         <div class="step-section active">
             <button class="back-btn" wire:click="goToStep(5)"><i class="fa-solid fa-chevron-left"></i> Back</button>
-            
+
             <h6>Personal Details</h6>
             <div class="row">
                 <div class="col-lg-12">
