@@ -12,6 +12,7 @@ use App\Notifications\SellEnquiryReceived; // To notify admin
 use App\Notifications\VehicleEnquiryNotification;
 use App\Notifications\VehicleEnquiryReceivedConfirmation;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Notification;
 use Livewire\Component;
 
@@ -84,13 +85,11 @@ class SellCarHomeComponent extends Component
 
     public function selectBrand($brandId)
     {
-        if (!Auth::check()) {
-            $this->dispatch('show-login-modal');
-        } else {
-            $this->formData['brand_id'] = $brandId;
-            $this->models = VehicleModel::where('brand_id', $brandId)->get();
-            $this->step = 3; // Move to model selection
-        }
+
+        $this->formData['brand_id'] = $brandId;
+        $this->models = VehicleModel::where('brand_id', $brandId)->get();
+        $this->step = 3; // Move to model selection
+
     }
 
     public function selectModel($modelId)
@@ -108,26 +107,37 @@ class SellCarHomeComponent extends Component
 
     public function goToStep($stepNumber)
     {
-        if (!Auth::check() && $stepNumber > 1) {
-            return $this->dispatch('show-login-modal');
-        }
+
         $this->step = $stepNumber;
     }
 
     public function submit()
     {
-        if (!Auth::check()) {
-            return $this->dispatch('show-login-modal');
-        }
+
         $this->validate();
         try {
 
             $this->formData['type'] = 'sale';
-            $this->formData['user_id'] = auth()->id();
+           
+            $email = $this->formData['email'];
+            if ($email) {
+                $user = User::where('email', $email)->first();
+                if ($user) {
+                } else {
+                    $user = User::create([
+                        'name' => $this->formData['name'] ?? 'TEST CUSTomer',
+                        'email' => $this->formData['email'],
+                        'role' => 'customer',
+                        'password' => Hash::make('password'),
+                    ]);
+                    $user->syncRoles('customer');
+                }
+            }
+             $this->formData['user_id'] = $user->id;
             $enquiry = VehicleEnquiry::create($this->formData);
             $recipients = User::role(['admin', 'super-admin'])->get();
             Notification::send($recipients, new VehicleEnquiryNotification($enquiry));
-            $user = auth()->user();
+       
             if ($user) {
                 Notification::send($user, new VehicleEnquiryReceivedConfirmation($enquiry));
             }

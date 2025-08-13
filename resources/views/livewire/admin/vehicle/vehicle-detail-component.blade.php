@@ -24,7 +24,7 @@
                 <div class="card-body">
                     <div class="row g-3">
                         <div class="col-md-6">
-                            <p><strong>Brand:</strong> {{ $vehicle->brand?->name ?? 'N/A' }}</p>
+                            <p><strong>Make:</strong> {{ $vehicle->brand?->name ?? 'N/A' }}</p>
                         </div>
                         <div class="col-md-6">
                             <p><strong>Model:</strong> {{ $vehicle->vehicleModel?->name ?? 'N/A' }}</p>

@@ -57,7 +57,7 @@
                 <div class="row">
                     <div class="col-lg-6">
                         <div class="form-group mb-3">
-                            <label class="form-label">Brand</label>
+                            <label class="form-label">Makes</label>
                             <select class="form-select" wire:model.live="brand_id">
                                 <option value="">Select Brand</option>
                                 @foreach ($brands as $brand)

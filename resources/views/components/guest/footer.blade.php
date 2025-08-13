@@ -61,8 +61,6 @@
                   <li class="menu-item"><a href="#">About Us</a></li>
                   <li class="menu-item"><a href="#">Return & Exchange</a></li>
                   <li class="menu-item"><a href="#">Refund Policy</a></li>
-                  <li class="menu-item"><a href="#">Reviews</a></li>
-                  <li class="menu-item"><a href="#">FAQ’s</a></li>
                   <li class="menu-item"><a href="#">Contact Us</a></li>
                 </ul>
               </div>
@@ -70,7 +68,7 @@
           </div>
         </div>
         
-        <div class="col d-flex justify-content-sm-center">
+        <!-- <div class="col d-flex justify-content-sm-center">
           <div id="nav_menu-3" class="footer-widget widget_nav_menu">
             <div class="menu-container">
               <div class="widget-title">
@@ -87,21 +85,19 @@
               </div>
             </div>
           </div>
-        </div>
+        </div> -->
         
         <div class="col d-flex justify-content-lg-center justify-content-sm-end">
           <div id="nav_menu-4" class="footer-widget widget_nav_menu">
             <div class="menu-container">
               <div class="widget-title">
-                <h5>Cars By Brands</h5>
+                <h5>Cars By Makes</h5>
               </div>
               <div class="menu-car-by-brands-container">
                 <ul id="menu-car-by-brands">
                   <li class="menu-item"><a href="#">BMW</a></li>
                   <li class="menu-item"><a href="#">Ferrari</a></li>
                   <li class="menu-item"><a href="#">Mercedes</a></li>
-                  <li class="menu-item"><a href="#">Suzuki</a></li>
-                  <li class="menu-item"><a href="#">TATA</a></li>
                   <li class="menu-item"><a href="#">Toyota</a></li>
                 </ul>
               </div>
@@ -117,11 +113,10 @@
               </div>
               <div class="menu-car-by-location-container">
                 <ul id="menu-car-by-location">
-                  <li class="menu-item"><a href="#">New Delhi</a></li>
-                  <li class="menu-item"><a href="#">Kualalumpur</a></li>
-                  <li class="menu-item"><a href="#">Panama City</a></li>
-                  <li class="menu-item"><a href="#">Sydney City</a></li>
-                  <li class="menu-item"><a href="#">Melbourne City</a></li>
+                  <li class="menu-item"><a href="#">Dubai</a></li>
+                  <li class="menu-item"><a href="#">Abu Dhabi</a></li>
+                  <li class="menu-item"><a href="#">Sharjah</a></li>
+                  <li class="menu-item"><a href="#">Ajman</a></li>
                 </ul>
               </div>
             </div>
@@ -136,7 +131,7 @@
         <img src="{{asset('images/goldenlogo.png')}}" alt="footer-logo">
       </div>
       <div class="contact-area">
-        <div class="hotline-area">
+        <!-- <div class="hotline-area">
           <div class="icon">
             <svg width="32" height="32" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
                 <path d="M31.1603 24.6852L24.6834 20.3658C23.8615 19.8221 22.7597 20.001 22.152 20.7769L20.2654 23.2027C20.1481 23.3573 19.9789 23.4645 19.789 23.5045C19.599 23.5444 19.4011 23.5145 19.2314 23.4203L18.8725 23.2224C17.6828 22.574 16.2025 21.7667 13.22 18.7831C10.2375 15.7995 9.42859 14.3181 8.78012 13.1306L8.58334 12.7717C8.48781 12.6021 8.45678 12.4037 8.49597 12.213C8.53516 12.0223 8.64193 11.8522 8.79662 11.734L11.2208 9.84792C11.9964 9.2402 12.1756 8.13874 11.6324 7.31655L7.31309 0.83963C6.75648 0.00237835 5.63977 -0.24896 4.77809 0.269026L2.06967 1.89597C1.21867 2.39626 0.594346 3.20652 0.327557 4.15695C-0.647737 7.71055 0.0859667 13.8435 9.12038 22.879C16.3071 30.0651 21.6572 31.9976 25.3345 31.9976C26.1809 32.0013 27.0239 31.8912 27.8409 31.6703C28.7915 31.4038 29.6018 30.7794 30.1018 29.9281L31.7304 27.2214C32.2491 26.3595 31.9979 25.2421 31.1603 24.6852ZM30.8115 26.6742L29.1867 29.3826C28.8277 29.997 28.2449 30.4488 27.5603 30.6432C24.2797 31.5439 18.5483 30.7979 9.87489 22.1245C1.20149 13.4511 0.455538 7.72017 1.35622 4.4391C1.55097 3.75367 2.00324 3.17011 2.61841 2.81053L5.32682 1.1857C5.7007 0.960737 6.18538 1.06978 6.4269 1.4331L8.77324 4.95577L10.7426 7.90946C10.9784 8.26609 10.9009 8.74409 10.5645 9.00798L8.13978 10.8941C7.40188 11.4583 7.19117 12.4792 7.64547 13.2895L7.83801 13.6393C8.51953 14.8892 9.36684 16.4442 12.4603 19.5371C15.5537 22.63 17.1081 23.4773 18.3575 24.1588L18.7078 24.3518C19.518 24.8061 20.539 24.5954 21.1032 23.8575L22.9893 21.4328C23.2533 21.0966 23.7311 21.0191 24.0879 21.2547L30.5642 25.5741C30.9278 25.8154 31.0368 26.3004 30.8115 26.6742ZM18.1324 5.33496C23.1367 5.34053 27.1921 9.39599 27.1977 14.4003C27.1977 14.6948 27.4364 14.9335 27.7309 14.9335C28.0255 14.9335 28.2642 14.6948 28.2642 14.4003C28.258 8.8072 23.7255 4.27462 18.1324 4.2685C17.8378 4.2685 17.5991 4.50721 17.5991 4.80173C17.5991 5.09625 17.8378 5.33496 18.1324 5.33496Z"></path>
@@ -148,7 +143,7 @@
             <span>To More Inquiry</span>
             <h6><a href="tel:+990-737 621 432">+990‑737 621 432</a></h6>
           </div>
-        </div>
+        </div> -->
         <div class="hotline-area">
           <div class="icon">
             <svg width="32" height="33" viewBox="0 0 32 33" xmlns="http://www.w3.org/2000/svg">
@@ -161,16 +156,16 @@
           </div>
           <div class="content">
             <span>To Send Mail</span>
-            <h6><a href="mailto:info@gmail.com">info@gmail.com</a></h6>
+            <h6><a href="mailto:info@thegoldenx.com">info@thegoldenx.com</a></h6>
           </div>
         </div>
       </div>
-      <div class="footer-btm-menu">
+      <!-- <div class="footer-btm-menu">
         <ul id="menu-footer-menu" class="ul">
           <li class="menu-item"><a href="#">Advertise With Us</a></li>
           <li class="menu-item"><a href="#">Our Sitemap</a></li>
         </ul>
-      </div>
+      </div> -->
     </div>
     <!-- Footer Bottom -->
     <div class="footer-btm">
