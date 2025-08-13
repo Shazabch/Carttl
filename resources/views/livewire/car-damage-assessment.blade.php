@@ -47,7 +47,7 @@
                 </div>
                 <div class="col-md-5">
                     <div class="severity-selection">
-                        <h3 class="section-title">Select Severity Level</h3>
+                        <h3 class="section-title">Select Damage Level</h3>
                         <div class="row">
                             @foreach ($severityLevels as $key => $severity)
                             <div class="col-md-6">
@@ -208,7 +208,7 @@
                             <th>Damage Type</th>
                             <th>Body Part</th>
                             <th>Severity Level</th>
-                            <th>Position</th>
+                            <!-- <th>Position</th> -->
                             <th>Remarks</th>
                         </tr>
                     </thead>
@@ -235,10 +235,10 @@
                                     {{ $damage['severity'] }}
                                 </span>
                             </td>
-                            <td>
+                            <!-- <td>
                                 X: {{ round($damage['x']) }}<br>
                                 Y: {{ round($damage['y']) }}
-                            </td>
+                            </td> -->
                             <td>
                                 <textarea wire:change="updateRemark({{ $damage['id'] }}, $event.target.value)" class="remark-input"
                                     placeholder="Add remarks about this damage...">{{ $damage['remark'] ?? '' }}</textarea>
