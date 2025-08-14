@@ -13,6 +13,21 @@ use App\Models\Vehicle;
 use App\Models\Blog;
 use Illuminate\Support\Facades\Route;
 
+use Illuminate\Support\Facades\Mail;
+
+Route::get('/test-email', function () {
+    try {
+        Mail::raw('This is a test email from Laravel SMTP.', function ($message) {
+            $message->to('theiqbal111@gmail.com') // Change to your email
+                    ->subject('SMTP Test Email');
+        });
+
+        return '✅ Test email sent successfully!';
+    } catch (\Exception $e) {
+        return '❌ Email sending failed: ' . $e->getMessage();
+    }
+});
+
 Route::view('/', 'home')->name('home');
 Route::get('/blog/{slug}', [BlogController::class, 'blogDetails'])->name('get-blog');
 

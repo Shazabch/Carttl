@@ -256,6 +256,15 @@
                         </div>
                     </div>
                 </div>
+                 <div class="row d-flex">
+                    <div class="col-6"></div>
+                    <button class="back-btn col-3" wire:click="back">
+                        <i class="fa-solid fa-chevron-left"></i> Back
+                    </button>
+                    <button class="next-btn btn-primary text-light col-3" wire:click="next">
+                        Next <i class="fa-solid fa-chevron-right text-light"></i>
+                    </button>
+                </div>
             </div>
             @endif
 
@@ -302,6 +311,7 @@
                         </button>
                     </div>
                 </div>
+
             </div>
             @endif
             @endif

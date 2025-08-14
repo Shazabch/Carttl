@@ -522,11 +522,11 @@
       array (
         'transport' => 'smtp',
         'url' => NULL,
-        'host' => '127.0.0.1',
-        'port' => '1025',
-        'encryption' => 'tls',
-        'username' => '77b8a882e5066b',
-        'password' => '1921ec5f5481af',
+        'host' => 'smtp.gmail.com',
+        'port' => '465',
+        'encryption' => 'ssl',
+        'username' => 'shahzaib.ch2019@gmail.com',
+        'password' => 'pjjevjianijwufcp',
         'timeout' => NULL,
         'local_domain' => 'goldenx.ddev.site',
       ),
@@ -577,8 +577,8 @@
     ),
     'from' => 
     array (
-      'address' => 'hello@example.com',
-      'name' => 'Example',
+      'address' => 'goldenx.dev@gmail.com',
+      'name' => 'Laravel',
     ),
     'markdown' => 
     array (
