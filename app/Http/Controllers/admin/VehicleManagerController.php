@@ -17,6 +17,10 @@ class VehicleManagerController extends Controller
     {
         return view('admin.vehicles.details', ['id' => $id]);
     }
+    public function vehicleEnquiries($type)
+    {
+        return view('admin.vehicles.enquiries', ['type' => $type]);
+    }
     public function generateInspectionVehicle($id)
     {
         $vehicle=Vehicle::find($id);

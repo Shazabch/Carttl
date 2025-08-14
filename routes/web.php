@@ -68,6 +68,7 @@ Route::group(['prefix' => 'admin'], function () {
         Route::get('/vehicles', [VehicleManagerController::class, 'index'])->name('admin.vehicles.all');
         Route::get('/vehicles/{type}', [VehicleManagerController::class, 'index'])->name('admin.vehicles');
         Route::get('/vehicles/{id}/details', [VehicleManagerController::class, 'details'])->name('admin.vehicles.details');
+        Route::get('/vehicles-enquiries/{type}', [VehicleManagerController::class, 'vehicleEnquiries'])->name('admin.vehicles.enquiries');
         Route::view('user', 'admin.user')->name('admin.user');
         Route::view('roles', 'admin.roles.index')->name('admin.roles');
         Route::view('sell-your-car', 'admin.sell.index')->name('admin.sell.index');

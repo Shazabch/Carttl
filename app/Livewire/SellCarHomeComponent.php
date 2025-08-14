@@ -118,7 +118,7 @@ class SellCarHomeComponent extends Component
         try {
 
             $this->formData['type'] = 'sale';
-           
+
             $email = $this->formData['email'];
             if ($email) {
                 $user = User::where('email', $email)->first();
@@ -137,7 +137,7 @@ class SellCarHomeComponent extends Component
             $enquiry = VehicleEnquiry::create($this->formData);
             $recipients = User::role(['admin', 'super-admin'])->get();
             Notification::send($recipients, new VehicleEnquiryNotification($enquiry));
-       
+
             if ($user) {
                 Notification::send($user, new VehicleEnquiryReceivedConfirmation($enquiry));
             }
