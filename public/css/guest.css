@@ -3240,7 +3240,7 @@ footer .footer-center ul {
     border-bottom-left-radius: 20px;
     border-bottom-right-radius: 20px;
     box-shadow: 0px 4px 15px rgba(0,0,0,0.05);
-    max-height: 449px;
+    max-height: 350px !important;
     overflow-y: auto;
 }
 /* Step navigation */
