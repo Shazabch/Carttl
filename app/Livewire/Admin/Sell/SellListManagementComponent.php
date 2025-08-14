@@ -11,7 +11,7 @@ use Livewire\Component;
 class SellListManagementComponent extends Component
 {
     use WithPagination;
-
+    protected string $paginationTheme = 'bootstrap';
     public $search = '';
     public $selectedEnquiryId = null;
 

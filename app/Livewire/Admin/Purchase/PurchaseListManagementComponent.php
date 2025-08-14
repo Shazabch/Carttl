@@ -9,6 +9,7 @@ use Livewire\Component;
 class PurchaseListManagementComponent extends Component
 {
     use WithPagination;
+    protected string $paginationTheme = 'bootstrap';
 
     public $vehicleId = null;
     public $search = '';

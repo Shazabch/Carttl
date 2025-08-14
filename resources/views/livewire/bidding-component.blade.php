@@ -52,7 +52,7 @@
             <div class="auction-header d-flex justify-content-between align-items-center mb-3">
                 <div class="div">
                     <p class="auction-id mb-1">#AU-2024-0156</p>
-                    <h3>{{$selected_vehicle->title}}</h3>
+                    <h3 class="title-line-clamp-2">{{$selected_vehicle->title}}</h3>
                 </div>
 
             </div>

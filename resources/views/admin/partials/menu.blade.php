@@ -131,8 +131,8 @@
                                 <span class="menu-text">Sold Vehicles</span>
                             </a>
                         </li>
-                        <li class="menu-item {{ request()->routeIs('admin.submissions') ? 'menu-item-active' : '' }}" aria-haspopup="true">
-                            <a href="{{ route('admin.submissions') }}" class="menu-link">
+                        <li class="menu-item {{ request()->routeIs('admin.vehicles.enquiries','sale') ? 'menu-item-active' : '' }}" aria-haspopup="true">
+                            <a href="{{ route('admin.vehicles.enquiries','sale') }}" class="menu-link">
                                 <i class="menu-bullet menu-bullet-dot"><span></span></i>
                                 <span class="menu-text">All Vehicle Enquiries</span>
                             </a>

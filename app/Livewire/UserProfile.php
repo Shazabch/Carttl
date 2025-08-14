@@ -14,8 +14,8 @@ class UserProfile extends Component
     // Form properties.
     public $name;
     public $email;
-    public $phone; // Assuming you have a 'phone' column
-    public $bio;   // Assuming you have a 'bio' column
+    public $phone; 
+    public $bio;   
 
     // State management for the UI.
     public bool $isEditing = false;
@@ -26,58 +26,40 @@ class UserProfile extends Component
     {
         return [
             'name' => 'required|string|min:3',
-            // Ensure email is unique but ignore the current user's email.
+           
             'email' => 'required|email|unique:users,email,' . $this->user->id,
-            'phone' => 'nullable|string|max:20',
+            'phone' => 'nullable|max:13',
             'bio' => 'nullable|string|max:500',
         ];
     }
 
-    /**
-     * The mount method is like a constructor.
-     * It runs when the component is first initialized.
-     */
+   
     public function mount()
     {
         $this->user = Auth::user();
         $this->resetForm();
     }
 
-    /**
-     * Toggles the component into editing mode.
-     */
+    
     public function edit()
     {
+        $this->phone=$this->user->phone;
         $this->isEditing = true;
     }
 
-    /**
-     * Cancels editing and resets the form to its original state.
-     */
+   
     public function cancel()
     {
         $this->isEditing = false;
         $this->resetForm();
     }
 
-    /**
-     * Saves the updated profile information.
-     */
+   
     public function save()
     {
-        // Validate the form data.
         $validatedData = $this->validate();
-
-        // Update the user model with validated data.
         $this->user->update($validatedData);
-
-        // Reset the form fields with the newly saved data.
-        $this->resetForm();
-
-        // Exit editing mode.
         $this->isEditing = false;
-
-        // Show a temporary success message.
         $this->showSuccessIndicator = true;
     }
 

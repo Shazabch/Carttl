@@ -6,7 +6,7 @@
     <div class="container">
         <div class="row mt-4">
             <div class="col">
-                <!-- <livewire:admin.vehicle-enquiries-component :type="$type" /> -->
+                <livewire:admin.vehicle-enquiries-component :type="$type" /> 
             </div>
         </div>
     </div>
