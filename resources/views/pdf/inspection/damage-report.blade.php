@@ -2,10 +2,7 @@
 <div class="report-card">
     <div class="card-header"><i class="fa-solid fa-triangle-exclamation"></i>Damage Assessment</div>
     <div class="card-body" style="text-align: center;">
-        @php
-        // Assume your controller generated this image and passed the path
-        // Example path from controller: $damageImagePath = storage_path('app/public/damage-assessments/damage-24.png');
-        @endphp
+
 
         @if(isset($damageImagePath) && file_exists($damageImagePath))
         <img src="{{ $damageImagePath }}" alt="Damage Assessment" style="max-width: 100%; height: auto;">
