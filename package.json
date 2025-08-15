@@ -12,6 +12,6 @@
     },
     "dependencies": {
         "@ckeditor/ckeditor5-build-classic": "^44.3.0",
-        "puppeteer": "^24.16.1"
+        "puppeteer": "^24.16.2"
     }
 }
