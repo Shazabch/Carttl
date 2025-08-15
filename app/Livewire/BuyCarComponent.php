@@ -9,6 +9,7 @@ use App\Models\Vehicle;
 use App\Notifications\VehicleEnquiryReceivedConfirmation;
 use App\Notifications\EnquirySubmitNotification;
 use App\Notifications\VehicleEnquiryNotification;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Notification;
 use Livewire\Attributes\Rule;
 
@@ -16,7 +17,7 @@ class BuyCarComponent extends Component
 {
     public $selected_vehicle;
     public $vehicleId;
-
+    public $is_not_login = true;
     public $name;
     #[Rule(['required', 'min:13', 'max:13'])]
     public $phone = '';
@@ -43,9 +44,15 @@ class BuyCarComponent extends Component
     {
         $this->selected_vehicle = $selected_vehicle;
         $this->is_auction = $is_auction;
+         if (Auth::check()) {
+            $this->is_not_login = false;
+        }
     }
     public function saveBuyEnquiry()
     {
+         if (!Auth::check()) {
+            $this->dispatch('show-login-modal');
+        }
         $this->validate();
 
         $enquiry = VehicleEnquiry::create([

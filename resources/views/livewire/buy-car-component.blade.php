@@ -18,12 +18,12 @@
 
         <div class="mb-3">
             <label class="form-label">Full Name</label>
-            <input type="text" wire:model.lazy="name" class="form-control" placeholder="Enter your full name">
+            <input type="text" wire:model.lazy="name" class="form-control" @if($is_not_login) disabled @endif placeholder="Enter your full name">
             @error('name') <div class="text-danger small mt-1">{{ $message }}</div> @enderror
         </div>
         <div x-data="dubaiPhoneMask()" class="form-group mb-3">
             <label for="phone" class="mt-1 form-label">Phone Number</label>
-            <input type="tel" id="phone" class="form-control" placeholder="+971 5xxxxxxxx"
+            <input type="tel" id="phone" class="form-control" @if($is_not_login) disabled @endif placeholder="+971 5xxxxxxxx"
                 x-model="phone" @input="formatPhone" wire:model="phone">
             @error('phone')
             <div class="text-danger small mt-1">{{ $message }}</div>
@@ -33,13 +33,13 @@
         <div class="mb-3">
             <label for="email" class="form-label">Email Address</label>
             <input type="email" wire:model.lazy="email" name="email" id="email" class="form-control"
-                placeholder="Enter your email" required>
+                @if($is_not_login) disabled @endif placeholder="Enter your email" required>
             @error('email') <div class="text-danger small mt-1">{{ $message }}</div> @enderror
         </div>
         <div class="mb-3">
             <label for="address" wire:model.lazy="address" class="form-label">Address</label>
             <textarea name="address" wire:model.lazy="address" id="address" rows="2" class="form-control"
-                placeholder="Enter your address" required></textarea>
+                @if($is_not_login) disabled @endif placeholder="Enter your address" required></textarea>
             @error('address') <div class="text-danger small mt-1">{{ $message }}</div> @enderror
         </div>
 
@@ -69,12 +69,34 @@
     </div>
     @endif
     @else
-    <a href="/login" class="btn btn-warning btn-buy-now">
+    @if($is_auction)
+    <button wire:click="saveBuyEnquiry" class="btn btn-warning btn-buy-now">
+        <i class="fas fa-shopping-cart"></i>
+        Signin Buy It Now
+        <span wire:loading wire:target="saveBuyEnquiry">
+            <div class="spinner-border mx-2" role="status">
+                <span class="sr-only">Loading...</span>
+            </div>
+        </span>
+    </button>
+    @else
+    <!-- Buy It Now Card -->
+    <div class="buy-now-card">
+        <h4>Buy It Now</h4>
+        <div class="buy-now-price">${{$selected_vehicle->price}}</div>
+        <!-- <p>Skip the auction and purchase immediately</p> -->
+        <button wire:click="saveBuyEnquiry" class="btn btn-warning btn-buy-now">
+            <i class="fas fa-shopping-cart"></i>
+            Signin Buy It Now<span wire:loading wire:target="saveBuyEnquiry">
+                <div class="spinner-border" role="status">
+                    <span class="sr-only">Loading...</span>
+                </div>
+            </span>
+        </button>
+    </div>
 
-        Signin & Buy It Now <div class="spinner"></div>
-    </a>
 
-
+    @endif
     @endif
     @endif
 </div>
