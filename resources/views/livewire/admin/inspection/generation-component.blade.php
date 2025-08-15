@@ -26,6 +26,11 @@
                 {{-- This button now calls a Livewire action --}}
                 <button wire:click="generatePdf({{ $reportInView->id }})" class="btn btn-danger">
                     <i class="fas fa-file-pdf"></i> Generate PDF Report
+                    <span wire:loading wire:target="generatePdf">
+                        <div class="spinner-border" role="status">
+                            <span class="sr-only">Loading...</span>
+                        </div>
+                    </span>
                 </button>
                 <button wire:click="cancel" class="btn btn-secondary">Back to List</button>
             </div>
