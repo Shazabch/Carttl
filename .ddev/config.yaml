@@ -14,7 +14,13 @@ composer_version: "2"
 web_environment: []
 corepack_enable: false
 default_container_timeout: "240"
-
+webimage_extra_packages:
+  - wkhtmltopdf
+  - xfonts-75dpi
+  - xfonts-base
+  - fontconfig
+  - libxrender1
+  - libxext6
 # Key features of DDEV's config.yaml:
 
 # name: <projectname> # Name of the project, automatically provides

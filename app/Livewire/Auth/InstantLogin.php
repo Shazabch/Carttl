@@ -24,7 +24,8 @@ class InstantLogin extends Component
            
         )) {
             session()->regenerate();
-            return redirect()->intended('/dashboard');
+            $this->dispatch('close-login-modal');
+           $this->js('setTimeout(() => window.location.reload())');
         }
 
         session()->flash('error', 'Invalid email or password.');

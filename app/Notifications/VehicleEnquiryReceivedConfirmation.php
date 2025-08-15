@@ -51,7 +51,7 @@ class VehicleEnquiryReceivedConfirmation extends Notification
     public function toDatabase($notifiable)
     {
         return [
-            'title' => 'New'.$this->enquiry->type.' enquiry submitted',
+            'title' => 'New '.$this->enquiry->type.' enquiry submitted',
             'name' => $this->enquiry->name,
             'email' => $this->enquiry->email,
             'message' => $this->enquiry->notes,

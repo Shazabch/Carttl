@@ -32,7 +32,7 @@ app('router')->setCompiledRoutes(
         array (
           0 => 
           array (
-            '_route' => 'generated::k0oIVY0NAbmrVckD',
+            '_route' => 'generated::MtRZUDIwFImaWK4r',
           ),
           1 => NULL,
           2 => 
@@ -52,7 +52,7 @@ app('router')->setCompiledRoutes(
         array (
           0 => 
           array (
-            '_route' => 'generated::M3oPeYapZVL3oOyN',
+            '_route' => 'generated::N7sF3888S2P46BSs',
           ),
           1 => NULL,
           2 => 
@@ -91,7 +91,27 @@ app('router')->setCompiledRoutes(
         array (
           0 => 
           array (
-            '_route' => 'generated::2hLTDPT9h0hTJF2I',
+            '_route' => 'generated::ndvvw0j5ZrgILnn3',
+          ),
+          1 => NULL,
+          2 => 
+          array (
+            'GET' => 0,
+            'HEAD' => 1,
+          ),
+          3 => NULL,
+          4 => false,
+          5 => false,
+          6 => NULL,
+        ),
+      ),
+      '/test-email' => 
+      array (
+        0 => 
+        array (
+          0 => 
+          array (
+            '_route' => 'generated::SElA4eo01UyTySe1',
           ),
           1 => NULL,
           2 => 
@@ -1069,7 +1089,7 @@ app('router')->setCompiledRoutes(
       'waitSeconds' => NULL,
       'withTrashed' => false,
     ),
-    'generated::k0oIVY0NAbmrVckD' => 
+    'generated::MtRZUDIwFImaWK4r' => 
     array (
       'methods' => 
       array (
@@ -1081,7 +1101,7 @@ app('router')->setCompiledRoutes(
       array (
         'uses' => 'Livewire\\Mechanisms\\FrontendAssets\\FrontendAssets@returnJavaScriptAsFile',
         'controller' => 'Livewire\\Mechanisms\\FrontendAssets\\FrontendAssets@returnJavaScriptAsFile',
-        'as' => 'generated::k0oIVY0NAbmrVckD',
+        'as' => 'generated::MtRZUDIwFImaWK4r',
       ),
       'fallback' => false,
       'defaults' => 
@@ -1097,7 +1117,7 @@ app('router')->setCompiledRoutes(
       'waitSeconds' => NULL,
       'withTrashed' => false,
     ),
-    'generated::M3oPeYapZVL3oOyN' => 
+    'generated::N7sF3888S2P46BSs' => 
     array (
       'methods' => 
       array (
@@ -1109,7 +1129,7 @@ app('router')->setCompiledRoutes(
       array (
         'uses' => 'Livewire\\Mechanisms\\FrontendAssets\\FrontendAssets@maps',
         'controller' => 'Livewire\\Mechanisms\\FrontendAssets\\FrontendAssets@maps',
-        'as' => 'generated::M3oPeYapZVL3oOyN',
+        'as' => 'generated::N7sF3888S2P46BSs',
       ),
       'fallback' => false,
       'defaults' => 
@@ -1180,7 +1200,7 @@ app('router')->setCompiledRoutes(
       'waitSeconds' => NULL,
       'withTrashed' => false,
     ),
-    'generated::2hLTDPT9h0hTJF2I' => 
+    'generated::ndvvw0j5ZrgILnn3' => 
     array (
       'methods' => 
       array (
@@ -1208,8 +1228,55 @@ app('router')->setCompiledRoutes(
                     return response(\\Illuminate\\Support\\Facades\\View::file(\'/var/www/html/vendor/laravel/framework/src/Illuminate/Foundation/Configuration\'.\'/../resources/health-up.blade.php\', [
                         \'exception\' => $exception,
                     ]), status: $exception ? 500 : 200);
-                }";s:5:"scope";s:54:"Illuminate\\Foundation\\Configuration\\ApplicationBuilder";s:4:"this";N;s:4:"self";s:32:"000000000000072d0000000000000000";}}',
-        'as' => 'generated::2hLTDPT9h0hTJF2I',
+                }";s:5:"scope";s:54:"Illuminate\\Foundation\\Configuration\\ApplicationBuilder";s:4:"this";N;s:4:"self";s:32:"000000000000073c0000000000000000";}}',
+        'as' => 'generated::ndvvw0j5ZrgILnn3',
+      ),
+      'fallback' => false,
+      'defaults' => 
+      array (
+      ),
+      'wheres' => 
+      array (
+      ),
+      'bindingFields' => 
+      array (
+      ),
+      'lockSeconds' => NULL,
+      'waitSeconds' => NULL,
+      'withTrashed' => false,
+    ),
+    'generated::SElA4eo01UyTySe1' => 
+    array (
+      'methods' => 
+      array (
+        0 => 'GET',
+        1 => 'HEAD',
+      ),
+      'uri' => 'test-email',
+      'action' => 
+      array (
+        'middleware' => 
+        array (
+          0 => 'web',
+        ),
+        'uses' => 'O:55:"Laravel\\SerializableClosure\\UnsignedSerializableClosure":1:{s:12:"serializable";O:46:"Laravel\\SerializableClosure\\Serializers\\Native":5:{s:3:"use";a:0:{}s:8:"function";s:425:"function () {
+    try {
+        \\Illuminate\\Support\\Facades\\Mail::raw(\'This is a test email from Laravel SMTP.\', function ($message) {
+            $message->to(\'theiqbal111@gmail.com\') // Change to your email
+                    ->subject(\'SMTP Test Email\');
+        });
+
+        return \'✅ Test email sent successfully!\';
+    } catch (\\Exception $e) {
+        return \'❌ Email sending failed: \' . $e->getMessage();
+    }
+}";s:5:"scope";s:37:"Illuminate\\Routing\\RouteFileRegistrar";s:4:"this";N;s:4:"self";s:32:"00000000000007400000000000000000";}}',
+        'namespace' => NULL,
+        'prefix' => '',
+        'where' => 
+        array (
+        ),
+        'as' => 'generated::SElA4eo01UyTySe1',
       ),
       'fallback' => false,
       'defaults' => 

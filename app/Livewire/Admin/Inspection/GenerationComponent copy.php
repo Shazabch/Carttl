@@ -18,11 +18,7 @@ use Livewire\Component;
 use Livewire\WithPagination;
 use Livewire\Attributes\On;
 use Illuminate\Support\Facades\File;
-use Illuminate\Support\Facades\URL;
 use Spatie\Browsershot\Browsershot;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Str;
-
 
 class GenerationComponent extends Component
 {
@@ -251,57 +247,8 @@ class GenerationComponent extends Component
     public function generatePdf($reportId)
     {
         $reportInView = VehicleInspectionReport::findOrFail($reportId);
-        if ($reportInView->damage_file_path && Storage::disk('public')->exists($reportInView->damage_file_path)) {
-            Storage::disk('public')->delete($reportInView->damage_file_path);
-            VehicleDocument::where('file_path', $reportInView->damage_file_path)->delete();
-        }
 
-        if ($reportInView->file_path && Storage::disk('public')->exists($reportInView->file_path)) {
-            Storage::disk('public')->delete($reportInView->file_path);
-            VehicleDocument::where('file_path', $reportInView->file_path)->delete();
-        }
-        foreach (Storage::disk('public')->files('damage-assessments') as $path) {
-            if (Str::startsWith(basename($path), 'damage-report-' . $reportInView->id . '-')) {
-                Storage::disk('public')->delete($path);
-                VehicleDocument::where('file_path', $path)->delete();
-            }
-        }
-        foreach (Storage::disk('public')->files('inspection_pdf') as $path) {
-            if (Str::startsWith(basename($path), 'inspection_' . $reportInView->id . '_')) {
-                Storage::disk('public')->delete($path);
-                VehicleDocument::where('file_path', $path)->delete();
-            }
-        }
-        $html = view('pdf.inspection.damage-assessment-image', compact('reportInView'))->render();
-        $snappyImage = app('snappy.image');
-        $pngOptions = [
-            'width' => 1200,
-            'quality' => 90,
-            'encoding' => 'UTF-8',
-            'enable-local-file-access' => true,
-            'disable-smart-width' => true,
-            'javascript-delay' => 300,
-            'no-stop-slow-scripts' => true,
-            'load-error-handling' => 'ignore',
-        ];
-        $pngBinary = $snappyImage->getOutputFromHtml($html, $pngOptions);
-        $pngDir = 'damage-assessments';
-        if (!Storage::disk('public')->exists($pngDir)) {
-            Storage::disk('public')->makeDirectory($pngDir);
-        }
-        $pngFilename = 'damage-report-' . $reportInView->id . '-' . now()->format('Ymd_His') . '.png';
-        $pngPath = $pngDir . '/' . $pngFilename;
-
-        Storage::disk('public')->put($pngPath, $pngBinary);
-        if ($reportInView->vehicle_id) {
-            $imageDoc = new VehicleDocument();
-            $imageDoc->vehicle_id  =  $reportInView->vehicle_id;
-            $imageDoc->file_path = $pngPath;
-            $imageDoc->type = 'InspectionReportImage';
-            $imageDoc->save();
-        }
-        $reportInView->damage_file_path = $pngPath;
-        $reportInView->save();
+        // 1) Generate PDF (DomPDF - unchanged)
         $directory = 'inspection_pdf';
         if (!Storage::disk('public')->exists($directory)) {
             Storage::disk('public')->makeDirectory($directory);
@@ -325,63 +272,56 @@ class GenerationComponent extends Component
 
         $reportInView->file_path = $filepath;
         $reportInView->save();
+
+        // 2) Generate PNG (wkhtmltoimage via Snappy)
+        // Make sure the Blade below is fully server-rendered (no client-only JS).
+        $html = view('pdf.inspection.damage-assessment-image', compact('reportInView'))->render();
+
+
+        /** @var \Knp\Snappy\Image $snappyImage */
+        $snappyImage = app('snappy.image');
+
+        $pngOptions = [
+            // Dimensions and quality
+            'width' => 1200,
+            'quality' => 90,
+            'encoding' => 'UTF-8',
+
+            // If you reference local files (file://), allow access
+            'enable-local-file-access' => true,
+
+            // Layout/JS timing
+            'disable-smart-width' => true,  // keeps the width you set instead of auto-resizing
+            'javascript-delay' => 300,      // small delay so fonts/images can load
+            'no-stop-slow-scripts' => true,
+
+            // Error handling (supported in newer wkhtmltoimage)
+            'load-error-handling' => 'ignore', // use 'abort' to fail loudly when debugging
+        ];
+
+        $pngBinary = $snappyImage->getOutputFromHtml($html, $pngOptions);
+        $pngDir = 'damage-assessments';
+        if (!Storage::disk('public')->exists($pngDir)) {
+            Storage::disk('public')->makeDirectory($pngDir);
+        }
+
+        $pngFilename = 'damage-report-' . $reportInView->id . '-' . now()->format('Ymd_His') . '.png';
+        $pngPath = $pngDir . '/' . $pngFilename;
+
+        Storage::disk('public')->put($pngPath, $pngBinary);
+
+        // Optional: store the PNG as a VehicleDocument record (separate type)
+        if ($reportInView->vehicle_id) {
+            $imageDoc = new VehicleDocument();
+            $imageDoc->vehicle_id  =  $reportInView->vehicle_id;
+            $imageDoc->file_path = $pngPath;
+            $imageDoc->type = 'InspectionReportImage';
+            $imageDoc->save();
+        }
+
         $this->dispatch('success-notification', message: 'Report Generated Successfully');
-        $this->js('setTimeout(() => window.location.reload(), 1200)');
-
-        return; // important: stop here, don’t also return a redirect
+        $this->reset();
     }
-    // Helper function to get status class and icon
-    public static function getStatusInfo($value)
-    {
-        if (is_array($value)) {
-            return ['class' => 'item-value', 'icon' => 'fas fa-list'];
-        }
-
-        $value_lower = is_string($value) ? strtolower(trim($value)) : '';
-
-        // Excellent conditions
-        $excellent_keywords = ['excellent', 'perfect', 'like new'];
-        foreach ($excellent_keywords as $keyword) {
-            if (strpos($value_lower, $keyword) !== false) {
-                return ['class' => 'status-excellent', 'icon' => 'fas fa-star'];
-            }
-        }
-
-        // Good conditions
-        $good_keywords = ['no visible fault', 'no leak', 'no error', 'no smoke', 'available', 'good', 'operational', 'working', 'functional', 'ok', 'normal', 'passed', 'yes'];
-        foreach ($good_keywords as $keyword) {
-            if (strpos($value_lower, $keyword) !== false) {
-                return ['class' => 'status-good', 'icon' => 'fas fa-check-circle'];
-            }
-        }
-
-        // Warning conditions
-        $warning_keywords = ['minor leak', 'judder', 'cranking noise', 'white', 'minor error', 'stuck', 'worn', 'noisy', 'dirty', 'warning light on', 'fair', 'average', 'minor'];
-        foreach ($warning_keywords as $keyword) {
-            if (strpos($value_lower, $keyword) !== false) {
-                return ['class' => 'status-warning', 'icon' => 'fas fa-exclamation-triangle'];
-            }
-        }
-
-        // Danger conditions
-        $danger_keywords = ['major leak', 'hard', 'tappet noise', 'abnormal noise', 'black', 'major error', 'not engaging', 'damaged', 'not working', 'not cooling', 'alignment out', 'worn out', 'arms-bushes crack', 'rusty', 'poor', 'bad', 'broken', 'failed'];
-        foreach ($danger_keywords as $keyword) {
-            if (strpos($value_lower, $keyword) !== false) {
-                return ['class' => 'status-danger', 'icon' => 'fas fa-times-circle'];
-            }
-        }
-
-        // N/A or empty
-        if (empty($value_lower) || $value_lower === 'n/a' || $value_lower === 'not available') {
-            return ['class' => 'status-na', 'icon' => 'fas fa-minus-circle'];
-        }
-
-        // Default info status
-        return ['class' => 'status-info', 'icon' => 'fas fa-info-circle'];
-    }
-
-
-
 
     #[On('deleteReport')]
     public function deleteReport($id)

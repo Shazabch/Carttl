@@ -317,7 +317,8 @@
 
         .gallery-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            grid-template-columns: repeat(3, 1fr);
+            /* exactly 3 per row */
             gap: 20px;
             margin-top: 15px;
         }
@@ -328,7 +329,7 @@
             border-radius: 12px;
             overflow: hidden;
             margin: 5px;
-
+            width: 300px !important;
             box-shadow: var(--shadow-md);
             transition: transform 0.2s ease, box-shadow 0.2s ease;
             border: 1px solid var(--border-color);
@@ -489,17 +490,21 @@
             }
 
             .gallery-grid {
-                grid-template-columns: repeat(2, 1fr);
+                grid-template-columns: repeat(3, 1fr);
+                /* keep 3 per row in print */
                 gap: 15px;
+            }
+
+            .gallery-image {
+                height: 150px;
+                /* adjust as you like for print */
             }
 
             .gallery-item {
                 break-inside: avoid;
             }
 
-            .gallery-image {
-                height: 150px;
-            }
+
         }
     </style>
 </head>
@@ -829,40 +834,52 @@
         </div>
         @endforeach
 
-        {{-- Premium Image Gallery Section --}}
+        {{-- Premium Image Gallery Section (Table-based for DomPDF) --}}
         <div class="report-card">
             <div class="card-header"><i class="fa-solid fa-images"></i>Vehicle Images</div>
             <div class="card-body image-gallery">
+
                 @php
-
-                $vehicleImages = $reportInView->images;
-
+                $vehicleImages = $reportInView->images ?? collect();
+                // Ensure we always have a collection to chunk
+                if (!($vehicleImages instanceof \Illuminate\Support\Collection)) {
+                $vehicleImages = collect($vehicleImages ?: []);
+                }
                 @endphp
 
-                @if($reportInView->images)
-                <div class="gallery-grid">
-                    @foreach($reportInView->images as $image)
-
-                    <div class="gallery-item">
-                        <img src="{{ storage_path('app/public/' . $image->path) }}"
-                            alt="{{ $image['title'] ?? 'Vehicle Image' }}"
-                            class="gallery-image">
-                        <div class="gallery-caption">
-                            <h4 class="gallery-title">
-                                <i class="fas fa-camera"></i>
-                                {{ 'Vehicle Image' }}
-                            </h4>
-                            <div class="gallery-meta">
-                                <span class="gallery-timestamp">
-                                    <i class="fas fa-clock"></i>
-                                    {{ isset($image->created_at) ? \Carbon\Carbon::parse($image['created_at'])->format('M d, Y') : 'N/A' }}
-                                </span>
-
+                @if($vehicleImages->count())
+                <table width="100%" cellspacing="0" cellpadding="8" style="border-collapse: collapse;">
+                    @foreach($vehicleImages->chunk(3) as $row)
+                    <tr>
+                        @foreach($row as $image)
+                        <td width="33.33%" valign="top" style="border: 1px solid #e0e0e0; border-radius: 8px;">
+                            <div style="margin: 4px;">
+                                <img
+                                    src="{{ storage_path('app/public/' . $image->path) }}"
+                                    alt="{{ $image['title'] ?? 'Vehicle Image' }}"
+                                    style="display: block; width: 100%; height: 180px; object-fit: cover; border-radius: 6px;">
+                                <div style="margin-top: 6px; border-top: 1px solid #f0f0f0; padding-top: 6px;">
+                                    <div style="font-size: 12px; font-weight: 600; color: #222;">
+                                        <i class="fas fa-camera" style="color: #d7b236;"></i>
+                                        Vehicle Image
+                                    </div>
+                                    <div style="font-size: 10px; color: #666; margin-top: 2px;">
+                                        <i class="fas fa-clock"></i>
+                                        {{ isset($image->created_at) ? \Carbon\Carbon::parse($image['created_at'])->format('M d, Y') : 'N/A' }}
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                    </div>
+                        </td>
+                        @endforeach
+
+                        {{-- Fill remaining cells if row has fewer than 3 items --}}
+                        @for($i = $row->count(); $i < 3; $i++)
+                            <td width="33.33%">
+                            </td>
+                            @endfor
+                    </tr>
                     @endforeach
-                </div>
+                </table>
                 @else
                 <div class="no-images">
                     <i class="fas fa-image"></i>
@@ -870,6 +887,7 @@
                     <p>No vehicle images have been uploaded for this inspection report.</p>
                 </div>
                 @endif
+
             </div>
         </div>
 
@@ -877,7 +895,16 @@
         <div class="report-card">
             <div class="card-header"><i class="fa-solid fa-triangle-exclamation"></i>Damage Assessment</div>
             <div class="card-body">
-                @include('pdf.inspection.damage-report', ['damages' => $reportInView->damages])
+                @if($reportInView->damage_file_path)
+                <img src="{{ storage_path('app/public/' . $reportInView->damage_file_path) }}" alt="Damage Assessment" style="max-width: 100%; height: auto;">
+                @else
+                <div class="damage-assessment">
+                    <div class="status-pill status-good">
+                        <i class="fas fa-check-circle"></i>
+                        No Damage Reported or Image Not Found
+                    </div>
+                </div>
+                @endif
             </div>
         </div>
 

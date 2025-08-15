@@ -60,12 +60,7 @@
                         <img src="{{ asset('images/icons/login.svg') }}" alt="Login Icon" class="mx-auto" style="height: 90px;">
                     </div>
                     <h3 class="modal-title fw-bold mb-2" id="loginModalLabel">Please Log In</h3>
-                    <p class="text-muted mb-4">You need to be logged in to continue. Please log in or create an account.</p>
-
-                    <div class=" text-center">
-                        <a href="{{ route('account.login') }}" class="btn-main text-center">Log In</a>
-
-                    </div>
+                    
                 </div>
                 @livewire('auth.instant-login')
             </div>
@@ -92,7 +87,88 @@
     <!-- FilePond JS -->
     <script src="https://unpkg.com/filepond@^4/dist/filepond.js"></script>
     <script src="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.js"></script>
+    {{-- begin::sweetalert --}}
+    <script src="{{ asset('assets/js/pages/features/miscellaneous/sweetalert2.js') }}"></script>
+    {{-- end::sweetalert --}}
+    <script>
+        var toastMixin = Swal.mixin({
+            toast: true,
+            icon: 'success',
+            title: 'General Title',
+            position: 'top-right',
+            showConfirmButton: false,
+            timer: 3000,
+        });
 
+        window.addEventListener('close-modal', event => {
+            $('#' + event.detail.id).modal('hide');
+        })
+        window.addEventListener('open-modal', event => {
+            $('#' + event.detail.id).modal('show');
+        })
+
+        window.addEventListener('success-notification', event => {
+            toastMixin.fire({
+                title: event.detail.message,
+                icon: 'success'
+            });
+        })
+
+        window.addEventListener('info-notification', event => {
+            toastMixin.fire({
+                title: event.detail.message,
+                icon: 'info'
+            });
+        })
+        window.addEventListener('error-notification', event => {
+            toastMixin.fire({
+                title: event.detail.message,
+                icon: 'error'
+            });
+        })
+        window.addEventListener('warning-notification', event => {
+            toastMixin.fire({
+                title: event.detail.message,
+                icon: 'warning'
+            });
+        })
+
+        window.addEventListener('success-prompt', event => {
+            Swal.fire(
+                'Success!',
+                event.detail.message,
+                'success'
+            )
+        })
+
+        window.addEventListener('error-prompt', event => {
+            Swal.fire(
+                'Error!',
+                event.detail.message,
+                'error'
+            )
+        })
+
+        $('.logout-button').on('click', function(e) {
+            e.preventDefault();
+            submitLogoutForm();
+        });
+
+        function submitLogoutForm() {
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You will be logged out of the system!",
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonText: 'Yes, Log out!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    document.getElementById("logout-form").submit();
+                }
+            })
+
+        }
+    </script>
 
     <!-- Optional: Navbar scroll effect -->
     <script>
@@ -115,6 +191,10 @@
             // 3. Use the Bootstrap API to show the modal
             loginModal.show();
         });
+         document.addEventListener('close-login-modal', () => {
+        const modal = bootstrap.Modal.getInstance(document.getElementById('loginModal'));
+        if (modal) modal.hide();
+    });
     </script>
 
     <script>

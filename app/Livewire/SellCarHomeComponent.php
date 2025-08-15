@@ -7,6 +7,7 @@ use App\Models\Brand;
 use App\Models\VehicleModel;
 use App\Models\User;
 use App\Models\VehicleEnquiry;
+use App\Notifications\AccountCreatedConfirmation;
 use App\Notifications\VehicleEnquiryNotification;
 use App\Notifications\VehicleEnquiryReceivedConfirmation;
 use Illuminate\Support\Facades\Hash;
@@ -78,8 +79,7 @@ class SellCarHomeComponent extends Component
             'formData.name' => ['required', 'string', 'max:255'],
             'formData.phone' => [
                 'required',
-                // Accepts +9715XXXXXXXX or 05XXXXXXXX
-                'regex:/^(\+971|0)5\d{8}$/'
+
             ],
             'formData.email' => ['required', 'email', 'max:255'],
         ];
@@ -117,7 +117,7 @@ class SellCarHomeComponent extends Component
                     'formData.name' => ['required', 'string', 'max:255'],
                     'formData.phone' => [
                         'required',
-                        'regex:/^(\+971|0)5\d{8}$/'
+
                     ],
                     'formData.email' => ['required', 'email', 'max:255'],
                 ];
@@ -217,12 +217,14 @@ class SellCarHomeComponent extends Component
                 $user = User::where('email', $email)->first();
 
                 if (!$user) {
+                    $tempPassword = Str::random(10);
                     $user = User::create([
                         'name' => $this->formData['name'] ?: 'Customer',
                         'email' => $email,
                         'role' => 'customer',
-                        'password' => Hash::make('password'),
+                        'password' => Hash::make($tempPassword),
                     ]);
+                    Notification::send($user, new AccountCreatedConfirmation($user, $tempPassword));
                     $user->syncRoles('customer');
                 }
             }
