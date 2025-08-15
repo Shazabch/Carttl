@@ -67,6 +67,7 @@
 
                     </div>
                 </div>
+                @livewire('auth.instant-login')
             </div>
         </div>
     </div>

@@ -10,56 +10,28 @@ class InstantLogin extends Component
 {
     public $email;
     public $password;
-
-    public function loginUser()
+    protected $rules = [
+        'email' => 'required|email',
+        'password' => 'required',
+    ];
 
     public function login()
     {
-        // Validate inputs
-        $this->validate([
-            'email' => ['required', 'email'],
-            'password' => ['required', 'min:5'],
-        ]);
-        dd('dd');
+        $this->validate();
 
-        // Attempt login
-        if (Auth::attempt(['email' => $this->email, 'password' => $this->password])) {
-            $user = Auth::user();
-
-            // Sync guest favorites
-            $this->syncSessionFavorites($user);
-
-            // Redirect to dashboard
-             return redirect()->route('home');
+        if (Auth::attempt(
+            ['email' => $this->email, 'password' => $this->password],
+           
+        )) {
+            session()->regenerate();
+            return redirect()->intended('/dashboard');
         }
 
-        session()->flash('error', 'Either email or password is incorrect.');
+        session()->flash('error', 'Invalid email or password.');
     }
 
-    /**
-     * Merges favorite vehicle IDs from the guest session into the user's
-     * permanent database record.
-     */
-    private function syncSessionFavorites(User $user): void
-    {
-        if (session()->has('favorites')) {
-            $guestFavorites = session('favorites', []);
 
-            if (!empty($guestFavorites)) {
-                $userFavorites = $user->favoriteVehicles()->pluck('vehicle_id')->toArray();
 
-                $favoritesToSync = array_diff($guestFavorites, $userFavorites);
-
-                if (!empty($favoritesToSync)) {
-                    $user->favoriteVehicles()->attach($favoritesToSync);
-                }
-            }
-
-            session()->forget('favorites');
-        }
-    }
-
-   
     public function render()
     {
         return view('livewire.auth.instant-login');
