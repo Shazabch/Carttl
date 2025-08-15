@@ -248,21 +248,9 @@ class GenerationComponent extends Component
         $this->reset(['reportData']);
     }
 
-    /**
-     * Generate PDF and image report for vehicle inspection
-     * Works in both DDEV and standard environments like XAMPP
-     *
-     * @param int $reportId The ID of the inspection report
-     * @return void
-     */
     public function generatePdf($reportId)
     {
-        // Import at top of file
-        // use Spatie\Browsershot\Browsershot;
-
         $reportInView = VehicleInspectionReport::findOrFail($reportId);
-
-        // Delete existing files if they exist
         if ($reportInView->damage_file_path && Storage::disk('public')->exists($reportInView->damage_file_path)) {
             Storage::disk('public')->delete($reportInView->damage_file_path);
             VehicleDocument::where('file_path', $reportInView->damage_file_path)->delete();
@@ -272,94 +260,48 @@ class GenerationComponent extends Component
             Storage::disk('public')->delete($reportInView->file_path);
             VehicleDocument::where('file_path', $reportInView->file_path)->delete();
         }
-
-        // Clean up any other related files
         foreach (Storage::disk('public')->files('damage-assessments') as $path) {
             if (Str::startsWith(basename($path), 'damage-report-' . $reportInView->id . '-')) {
                 Storage::disk('public')->delete($path);
                 VehicleDocument::where('file_path', $path)->delete();
             }
         }
-
         foreach (Storage::disk('public')->files('inspection_pdf') as $path) {
             if (Str::startsWith(basename($path), 'inspection_' . $reportInView->id . '_')) {
                 Storage::disk('public')->delete($path);
                 VehicleDocument::where('file_path', $path)->delete();
             }
         }
-
-        // Generate damage assessment image using Browsershot
         $html = view('pdf.inspection.damage-assessment-image', compact('reportInView'))->render();
-
-        // Create directory if it doesn't exist
+        $snappyImage = app('snappy.image');
+        $pngOptions = [
+            'width' => 1200,
+            'quality' => 90,
+            'encoding' => 'UTF-8',
+            'enable-local-file-access' => true,
+            'disable-smart-width' => true,
+            'javascript-delay' => 300,
+            'no-stop-slow-scripts' => true,
+            'load-error-handling' => 'ignore',
+        ];
+        $pngBinary = $snappyImage->getOutputFromHtml($html, $pngOptions);
         $pngDir = 'damage-assessments';
         if (!Storage::disk('public')->exists($pngDir)) {
             Storage::disk('public')->makeDirectory($pngDir);
         }
-
         $pngFilename = 'damage-report-' . $reportInView->id . '-' . now()->format('Ymd_His') . '.png';
         $pngPath = $pngDir . '/' . $pngFilename;
-        $fullStoragePath = Storage::disk('public')->path('');
-        $outputPath = $fullStoragePath . $pngPath;
 
-        // Generate image using Browsershot with universal configuration
-        try {
-            // Check if we're in DDEV environment
-            $isDDEV = file_exists('/var/www/html/.ddev/config.yaml') || getenv('IS_DDEV_PROJECT') === 'true';
-
-            // Create a Browsershot instance with common settings
-            $browsershot = Browsershot::html($html)
-                ->windowSize(1200, 800)
-                ->deviceScaleFactor(2)
-                ->waitUntilNetworkIdle()
-                ->timeout(60)
-                ->ignoreHttpsErrors()
-                ->noSandbox(); // Works in all environments
-
-            // If in DDEV and chrome service is available, use it
-            if ($isDDEV) {
-                // Test if chrome service is available
-                $chromeServiceAvailable = @fsockopen('chrome', 3000, $errno, $errstr, 1);
-                if ($chromeServiceAvailable) {
-                    $browsershot->setRemoteInstance('http://chrome:3000');
-                }
-            }
-
-            // Save the image
-            $browsershot->save($outputPath);
-        } catch (\Exception $e) {
-            // Log the error for debugging
-            \Log::error('Browsershot failed: ' . $e->getMessage());
-
-            // Fallback to wkhtmltoimage if Browsershot fails
-            $snappyImage = app('snappy.image');
-            $pngOptions = [
-                'width' => 1200,
-                'quality' => 90,
-                'encoding' => 'UTF-8',
-                'enable-local-file-access' => true,
-                'disable-smart-width' => true,
-                'javascript-delay' => 300,
-                'no-stop-slow-scripts' => true,
-                'load-error-handling' => 'ignore',
-            ];
-            $pngBinary = $snappyImage->getOutputFromHtml($html, $pngOptions);
-            Storage::disk('public')->put($pngPath, $pngBinary);
-        }
-
-        // Save document reference
+        Storage::disk('public')->put($pngPath, $pngBinary);
         if ($reportInView->vehicle_id) {
             $imageDoc = new VehicleDocument();
-            $imageDoc->vehicle_id = $reportInView->vehicle_id;
+            $imageDoc->vehicle_id  =  $reportInView->vehicle_id;
             $imageDoc->file_path = $pngPath;
             $imageDoc->type = 'InspectionReportImage';
             $imageDoc->save();
         }
-
         $reportInView->damage_file_path = $pngPath;
         $reportInView->save();
-
-        // Generate PDF
         $directory = 'inspection_pdf';
         if (!Storage::disk('public')->exists($directory)) {
             Storage::disk('public')->makeDirectory($directory);
@@ -368,14 +310,14 @@ class GenerationComponent extends Component
         $pdf = Pdf::loadView('pdf.inspection.report-pdf-template', ['reportInView' => $reportInView])
             ->setPaper('a4', 'portrait');
 
-        $filename = 'inspection_' . $reportInView->id . '_' . now()->format('Ymd_His') . '.pdf';
+        $filename = 'inspection_' . $reportInView->id  . '_' . now()->format('Ymd_His') . '.pdf';
         $filepath = $directory . '/' . $filename;
 
         Storage::disk('public')->put($filepath, $pdf->output());
 
         if ($reportInView->vehicle_id) {
             $vehicleDoc = new VehicleDocument();
-            $vehicleDoc->vehicle_id = $reportInView->vehicle_id;
+            $vehicleDoc->vehicle_id  =  $reportInView->vehicle_id;
             $vehicleDoc->file_path = $filepath;
             $vehicleDoc->type = 'InspectionReport';
             $vehicleDoc->save();
@@ -383,11 +325,10 @@ class GenerationComponent extends Component
 
         $reportInView->file_path = $filepath;
         $reportInView->save();
-
         $this->dispatch('success-notification', message: 'Report Generated Successfully');
         $this->js('setTimeout(() => window.location.reload(), 1200)');
 
-        return; // important: stop here, don't also return a redirect
+        return; // important: stop here, don’t also return a redirect
     }
     // Helper function to get status class and icon
     public static function getStatusInfo($value)
