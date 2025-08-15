@@ -38,7 +38,7 @@ class LoginController extends Controller
             $this->syncSessionFavorites($user);
             // --- MODIFICATION END ---
 
-            return redirect()->route('account.dashboard');
+            return redirect()->intended();
         } else {
             return redirect()->route('account.login')->with('error', 'Either email or password is incorrect.');
         }

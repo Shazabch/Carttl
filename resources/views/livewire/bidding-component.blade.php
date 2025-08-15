@@ -23,7 +23,7 @@
                 font-size: 2.5rem;
                 /* Larger numbers for impact */
                 font-weight: 700;
-                color: #bd9731 ;
+                color: #bd9731;
                 /* Dark text for readability */
                 line-height: 1;
                 display: block;
@@ -42,7 +42,7 @@
             .timer-separator {
                 font-size: 2rem;
                 font-weight: 600;
-                color: #bd9731 ;
+                color: #bd9731;
                 /* A subtle separator */
                 padding-bottom: 25px;
                 /* Aligns with the number's baseline */
@@ -122,14 +122,14 @@
             @endif
             <div class="bid-actions">
                 <div class="bid-input-group">
-                    <input type="number" wire:model="current_bid" class="form-control bid-input"
-                        placeholder="Enter bid ">
+                    <input type="number" wire:model.live="current_bid" class="form-control bid-input"
+                        placeholder="Enter bid " step="500" @if($is_not_login) disabled @endif min="{{$current_bid}}">
                     @error('current_bid') <div class="text-danger small mt-1">{{ $message }}</div> @enderror
                     <span class="input-addon">AED</span>
                 </div>
                 <div class="bid-input-group">
-                    <input type="number" wire:model="max_bid" class="form-control bid-input"
-                        placeholder="Enter Max Bid">
+                    <input type="number" wire:model.live="max_bid" class="form-control bid-input"
+                        placeholder="Enter Max Bid" min="{{$max_bid}}" step="500" @if($is_not_login) disabled @endif>
                     @error('max_bid') <div class="text-danger small mt-1">{{ $message }}</div> @enderror
                     <span class="input-addon">AED</span>
                 </div>
@@ -143,10 +143,15 @@
                     </span>
                 </button>
                 @else
-                <a href="/login" class="btn btn-primary btn-bid">
+                <button wire:click="saveBid" class="btn btn-primary btn-bid">
                     <i class="fas fa-gavel"></i>
-                    Signin & Place Bid <div class="spinner"></div>
-                </a>
+                    Signin & Place Bid <span wire:loading wire:target="saveBid">
+                        <div class="spinner-border" role="status">
+                            <span class="sr-only">Loading...</span>
+                        </div>
+                    </span>
+                </button>
+
                 @endif
                 <!-- <button class="btn btn-outline-primary btn-auto-bid">
                                         <i class="fas fa-robot"></i>
