@@ -15,16 +15,18 @@
                             <div class="main-image-container">
                                 <img src="{{$mainImage ? asset('storage/'.$mainImage) : asset('images/c38ec63b-c441-4574-8b3a-8c69a2aa9595.webp')}}" alt="2023 Porsche 911 Turbo S" class="main-image" id="mainImage">
                                 <div class="image-overlay">
-                                    @if($selected_vehicle->live_auction)
+                                    @if($selected_vehicle->live_auction && $selected_vehicle->is_auction)
                                     <div class="auction-status">
 
                                         <span class="status-badge live">LIVE AUCTION</span>
 
+                                    </div>
+                                    @endif
+                                     @if($selected_vehicle->status=='sold')
+                                    <div class="auction-status">
 
-                                        <div class="time-remaining">
-                                            <i class="fas fa-clock"></i>
-                                            <span id="countdown">2d 14h 32m</span>
-                                        </div>
+                                        <span class="status-badge live">Sold</span>
+
                                     </div>
                                     @endif
                                     <div class="image-controls">

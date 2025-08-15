@@ -81,7 +81,7 @@ class VehicleAndAuctionComponent extends Component
         $vehiclesQuery = Vehicle::query();
 
         if ($this->section == 'Auctions') {
-            $vehiclesQuery->where('is_auction', 1);
+            $vehiclesQuery->where('is_auction', 1)->where('status','!=', 'sold');
         } else {
 
             $vehiclesQuery->where(function ($q) {
