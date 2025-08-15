@@ -5,6 +5,7 @@ namespace App\Livewire;
 use App\Models\Feature;
 use Livewire\Component;
 use App\Models\Vehicle;
+use Illuminate\Support\Facades\Auth;
 
 class VehicleDetailComponent extends Component
 {
@@ -27,6 +28,7 @@ class VehicleDetailComponent extends Component
         $this->tags = $this->selected_vehicle->features->where('type', 'tag');
         $this->mainImage = $this->selected_vehicle->coverImage->path ?? null;
     }
+
 
     public function render()
     {

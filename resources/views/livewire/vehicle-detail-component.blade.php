@@ -22,7 +22,7 @@
 
                                     </div>
                                     @endif
-                                     @if($selected_vehicle->status=='sold')
+                                    @if($selected_vehicle->status=='sold')
                                     <div class="auction-status">
 
                                         <span class="status-badge live">Sold</span>
@@ -108,7 +108,7 @@
                                     </div>
                                 </div>
                                 <!-- Car Description -->
-                                   <div class="detail-card accordion-item">
+                                <div class="detail-card accordion-item">
                                     <div class="detail-header accordion-header" id="headingSix">
                                         <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSix" aria-expanded="true" aria-controls="collapseSix">
                                             <h3 class="detail-title mb-0"><i class="fas fa-file-alt me-2"></i>Car Description</h3>
@@ -117,11 +117,9 @@
                                     <div id="collapseSix" class="accordion-collapse collapse show" aria-labelledby="headingSix" data-bs-parent="#vehicleDetailsAccordion">
                                         <div class="detail-content">
                                             <div class="row g-3">
-                                                <div>
-                                                    <div class="detail-item"><span class="detail-label"></span><span class="detail-value">{{$selected_vehicle->description}}</span></div>
-                                                    
+                                                <div class="col-md-12">
+                                                    {{$selected_vehicle->description}}
                                                 </div>
-                                              
                                             </div>
                                         </div>
                                     </div>
@@ -230,7 +228,7 @@
                             @livewire('bidding-component',['selected_vehicle' => $selected_vehicle])
 
                             <!-- Buy It Now Card -->
-                            <div class="buy-now-card">
+                            <div class="buy-now-card my-2">
                                 <h4>Buy It Now</h4>
                                 <div class="buy-now-price">{{format_currency($selected_vehicle->price)}}</div>
                                 <p>Skip the auction and purchase immediately</p>
@@ -239,7 +237,7 @@
                                     <i class="fas fa-shopping-cart"></i> Buy It Now
                                 </button>
                                 @else
-                                <a href="/login" class="btn btn-warning ">
+                                <a href="/login" class="btn btn-light text-primary ">
 
                                     Buy It Now <div class="spinner"></div>
                                 </a>
@@ -348,7 +346,7 @@
                                     <div class="form-group">
                                         <label>Annual Interest Rate (%)</label>
                                         <!-- Added new input for interest rate with an ID -->
-                                        <input type="number" class="form-control" placeholder="Interest Rate" id="interestRateInput"  step="0.1">
+                                        <input type="number" class="form-control" placeholder="Interest Rate" id="interestRateInput" step="0.1">
                                     </div>
 
                                     <div class="financing-result">

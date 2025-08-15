@@ -2749,7 +2749,7 @@ footer .footer-center ul {
 }
 
 .accordion-button::after {
-    filter: brightness(50);
+    filter: brightness(1);
 }
 
 .custom-accordion .accordion-button:focus {
@@ -2780,6 +2780,27 @@ footer .footer-center ul {
     background-color: var(--accent);
     color: #fff;
 }
+.accordion-button:not(.collapsed) {
+
+    color: #fff !important;
+    background-color: var(--accent) !important;
+
+}
+.accordion-button .detail-title{
+
+    color: var(--accent) !important;
+
+}
+.accordion-button:not(.collapsed) .detail-title{
+
+    color: #fff !important;
+
+}
+.accordion-button:not(.collapsed) .detail-title i{
+
+    color: #fff !important;
+
+}
 
 .custom-accordion.white .accordion-body {
     padding: 20px;
@@ -2795,7 +2816,7 @@ footer .footer-center ul {
 }
 
 .accordion-button:not(.collapsed):after {
-    filter: brightness(100)
+    filter: brightness()
 }
 
 .faq-img {

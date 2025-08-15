@@ -22,7 +22,7 @@ class ContactForm extends Component
     #[Rule('required|email')]
     public $email = '';
 
-    #[Rule(['required', 'regex:/^\+9715(0|2|4|5|6|8)\d{7}$/'])]
+    #[Rule(['required'])]
     public $phone = '';
 
     #[Rule('required|min:10')]

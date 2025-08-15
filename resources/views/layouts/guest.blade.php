@@ -60,7 +60,7 @@
                         <img src="{{ asset('images/icons/login.svg') }}" alt="Login Icon" class="mx-auto" style="height: 90px;">
                     </div>
                     <h3 class="modal-title fw-bold mb-2" id="loginModalLabel">Please Log In</h3>
-                    
+
                 </div>
                 @livewire('auth.instant-login')
             </div>
