@@ -52,7 +52,7 @@ $('.testimonail_slider').owlCarousel({
 })
 
 $(".cars-card-slider").owlCarousel({
-  loop: true,
+  loop: false,
   margin: 25,
   nav: true,
   dots: false,
@@ -220,3 +220,4 @@ $(function () {
         goToStep(prevStep);
     });
 });
+

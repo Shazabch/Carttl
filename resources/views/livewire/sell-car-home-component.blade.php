@@ -1,16 +1,5 @@
 <div>
     <div>
-        <div class="form-widget-head">
-            <div class="banner-text">
-                <h5 class=" fw-500 text-white mb-1">Sell Used Cars at Best Price</h5>
-                <ul class="theme_list white">
-                    <li>Free car inspection</li>
-                    <li>Instant payment</li>
-                </ul>
-            </div>
-            <img src="{{ asset('images/sellcar.png') }}">
-        </div>
-
         <div class="form-widget-wrapper">
             @if ($formSubmitted)
             <div class="card shadow-lg border-0 rounded-lg text-center p-2 p-md-5">
@@ -31,17 +20,11 @@
             @else
             {{-- Global error summary shown on all steps --}}
             @if ($errors->any())
-            <div class="error-container mt-1 mb-1 p-1"
-                style="background-color: #fff5f5;
-                        border-left: 4px solid #f56565;
-                        border-radius: 4px;
-                        max-width: 600px;
-                        margin: 20px auto 0;">
-
+            <div class="error-container mt-3 mb-1 p-1 mx-2" style="background-color: #fff5f5; border-left: 4px solid #f56565; border-radius: 4px; max-width: 600px; margin: 20px auto 0;">
                 <div class="text-left">
                     @foreach ($errors->all() as $error)
-                    <div class="d-flex align-items-start mb-2">
-                        <i class="fas fa-times-circle text-danger mt-1 mx-2" style="font-size: 0.8rem;"></i>
+                    <div class="d-flex align-items-start">
+                        <i class="fas fa-times-circle text-danger mx-2" style="font-size: 0.8rem; margin-top: 6px;"></i>
                         <span class="text-danger">{{ $error }}</span>
                     </div>
                     @endforeach
@@ -93,14 +76,22 @@
 
             {{-- Step 1: Select Featured Brand --}}
             @if ($step === 1)
+            <div class="form-widget-head">
+                <div class="banner-text">
+                    <h5 class="fw-500 text-white mb-1">Sell Used Cars at Best Price</h5>
+                    <ul class="theme_list white">
+                        <li>Free car inspection</li>
+                        <li>Instant payment</li>
+                    </ul>
+                </div>
+                <img src="{{ asset('images/sellcar.png') }}">
+            </div>
             <div class="step-section active">
                 <h6 class="p-16 fw-500 mb-3">Select your car Make to sell</h6>
                 <div class="brand-grid">
                     @foreach ($featuredBrands as $brand)
                     @php $isSelected = (string)($formData['brand_id'] ?? '') === (string)$brand->id; @endphp
-                    <div class="brand-card {{ $isSelected ? 'selected' : '' }}"
-                        wire:click="selectBrand({{ $brand->id }})"
-                        role="button" aria-pressed="{{ $isSelected ? 'true' : 'false' }}">
+                    <div class="brand-card {{ $isSelected ? 'selected' : '' }}" wire:click="selectBrand({{ $brand->id }})" role="button" aria-pressed="{{ $isSelected ? 'true' : 'false' }}">
                         <img src="{{ $brand->image_source ?? asset('images/icons/BMW.svg') }}">
                         <h5 class="d-flex align-items-center gap-2 mb-0">
                             {{ $brand->name }}
@@ -118,12 +109,11 @@
             {{-- Step 2: Select Any Brand (with Search) --}}
             @if ($step === 2)
             <div class="step-section active">
-                <div class="row d-flex">
-                    <div class="col-6"></div>
-                    <button class="back-btn col-3" wire:click="back">
+                <div class="btn_group">
+                    <button class="back-btn" wire:click="back">
                         <i class="fa-solid fa-chevron-left"></i> Back
                     </button>
-                    <button class="next-btn btn-primary text-light col-3" wire:click="next">
+                    <button class="next-btn btn-primary text-light" wire:click="next">
                         Next <i class="fa-solid fa-chevron-right text-light"></i>
                     </button>
                 </div>
@@ -152,12 +142,11 @@
             {{-- Step 3: Select Model --}}
             @if ($step === 3)
             <div class="step-section active">
-                <div class="row d-flex">
-                    <div class="col-6"></div>
-                    <button class="back-btn col-3" wire:click="back">
+                <div class="btn_group">
+                    <button class="back-btn" wire:click="back">
                         <i class="fa-solid fa-chevron-left"></i> Back
                     </button>
-                    <button class="next-btn btn-primary text-light col-3" wire:click="next">
+                    <button class="next-btn btn-primary text-light" wire:click="next">
                         Next <i class="fa-solid fa-chevron-right text-light"></i>
                     </button>
                 </div>
@@ -185,12 +174,11 @@
             {{-- Step 4: Select Year --}}
             @if ($step === 4)
             <div class="step-section active">
-                <div class="row d-flex">
-                    <div class="col-6"></div>
-                    <button class="back-btn col-3" wire:click="back">
+                <div class="btn_group">
+                    <button class="back-btn" wire:click="back">
                         <i class="fa-solid fa-chevron-left"></i> Back
                     </button>
-                    <button class="next-btn btn-primary text-light col-3" wire:click="next">
+                    <button class="next-btn btn-primary text-light" wire:click="next">
                         Next <i class="fa-solid fa-chevron-right text-light"></i>
                     </button>
                 </div>
@@ -216,12 +204,11 @@
             {{-- Step 5: Vehicle Details --}}
             @if ($step === 5)
             <div class="step-section active">
-                <div class="row d-flex">
-                    <div class="col-6"></div>
-                    <button class="back-btn col-3" wire:click="back">
+                <div class="btn_group">
+                    <button class="back-btn" wire:click="back">
                         <i class="fa-solid fa-chevron-left"></i> Back
                     </button>
-                    <button class="next-btn btn-primary text-light col-3" wire:click="next">
+                    <button class="next-btn btn-primary text-light" wire:click="next">
                         Next <i class="fa-solid fa-chevron-right text-light"></i>
                     </button>
                 </div>
@@ -256,15 +243,14 @@
                         </div>
                     </div>
                 </div>
-                 <div class="row d-flex">
-                    <div class="col-6"></div>
-                    <button class="back-btn col-3" wire:click="back">
+                 {{-- <div class="btn_group">
+                    <button class="back-btn" wire:click="back">
                         <i class="fa-solid fa-chevron-left"></i> Back
                     </button>
-                    <button class="next-btn btn-primary text-light col-3" wire:click="next">
+                    <button class="next-btn btn-primary text-light" wire:click="next">
                         Next <i class="fa-solid fa-chevron-right text-light"></i>
                     </button>
-                </div>
+                </div> --}}
             </div>
             @endif
 
@@ -278,7 +264,7 @@
                 <h6>Personal Details</h6>
                 <div class="row">
                     <div class="col-lg-12">
-                        <div class="form-group mb-1">
+                        <div class="form-group mb-3">
                             <label class="form-label">Full Name</label>
                             <input type="text" class="form-control" wire:model.lazy="formData.name" placeholder="Enter your full name">
                             @error('formData.name') <span class="text-danger">{{ $message }}</span> @enderror
@@ -286,7 +272,7 @@
                     </div>
 
                     <div class="col-lg-12">
-                        <div class="form-group mb-1">
+                        <div class="form-group mb-3">
                             <label class="form-label">Contact Number</label>
                             <div x-data="dubaiPhoneMask()" class="form-group mb-1">
                                 <input type="tel" id="phone" class="form-control" placeholder="+971 5xxxxxxxx"
@@ -297,7 +283,7 @@
                     </div>
 
                     <div class="col-lg-12">
-                        <div class="form-group mb-1">
+                        <div class="form-group mb-4">
                             <label class="form-label">Email</label>
                             <input type="email" class="form-control" wire:model.lazy="formData.email" placeholder="Enter your Email">
                             @error('formData.email') <span class="text-danger">{{ $message }}</span> @enderror
