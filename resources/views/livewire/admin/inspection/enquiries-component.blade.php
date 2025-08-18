@@ -39,6 +39,7 @@
                         @forelse ($inspections as $item)
                         <tr wire:key="{{ $item->id }}">
                             <td>{{ $item->name }}</td>
+
                             <td>{{ $item->phone }}</td>
                             <td>{{ $item->type }}</td>
                             <td>{{ $item->email }}</td>
@@ -133,11 +134,12 @@
                             </div>
                             <div class="col-6 col-md-3 mb-2 mb-md-0">
                                 <label class="form-label small">Make</label>
-                                <p class="fw-bold mb-0">{{ $selectedEnquiry->make }}</p>
+                                <p class="fw-bold mb-0">{{ $selectedEnquiry->brand?->name }}</p>
                             </div>
+                            
                             <div class="col-6 col-md-3">
                                 <label class="form-label small">Model</label>
-                                <p class="fw-bold mb-0">{{ $selectedEnquiry->model }}</p>
+                                <p class="fw-bold mb-0">{{ $selectedEnquiry->vehicleModel?->name }}</p>
                             </div>
                              <div class="col-6 col-md-3">
                                 <label class="form-label small">Model Year</label>

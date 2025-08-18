@@ -97,9 +97,7 @@
             <div class="col-md-4">
                 @include('livewire.admin.inspection.sections.partials.toggle-single', ['label' => 'Mortgage', 'property' => 'mortgage', 'options' => ['Yes', 'No']])
             </div>
-            <div class="col-md-4">
-                @include('livewire.admin.inspection.sections.partials.toggle-single', ['label' => 'Inspection', 'property' => 'is_inspection', 'options' => ['Yes', 'No']])
-            </div>
+    
         </div>
     </div>
 </div>

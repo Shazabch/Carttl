@@ -35,7 +35,7 @@
                             <td>{{ $loop->iteration }}</td>
                             <td>
                                 <div class="fw-bold">{{ $enquiry->name }}</div>
-                                <small class="text-muted">{{ $enquiry->number }}</small>
+                                <small class="text-muted">{{ $enquiry->phone }}</small>
                             </td>
                             <td>
                                 <div class="fw-bold">{{ $enquiry->email }}</div>
@@ -89,7 +89,7 @@
                                                 <dd class="col-sm-8">{{ $enquiry->email ?? 'N/A' }}</dd>
 
                                                 <dt class="col-sm-4">Number:</dt>
-                                                <dd class="col-sm-8">{{ $enquiry->number }}</dd>
+                                                <dd class="col-sm-8">{{ $enquiry->phone }}</dd>
 
                                                 <dt class="col-sm-4">Make:</dt>
                                                 <dd class="col-sm-8">{{ $enquiry->brand?->name ?? 'N/A' }}</dd>

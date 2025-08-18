@@ -21,6 +21,7 @@ class VehicleAndAuctionComponent extends Component
     public $year;
     public $mileage;
     public $live_auction;
+    public $reserve_status;
     public $endingSoon;
     public $auctionStatus = [];
     public $brands = [], $models = [];
@@ -32,6 +33,7 @@ class VehicleAndAuctionComponent extends Component
         'maxPrice',
         'make',
         'model',
+        'reserve_status',
         'year',
         'mileage',
         'live_auction',
@@ -81,11 +83,11 @@ class VehicleAndAuctionComponent extends Component
         $vehiclesQuery = Vehicle::query();
 
         if ($this->section == 'Auctions') {
-            $vehiclesQuery->where('is_auction', 1)->where('status','!=', 'sold');
+            $vehiclesQuery->where('is_auction', 1)->where('status', '!=', 'sold');
         } else {
 
             $vehiclesQuery->where(function ($q) {
-                $q->where('is_auction', 0)->where('status','!=', 'sold')->orWhereNull('is_auction');
+                $q->where('is_auction', 0)->where('status', '!=', 'sold')->orWhereNull('is_auction');
             });
         }
         switch ($this->sortBy) {
@@ -129,6 +131,9 @@ class VehicleAndAuctionComponent extends Component
         }
         if ($this->live_auction) {
             $vehiclesQuery->where('live_auction', $this->live_auction);
+        }
+        if ($this->reserve_status) {
+            $vehiclesQuery->where('reserve_status', 'met');
         }
         if ($this->endingSoon) {
             $vehiclesQuery->where('auction_end_date', '<', now()->addDay());

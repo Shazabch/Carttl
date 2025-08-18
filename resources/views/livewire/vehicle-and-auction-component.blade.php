@@ -74,6 +74,7 @@
                                 </div>
                             </div>
                             <!-- Auction Status Filter -->
+                             @if($section!='Vehicles')
                             <div class="filter-block mb-3 border-bottom-0">
                                 <h4 class="p-18 fw-500 mb-4">Auction Status</h4>
                                 <div class="form-check mb-3">
@@ -85,7 +86,7 @@
                                     <label class="form-check-label" for="a2">Ending Soon</label>
                                 </div>
                                 <div class="form-check mb-3">
-                                    <input class="form-check-input" type="checkbox" id="a3">
+                                    <input class="form-check-input" wire:model.live="reserve_status" value="reserve_status" type="checkbox" id="a3">
                                     <label class="form-check-label" for="a3">Reserve Met</label>
                                 </div>
                                 <div class="form-check mb-3">
@@ -93,6 +94,7 @@
                                     <label class="form-check-label" for="a4">Buy It Now</label>
                                 </div>
                             </div>
+                            @endif
                         </div>
                     </div>
                 </div>

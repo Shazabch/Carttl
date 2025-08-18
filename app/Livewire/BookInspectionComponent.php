@@ -2,8 +2,15 @@
 
 namespace App\Livewire;
 
+use App\Models\Brand;
 use App\Models\InspectionEnquiry;
+use App\Models\User;
+use App\Models\VehicleModel;
+use App\Notifications\AccountCreatedConfirmation;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Notification;
 use Livewire\Component;
+use Illuminate\Support\Str;
 
 class BookInspectionComponent extends Component
 {
@@ -22,9 +29,10 @@ class BookInspectionComponent extends Component
 
     protected function rules()
     {
+
         return [
             'name' => 'required',
-            'phone'    => ['required'],
+            'phone'    => 'required',
             'email' => 'required',
             'type' => 'required',
             'date' => 'required',
@@ -34,9 +42,25 @@ class BookInspectionComponent extends Component
             'make' => 'required',
             'model' => 'required',
 
+
+
         ];
     }
+    public $brands = [], $models = [];
+    public function mount()
+    {
+        $this->brands = Brand::orderBy('name')->where('is_active', 1)->get();
+        $this->models = collect();
+    }
+    public function updatedMake($make)
+    {
 
+        if ($this->make) {
+            $this->models = VehicleModel::where('brand_id', $this->make)->orderBy('name')->get();
+        } else {
+            $this->models = collect();
+        }
+    }
     public function messages()
     {
         return [
@@ -45,15 +69,37 @@ class BookInspectionComponent extends Component
         ];
     }
 
+
     public function saveInspection()
     {
         $validatedData = $this->validate();
-        dd('adsf');
-        InspectionEnquiry::create($validatedData);
 
+        $user = null;
+
+        if ($validatedData['email']) {
+            $user = User::where('email', $validatedData['email'])->first();
+
+            if (!$user) {
+                $tempPassword = Str::random(10);
+                $user = User::create([
+                    'name' => $validatedData['name'] ?: 'Customer',
+                    'email' => $validatedData['email'],
+                    'role' => 'customer',
+                    'password' => Hash::make($tempPassword),
+                ]);
+                Notification::send($user, new AccountCreatedConfirmation($user, $tempPassword));
+                $user->syncRoles('customer');
+            }
+        }
+
+        if ($user) {
+            $validatedData['user_id'] = $user->id;
+        }
+        InspectionEnquiry::create($validatedData);
         $this->dispatch('success-notification', message: 'Record Saved Successfully');
         $this->formSubmitted = true;
     }
+
     public function resetForm()
     {
         $this->reset(['name', 'phone', 'email', 'type', 'date', 'time', 'location', 'year', 'make', 'model']);

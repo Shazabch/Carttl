@@ -107,6 +107,14 @@ class GenerationComponent extends Component
             $this->linkedEnquiryId = $enquiryId;
         }
     }
+    public function loadModels($id)
+    {
+        if ($id) {
+            $this->models = VehicleModel::where('brand_id', $id)->get();
+        } else {
+            $this->models = [];
+        }
+    }
     private function loadDataFromVehicle(int $vehicleId)
     {
         $vehicle = Vehicle::find($vehicleId);
@@ -114,8 +122,9 @@ class GenerationComponent extends Component
         if ($vehicle) {
             $this->linkedVehicle = $vehicle;
             $this->reportData['vehicle_id'] = $this->linkedVehicleId;
-            $this->reportData['make']           = $vehicle->brand->name;
-            $this->reportData['model']          = $vehicle->vehicleModel->name;
+            $this->reportData['make']           = $vehicle->brand->id;
+           $this->loadModels($vehicle->brand->id);
+            $this->reportData['model']          = $vehicle->vehicleModel->id;
             $this->reportData['year']           = $vehicle->year;
             $this->reportData['vin']            = $vehicle->vin;
             $this->reportData['engine_cc']      = $vehicle->engine_cc;
@@ -134,6 +143,7 @@ class GenerationComponent extends Component
         $enquiry = InspectionEnquiry::find($enquiryId);
         if ($enquiry) {
             $this->reportData['make']           = $enquiry->make;
+            $this->loadModels($enquiry->make);
             $this->reportData['model']          = $enquiry->model;
             $this->reportData['year']           = $enquiry->year;
         }
@@ -210,6 +220,7 @@ class GenerationComponent extends Component
         $this->currentStep = 1;
         $this->showForm = true;
         $this->showDetails = false;
+         $this->loadModels( $this->reportData['make']);
     }
     public function showReportDetails($reportId)
     {

@@ -52,7 +52,7 @@ class EnquiriesComponent extends Component
                       ->orWhere('phone', 'like', "%{$this->search}%")
                       ->orWhere('email', 'like', "%{$this->search}%");
             })
-            ->orderBy($this->sortBy, $this->sortDir)
+            ->orderBy($this->sortBy, $this->sortDir)->with('brand','vehicleModel')
             ->paginate(10);
 
         return view('livewire.admin.inspection.enquiries-component', [
