@@ -16,4 +16,8 @@ class InspectionEnquiry extends Model
     {
         return $this->belongsTo(Brand::class, 'make' );
     }
+      public function user()
+     {
+          return $this->belongsTo(User::class);
+     }
 }

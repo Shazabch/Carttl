@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\InspectionEnquiry;
 use App\Models\VehicleBid;
 use App\Models\VehicleEnquiry;
 use Illuminate\View\View;
@@ -73,6 +74,13 @@ class DashboardController extends Controller
 
     public function carAppointments(): View
     {
-        return view('account.car-appointments');
+         $user_id = auth()->id();
+
+        if ($user_id) {
+            $inspections = InspectionEnquiry::where('user_id', $user_id)->get();
+        } else {
+            $inspections = collect(); // empty collection, avoids errors in Blade
+        }
+        return view('account.car-appointments' , compact('inspections'));
     }
 }
