@@ -92,18 +92,48 @@
                                 <button wire:click="showReportDetails({{ $report->id }})" class="btn btn-sm btn-outline-info" title="View Details">
                                     <i class="fas fa-eye"></i>
                                 </button>
-                                @if($report->file_path)
-                                <a href="{{asset('storage/'.$report->file_path)}}" target="_blank" class="btn btn-sm btn-outline-danger" title="Download PDF">
-                                    <i class="fas fa-file-pdf"></i>
-                                </a>
-                                @endif
+
                                 <button wire:click="showEditForm({{ $report->id }})" class="btn btn-sm btn-outline-primary" title="Edit">
                                     <i class="fas fa-edit"></i>
                                 </button>
-                                <button wire:click.prevent="$dispatch('confirmDelete', { id: {{ $report->id }} })"
-                                    class="btn btn-sm btn-outline-danger" title="Delete">
-                                    <i class="fas fa-trash"></i>
+
+
+                                <button class="btn btn-sm btn-outline-primary dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false">
+                                    Actions
                                 </button>
+                                <ul class="dropdown-menu">
+
+
+                                    @if($report->file_path)
+                                    <li>
+                                        <div class="dropdown-item">
+                                            <a href="{{asset('storage/'.$report->file_path)}}" target="_blank" class=" btn btn-outline-danger">
+                                                <i class="fas fa-file-pdf me-2"></i> Download PDF
+                                            </a>
+                                        </div>
+
+                                    </li>
+                                    <li>
+                                        <div class="dropdown-item">
+                                            <button wire:click="openShareModal({{ $report->id }})" class=" btn btn-outline-info">
+                                                <i class="las la-share-alt me-2"></i> Share Report
+                                            </button>
+                                        </div>
+
+                                    </li>
+                                    @endif
+                                    <li>
+                                        <div class="dropdown-item">
+                                            <button wire:click.prevent="$dispatch('confirmDelete', { id: {{ $report->id }} })"
+                                                class="btn btn-outline-danger" title="Delete">
+                                                <i class="fas fa-trash"></i> Delete Report
+                                            </button>
+                                        </div>
+
+                                    </li>
+                                </ul>
+
+
                             </td>
                         </tr>
                         @empty
@@ -118,7 +148,76 @@
         </div>
     </div>
     @endif
+    {{-- Add this entire block at the bottom of generation-component.blade.php --}}
+    @if ($showShareModal)
+    <div class="modal fade show" style="display: block; background-color: rgba(0,0,0,0.5);" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Generate Sharable Link</h5>
+                    <button type="button" wire:click="closeShareModal" class="btn-close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Generate a secure, expirable link for Inspection Report #{{ $reportToShareId }}.</p>
 
+                    <div class="form-group">
+                        <label for="shareExpiryDateTime">Link Expiry Date & Time</label>
+                        <input type="datetime-local" id="shareExpiryDateTime" class="form-control" wire:model="shareExpiryDateTime">
+                        @error('shareExpiryDateTime') <span class="text-danger small mt-1">{{ $message }}</span> @enderror
+                    </div>
+
+                    <button wire:click="generateShareableLink" class="btn btn-primary w-100 mt-3">
+                        <span wire:loading.remove wire:target="generateShareableLink">
+                            <i class="las la-link"></i> Generate Link
+                        </span>
+                        <span wire:loading wire:target="generateShareableLink">
+                            Generating...
+                        </span>
+                    </button>
+
+                    @if ($generatedShareLink)
+                    <div class="mt-4">
+                        <p class="mb-1"><strong>Link Generated:</strong></p>
+                        <div class="input-group">
+                            <input type="text" id="generated-share-link" class="form-control" value="{{ $generatedShareLink }}" readonly>
+                            <button class="btn btn-outline--primary" onclick="copyShareLinkToClipboard()" title="Copy to Clipboard">
+                                <i class="las la-copy"></i>
+                            </button>
+                        </div>
+                    </div>
+                    @endif
+                </div>
+            </div>
+        </div>
+    </div>
+    @endif
+
+    @push('script')
+    <script>
+        function copyShareLinkToClipboard() {
+            const linkInput = document.getElementById('generated-share-link');
+            const linkText = linkInput.value;
+
+            // Use the modern Clipboard API
+            navigator.clipboard.writeText(linkText).then(() => {
+                // Success feedback
+                window.dispatchEvent(new CustomEvent('success-notification', {
+                    detail: {
+                        message: 'Link copied to clipboard!'
+                    }
+                }));
+            }).catch(err => {
+                // Error feedback
+                console.error('Failed to copy text: ', err);
+                window.dispatchEvent(new CustomEvent('error-notification', {
+                    detail: {
+                        message: 'Failed to copy link. Please copy manually.'
+                    }
+                }));
+            });
+        }
+    </script>
+    @endpush
     @push('scripts')
     <script>
         // Listen for the 'livewire:initialized' event to ensure Livewire is ready

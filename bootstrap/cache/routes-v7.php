@@ -32,7 +32,7 @@ app('router')->setCompiledRoutes(
         array (
           0 => 
           array (
-            '_route' => 'generated::PsTKSTwBE1PQyhB0',
+            '_route' => 'generated::1CxYyE9KQmbbxTxX',
           ),
           1 => NULL,
           2 => 
@@ -52,7 +52,7 @@ app('router')->setCompiledRoutes(
         array (
           0 => 
           array (
-            '_route' => 'generated::1M1L42VdkMQhUFDa',
+            '_route' => 'generated::7S1YQYoCy4RZGzR7',
           ),
           1 => NULL,
           2 => 
@@ -91,7 +91,7 @@ app('router')->setCompiledRoutes(
         array (
           0 => 
           array (
-            '_route' => 'generated::iTAcKq7UdAXQeDB9',
+            '_route' => 'generated::Ruzi3johyC2XpR2U',
           ),
           1 => NULL,
           2 => 
@@ -111,7 +111,7 @@ app('router')->setCompiledRoutes(
         array (
           0 => 
           array (
-            '_route' => 'generated::IcrFTNT7kOF6jwoW',
+            '_route' => 'generated::DYKEKQKeQR4Wqm91',
           ),
           1 => NULL,
           2 => 
@@ -855,7 +855,7 @@ app('router')->setCompiledRoutes(
     ),
     2 => 
     array (
-      0 => '{^(?|/livewire/preview\\-file/([^/]++)(*:39)|/blog/([^/]++)(*:60)|/car\\-detail/([^/]++)(*:88)|/admin/(?|vehicles(?|/([^/]++)(?|(*:128)|/details(*:144))|\\-enquiries/([^/]++)(*:173))|inspection\\-generate/from\\-(?|vehicle/([^/]++)(*:228)|enquiry/([^/]++)(*:252))))/?$}sDu',
+      0 => '{^(?|/livewire/preview\\-file/([^/]++)(*:39)|/blog/([^/]++)(*:60)|/car\\-detail/([^/]++)(*:88)|/admin/(?|vehicles(?|/([^/]++)(?|(*:128)|/details(*:144))|\\-enquiries/([^/]++)(*:173))|inspection\\-generate/from\\-(?|vehicle/([^/]++)(*:228)|enquiry/([^/]++)(*:252)))|/inspection\\-report/download/signed/([^/]++)(*:306))/?$}sDu',
     ),
     3 => 
     array (
@@ -1042,6 +1042,29 @@ app('router')->setCompiledRoutes(
           5 => true,
           6 => NULL,
         ),
+      ),
+      306 => 
+      array (
+        0 => 
+        array (
+          0 => 
+          array (
+            '_route' => 'inspection.report.download.signed',
+          ),
+          1 => 
+          array (
+            0 => 'report',
+          ),
+          2 => 
+          array (
+            'GET' => 0,
+            'HEAD' => 1,
+          ),
+          3 => NULL,
+          4 => false,
+          5 => true,
+          6 => NULL,
+        ),
         1 => 
         array (
           0 => NULL,
@@ -1089,7 +1112,7 @@ app('router')->setCompiledRoutes(
       'waitSeconds' => NULL,
       'withTrashed' => false,
     ),
-    'generated::PsTKSTwBE1PQyhB0' => 
+    'generated::1CxYyE9KQmbbxTxX' => 
     array (
       'methods' => 
       array (
@@ -1101,7 +1124,7 @@ app('router')->setCompiledRoutes(
       array (
         'uses' => 'Livewire\\Mechanisms\\FrontendAssets\\FrontendAssets@returnJavaScriptAsFile',
         'controller' => 'Livewire\\Mechanisms\\FrontendAssets\\FrontendAssets@returnJavaScriptAsFile',
-        'as' => 'generated::PsTKSTwBE1PQyhB0',
+        'as' => 'generated::1CxYyE9KQmbbxTxX',
       ),
       'fallback' => false,
       'defaults' => 
@@ -1117,7 +1140,7 @@ app('router')->setCompiledRoutes(
       'waitSeconds' => NULL,
       'withTrashed' => false,
     ),
-    'generated::1M1L42VdkMQhUFDa' => 
+    'generated::7S1YQYoCy4RZGzR7' => 
     array (
       'methods' => 
       array (
@@ -1129,7 +1152,7 @@ app('router')->setCompiledRoutes(
       array (
         'uses' => 'Livewire\\Mechanisms\\FrontendAssets\\FrontendAssets@maps',
         'controller' => 'Livewire\\Mechanisms\\FrontendAssets\\FrontendAssets@maps',
-        'as' => 'generated::1M1L42VdkMQhUFDa',
+        'as' => 'generated::7S1YQYoCy4RZGzR7',
       ),
       'fallback' => false,
       'defaults' => 
@@ -1200,7 +1223,7 @@ app('router')->setCompiledRoutes(
       'waitSeconds' => NULL,
       'withTrashed' => false,
     ),
-    'generated::iTAcKq7UdAXQeDB9' => 
+    'generated::Ruzi3johyC2XpR2U' => 
     array (
       'methods' => 
       array (
@@ -1229,7 +1252,7 @@ app('router')->setCompiledRoutes(
                         \'exception\' => $exception,
                     ]), status: $exception ? 500 : 200);
                 }";s:5:"scope";s:54:"Illuminate\\Foundation\\Configuration\\ApplicationBuilder";s:4:"this";N;s:4:"self";s:32:"000000000000073c0000000000000000";}}',
-        'as' => 'generated::iTAcKq7UdAXQeDB9',
+        'as' => 'generated::Ruzi3johyC2XpR2U',
       ),
       'fallback' => false,
       'defaults' => 
@@ -1245,7 +1268,7 @@ app('router')->setCompiledRoutes(
       'waitSeconds' => NULL,
       'withTrashed' => false,
     ),
-    'generated::IcrFTNT7kOF6jwoW' => 
+    'generated::DYKEKQKeQR4Wqm91' => 
     array (
       'methods' => 
       array (
@@ -1276,7 +1299,7 @@ app('router')->setCompiledRoutes(
         'where' => 
         array (
         ),
-        'as' => 'generated::IcrFTNT7kOF6jwoW',
+        'as' => 'generated::DYKEKQKeQR4Wqm91',
       ),
       'fallback' => false,
       'defaults' => 
@@ -3034,6 +3057,44 @@ app('router')->setCompiledRoutes(
         array (
         ),
         'as' => 'admin.inspection.generate.from-enquiry',
+      ),
+      'fallback' => false,
+      'defaults' => 
+      array (
+      ),
+      'wheres' => 
+      array (
+      ),
+      'bindingFields' => 
+      array (
+      ),
+      'lockSeconds' => NULL,
+      'waitSeconds' => NULL,
+      'withTrashed' => false,
+    ),
+    'inspection.report.download.signed' => 
+    array (
+      'methods' => 
+      array (
+        0 => 'GET',
+        1 => 'HEAD',
+      ),
+      'uri' => 'inspection-report/download/signed/{report}',
+      'action' => 
+      array (
+        'middleware' => 
+        array (
+          0 => 'web',
+          1 => 'signed',
+        ),
+        'uses' => 'App\\Http\\Controllers\\SharedDocumentController@downloadInspectionReport',
+        'controller' => 'App\\Http\\Controllers\\SharedDocumentController@downloadInspectionReport',
+        'namespace' => NULL,
+        'prefix' => '',
+        'where' => 
+        array (
+        ),
+        'as' => 'inspection.report.download.signed',
       ),
       'fallback' => false,
       'defaults' => 

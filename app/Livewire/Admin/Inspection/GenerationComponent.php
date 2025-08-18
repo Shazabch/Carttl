@@ -22,6 +22,7 @@ use Illuminate\Support\Facades\URL;
 use Spatie\Browsershot\Browsershot;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
+use Carbon\Carbon;
 
 
 class GenerationComponent extends Component
@@ -33,6 +34,11 @@ class GenerationComponent extends Component
     public $search = null;
     public $report_id = null;
     public $inspectionId;
+
+    public bool $showShareModal = false;
+    public ?int $reportToShareId = null;
+    public ?string $shareExpiryDateTime = null;
+    public ?string $generatedShareLink = null;
 
     public $showDetails = false;
     public ?VehicleInspectionReport $reportInView = null;
@@ -123,7 +129,7 @@ class GenerationComponent extends Component
             $this->linkedVehicle = $vehicle;
             $this->reportData['vehicle_id'] = $this->linkedVehicleId;
             $this->reportData['make']           = $vehicle->brand->id;
-           $this->loadModels($vehicle->brand->id);
+            $this->loadModels($vehicle->brand->id);
             $this->reportData['model']          = $vehicle->vehicleModel->id;
             $this->reportData['year']           = $vehicle->year;
             $this->reportData['vin']            = $vehicle->vin;
@@ -220,7 +226,7 @@ class GenerationComponent extends Component
         $this->currentStep = 1;
         $this->showForm = true;
         $this->showDetails = false;
-         $this->loadModels( $this->reportData['make']);
+        $this->loadModels($this->reportData['make']);
     }
     public function showReportDetails($reportId)
     {
@@ -417,6 +423,56 @@ class GenerationComponent extends Component
             $array[] = $value;
         }
         $this->reportData[$property] = array_values($array);
+    }
+
+    public function openShareModal(int $reportId)
+    {
+        $report = VehicleInspectionReport::findOrFail($reportId);
+        $this->reportToShareId = $report->id;
+
+        // Check if a valid, unexpired link already exists
+        if ($report->shared_link && $report->shared_link_expires_at && $report->shared_link_expires_at->isFuture()) {
+            // If yes, load it into the modal
+            $this->generatedShareLink = $report->shared_link;
+            $this->shareExpiryDateTime = $report->shared_link_expires_at->format('Y-m-d\TH:i');
+        } else {
+            // If no, reset and set a new default expiry
+            $this->generatedShareLink = null;
+            $this->shareExpiryDateTime = now()->addDay()->format('Y-m-d\TH:i');
+        }
+
+        $this->showShareModal = true;
+    }
+
+    public function closeShareModal()
+    {
+        $this->showShareModal = false;
+        $this->reset(['reportToShareId', 'shareExpiryDateTime', 'generatedShareLink']);
+    }
+    public function generateShareableLink()
+    {
+        $this->validate(['shareExpiryDateTime' => 'required|date']);
+        try {
+            $expiry = Carbon::parse($this->shareExpiryDateTime);
+
+            if ($expiry->isPast()) {
+                $this->addError('shareExpiryDateTime', 'The expiry date must be in the future.');
+                return;
+            }
+            $this->generatedShareLink = URL::temporarySignedRoute(
+                'inspection.report.download.signed',
+                $expiry,
+                ['report' => $this->reportToShareId]
+            );
+            $report = VehicleInspectionReport::find($this->reportToShareId);
+            $report->update([
+                'shared_link' => $this->generatedShareLink,
+                'shared_link_expires_at' => $expiry,
+            ]);
+            $this->dispatch('success-notification', message: 'Sharable link generated successfully!');
+        } catch (\Exception $e) {
+            $this->dispatch('error-notification', message: 'Failed to generate link. ' . $e->getMessage());
+        }
     }
     public function render()
     {

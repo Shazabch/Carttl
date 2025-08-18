@@ -8,6 +8,7 @@ use App\Http\Controllers\VehicleController;
 use App\Http\Controllers\BlogController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\SharedDocumentController;
 use App\Livewire\Admin\Inspection\GenerationComponent;
 use App\Models\Vehicle;
 use App\Models\Blog;
@@ -99,4 +100,8 @@ Route::group(['prefix' => 'admin'], function () {
 
     });
 });
+
+Route::get('/inspection-report/download/signed/{report}', [SharedDocumentController::class, 'downloadInspectionReport'])
+    ->name('inspection.report.download.signed') // This name is crucial
+    ->middleware('signed');
 Route::view('/un-authenticated', 'un-auth')->name('un-auth');
