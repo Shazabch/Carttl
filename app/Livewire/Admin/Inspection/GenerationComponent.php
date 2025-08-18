@@ -289,36 +289,39 @@ class GenerationComponent extends Component
                 VehicleDocument::where('file_path', $path)->delete();
             }
         }
-        $html = view('pdf.inspection.damage-assessment-image', compact('reportInView'))->render();
-        $snappyImage = app('snappy.image');
-        $pngOptions = [
-            'width' => 1200,
-            'quality' => 90,
-            'encoding' => 'UTF-8',
-            'enable-local-file-access' => true,
-            'disable-smart-width' => true,
-            'javascript-delay' => 300,
-            'no-stop-slow-scripts' => true,
-            'load-error-handling' => 'ignore',
-        ];
-        $pngBinary = $snappyImage->getOutputFromHtml($html, $pngOptions);
-        $pngDir = 'damage-assessments';
-        if (!Storage::disk('public')->exists($pngDir)) {
-            Storage::disk('public')->makeDirectory($pngDir);
-        }
-        $pngFilename = 'damage-report-' . $reportInView->id . '-' . now()->format('Ymd_His') . '.png';
-        $pngPath = $pngDir . '/' . $pngFilename;
+        $is_image=false;
+        if ($is_image) {
+            $html = view('pdf.inspection.damage-assessment-image', compact('reportInView'))->render();
+            $snappyImage = app('snappy.image');
+            $pngOptions = [
+                'width' => 1200,
+                'quality' => 90,
+                'encoding' => 'UTF-8',
+                'enable-local-file-access' => true,
+                'disable-smart-width' => true,
+                'javascript-delay' => 300,
+                'no-stop-slow-scripts' => true,
+                'load-error-handling' => 'ignore',
+            ];
+            $pngBinary = $snappyImage->getOutputFromHtml($html, $pngOptions);
+            $pngDir = 'damage-assessments';
+            if (!Storage::disk('public')->exists($pngDir)) {
+                Storage::disk('public')->makeDirectory($pngDir);
+            }
+            $pngFilename = 'damage-report-' . $reportInView->id . '-' . now()->format('Ymd_His') . '.png';
+            $pngPath = $pngDir . '/' . $pngFilename;
 
-        Storage::disk('public')->put($pngPath, $pngBinary);
-        if ($reportInView->vehicle_id) {
-            $imageDoc = new VehicleDocument();
-            $imageDoc->vehicle_id  =  $reportInView->vehicle_id;
-            $imageDoc->file_path = $pngPath;
-            $imageDoc->type = 'InspectionReportImage';
-            $imageDoc->save();
+            Storage::disk('public')->put($pngPath, $pngBinary);
+            if ($reportInView->vehicle_id) {
+                $imageDoc = new VehicleDocument();
+                $imageDoc->vehicle_id  =  $reportInView->vehicle_id;
+                $imageDoc->file_path = $pngPath;
+                $imageDoc->type = 'InspectionReportImage';
+                $imageDoc->save();
+            }
+            $reportInView->damage_file_path = $pngPath;
+            $reportInView->save();
         }
-        $reportInView->damage_file_path = $pngPath;
-        $reportInView->save();
         $directory = 'inspection_pdf';
         if (!Storage::disk('public')->exists($directory)) {
             Storage::disk('public')->makeDirectory($directory);
@@ -430,16 +433,10 @@ class GenerationComponent extends Component
         $report = VehicleInspectionReport::findOrFail($reportId);
         $this->reportToShareId = $report->id;
 
-        // Check if a valid, unexpired link already exists
-        if ($report->shared_link && $report->shared_link_expires_at && $report->shared_link_expires_at->isFuture()) {
-            // If yes, load it into the modal
-            $this->generatedShareLink = $report->shared_link;
-            $this->shareExpiryDateTime = $report->shared_link_expires_at->format('Y-m-d\TH:i');
-        } else {
-            // If no, reset and set a new default expiry
-            $this->generatedShareLink = null;
-            $this->shareExpiryDateTime = now()->addDay()->format('Y-m-d\TH:i');
-        }
+
+        $this->generatedShareLink = null;
+        $this->shareExpiryDateTime = now()->addDay()->format('Y-m-d\TH:i');
+
 
         $this->showShareModal = true;
     }
