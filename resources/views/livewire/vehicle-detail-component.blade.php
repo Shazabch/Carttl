@@ -231,13 +231,20 @@
                                 <div class="buy-now-price">{{format_currency($selected_vehicle->price)}}</div>
                                 <p>Skip the auction and purchase immediately</p>
                                 @if(auth()->id())
-                                <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#buyNowModal">
+                                <button type="button" class="btn btn-light" data-bs-toggle="modal" data-bs-target="#buyNowModal">
                                     <i class="fas fa-shopping-cart"></i> Buy It Now
                                 </button>
+                                <a  href="#bidding" class="btn btn-light">
+                                    <i class="fas fa-gavel"></i> Place Bid
+                                </a>
                                 @else
                                 <a href="/login" class="btn btn-light text-primary ">
 
                                     Buy It Now <div class="spinner"></div>
+                                </a>
+                                 <a href="#bidding" class="btn btn-light text-primary ">
+
+                                    Place Bid <div class="spinner"></div>
                                 </a>
                                 @endif
 
@@ -261,7 +268,7 @@
                  
                         @endif
                         @if($selected_vehicle->is_auction)
-                        <div class="sticky-sidebar">
+                        <div id="bidding" class="sticky-sidebar">
                             @livewire('bidding-component',['selected_vehicle' => $selected_vehicle])
 
                             <!-- Buy It Now Card -->
