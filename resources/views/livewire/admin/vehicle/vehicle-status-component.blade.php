@@ -10,7 +10,7 @@
                     <div class="col-md-12 mb-4">
                         <label class="form-label d-block">Condition</label>
                         <div class="row g-2">
-                            @foreach (['new', 'used', 'certified by gx'] as $condition)
+                            @foreach (['new', 'used', 'certified'] as $condition)
                             <div class="col-md-2 col-sm-4 col-6">
                                 <label class="option-card {{ ($vehicleData['condition'] ?? 'used') == $condition ? 'selected' : '' }}">
                                     <input type="checkbox" class="d-none" wire:click="setSingleSelection('condition', '{{ $condition }}')">
