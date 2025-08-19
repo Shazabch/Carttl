@@ -4,7 +4,7 @@
 <div class="car-list-item">
     <div class="row align-items-center">
         <div class="col-md-3">
-            <img src="{{ $item->coverImage ?  asset('storage/' . $item->coverImage?->path) : asset('images/c38ec63b-c441-4574-8b3a-8c69a2aa9595.webp') }}"
+            <img src="{{ $item->coverImage ?  asset('storage/' . $item->coverImage?->path) : asset('images/default-car.webp') }}"
                 class="img-fluid rounded" alt="Porsche 911">
         </div>
         <div class="col-md-6">
