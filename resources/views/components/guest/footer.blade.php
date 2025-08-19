@@ -1,52 +1,60 @@
-  {{-- <footer class="text-white pt-5 pb-3">
+  <footer class="text-white">
       <div class="container">
           <div class="row g-4">
-              <div class="col-md-3 footer-section">
-                  <h3><i class="fas fa-car me-2"></i>About GoldenX</h3>
-                  <p>GoldenX is the premier destination for buying and selling premium, luxury, and classic vehicles
-                      through a transparent auction process.</p>
-                  <div>
-                      <a href="#" class="social-link" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
-                      <a href="#" class="social-link" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
-                      <a href="#" class="social-link" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
-                      <a href="#" class="social-link" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
-                  </div>
+            <div class="col-lg-5">
+              <div class="footer-logo">
+                <img src="{{asset('images/goldenlogo.png')}}" alt="footer-logo">
               </div>
-              <div class="col-md-3 footer-section">
-                  <h3><i class="fas fa-link me-2"></i>Quick Links</h3>
-                  <ul class="list-unstyled">
-                      <li><a href="{{ route('home') }}"><i class="fas fa-home me-2"></i>Home</a></li>
-                      <li><a href="#"><i class="fas fa-star me-2"></i>Featured Auctions</a></li>
-                      <li><a href="#"><i class="fas fa-info-circle me-2"></i>How It Works</a></li>
-                      <li><a href="#"><i class="fas fa-quote-left me-2"></i>Testimonials</a></li>
-                      <li><a href="#"><i class="fas fa-plus-circle me-2"></i>Sell Your Car</a></li>
-                  </ul>
+              <p>
+                GoldenX is the premier destination for buying and selling premium, luxury, and classic vehicles
+                through a transparent auction process.
+              </p>
+            </div>
+            <div class="col-lg-7">
+              <div class="row">
+                <div class="col-lg-4 col-6   footer-section">
+                    <h3>Cars By Makes</h3>
+                    <ul class="list-unstyled">
+                      <li class="menu-item"><a href="#">Rolls Royce</a></li>
+                      <li class="menu-item"><a href="#">Lamborghini</a></li>
+                      <li class="menu-item"><a href="#">Corolla</a></li>
+                      <li class="menu-item"><a href="#">Maclaren</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-4 col-6   footer-section">
+                    <h3>Cars By Location</h3>
+                    <ul class="list-unstyled">
+                      <li><a href="#">Dubai</a></li>
+                      <li><a href="#">Abu Dhabi</a></li>
+                      <li><a href="#">Sharjah</a></li>
+                      <li><a href="#">Ajman</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-4 footer-section">
+                    <h3>Contact</h3>
+                    <ul class="list-unstyled">
+                      <li><a href="mailto:info@thegoldenx.com">info@thegoldenx.com</a></li>
+                    </ul>
+                    <div class="social-area">
+                      <h3 class="">Follow Us</h3>
+                      <ul>
+                        <li><a href="https://www.facebook.com/"><i class="fab fa-facebook-f"></i></a></li>
+                        <li><a href="https://twitter.com/"><i class="fab fa-twitter"></i></a></li>
+                        <li><a href="https://www.linkedin.com/"><i class="fab fa-linkedin-in"></i></a></li>
+                        <li><a href="https://www.instagram.com/"><i class="fab fa-instagram"></i></a></li>
+                      </ul>
+                    </div>
+                </div>
               </div>
-              <div class="col-md-3 footer-section">
-                  <h3><i class="fas fa-headset me-2"></i>Support</h3>
-                  <ul class="list-unstyled">
-                      <li><a href="#"><i class="fas fa-question-circle me-2"></i>FAQ</a></li>
-                      <li><a href="{{ route('contact-us') }}"><i class="fas fa-envelope me-2"></i>Contact Us</a></li>
-                      <li><a href="#"><i class="fas fa-file-contract me-2"></i>Terms of Service</a></li>
-                      <li><a href="#"><i class="fas fa-shield-alt me-2"></i>Privacy Policy</a></li>
-                  </ul>
-              </div>
-              <div class="col-md-3 footer-section">
-                  <h3><i class="fas fa-map-marker-alt me-2"></i>Contact Us</h3>
-                  <p><i class="fas fa-building me-2 text-warning"></i>1234 Luxury Lane<br>Beverly Hills, CA
-                      90210<br>United States</p>
-                  <p><i class="fas fa-envelope me-2 text-warning"></i>Email: info@GoldenX.com<br>
-                      <i class="fas fa-phone me-2 text-warning"></i>Phone: (800) 123-4567
-                  </p>
-              </div>
+            </div>
           </div>
           <div class="copyright">
               <p class="mb-0"><i class="fas fa-copyright me-2"></i>{{ now()->year }} GoldenX. All rights reserved
               </p>
           </div>
       </div>
-  </footer> --}}
-<footer>
+  </footer>
+{{-- <footer>
   <div class="container-fluid">
     <div class="footer-top">
       <div class="row row-cols-xl-3 row-cols-lg-3 row-cols-md-3 row-cols-sm-3 row-cols-2 justify-content-center g-lg-4 gy-5"> 
@@ -181,5 +189,5 @@
       </div>
     </div>
   </div>
-</footer>
+</footer> --}}
 

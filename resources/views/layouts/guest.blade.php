@@ -94,6 +94,23 @@
     <script src="https://cdn.jsdelivr.net/npm/tom-select@2.3.1/dist/js/tom-select.complete.min.js"></script>
     {{-- end::sweetalert --}}
     <script>
+        $(document).ready(function() {
+            // Initialize gallery
+            const galleryElement = document.getElementById('animated-thumbnails');
+            const gallery = lightGallery(galleryElement, {
+                plugins: [lgZoom, lgThumbnail],
+                licenseKey: 'your_license_key',
+                speed: 500,
+                dynamic: false, // false since we’re using existing DOM elements
+            });
+
+            // Open gallery when button is clicked
+            $('#gallery-view').on('click', function() {
+                gallery.openGallery(0); // Opens from the first image (index 0)
+            });
+        });
+    </script>
+    <script>
         var toastMixin = Swal.mixin({
             toast: true,
             icon: 'success',

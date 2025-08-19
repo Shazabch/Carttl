@@ -1,26 +1,61 @@
 <!-- Car Card 3 -->
-
-
 <div class="car-list-item">
     <div class="row align-items-center">
-        <div class="col-md-3">
-            <img src="{{ $item->coverImage ?  asset('storage/' . $item->coverImage?->path) : asset('images/default-car.webp') }}"
-                class="img-fluid rounded" alt="Porsche 911">
-        </div>
         <div class="col-md-6">
-            <h5 class="title-line-clamp-2 mb-2" >{{$item->title}}</h5>
-            <div class="fw-bold mb-2 current-bid">Current Bid: {{ $item->latestBid ? format_currency($item->latestBid->bid_amount) : 'No bids yet' }}</div>
-            <div class="d-flex gap-3 text-secondary small">
-                <span><i class="fas fa-tachometer-alt me-1"></i>{{$item->mileage}} miles</span>
-                <span><i class="fas fa-clock me-1"></i>Ends In {{ \Carbon\Carbon::parse($item->auction_end_date)->shortAbsoluteDiffForHumans() }}</span>
-                <span><i class="fas fa-user me-1"></i>{{ $item->bids->count() ?? 0 }} Bids</span>
+            <div class="listing-product-img">
+                <img src="{{ $item->coverImage ?  asset('storage/' . $item->coverImage?->path) : asset('images/default-car.webp') }}" class="img-fluid rounded" alt="{{$item->title}}">
+                <div class="overlap-car-box-card">
+                    <div class="car-box-type p-left d-flex align-items-center gap-2">
+                        @if($item->is_hot)
+                        <span class="car-box-badge">
+                            <img src="{{asset('images/icons/fire.svg')}}" alt="">
+                            Hot Bid
+                        </span>
+                        @endif
+                        @if($item->inspected_by)
+                        <span class="car-box-badge bg-primary text-light">
+                            <img src="{{asset('images/icons/star.svg')}}" alt="">
+                            Inspected
+                        </span>
+                        @endif
+                        @if(!$item->is_auction && $item->status == 'sold')
+                        <span class="car-box-badge bg-custom-primary text-light" style="background-color: #d7b236;">
+                            <i class="fas fa-check mx-2"></i>
+                            <span>Sold</span>
+                        </span>
+                        @endif
+                        @if($item->condition)
+                        <span class="car-box-badge bg-secondary text-light">
+                            <i class="fas fa-car mx-2"></i>
+                            <span>{{ucfirst($item->condition)}}</span>
+                        </span>
+                        @endif
+                    </div>
+                    <livewire:favorite-button-component :vehicleId="$item->id" />
+                </div>
             </div>
         </div>
-        <div class="col-md-3 text-end">
-            <div class="d-flex flex-column gap-2">
-                <a href="{{ route('car-detail-page',$item->id) }}" class="btn btn-warning btn-sm">View Details</a>
-                <a href="{{ route('car-detail-page',$item->id) }}" class="btn btn-outline-warning btn-sm">Watch</a>
+        <div class="col-md-6 pt-md-0 pt-4">
+            <h5 class="list-car-title" >{{$item->title}}</h5>
+            <div class="car-box-price mb-4">
+                <h4 class="mb-0">Current Bid:</h4>
+                <h4 class="mb-0 car-box-price-text">{{ $item->latestBid ? format_currency($item->latestBid->bid_amount) : 'No bids yet' }}</h4>
             </div>
+            <div class="car-box-specs">
+                <div class="spec_item">
+                    <i class="fas fa-tachometer-alt"></i>
+                    <span>{{$item->mileage}} m</span>
+                </div>
+                <div class="spec_item">
+                    <i class="fas fa-calendar-alt"></i>
+                    <span>Ends In {{ \Carbon\Carbon::parse($item->auction_end_date)->shortAbsoluteDiffForHumans() }}</span>
+                </div>
+                <div class="spec_item">
+                    <i class="fas fa-gavel"></i>
+                    <span>{{ $item->bids->count() ?? 0 }} Bids</span>
+                </div>
+            </div>
+            <a href="{{ route('car-detail-page',$item->id) }}" class="view-detail-btn mt-3">View Details</a>
         </div>
     </div>
 </div>

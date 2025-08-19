@@ -285,35 +285,44 @@
 .detail-sections {
     display: flex;
     flex-direction: column;
-    gap: 2rem;
+    gap: 10px;
 }
-
+.detail-card.accordion-item{
+    border: 0 !important;
+}
+.detail-card.accordion-item .accordion-button{
+    padding: 0;
+}
+.detail-card.accordion-item .accordion-button:not(.collapsed){
+    box-shadow: none !important;
+}
 .detail-card {
     background: var(--detail-white);
-    border-radius: 15px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+    border-radius: 10px;
     transition: all 0.3s ease;
 }
 .detail-header{
-    padding: 23px 20px 20px 20px;
-    border-bottom: 1px solid var(--detail-gray-200);
+    padding: 24px 20px 24px 20px;
+    border-bottom: 1px solid 0;
+}
+.accordion-item:first-of-type{
+    border-radius: 0 !important;
+    border-radius: 10px !important;
 }
 .detail-content{
     padding: 23px 20px 20px 20px;
 }
-.detail-card:hover {
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.12);
-    transform: translateY(-5px);
-}
-
 .detail-title {
-    font-size: 1.3rem;
+    font-size: 1.2rem;
     font-weight: 600;
     color: var(--detail-primary);
     margin-bottom: 0;
     display: flex;
     align-items: center;
     gap: 0.8rem;
+}
+.detail-card.accordion-item .accordion-button .detail-title{
+    color: var(--detail-primary) !important;
 }
 
 .detail-title i {

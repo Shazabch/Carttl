@@ -87,7 +87,15 @@
                 <img src="{{ asset('images/sellcar.png') }}">
             </div>
             <div class="step-section active">
-                <h6 class="p-16 fw-500 mb-3">Select your car Make to sell</h6>
+                <div class="step-section-header">
+                    <h6 class="p-16 fw-500 mb-3">Select your car Make to sell</h6>
+                    <div class="btn_group">
+                        <div></div>
+                        <button class="next-btn text-light btn-primary mt-2" wire:click="gotoAllMakes">
+                            All Makes <i class="fa-solid fa-chevron-right text-light"></i>
+                        </button>
+                    </div>
+                </div>
                 <div class="brand-grid">
                     @foreach ($featuredBrands as $brand)
                     @php $isSelected = (string)($formData['brand_id'] ?? '') === (string)$brand->id; @endphp
@@ -103,12 +111,6 @@
                     @endforeach
                 </div>
                 @error('formData.brand_id') <span class="text-danger d-block mt-2">{{ $message }}</span> @enderror
-                 <div class="btn_group">
-                  <div></div>
-                    <button class="next-btn text-light btn-primary mt-2" wire:click="gotoAllMakes">
-                        All Makes <i class="fa-solid fa-chevron-right text-light"></i>
-                    </button>
-                </div>
             </div>
             @endif
 

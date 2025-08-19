@@ -893,41 +893,18 @@ section {
 }
 
 /* ===== FOOTER STYLES ===== */
-/* footer {
-    background: linear-gradient(135deg, var(--dark), var(--primary));
+footer {
     position: relative;
     overflow: hidden;
-}
-
-footer::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 1px;
-    background: linear-gradient(90deg, transparent, var(--accent), transparent);
+    padding-top: 100px;
 }
 
 .footer-section h3 {
-    color: var(--accent);
+    margin-bottom: 20px;
+    color: #fff;
+    font-size: 20px;
     font-weight: 600;
-    margin-bottom: 1.5rem;
-    position: relative;
-    font-size: 1.2rem;
 }
-
-.footer-section h3::after {
-    content: '';
-    position: absolute;
-    bottom: -8px;
-    left: 0;
-    width: 40px;
-    height: 2px;
-    background: linear-gradient(90deg, var(--accent), #fbbf24);
-    border-radius: 2px;
-}
-
 .footer-section p {
     color: rgba(255, 255, 255, 0.8);
     line-height: 1.7;
@@ -940,17 +917,18 @@ footer::before {
 }
 
 .footer-section a {
-    color: rgba(255, 255, 255, 0.7);
-    text-decoration: none;
-    transition: all 0.3s ease;
-    font-size: 0.95rem;
+    color: #B3B3B3;
+    font-size: 15px;
+    font-weight: 600;
     position: relative;
+    text-decoration: none;
+    transition: all .3s ease;
 }
 
 .footer-section a:hover {
     color: var(--gray-100);
     padding-left: 8px;
-} */
+}
 
 /* ===== SMALL BEAUTIFUL FLOATING BUTTON ===== */
 .floating-inspection-btn {
@@ -973,12 +951,10 @@ footer::before {
     gap: 6px;
     animation: softFloat 3s ease-in-out infinite;
 }
-
 .floating-inspection-btn .btn-icon {
     font-size: 14px;
     border: 2px solid #f9b119;
 }
-
 @keyframes softFloat {
 
     0%,
@@ -990,7 +966,6 @@ footer::before {
         transform: translateY(-3px);
     }
 }
-
 @media (max-width: 768px) {
     .floating-inspection-btn {
         bottom: 20px;
@@ -1003,7 +978,6 @@ footer::before {
         font-size: 13px;
     }
 }
-
 .footer-section a::before {
     content: '';
     position: absolute;
@@ -1015,11 +989,9 @@ footer::before {
     transition: all 0.3s ease;
     transform: translateY(-50%);
 }
-
 .footer-section a:hover::before {
     width: 10px;
 }
-
 .social-link {
     display: inline-flex;
     align-items: center;
@@ -1036,25 +1008,20 @@ footer::before {
     font-size: 1.1rem;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
 }
-
 .social-link:hover {
     background: linear-gradient(135deg, var(--accent), #fbbf24);
     color: var(--dark);
     transform: translateY(-3px) scale(1.05);
     box-shadow: 0 8px 25px rgba(245, 158, 11, 0.3);
 }
-
 .copyright {
     margin-top: 3rem;
-    padding-top: 2rem;
+    padding: 2rem 0;
     border-top: 1px solid rgba(255, 255, 255, 0.1);
     text-align: center;
     color: rgba(255, 255, 255, 0.6);
     font-size: 0.9rem;
-    background: rgba(0, 0, 0, 0.1);
-    border-radius: 12px 12px 0 0;
 }
-
 /* ===== ANIMATIONS ===== */
 @keyframes fadeInUp {
     from {
@@ -1067,7 +1034,6 @@ footer::before {
         transform: translateY(0);
     }
 }
-
 @keyframes slideInLeft {
     from {
         opacity: 0;
@@ -1079,7 +1045,6 @@ footer::before {
         transform: translateX(0);
     }
 }
-
 @keyframes slideInRight {
     from {
         opacity: 0;
@@ -1091,39 +1056,33 @@ footer::before {
         transform: translateX(0);
     }
 }
-
 .footer-section {
     animation: fadeInUp 0.6s ease forwards;
 }
-
 .footer-section:nth-child(2) {
     animation-delay: 0.1s;
 }
-
 .footer-section:nth-child(3) {
     animation-delay: 0.2s;
 }
-
 .footer-section:nth-child(4) {
     animation-delay: 0.3s;
 }
-
 .car-card {
     animation: fadeInUp 0.6s ease forwards;
 }
-
 .car-card:nth-child(2) {
     animation-delay: 0.1s;
 }
-
 .car-card:nth-child(3) {
     animation-delay: 0.2s;
 }
-
 .car-card:nth-child(4) {
     animation-delay: 0.3s;
 }
-
+footer .social-area ul li a:hover:before{
+    display: none;
+}
 /* ===== RESPONSIVE DESIGN ===== */
 @media (max-width: 1200px) {
     .hero-title {
@@ -1232,6 +1191,9 @@ footer::before {
 
     .car-card .card-img-top {
         height: 200px;
+    }
+    .footer-section h3{
+        font-size: 16px;
     }
 }
 
@@ -1526,19 +1488,24 @@ footer::before {
 
 /* ===== LIST VIEW ===== */
 .car-list-item {
-    background: white;
     border-radius: 15px;
-    padding: 1.5rem;
     margin-bottom: 1.5rem;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
     transition: all 0.3s ease;
 }
-
-.car-list-item:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+.listing-product-img{
+    position: relative;
+    height: 300px;
 }
-
+.list-car-title{
+    font-size: 23px;
+    font-weight: 600;
+    margin-bottom: 25px;
+}
+.listing-product-img img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
 .car-listing-section .form-select,
 .car-listing-section .form-control {
     padding: 0.75rem 1rem;
@@ -1549,7 +1516,19 @@ footer::before {
     font-size: 0.95rem;
     transition: all 0.3s ease;
 }
-
+.car-list-item .car-box-price-text{
+    font-size: 30px !important;
+}
+.car-list-item .spec_item {
+    padding: 12px 10px;
+    border-radius: 10px;
+}
+.car-list-item .view-detail-btn{
+    padding: 12px 10px;
+}
+.car-box-price h4 {
+    font-size: 20px !important;
+}
 /* ===== PAGINATION ===== */
 .pagination .page-link {
     color: #f59e0b;
@@ -1870,6 +1849,8 @@ footer .footer-top {
     width: 100%;
     height: 100%;
     object-fit: cover;
+    margin-left: -27px;
+    margin-top: -3px;
 }
 
 @media (max-width: 1699px) {
@@ -2027,7 +2008,7 @@ footer .footer-center .contact-area .hotline-area .content h6 a {
     text-decoration: none;
 }
 
-footer .footer-btm .social-area ul {
+footer .social-area ul {
     margin: 0;
     padding: 0;
     list-style: none;
@@ -2036,10 +2017,10 @@ footer .footer-btm .social-area ul {
     gap: 15px;
 }
 
-footer .footer-btm .social-area ul li a {
+footer .social-area ul li a {
     font-size: 12px;
-    width: 26px;
-    height: 26px;
+    width: 30px;
+    height: 30px;
     line-height: 24px;
     border-radius: 50%;
     text-align: center;
@@ -2049,11 +2030,12 @@ footer .footer-btm .social-area ul li a {
     transition: 0.35s;
     position: relative;
 }
-footer .footer-btm .social-area ul li a i{
+footer .social-area ul li a i{
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+    font-size: 13px;
 }
 
 footer .footer-center ul {
@@ -2543,7 +2525,7 @@ footer .footer-center ul {
 
 .car-box-other-detail h3 {
     font-size: 17px;
-    font-weight: 500;
+    font-weight: 600;
     margin-bottom: 18px;
 }
 
@@ -3266,12 +3248,11 @@ footer .footer-center ul {
 /* Step container */
 .form-widget-wrapper {
     background: #fff;
-    /* padding: 20px; */
     border-radius: 20px;
     box-shadow: 0px 4px 15px rgba(0,0,0,0.05);
-    max-height: 526px !important;
+    max-height: 537px !important;
     overflow-y: auto;
-    height: 526px;
+    height: 537px;
 }
 /* Step navigation */
 .step-section {
@@ -3409,7 +3390,11 @@ footer .footer-center ul {
 .form-widget-wrapper::-webkit-scrollbar-thumb:hover {
     background-color: #555; /* darker on hover */
 }
-
+.step-section-header{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
 
 /* ===== RESPONSIVE DESIGN ===== */
 @media (max-width: 992px) {
@@ -3492,19 +3477,26 @@ footer .footer-center ul {
         width: 150px;
         height: 89px;
     }
-
     .brand img {
         padding: 10px 0;
     }
-
     .banner-heading {
         font-size: 40px;
     }
-
     footer .footer-center {
         padding: 0px 3% 35px;
         flex-direction: column;
         gap: 40px;
+    }
+    .car-list-item .car-box-price-text{
+        font-size: 20px !important;
+    }
+    .list-car-title{
+        font-size: 18px;
+    }
+    .car-list-item .spec_item{
+        padding: 8px;
+        border-radius: 8px;
     }
 }
 @media only screen and (max-width: 1060px) {
@@ -3597,10 +3589,27 @@ footer .footer-center ul {
     footer .footer-btm {
         padding: 17px 2%;
     }
+    .home-banner .form-widget{
+        max-width: 100%;
+    }
+    .home-banner .form-widget-wrapper{
+        height: 567px;
+        max-height: 567px !important;
+    }
 }
-@media only screen and (max-width:650px){
+@media only screen and (max-width: 650px){
     .header-action .theme_btn {
         display: none;
+    }
+    .car-listing-section .container-fluid{
+        padding: 20px 15px;
+    }
+    .filter-box{
+        padding-right: 0;
+    }
+    .listing-product-img,
+    .car-box-card-imag-item{
+        height: 220px;
     }
 }
 @media only screen and (max-width: 600px) {
@@ -3666,6 +3675,13 @@ footer .footer-center ul {
     .section-fav{
         background-color: #fff;
     }
+    .brand-grid{
+        grid-template-columns: repeat(3, 1fr);
+    }
+    .home-banner .form-widget-wrapper{
+        height: 650px;
+        max-height: 650px !important;
+    }
 }
 @media only screen and (max-width:400px) {
     .brand {
@@ -3678,8 +3694,5 @@ footer .footer-center ul {
     }
     .side-post-img{
         height: 80px;
-    }
-    .car-box-card-imag-item{
-        height: 180px;
     }
 }

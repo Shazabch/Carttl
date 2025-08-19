@@ -58,11 +58,7 @@
                             </div>
                         </div>
                         <div class="detail-sections">
-
-
-
                             <div class="detail-sections accordion" id="vehicleDetailsAccordion">
-
                                 <!-- Card 1: Car Details - OPEN -->
                                 <div class="detail-card accordion-item">
                                     <div class="detail-header accordion-header" id="headingOne">
@@ -114,7 +110,7 @@
                                             <h3 class="detail-title mb-0"><i class="fas fa-file-alt me-2"></i>Car Description</h3>
                                         </button>
                                     </div>
-                                    <div id="collapseSix" class="accordion-collapse collapse show" aria-labelledby="headingSix" data-bs-parent="#vehicleDetailsAccordion">
+                                    <div id="collapseSix" class="accordion-collapse collapse" aria-labelledby="headingSix" data-bs-parent="#vehicleDetailsAccordion">
                                         <div class="detail-content">
                                             <div class="row g-3">
                                                 <div class="col-md-12">
@@ -124,7 +120,6 @@
                                         </div>
                                     </div>
                                 </div>
-
                                 <!-- Card 2: Engine & Performance - OPEN -->
                                 <div class="detail-card accordion-item">
                                     <div class="detail-header accordion-header" id="headingTwo">
@@ -132,7 +127,7 @@
                                             <h3 class="detail-title mb-0"><i class="fas fa-bolt me-2"></i> Engine & Performance</h3>
                                         </button>
                                     </div>
-                                    <div id="collapseTwo" class="accordion-collapse collapse show" aria-labelledby="headingTwo" data-bs-parent="#vehicleDetailsAccordion">
+                                    <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#vehicleDetailsAccordion">
                                         <div class="detail-content">
                                             <div class="row g-3">
                                                 <div class="col-md-6">
@@ -150,18 +145,14 @@
                                         </div>
                                     </div>
                                 </div>
-
-                                <!-- Add the rest of your accordion items here following the same pattern -->
-                                <!-- Card 3: Exterior Features - OPEN -->
                                 <!-- Exterior Features -->
                                 <div class="detail-card accordion-item">
                                     <div class="detail-header accordion-header" id="headingThree">
-                                        <button class="accordion-button" type="button" data-bs-toggle="collapse"
-                                            data-bs-target="#collapseThree" aria-expanded="true" aria-controls="collapseThree">
+                                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="true" aria-controls="collapseThree">
                                             <h3 class="detail-title mb-0"><i class="fas fa-car me-2"></i> Exterior Features</h3>
                                         </button>
                                     </div>
-                                    <div id="collapseThree" class="accordion-collapse collapse show" aria-labelledby="headingThree" data-bs-parent="#vehicleDetailsAccordion">
+                                    <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#vehicleDetailsAccordion">
                                         <div class="detail-content row">
                                             @foreach($allexteriorFeatures as $feature)
                                             <div class="col-md-6 mb-2">
@@ -172,16 +163,14 @@
                                         </div>
                                     </div>
                                 </div>
-
                                 <!-- Interior Features -->
                                 <div class="detail-card accordion-item">
                                     <div class="detail-header accordion-header" id="headingFour">
-                                        <button class="accordion-button" type="button" data-bs-toggle="collapse"
-                                            data-bs-target="#collapseFour" aria-expanded="true" aria-controls="collapseFour">
+                                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="true" aria-controls="collapseFour">
                                             <h3 class="detail-title mb-0"><i class="fas fa-couch me-2"></i> Interior Features</h3>
                                         </button>
                                     </div>
-                                    <div id="collapseFour" class="accordion-collapse collapse show" aria-labelledby="headingFour" data-bs-parent="#vehicleDetailsAccordion">
+                                    <div id="collapseFour" class="accordion-collapse collapse" aria-labelledby="headingFour" data-bs-parent="#vehicleDetailsAccordion">
                                         <div class="detail-content row">
                                             @foreach($allinteriorFeatures as $feature)
                                             <div class="col-md-6 mb-2">
@@ -192,15 +181,11 @@
                                         </div>
                                     </div>
                                 </div>
-
-
-                                <!-- And so on for the rest of the cards... -->
-
                             </div>
                             <div class="detail-card">
                                 <div class="detail-header">
                                     <h3 class="detail-title">
-                                        <i class="fas fa-user-tie"></i>
+                                        <i class="fas fa-user-tie me-2"></i>
                                         Seller Information
                                     </h3>
                                 </div>

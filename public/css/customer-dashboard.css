@@ -202,11 +202,7 @@ body {
   Adds padding to the bottom of the body on mobile
   to prevent the bottom nav from overlapping the last bit of content.
 */
-@media (max-width: 767.98px) {
-    body {
-        padding-bottom: 70px; /* Adjust this value based on your bottom nav height */
-    }
-}
+
 
 /*
   Styling for the "More" offcanvas menu.
