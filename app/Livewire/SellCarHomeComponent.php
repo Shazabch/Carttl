@@ -34,6 +34,7 @@ class SellCarHomeComponent extends Component
     ];
 
     public string $brandSearch = '';
+    public string $modelSearch = '';
 
     public $brands = [];
     public $models = [];
@@ -189,7 +190,10 @@ class SellCarHomeComponent extends Component
         $this->models = VehicleModel::where('brand_id', $brandId)->get();
         $this->step = 3;
     }
-
+    public function updatedmodelSearch($value){
+ 
+      $this->models = VehicleModel::where('brand_id', $this->formData['brand_id'])->where('name', 'like', '%' . $value . '%')->get();
+    }
     public function selectModel($modelId)
     {
         $this->formData['make_id'] = $modelId;

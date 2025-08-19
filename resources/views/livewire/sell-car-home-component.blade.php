@@ -152,6 +152,8 @@
                 </div>
 
                 <h6>Select your car model</h6>
+                
+                <input type="text" class="form-control search-box" wire:model.live="modelSearch" placeholder="Search for your car’s Model">
                 <ul class="brand-list">
                     @forelse ($models as $model)
                     @php $isSelected = (string)($formData['make_id'] ?? '') === (string)$model->id; @endphp
