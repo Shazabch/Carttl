@@ -42,15 +42,14 @@
                         <td>{{$item->vehicleModel?->name}}</td>
                         <td class="text-center">{{ $item->created_at->format('Y-m-d') }}</td>
                         <td>
-                            @foreach($item->inspectionReports as $report)
-
-                            @if($report->shared_link)
-                            <a href="{{$report->shared_link}}" target="_blank" class="btn btn-primary">
-                                <i class="las la-share-alt me-2"></i> Share Report
-                                <i class="las la-link text-success" title="Active link exists. Expires: {{ $report->shared_link_expires_at }}"></i>
+                            @if($item->inspectionReport)
+                            @if($item->inspectionReport->shared_link)
+                            <a href="{{$item->inspectionReport->shared_link}}" target="_blank" class="btn btn-primary">
+                                <i class="las la-share-alt me-2"></i> Download Report
+                                <i class="las la-link text-success" title="Active link exists. Expires: {{ $item->inspectionReport->shared_link_expires_at }}"></i>
                                  </a>
                             @endif
-                            @endforeach
+                            @endif
 
                         </td>
 
