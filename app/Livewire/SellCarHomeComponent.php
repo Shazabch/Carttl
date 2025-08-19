@@ -190,9 +190,14 @@ class SellCarHomeComponent extends Component
         $this->models = VehicleModel::where('brand_id', $brandId)->get();
         $this->step = 3;
     }
-    public function updatedmodelSearch($value){
- 
-      $this->models = VehicleModel::where('brand_id', $this->formData['brand_id'])->where('name', 'like', '%' . $value . '%')->get();
+    public function gotoAllMakes()
+    {
+        $this->step = 2;
+    }
+    public function updatedmodelSearch($value)
+    {
+
+        $this->models = VehicleModel::where('brand_id', $this->formData['brand_id'])->where('name', 'like', '%' . $value . '%')->get();
     }
     public function selectModel($modelId)
     {

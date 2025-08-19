@@ -263,7 +263,7 @@
                     <p><strong>Featured:</strong> {!! $vehicle->is_featured ? '<span class="badge bg-warning">Yes</span>' : '<span class="text-muted">No</span>' !!}</p>
                     <hr>
                     <p><strong>VIN:</strong> {{ $vehicle->vin ?? 'N/A' }}</p>
-                    <p><strong>Registration No:</strong> {{ $vehicle->registration_no ?? 'N/A' }}</p>
+                    <p><strong>Reference No:</strong> {{ $vehicle->registration_no ?? 'N/A' }}</p>
                 </div>
             </div>
 
