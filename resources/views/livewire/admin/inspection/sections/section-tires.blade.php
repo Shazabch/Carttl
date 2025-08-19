@@ -38,6 +38,7 @@
             <div class="col-md-6">
                 @include('livewire.admin.inspection.sections.partials.toggle-single', ['label' => 'Spare tire', 'property' => 'spareTire', 'options' => ['Available', 'Not Available']])
             </div>
+             <div class="col-md-6">@include('livewire.admin.inspection.sections.partials.input-text', ['label' => 'Comments', 'property' => 'commentTire'])</div>
         </div>
     </div>
 </div>
