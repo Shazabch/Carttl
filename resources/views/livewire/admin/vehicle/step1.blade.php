@@ -77,11 +77,8 @@
 
                 <div class="col-md-4 mb-3">
                     <label class="form-label">Mileage</label>
-                    <select name="mileage" class="form-control" wire:model="vehicleData.mileage">
-                        @foreach(\App\Enums\MileageRange::options() as $value => $label)
-                        <option value="{{ $value }}">{{ $label }}</option>
-                        @endforeach
-                    </select>
+                    <input type="text" class="form-control @error('vehicleData.mileage') is-invalid @enderror" wire:model.defer="vehicleData.mileage">
+
                     @error('vehicleData.mileage')<div class="invalid-feedback">{{ $message }}</div>@enderror
                 </div>
 
@@ -95,6 +92,11 @@
                     <label class="form-label">Horsepower</label>
                     <input type="number" class="form-control" wire:model="vehicleData.horsepower">
                     @error('vehicleData.horsepower') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                </div>
+                <div class="col-md-4 mb-3">
+                    <label class="form-label">No Of Cylinders</label>
+                    <input type="number" class="form-control" wire:model="vehicleData.no_of_cylinder">
+                    @error('vehicleData.no_of_cylinder') <div class="invalid-feedback">{{ $message }}</div> @enderror
                 </div>
             </div>
         </fieldset>

@@ -6,10 +6,11 @@
             <div class="col-md-4">
                 <input type="text" class="form-control" placeholder="Search by Title, VIN..." wire:model.live.debounce.300ms="search">
             </div>
-           
+           @if($type!='sold')
             <button class="btn btn-primary" wire:click="addNew">
                 <i class="fas fa-plus-circle me-1"></i> Add Vehicle
             </button>
+            @endif
         </div>
         <div class="card-body">
 

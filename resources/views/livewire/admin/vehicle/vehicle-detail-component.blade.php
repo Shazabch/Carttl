@@ -49,7 +49,7 @@
                                         if ($vehicle->mileage instanceof \UnitEnum) {
                                             $mileageDisplay = $vehicle->mileage->label();
                                         } elseif (is_numeric($vehicle->mileage)) {
-                                            $mileageDisplay = number_format($vehicle->mileage) . ' mi';
+                                            $mileageDisplay = number_format($vehicle->mileage);
                                         } else {
                                             $mileageDisplay = (string) $vehicle->mileage;
                                         }
@@ -87,6 +87,11 @@
                         <div class="col-md-6">
                             <p><strong>Engine (CC):</strong>
                                 {{ $vehicle->engine_cc ? number_format($vehicle->engine_cc) : 'N/A' }}
+                            </p>
+                        </div>
+                         <div class="col-md-6">
+                            <p><strong>No Of Cylinders:</strong>
+                                {{ $vehicle->no_of_cylinder ? $vehicle->no_of_cylinder : 'N/A' }}
                             </p>
                         </div>
 
@@ -273,6 +278,7 @@
                     <h5 class="mb-0">Performance</h5>
                 </div>
                 <div class="card-body">
+                    <p><strong>No Of Cylinders:</strong> {{ $vehicle->{'no_of_cylinder'} ? $vehicle->{'no_of_cylinder'} : 'N/A' }}</p>
                     <p><strong>0–60 mph:</strong> {{ $vehicle->{'zero_to_sixty'} ? $vehicle->{'zero_to_sixty'} . ' s' : 'N/A' }}</p>
                     <p><strong>Quarter Mile:</strong> {{ $vehicle->quater_mile ? $vehicle->quater_mile . ' s' : 'N/A' }}</p>
                     <p><strong>Top Speed:</strong> {{ $vehicle->top_speed ? $vehicle->top_speed . ' mph' : 'N/A' }}</p>
