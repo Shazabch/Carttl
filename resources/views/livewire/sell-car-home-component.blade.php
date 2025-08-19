@@ -105,7 +105,7 @@
                 @error('formData.brand_id') <span class="text-danger d-block mt-2">{{ $message }}</span> @enderror
                  <div class="btn_group">
                   <div></div>
-                    <button class="next-btn text-light btn-primary" wire:click="gotoAllMakes">
+                    <button class="next-btn text-light btn-primary mt-2" wire:click="gotoAllMakes">
                         All Makes <i class="fa-solid fa-chevron-right text-light"></i>
                     </button>
                 </div>
@@ -158,7 +158,7 @@
                 </div>
 
                 <h6>Select your car model</h6>
-                
+
                 <input type="text" class="form-control search-box" wire:model.live="modelSearch" placeholder="Search for your car’s Model">
                 <ul class="brand-list">
                     @forelse ($models as $model)

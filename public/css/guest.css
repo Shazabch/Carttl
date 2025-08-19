@@ -2778,6 +2778,7 @@ footer .footer-center ul {
 
 .custom-accordion.white .accordion-button:not(.collapsed) {
     background-color: white !important;
+    border-color: white !important;
    color: var(--accent) !important;
 }
 .accordion-button:not(.collapsed) {
@@ -2794,7 +2795,7 @@ footer .footer-center ul {
 .accordion-button:not(.collapsed) .detail-title{
 
     color: var(--accent) !important;
-    
+
 
 }
 .accordion-button:not(.collapsed) .detail-title i{
@@ -3386,8 +3387,8 @@ footer .footer-center ul {
 }
 .form-widget-wrapper {
     overflow-y: auto;
-    scrollbar-width: thin; 
-    scrollbar-color: #888 transparent; 
+    scrollbar-width: thin;
+    scrollbar-color: #888 transparent;
 }
 /* For Chrome, Edge, Safari */
 .form-widget-wrapper::-webkit-scrollbar {
