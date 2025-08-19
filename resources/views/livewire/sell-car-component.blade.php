@@ -55,42 +55,57 @@
             <div id="step-2">
                 <h5 class="p-20 fw-600 mb-4">Vehicle Details</h5>
                 <div class="row">
-                    <div class="col-lg-6">
-                        <div class="form-group mb-3">
-                            <label class="form-label">Makes</label>
-                            <select class="form-select" wire:model.live="brand_id">
-                                <option value="">Select Make</option>
-                                @foreach ($brands as $brand)
-                                <option value="{{ $brand->id }}">{{ $brand->name }}</option>
-                                @endforeach
-                            </select>
+                    <!-- START: Searchable Selects Integration -->
+                    <div class="row" x-data="searchableSelects()" x-init="init()">
+                        <div class="col-lg-6">
+                            <x-searchable-select
+                                label="Makes"
+                                :options="$brands"
+                                placeholder="Search for a make..."
+                                wire:model.live="brand_id" />
                             @error('brand_id') <div class="text-danger small mt-1">{{ $message }}</div> @enderror
                         </div>
-                    </div>
-                    <div class="col-lg-6">
-                        <div class="form-group mb-3">
-                            <label class="form-label">Model</label>
-                            <select class="form-select" wire:model.defer="make_id">
-                                <option value="">Select Model</option>
-                                @foreach ($models as $model)
-                                <option value="{{ $model->id }}">{{ $model->name }}</option>
-                                @endforeach
-                            </select>
+                        <div class="col-lg-6 mb-3">
+                            <div class="d-flex align-items-center">
+                                <!-- The component itself -->
+                                <div class="flex-grow-1">
+                                    <x-searchable-select
+                                        label="Model"
+                                        :options="$models"
+                                        placeholder="Select a make first..."
+                                        listen-event="models-updated"
+                                        wire:model="make_id" />
+                                </div>
+                                <!-- Loading spinner remains here, controlled by the parent -->
+                                <div wire:loading wire:target="brand_id" class="ms-2" style="margin-top: 20px;">
+                                    <div class="spinner-border spinner-border-sm" role="status">
+                                        <span class="visually-hidden">Loading...</span>
+                                    </div>
+                                </div>
+                            </div>
                             @error('make_id') <div class="text-danger small mt-1">{{ $message }}</div> @enderror
                         </div>
+
                     </div>
-                    <div class="col-lg-6">
-                        <div class="form-group mb-3">
-                            <label class="form-label">Year</label>
+                    <div class="col-lg-6 mb-3">
+                        <div class="form-group">
+                            <label for="modelYear" class="form-label">Model Year</label>
+
                             <select class="form-select" wire:model.defer="year">
                                 <option value="">Select Year</option>
                                 @for ($i = date('Y'); $i >= 1980; $i--)
                                 <option value="{{ $i }}">{{ $i }}</option>
                                 @endfor
                             </select>
-                            @error('year') <div class="text-danger small mt-1">{{ $message }}</div> @enderror
+                            @error('year')
+                            <small class="text-danger">{{ $message }}</small>
+                            @enderror
                         </div>
                     </div>
+
+
+
+
                     <div class="col-lg-6">
                         <div class="form-group mb-3">
                             <label class="form-label">Mileage (in km)</label>
@@ -148,14 +163,14 @@
         </div>
 
         <div class="col-lg-6">
-           <div x-data="dubaiPhoneMask()" class="form-group mb-3">
-            <label for="phone" class="mt-1 form-label">Phone Number</label>
-            <input type="tel" id="phone" class="form-control" placeholder="+971 5xxxxxxxx"
-                x-model="phone" @input="formatPhone" wire:model="phone">
-            @error('phone')
-            <div class="text-danger small mt-1">{{ $message }}</div>
-            @enderror
-        </div>
+            <div x-data="dubaiPhoneMask()" class="form-group mb-3">
+                <label for="phone" class="mt-1 form-label">Phone Number</label>
+                <input type="tel" id="phone" class="form-control" placeholder="+971 5xxxxxxxx"
+                    x-model="phone" @input="formatPhone" wire:model="phone">
+                @error('phone')
+                <div class="text-danger small mt-1">{{ $message }}</div>
+                @enderror
+            </div>
         </div>
         <div class="col-lg-12">
             <div class="form-group">
