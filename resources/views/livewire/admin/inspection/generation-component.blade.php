@@ -48,17 +48,21 @@
     <div class="card">
         <div class="card-header d-flex justify-content-between align-items-center">
             <h4>All Inspection Reports</h4>
+            @if($linkedVehicleId==null && $linkedEnquiryId==null)
             <button wire:click="showCreateForm" class="btn btn-primary">
                 <i class="fas fa-plus"></i> Create New Report
             </button>
+            @endif
         </div>
         <div class="card-body">
             {{-- Search input --}}
+            @if($linkedVehicleId==null && $linkedEnquiryId==null)
             <div class="row mb-3">
                 <div class="col-md-4">
                     <input type="text" wire:model.live.debounce.300ms="search" class="form-control" placeholder="Search by VIN or Make...">
                 </div>
             </div>
+             @endif
             <div class="table-responsive">
                 <table class="table table-hover">
                     <thead>
@@ -138,7 +142,13 @@
                         </tr>
                         @empty
                         <tr>
+                            @if($linkedVehicleId==null && $linkedEnquiryId==null)
                             <td colspan="5" class="text-center">No reports found.</td>
+                            @else
+                            <button wire:click="showCreateForm" class="btn btn-primary">
+                                <i class="fas fa-plus"></i> Create New Report
+                            </button>
+                            @endif
                         </tr>
                         @endforelse
                     </tbody>
