@@ -223,11 +223,8 @@
                         </div>
                     </div>
                     <div class="col-lg-4">
-                        @if($selected_vehicle->is_auction)
-                        <div class="sticky-sidebar">
-                            @livewire('bidding-component',['selected_vehicle' => $selected_vehicle])
-
-                            <!-- Buy It Now Card -->
+                         @if($selected_vehicle->is_auction)
+                       
                             <div class="buy-now-card my-2">
                                 <h4>Buy It Now</h4>
                                 <div class="buy-now-price">{{format_currency($selected_vehicle->price)}}</div>
@@ -245,16 +242,8 @@
 
 
                             </div>
-                            <!-- buy now modal -->
-                            <!-- Modal -->
-
-
-
-
-
-
                             <!-- Contact Card -->
-                            <div class="contact-card">
+                            <div class="contact-card my-2">
                                 <h4><i class="fas fa-phone"></i> Need Help?</h4>
                                 <p>Our specialists are here to assist you</p>
                                 <div class="contact-options">
@@ -268,6 +257,14 @@
                                     </button>
                                 </div>
                             </div>
+                 
+                        @endif
+                        @if($selected_vehicle->is_auction)
+                        <div class="sticky-sidebar">
+                            @livewire('bidding-component',['selected_vehicle' => $selected_vehicle])
+
+                            <!-- Buy It Now Card -->
+                           
                         </div>
 
                         @else

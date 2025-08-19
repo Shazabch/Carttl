@@ -32,22 +32,14 @@
                     </div>
                     <div class="col-md-4 mb-4">
                         <label class="form-label">Color</label>
-                        <select name="color" class="form-control @error('vehicleData.color') is-invalid @enderror" wire:model.defer="vehicleData.color">
-                            <option value="">Select Color</option>
-                            @foreach(\App\Enums\VehicleColor::cases() as $color)
-                            <option value="{{ $color->value }}">{{ $color->label() }}</option>
-                            @endforeach
-                        </select>
+                        <input type="text" class="form-control @error('vehicleData.color') is-invalid @enderror" wire:model.defer="vehicleData.color">
+
                         @error('vehicleData.color') <div class="invalid-feedback">{{ $message }}</div> @enderror
                     </div>
                     <div class="col-md-4 mb-4">
                         <label class="form-label">Interior Color</label>
-                        <select name="interior_color" class="form-control @error('vehicleData.interior_color') is-invalid @enderror" wire:model.defer="vehicleData.interior_color">
-                            <option value="">Select Interior Color</option>
-                            @foreach(\App\Enums\VehicleColor::cases() as $color)
-                            <option value="{{ $color->value }}">{{ $color->label() }}</option>
-                            @endforeach
-                        </select>
+                        <input type="text" class="form-control @error('vehicleData.interior_color') is-invalid @enderror" wire:model.defer="vehicleData.interior_color">
+
                         @error('vehicleData.interior_color') <div class="invalid-feedback">{{ $message }}</div> @enderror
                     </div>
                 </div>

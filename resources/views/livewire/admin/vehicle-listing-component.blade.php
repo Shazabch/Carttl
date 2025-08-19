@@ -6,7 +6,7 @@
             <div class="col-md-4">
                 <input type="text" class="form-control" placeholder="Search by Title, VIN..." wire:model.live.debounce.300ms="search">
             </div>
-
+           
             <button class="btn btn-primary" wire:click="addNew">
                 <i class="fas fa-plus-circle me-1"></i> Add Vehicle
             </button>
