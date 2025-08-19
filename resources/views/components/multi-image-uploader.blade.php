@@ -2,45 +2,83 @@
 
 <div
     x-data="{
-        // This will hold our preview objects { url, file }
         previews: [],
-        // Initialize with existing images when editing
+        uploading: false,
+        progress: 0,
+        totalFiles: 0,
+        processedFiles: 0,
+
         init() {
             let existing = @json($existingImages);
             this.previews = existing.map(img => ({ url: img.url, name: img.name, existing: true }));
         },
 
-        // Handle new file selections
         handleFiles(event) {
-            // Use Livewire's built-in uploader to send files to the backend
-            @this.uploadMultiple('{{ $attributes->wire('model')->value() }}', event.target.files,
-                // Success callback
-                (uploadedFilename) => {
-                    // We don't need to do anything here, Livewire handles the temporary files
-                },
-                // Error callback
-                () => {},
-                // Progress callback
-                (event) => {}
-            );
+            const files = event.target.files;
+            if (!files.length) return;
 
-            // Add new previews to the array for immediate visual feedback
-            Array.from(event.target.files).forEach(file => {
-                this.previews.push({ url: URL.createObjectURL(file), name: file.name, existing: false });
+            this.uploading = true;
+            this.progress = 0;
+            this.totalFiles = files.length;
+            this.processedFiles = 0;
+
+            // Create an array to track upload promises
+            const uploadPromises = [];
+
+            Array.from(files).forEach(file => {
+                // Create a preview immediately
+                const preview = {
+                    url: URL.createObjectURL(file),
+                    name: file.name,
+                    existing: false
+                };
+                this.previews.push(preview);
+
+                // Create a promise for each file upload
+                const promise = new Promise((resolve, reject) => {
+                    @this.upload(
+                        '{{ $attributes->wire("model")->value() }}',
+                        file,
+                        (uploadedFilename) => resolve(),
+                        () => reject(),
+                        (event) => {
+                            // Update progress for this file
+                            const fileProgress = event.detail.progress;
+                            this.progress = Math.floor(
+                                (this.processedFiles + (fileProgress / 100)) / this.totalFiles * 100
+                            );
+                        }
+                    );
+                });
+
+                uploadPromises.push(promise);
             });
+
+            // Process all uploads
+            Promise.all(uploadPromises)
+                .then(() => {
+                    this.uploading = false;
+                    this.progress = 100;
+                    setTimeout(() => this.progress = 0, 1000);
+                })
+                .catch(() => {
+                    this.uploading = false;
+                    alert('Some files failed to upload');
+                })
+                .finally(() => {
+                    this.processedFiles = 0;
+                    event.target.value = '';
+                });
         },
 
-        // Remove a preview (both new and existing)
         removePreview(name) {
-            // Filter the previews array to remove the one with the matching name
             this.previews = this.previews.filter(p => p.name !== name);
-            // Dispatch an event to the parent Livewire component to handle the actual removal
             @this.dispatch('remove-image', { imageName: name });
         }
     }"
     @remove-upload.window="removePreview($event.detail.name)"
 >
-    {{-- The hidden file input with the 'multiple' attribute --}}
+    {{-- File input --}}
     <input
         x-ref="fileInput"
         type="file"
@@ -49,16 +87,42 @@
         @change="handleFiles(event)"
     >
 
-    {{-- The "Click to Upload" area --}}
+    {{-- Upload area --}}
     <div
         @click="$refs.fileInput.click()"
         class="border-dashed rounded d-flex align-items-center justify-content-center bg-light mb-3"
-        style="height: 150px; cursor: pointer; border: 2px dashed #ccc;"
+        style="height: 150px; cursor: pointer; border: 2px dashed #ccc; position: relative;"
     >
-        <span class="text-muted">Click to upload multiple images</span>
+        <template x-if="!uploading">
+            <span class="text-muted">Click to upload multiple images</span>
+        </template>
+
+        {{-- Progress bar --}}
+        <template x-if="uploading">
+            <div class="w-100 px-3">
+                <div class="progress" style="height: 20px;">
+                    <div
+                        class="progress-bar progress-bar-striped progress-bar-animated"
+                        role="progressbar"
+                        :style="'width: ' + progress + '%'"
+                        :aria-valuenow="progress"
+                        aria-valuemin="0"
+                        aria-valuemax="100"
+                    >
+                        <span x-text="progress + '%'"></span>
+                    </div>
+                </div>
+                <div class="text-center mt-2">
+                    <span class="spinner-border spinner-border-sm text-primary" role="status"></span>
+                    <span class="text-muted ms-2">
+                        Uploading <span x-text="processedFiles"></span> of <span x-text="totalFiles"></span> files...
+                    </span>
+                </div>
+            </div>
+        </template>
     </div>
 
-    {{-- The Preview Gallery --}}
+    {{-- Preview Gallery --}}
     @if($is_prev)
     <div x-show="previews.length > 0">
         <div class="row g-3">
