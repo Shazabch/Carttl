@@ -110,6 +110,26 @@
                     <input type="number" step="0.01" class="form-control @error('vehicleData.price') is-invalid @enderror" wire:model.defer="vehicleData.price">
                     @error('vehicleData.price') <div class="invalid-feedback">{{ $message }}</div> @enderror
                 </div>
+                @if($vehicleData['is_auction'])
+                {{-- Starting Bid Amount --}}
+                <div class="col-md-4 mb-3">
+                    <label class="form-label">Starting Bid Amount (AED)</label>
+                    <input type="number" step="0.01" class="form-control @error('vehicleData.starting_bid_amount') is-invalid @enderror"
+                        wire:model.defer="vehicleData.starting_bid_amount">
+                    @error('vehicleData.starting_bid_amount')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
+                </div>
+
+                <div class="col-md-4 mb-3">
+                    <label class="form-label">Auction End Date</label>
+                    <input type="datetime-local" class="form-control @error('vehicleData.auction_end_date') is-invalid @enderror"
+                        wire:model.defer="vehicleData.auction_end_date">
+                    @error('vehicleData.auction_end_date')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
+                </div>
+                @endif
             </div>
         </fieldset>
 
