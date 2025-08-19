@@ -14,10 +14,13 @@
                             </div>
                             <div class="form-group mb-3">
                                 <select wire:model.live="year" class="form-select form-select-sm">
-                                    <option>Any Year</option>
-                                    <option>2024</option>
-                                    <option>2023</option>
-                                    <option>2022</option>
+
+                                    <option value="">Select Year</option>
+                                    @for ($i = date('Y'); $i >= 1980; $i--)
+                                    <option value="{{ $i }}">{{ $i }}</option>
+                                    @endfor
+                                </select>
+
                                 </select>
                             </div>
                             <div class="form-group mb-3">
@@ -74,7 +77,7 @@
                                 </div>
                             </div>
                             <!-- Auction Status Filter -->
-                             @if($section!='Vehicles')
+                            @if($section!='Vehicles')
                             <div class="filter-block mb-3 border-bottom-0">
                                 <h4 class="p-18 fw-500 mb-4">Auction Status</h4>
                                 <div class="form-check mb-3">
@@ -145,7 +148,7 @@
 
                         <!-- List View (Hidden by default) -->
                         <div class="list-view d-none" id="listView">
-                             @foreach($vehicles as $item)
+                            @foreach($vehicles as $item)
                             @if($section=='Vehicles')
                             @include('components.guest.listing-card-vehicle-list-view')
                             @else

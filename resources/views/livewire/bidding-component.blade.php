@@ -113,7 +113,7 @@
             <div class="bid-history">
                 @foreach($bids as $bid)
                 <div class="bid-item">
-                    <span class="bidder">{{ $bid->user->name }}</span>
+                    <span class="bidder" style="filter: blur(2px);">********</span>
                     <span class="bid-amount">{{ format_currency($bid->bid_amount) }}</span>
                     <span class="bid-time">{{ \Carbon\Carbon::parse($bid->created_at)->diffForHumans() }}</span>
                 </div>

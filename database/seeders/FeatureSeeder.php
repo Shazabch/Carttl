@@ -12,7 +12,7 @@ class FeatureSeeder extends Seeder
         $features = ['Airbags', 'ABS', 'Bluetooth', 'Sunroof', 'Backup Camera', 'Cruise Control'];
         $exterior = ['Alloy Wheels', 'Sunroof', 'Fog Lights', 'Roof Rails'];
         $interior = ['Leather Seats', 'Heated Seats', 'Touchscreen Display', 'Bluetooth'];
-        $tags = ['Luxury', 'Sports Car', 'Certified'];
+        $tags = ['Luxury', 'Sports Car', 'Certified By'];
 
         foreach ($exterior as $feature) {
             Feature::firstOrCreate(['name' => $feature, 'type' => 'exterior']);

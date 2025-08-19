@@ -139,6 +139,7 @@
                                                     <div class="detail-item"><span class="detail-label">Engine</span><span class="detail-value">{{$selected_vehicle->engine_type}}</span></div>
                                                     <div class="detail-item"><span class="detail-label">Horsepower</span><span class="detail-value">{{$selected_vehicle->horsepower}}HP</span></div>
                                                     <div class="detail-item"><span class="detail-label">Torque</span><span class="detail-value">{{$selected_vehicle->torque}} RPM</span></div>
+                                                    <div class="detail-item"><span class="detail-label">No Of Cylinders</span><span class="detail-value">{{$selected_vehicle->no_of_cylinder}}</span></div>
                                                 </div>
                                                 <div class="col-md-6">
                                                     <div class="detail-item"><span class="detail-label">0-60 mph</span><span class="detail-value">{{$selected_vehicle->zero_to_sixty}} seconds</span></div>
