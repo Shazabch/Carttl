@@ -16,7 +16,7 @@
                         <th>Make</th>
                         <th>Model</th>
                         <th>Date</th>
-                        <!-- <th>Action</th> -->
+                        <th>Action</th>
 
 
                     </tr>
@@ -41,7 +41,18 @@
 
                         <td>{{$item->vehicleModel?->name}}</td>
                         <td class="text-center">{{ $item->created_at->format('Y-m-d') }}</td>
-                        <!-- <td class="btn btn-primary text-light m-2">Download Report</td> -->
+                        <td>
+                            @foreach($item->inspectionReports as $report)
+
+                            @if($report->shared_link)
+                            <a href="{{$report->shared_link}}" target="_blank" class="btn btn-primary">
+                                <i class="las la-share-alt me-2"></i> Share Report
+                                <i class="las la-link text-success" title="Active link exists. Expires: {{ $report->shared_link_expires_at }}"></i>
+                                 </a>
+                            @endif
+                            @endforeach
+
+                        </td>
 
                     </tr>
                     @endforeach

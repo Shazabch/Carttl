@@ -180,7 +180,9 @@
                         <p class="mb-1"><strong>Link Generated:</strong></p>
                         <div class="input-group">
                             <input type="text" id="generated-share-link" class="form-control" value="{{ $generatedShareLink }}" readonly>
-                            <button class="btn btn-outline--primary" onclick="copyShareLinkToClipboard()" title="Copy to Clipboard">
+                            <button class="btn btn-outline--primary"
+                                onclick="robustCopyToClipboard('generated-share-link')"
+                                title="Copy to Clipboard">
                                 <i class="las la-copy"></i>
                             </button>
                         </div>
@@ -192,32 +194,88 @@
     </div>
     @endif
 
-    @push('script')
-    <script>
-        function copyShareLinkToClipboard() {
-            const linkInput = document.getElementById('generated-share-link');
-            const linkText = linkInput.value;
 
-            // Use the modern Clipboard API
-            navigator.clipboard.writeText(linkText).then(() => {
-                // Success feedback
-                window.dispatchEvent(new CustomEvent('success-notification', {
-                    detail: {
-                        message: 'Link copied to clipboard!'
-                    }
-                }));
-            }).catch(err => {
-                // Error feedback
-                console.error('Failed to copy text: ', err);
+    <script>
+        /**
+         * A bulletproof copy-to-clipboard function that tries the modern API
+         * and falls back to a legacy method if needed.
+         */
+        function robustCopyToClipboard(elementId) {
+            const inputElement = document.getElementById(elementId);
+            if (!inputElement) {
+                console.error('Copy failed: Could not find element with ID:', elementId);
+                return;
+            }
+
+            const textToCopy = inputElement.value;
+
+            // --- Method 1: The Modern Clipboard API (Requires HTTPS or localhost) ---
+            if (navigator.clipboard && window.isSecureContext) {
+                console.log('Attempting to copy with modern API...');
+                navigator.clipboard.writeText(textToCopy)
+                    .then(() => {
+                        // Success feedback
+                        window.dispatchEvent(new CustomEvent('success-notification', {
+                            detail: {
+                                message: 'Link copied to clipboard!'
+                            }
+                        }));
+                    })
+                    .catch(err => {
+                        console.error('Modern API failed. This should not happen in a secure context.', err);
+                        // If it fails for some reason, we can still try the fallback
+                        fallbackCopyTextToClipboard(textToCopy);
+                    });
+            } else {
+                // --- Method 2: The Fallback for insecure contexts (HTTP) ---
+                console.log('Modern API not available. Using fallback method...');
+                fallbackCopyTextToClipboard(textToCopy);
+            }
+        }
+
+        /**
+         * The fallback function that creates a temporary textarea.
+         */
+        function fallbackCopyTextToClipboard(text) {
+            // Create a temporary textarea element
+            const textArea = document.createElement("textarea");
+            textArea.value = text;
+
+            // Make it invisible and append it to the body
+            textArea.style.position = "fixed";
+            textArea.style.top = 0;
+            textArea.style.left = 0;
+            textArea.style.opacity = 0;
+            document.body.appendChild(textArea);
+            textArea.focus();
+            textArea.select();
+
+            try {
+                // Try to execute the 'copy' command
+                const successful = document.execCommand('copy');
+                if (successful) {
+                    window.dispatchEvent(new CustomEvent('success-notification', {
+                        detail: {
+                            message: 'Link copied to clipboard!'
+                        }
+                    }));
+                } else {
+                    throw new Error('Copy command was not successful.');
+                }
+            } catch (err) {
+                console.error('Fallback copy failed:', err);
                 window.dispatchEvent(new CustomEvent('error-notification', {
                     detail: {
-                        message: 'Failed to copy link. Please copy manually.'
+                        message: 'Copy failed. Please copy the link manually.'
                     }
                 }));
-            });
+            }
+
+            // Clean up and remove the temporary element
+            document.body.removeChild(textArea);
         }
     </script>
-    @endpush
+
     @push('scripts')
     <script>
         // Listen for the 'livewire:initialized' event to ensure Livewire is ready

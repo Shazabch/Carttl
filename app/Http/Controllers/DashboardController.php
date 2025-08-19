@@ -28,9 +28,9 @@ class DashboardController extends Controller
     public function notificationSettings(): View
     {
         $notifications = Auth::user()->notifications()->get();
-        
+
         return view('account.notification-settings',compact('notifications'));
-        
+
     }
 
     public function bidding(): View
@@ -81,6 +81,7 @@ class DashboardController extends Controller
         } else {
             $inspections = collect(); // empty collection, avoids errors in Blade
         }
+
         return view('account.car-appointments' , compact('inspections'));
     }
 }

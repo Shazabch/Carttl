@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class InspectionEnquiry extends Model
 {
@@ -20,4 +21,8 @@ class InspectionEnquiry extends Model
      {
           return $this->belongsTo(User::class);
      }
+     public function inspectionReports(): HasMany
+    {
+        return $this->hasMany(VehicleInspectionReport::class,'inspection_enquiry_id');
+    }
 }
