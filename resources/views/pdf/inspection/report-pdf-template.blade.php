@@ -772,11 +772,11 @@
         ],
         'Tires' => [
         'icon' => 'fa-solid fa-circle-dot',
-        'fields' => ['frontLeftTire', 'frontRightTire', 'rearLeftTire', 'rearRightTire', 'tiresSize', 'spareTire']
+        'fields' => ['frontLeftTire', 'frontRightTire', 'rearLeftTire', 'rearRightTire', 'tiresSize', 'spareTire','commentTire']
         ],
         'Car Specs' => [
         'icon' => 'fa-solid fa-sliders',
-        'fields' => ['parkingSensors', 'keylessStart', 'seats', 'cooledSeats', 'heatedSeats', 'powerSeats', 'viveCamera', 'sunroofType', 'drive']
+        'fields' => ['parkingSensors', 'keylessStart', 'seats', 'cooledSeats', 'heatedSeats', 'powerSeats', 'viveCamera', 'sunroofType', 'drive','blindSpot','headsDisplay','premiumSound','carbonFiber']
         ],
         'Interior, Electrical & Air Conditioner' => [
         'icon' => 'fa-solid fa-bolt',

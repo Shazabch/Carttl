@@ -11,6 +11,11 @@
             <div class="col-md-6">@include('livewire.admin.inspection.sections.partials.toggle-single', ['label' => 'Vive Camera', 'property' => 'viveCamera', 'options' => ['Rear', 'Front &Rear', '360 degree']])</div>
             <div class="col-md-6">@include('livewire.admin.inspection.sections.partials.toggle-single', ['label' => 'Sunroof Type', 'property' => 'sunroofType', 'options' => ['Panoramic', 'Dual', 'Normal', 'N/A', 'Moonroof']])</div>
             <div class="col-md-6">@include('livewire.admin.inspection.sections.partials.toggle-single', ['label' => 'Drive', 'property' => 'drive', 'options' => ['FWD', 'RWD', 'AWD', '4WD']])</div>
+            <div class="col-md-6">@include('livewire.admin.inspection.sections.partials.toggle-single', ['label' => 'Blind Spots', 'property' => 'blindSpot', 'options' => ['Available', 'N/A']])</div>
+            <div class="col-md-6">@include('livewire.admin.inspection.sections.partials.toggle-single', ['label' => 'Heads Up Display', 'property' => 'headsDisplay', 'options' => ['Available', 'N/A']])</div>
+            <div class="col-md-6">@include('livewire.admin.inspection.sections.partials.toggle-single', ['label' => 'Premium Sound System', 'property' => 'premiumSound', 'options' => ['Available', 'N/A']])</div>
+            <div class="col-md-6">@include('livewire.admin.inspection.sections.partials.toggle-single', ['label' => 'Carbon Fiber Interior', 'property' => 'carbonFiber', 'options' => ['Available', 'N/A']])</div>
+
         </div>
     </div>
 </div>
