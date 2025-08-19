@@ -699,13 +699,13 @@
                             <div class="item-value">{{ $reportInView->mortgage ?? 'N/A' }}</div>
                         </td>
                     </tr>
-                    <tr>
+                    <!-- <tr>
                         <td>
                             <div class="item-label"><i class="{{ $fieldIcons['is_inspection'] ?? 'fas fa-circle-notch' }}"></i> Inspection</div>
                             <div class="item-value">{{ $reportInView->is_inspection ?? 'N/A' }}</div>
                         </td>
                         <td></td>
-                    </tr>
+                    </tr> -->
                 </table>
             </div>
         </div>
@@ -723,11 +723,11 @@
         ],
         'Tires' => [
         'icon' => 'fa-solid fa-circle-dot',
-        'fields' => ['frontLeftTire', 'frontRightTire', 'rearLeftTire', 'rearRightTire', 'tiresSize', 'spareTire']
+        'fields' => ['frontLeftTire', 'frontRightTire', 'rearLeftTire', 'rearRightTire', 'tiresSize', 'spareTire','commentTire']
         ],
         'Car Specs' => [
         'icon' => 'fa-solid fa-sliders',
-        'fields' => ['parkingSensors', 'keylessStart', 'seats', 'cooledSeats', 'heatedSeats', 'powerSeats', 'viveCamera', 'sunroofType', 'drive']
+        'fields' => ['parkingSensors', 'keylessStart', 'seats', 'cooledSeats', 'heatedSeats', 'powerSeats', 'viveCamera', 'sunroofType', 'drive','blindSpot','headsDisplay','premiumSound','carbonFiber']
         ],
         'Interior, Electrical & Air Conditioner' => [
         'icon' => 'fa-solid fa-bolt',
