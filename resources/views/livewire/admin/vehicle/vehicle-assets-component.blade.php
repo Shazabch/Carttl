@@ -1,4 +1,8 @@
 <div class="card">
+    <div wire:loading wire:target="new_images">
+        <x-full-page-loading />
+    </div>
+
     <div class="card-header">
         <h5 class="mb-0">Manage Assets for: {{ $vehicle->title }}</h5>
     </div>
