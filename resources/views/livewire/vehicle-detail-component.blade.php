@@ -13,7 +13,7 @@
                     <div class="col-lg-8">
                         <div class="hero-gallery">
                             <div class="main-image-container">
-                                <img src="{{$mainImage ? asset('storage/'.$mainImage) : asset('images/c38ec63b-c441-4574-8b3a-8c69a2aa9595.webp')}}" alt="2023 Porsche 911 Turbo S" class="main-image" id="mainImage">
+                                <img src="{{$mainImage ? asset('storage/'.$mainImage) : asset('images/default-car.webp')}}" alt="2023 Porsche 911 Turbo S" class="main-image" id="mainImage">
                                 <div class="image-overlay">
                                     @if($selected_vehicle->live_auction && $selected_vehicle->is_auction)
                                     <div class="auction-status">
@@ -48,10 +48,10 @@
                                         class="thumbnail"
                                         data-full="{{ asset('storage/'.$image->path) }}">
                                     @empty
-                                    <img src="{{ asset('images/c38ec63b-c441-4574-8b3a-8c69a2aa9595.webp') }}"
+                                    <img src="{{ asset('images/default-car.webp') }}"
                                         alt="Thumbnail"
                                         class="thumbnail"
-                                        data-full="{{ asset('images/c38ec63b-c441-4574-8b3a-8c69a2aa9595.webp') }}">
+                                        data-full="{{ asset('images/default-car.webp') }}">
                                     @endforelse
 
                                 </div>
@@ -225,7 +225,7 @@
                     </div>
                     <div class="col-lg-4">
                          @if($selected_vehicle->is_auction)
-                       
+
                             <div class="buy-now-card my-2">
                                 <h4>Buy It Now</h4>
                                 <div class="buy-now-price">{{format_currency($selected_vehicle->price)}}</div>
@@ -265,14 +265,14 @@
                                     </button>
                                 </div>
                             </div>
-                 
+
                         @endif
                         @if($selected_vehicle->is_auction)
                         <div id="bidding" class="sticky-sidebar">
                             @livewire('bidding-component',['selected_vehicle' => $selected_vehicle])
 
                             <!-- Buy It Now Card -->
-                           
+
                         </div>
 
                         @else
