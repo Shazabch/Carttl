@@ -2,7 +2,7 @@
 :root {
     --primary: #3a3221;
     --secondary: #4c4c4c;
-    --accent: #d7b236;
+    --accent: #e0ddd4;
     --accent-2: #ffe8e2;
     --accent-hover: #f8d0c6;
     --accent-hover-2: #bd9731;
@@ -2777,13 +2777,13 @@ footer .footer-center ul {
 }
 
 .custom-accordion.white .accordion-button:not(.collapsed) {
-    background-color: var(--accent);
-    color: #fff;
+    background-color: white !important;
+   color: var(--accent) !important;
 }
 .accordion-button:not(.collapsed) {
 
-    color: #fff !important;
-    background-color: var(--accent) !important;
+    color: black !important;
+    background-color: white !important;
 
 }
 .accordion-button .detail-title{
@@ -2793,12 +2793,14 @@ footer .footer-center ul {
 }
 .accordion-button:not(.collapsed) .detail-title{
 
-    color: #fff !important;
+    color: var(--accent) !important;
+    
 
 }
 .accordion-button:not(.collapsed) .detail-title i{
 
-    color: #fff !important;
+        color: var(--accent) !important;
+
 
 }
 

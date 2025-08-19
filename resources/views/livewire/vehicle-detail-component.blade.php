@@ -153,28 +153,46 @@
 
                                 <!-- Add the rest of your accordion items here following the same pattern -->
                                 <!-- Card 3: Exterior Features - OPEN -->
+                                <!-- Exterior Features -->
                                 <div class="detail-card accordion-item">
                                     <div class="detail-header accordion-header" id="headingThree">
-                                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="true" aria-controls="collapseThree">
+                                        <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                                            data-bs-target="#collapseThree" aria-expanded="true" aria-controls="collapseThree">
                                             <h3 class="detail-title mb-0"><i class="fas fa-car me-2"></i> Exterior Features</h3>
                                         </button>
                                     </div>
                                     <div id="collapseThree" class="accordion-collapse collapse show" aria-labelledby="headingThree" data-bs-parent="#vehicleDetailsAccordion">
-                                        <div class="detail-content"><!-- Content --></div>
+                                        <div class="detail-content row">
+                                            @foreach($allexteriorFeatures as $feature)
+                                            <div class="col-md-6 mb-2">
+                                                <i class="fas {{ in_array($feature->name, $exteriorFeatures) ? 'fa-check-circle text-success' : 'fa-times-circle text-danger' }}"></i>
+                                                {{ $feature->name }}
+                                            </div>
+                                            @endforeach
+                                        </div>
                                     </div>
                                 </div>
 
-                                <!-- Card 4: Interior Features - OPEN -->
+                                <!-- Interior Features -->
                                 <div class="detail-card accordion-item">
                                     <div class="detail-header accordion-header" id="headingFour">
-                                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="true" aria-controls="collapseFour">
+                                        <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                                            data-bs-target="#collapseFour" aria-expanded="true" aria-controls="collapseFour">
                                             <h3 class="detail-title mb-0"><i class="fas fa-couch me-2"></i> Interior Features</h3>
                                         </button>
                                     </div>
                                     <div id="collapseFour" class="accordion-collapse collapse show" aria-labelledby="headingFour" data-bs-parent="#vehicleDetailsAccordion">
-                                        <div class="detail-content"><!-- Content --></div>
+                                        <div class="detail-content row">
+                                            @foreach($allinteriorFeatures as $feature)
+                                            <div class="col-md-6 mb-2">
+                                                <i class="fas {{ in_array($feature->name, $interiorFeatures) ? 'fa-check-circle text-success' : 'fa-times-circle text-danger' }}"></i>
+                                                {{ $feature->name }}
+                                            </div>
+                                            @endforeach
+                                        </div>
                                     </div>
                                 </div>
+
 
                                 <!-- And so on for the rest of the cards... -->
 
@@ -193,8 +211,8 @@
                                                 alt="Seller">
                                         </div>
                                         <div class="seller-details">
-                                            <h5>Admin</h5>
-                                            <div class="seller-rating">
+                                            <h5>GoldenX</h5>
+                                            <!-- <div class="seller-rating">
                                                 <div class="stars">
                                                     <i class="fas fa-star"></i>
                                                     <i class="fas fa-star"></i>
@@ -203,11 +221,11 @@
                                                     <i class="fas fa-star"></i>
                                                 </div>
                                                 <span>(4.9/5 - 127 reviews)</span>
-                                            </div>
+                                            </div> -->
                                             <p>Premium car collector with 15+ years of experience. All vehicles come
                                                 with
                                                 detailed documentation and service records.</p>
-                                            <div class="seller-stats">
+                                            <!-- <div class="seller-stats">
                                                 <div class="stat">
                                                     <span class="stat-number">47</span>
                                                     <span class="stat-label">Cars Sold</span>
@@ -216,7 +234,7 @@
                                                     <span class="stat-number">100%</span>
                                                     <span class="stat-label">Positive Feedback</span>
                                                 </div>
-                                            </div>
+                                            </div> -->
                                         </div>
                                     </div>
                                 </div>
@@ -224,47 +242,47 @@
                         </div>
                     </div>
                     <div class="col-lg-4">
-                         @if($selected_vehicle->is_auction)
+                        @if($selected_vehicle->is_auction)
 
-                            <div class="buy-now-card my-2">
-                                <h4>Buy It Now</h4>
-                                <div class="buy-now-price">{{format_currency($selected_vehicle->price)}}</div>
-                                <p>Skip the auction and purchase immediately</p>
-                                @if(auth()->id())
-                                <button type="button" class="btn btn-light" data-bs-toggle="modal" data-bs-target="#buyNowModal">
-                                    <i class="fas fa-shopping-cart"></i> Buy It Now
+                        <div class="buy-now-card my-2">
+                            <h4>Buy It Now</h4>
+                            <div class="buy-now-price">{{format_currency($selected_vehicle->price)}}</div>
+                            <p>Skip the auction and purchase immediately</p>
+                            @if(auth()->id())
+                            <button type="button" class="btn btn-light" data-bs-toggle="modal" data-bs-target="#buyNowModal">
+                                <i class="fas fa-shopping-cart"></i> Buy It Now
+                            </button>
+                            <a href="#bidding" class="btn btn-light">
+                                <i class="fas fa-gavel"></i> Place Bid
+                            </a>
+                            @else
+                            <a href="/login" class="btn btn-light text-primary ">
+
+                                Buy It Now <div class="spinner"></div>
+                            </a>
+                            <a href="#bidding" class="btn btn-light text-primary ">
+
+                                Place Bid <div class="spinner"></div>
+                            </a>
+                            @endif
+
+
+                        </div>
+                        <!-- Contact Card -->
+                        <div class="contact-card my-2">
+                            <h4><i class="fas fa-phone"></i> Need Help?</h4>
+                            <p>Our specialists are here to assist you</p>
+                            <div class="contact-options">
+                                <button class="btn btn-primary btn-bid">
+                                    <i class="fas fa-phone"></i>
+                                    Call Now
                                 </button>
-                                <a  href="#bidding" class="btn btn-light">
-                                    <i class="fas fa-gavel"></i> Place Bid
-                                </a>
-                                @else
-                                <a href="/login" class="btn btn-light text-primary ">
-
-                                    Buy It Now <div class="spinner"></div>
-                                </a>
-                                 <a href="#bidding" class="btn btn-light text-primary ">
-
-                                    Place Bid <div class="spinner"></div>
-                                </a>
-                                @endif
-
-
+                                <button class="btn btn-outline-primary btn-auto-bid">
+                                    <i class="fas fa-envelope"></i>
+                                    Email
+                                </button>
                             </div>
-                            <!-- Contact Card -->
-                            <div class="contact-card my-2">
-                                <h4><i class="fas fa-phone"></i> Need Help?</h4>
-                                <p>Our specialists are here to assist you</p>
-                                <div class="contact-options">
-                                    <button class="btn btn-primary btn-bid">
-                                        <i class="fas fa-phone"></i>
-                                        Call Now
-                                    </button>
-                                    <button class="btn btn-outline-primary btn-auto-bid">
-                                        <i class="fas fa-envelope"></i>
-                                        Email
-                                    </button>
-                                </div>
-                            </div>
+                        </div>
 
                         @endif
                         @if($selected_vehicle->is_auction)
