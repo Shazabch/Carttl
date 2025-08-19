@@ -1,4 +1,5 @@
 <div>
+
     <section class="inpsection-wrapper">
         <div class="container">
             <div class="row">
@@ -140,37 +141,46 @@
                                         @enderror
                                     </div>
                                 </div>
-                                <div class="row">
+                                <!-- START: Searchable Selects Integration -->
+                                <div class="row" x-data="searchableSelects()" x-init="init()">
                                     <div class="col-lg-6">
-                                        <div class="form-group mb-3">
-                                            <label class="form-label">Makes</label>
-                                            <select class="form-select" wire:model.live="make">
-                                                <option value="">Select Make</option>
-                                                @foreach ($brands as $brand)
-                                                <option value="{{ $brand->id }}">{{ $brand->name }}</option>
-                                                @endforeach
-                                            </select>
-                                            @error('make') <div class="text-danger small mt-1">{{ $message }}</div> @enderror
-                                        </div>
+                                        <x-searchable-select
+                                            label="Makes"
+                                            :options="$brands"
+                                            placeholder="Search for a make..."
+                                            wire:model.live="make" />
+                                        @error('make') <div class="text-danger small mt-1">{{ $message }}</div> @enderror
                                     </div>
                                     <div class="col-lg-6 mb-3">
-                                        <div class="form-group mb-3">
-                                            <label class="form-label">Model</label>
-                                            <select class="form-select" wire:model.defer="model">
-                                                <option value="">Select Model</option>
-                                                @foreach ($models as $model)
-                                                <option value="{{ $model->id }}">{{ $model->name }}</option>
-                                                @endforeach
-                                            </select>
-                                            @error('model') <div class="text-danger small mt-1">{{ $message }}</div> @enderror
+                                        <div class="d-flex align-items-center">
+                                            <!-- The component itself -->
+                                            <div class="flex-grow-1">
+                                                <x-searchable-select
+                                                    label="Model"
+                                                    :options="$models"
+                                                    placeholder="Select a make first..."
+                                                    listen-event="models-updated"
+                                                    wire:model="model" />
+                                            </div>
+                                            <!-- Loading spinner remains here, controlled by the parent -->
+                                            <div wire:loading wire:target="make" class="ms-2" style="margin-top: 20px;">
+                                                <div class="spinner-border spinner-border-sm" role="status">
+                                                    <span class="visually-hidden">Loading...</span>
+                                                </div>
+                                            </div>
                                         </div>
+                                        @error('model') <div class="text-danger small mt-1">{{ $message }}</div> @enderror
                                     </div>
                                     <div class="col-lg-6 mb-3">
                                         <div class="form-group">
                                             <label for="modelYear" class="form-label">Model Year</label>
-                                            <input type="number" class="form-control" id="modelYear"
-                                                placeholder="e.g. 2022" min="1990" max="2099"
-                                                wire:model="year">
+
+                                            <select class="form-select" wire:model.defer="year">
+                                                <option value="">Select Year</option>
+                                                @for ($i = date('Y'); $i >= 1980; $i--)
+                                                <option value="{{ $i }}">{{ $i }}</option>
+                                                @endfor
+                                            </select>
                                             @error('year')
                                             <small class="text-danger">{{ $message }}</small>
                                             @enderror
@@ -180,7 +190,7 @@
                                         <div class="form-group">
                                             <label for="vehicleType" class="form-label">Vehicle Type</label>
                                             <select class="form-select" id="vehicleType" wire:model="type">
-                                                <option value="" selected disabled>Select vehicle type</option>
+                                                <option value="">Select vehicle type</option>
                                                 <option>Car</option>
                                                 <option>Van</option>
                                                 <option>Truck</option>
@@ -191,28 +201,21 @@
                                             @enderror
                                         </div>
                                     </div>
-                                    {{-- <div class="col-lg-6 mb-3">
-                                        <div class="form-group">
-                                            <label for="model" class="form-label">Model</label>
-                                            <input type="number" class="form-control" id="model"
-                                                placeholder="e.g. 2022" min="1990" max="2099"
-                                                wire:model="model">
-                                            @error('model')
-                                                <small class="text-danger">{{ $message }}</small>
-                                    @enderror
                                 </div>
-                            </div> --}}
-                            <div class="col-lg-12 mt-4">
-                                <button type="submit"
-                                    class="btn-main dark justify-content-center w-100 py-3 p-20 fw-500">Submit
-                                    Booking</button>
+                                <!-- END: Searchable Selects Integration -->
+
+
+                                <div class="col-lg-12 mt-4">
+                                    <button type="submit"
+                                        class="btn-main dark justify-content-center w-100 py-3 p-20 fw-500">Submit
+                                        Booking</button>
+                                </div>
                             </div>
+                        </form>
                     </div>
-                    </form>
                 </div>
+                @endif
             </div>
-            @endif
         </div>
-</div>
-</section>
+    </section>
 </div>

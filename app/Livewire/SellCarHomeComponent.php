@@ -67,7 +67,7 @@ class SellCarHomeComponent extends Component
     {
         $mileageKeys = array_keys(MileageRange::options());
         $currentYear = now()->year;
-        $minYear = $currentYear - 50;
+        $minYear = 1980;
 
         return [
             'formData.brand_id' => ['required', 'exists:brands,id'],
@@ -91,7 +91,7 @@ class SellCarHomeComponent extends Component
     {
         $mileageKeys = array_keys(MileageRange::options());
         $currentYear = now()->year;
-        $minYear = $currentYear - 50;
+        $minYear = 1980;
 
         switch ($step) {
             case 1: // Featured brand selection
@@ -146,7 +146,7 @@ class SellCarHomeComponent extends Component
     public function mount()
     {
         $this->featuredBrands = Brand::where('is_active', true)->take(12)->get();
-        $this->years = range(now()->year, now()->year - 50);
+        $this->years = range(now()->year, 1980);
         $this->formData['mileage'] = array_key_first(MileageRange::options());
     }
 

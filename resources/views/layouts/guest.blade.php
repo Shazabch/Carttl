@@ -30,6 +30,8 @@
     <link rel="stylesheet" href="{{ asset('css/guest.css') }}">
     <link rel="stylesheet" href="{{ asset('css/car-detail.css') }}">
     <link rel="stylesheet" href="{{ asset('css/customer-dashboard.css') }}">
+    <link href="https://cdn.jsdelivr.net/npm/tom-select@2.3.1/dist/css/tom-select.bootstrap5.css" rel="stylesheet">
+
     @stack('styles')
     @livewireStyles
 </head>
@@ -89,6 +91,7 @@
     <script src="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.js"></script>
     {{-- begin::sweetalert --}}
     <script src="{{ asset('assets/js/pages/features/miscellaneous/sweetalert2.js') }}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/tom-select@2.3.1/dist/js/tom-select.complete.min.js"></script>
     {{-- end::sweetalert --}}
     <script>
         var toastMixin = Swal.mixin({
@@ -191,10 +194,10 @@
             // 3. Use the Bootstrap API to show the modal
             loginModal.show();
         });
-         document.addEventListener('close-login-modal', () => {
-        const modal = bootstrap.Modal.getInstance(document.getElementById('loginModal'));
-        if (modal) modal.hide();
-    });
+        document.addEventListener('close-login-modal', () => {
+            const modal = bootstrap.Modal.getInstance(document.getElementById('loginModal'));
+            if (modal) modal.hide();
+        });
     </script>
 
     <script>
