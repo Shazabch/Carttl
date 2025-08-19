@@ -10,7 +10,7 @@
                     <div class="col-md-12 mb-4">
                         <label class="form-label d-block">Condition</label>
                         <div class="row g-2">
-                            @foreach (['new', 'used', 'certified'] as $condition)
+                            @foreach (['new', 'used', 'certified by gx'] as $condition)
                             <div class="col-md-2 col-sm-4 col-6">
                                 <label class="option-card {{ ($vehicleData['condition'] ?? 'used') == $condition ? 'selected' : '' }}">
                                     <input type="checkbox" class="d-none" wire:click="setSingleSelection('condition', '{{ $condition }}')">
@@ -24,7 +24,7 @@
                     <div class="col-md-12 mb-4">
                         <label class="form-label d-block">Listing Status</label>
                         <div class="row g-2">
-                            @foreach (['draft', 'published', 'sold', 'pending'] as $status)
+                            @foreach (['draft', 'published', 'sold', 'pending','upcoming'] as $status)
                             <div class="col-sm-3 col-6 col-md-2">
                                 <label class="option-card {{ ($vehicleData['status'] ?? 'draft') == $status ? 'selected' : '' }}">
                                     <input type="checkbox" class="d-none" wire:click="setSingleSelection('status', '{{ $status }}')">
