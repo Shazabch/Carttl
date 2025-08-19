@@ -58,16 +58,20 @@ class SellCarComponent extends Component
     }
 
     // This runs when the brand_id is updated
-    public function updatedBrandId($brand_id)
+    public function updatedBrandId($value)
     {
         if (!Auth::check()) {
             $this->dispatch('show-login-modal');
         } else {
-            if ($brand_id) {
-                $this->models = VehicleModel::where('brand_id', $brand_id)->orderBy('name')->get();
-            } else {
-                $this->models = collect();
-            }
+            $this->models = empty($value)
+                ? []
+                : VehicleModel::where('brand_id', $value)
+                ->orderBy('name')
+                ->get(['id', 'name'])
+                ->toArray();
+
+            $this->reset('make_id');
+            $this->dispatch('models-updated', options: $this->models);
         }
 
 
@@ -146,9 +150,9 @@ class SellCarComponent extends Component
             'type'         => 'sale',
             'user_id'         => auth()->id(),
         ]);
-         $recipients = User::role(['admin', 'super-admin'])->get();
+        $recipients = User::role(['admin', 'super-admin'])->get();
         // Notification::send($recipients, new VehicleEnquiryNotification($enquiry));
-         $user = User::where('email', $this->email)->first();
+        $user = User::where('email', $this->email)->first();
         if ($user) {
             Notification::send($user, new VehicleEnquiryReceivedConfirmation($enquiry));
         }
