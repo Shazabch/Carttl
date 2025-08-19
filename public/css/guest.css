@@ -2781,6 +2781,11 @@ footer .footer-center ul {
     border-color: white !important;
    color: var(--accent) !important;
 }
+.accordion-button:focus {
+    z-index: 3;
+    outline: 0;
+    box-shadow: none !important;
+}
 .accordion-button:not(.collapsed) {
 
     color: black !important;

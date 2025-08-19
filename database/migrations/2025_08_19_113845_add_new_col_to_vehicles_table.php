@@ -21,11 +21,6 @@ return new class extends Migration
                 'archived',
                 'upcoming'
             ])->default('draft')->change();
-            $table->enum('condition', [
-                'new',
-                'used',
-                'certified by gx',
-            ])->default('new')->change();
         });
     }
 
@@ -42,11 +37,7 @@ return new class extends Migration
                 'sold',
                 'pending'
             ])->default('draft')->change();
-            $table->enum('condition', [
-                'new',
-                'used',
-                'certified',
-            ])->default('new')->change();
+
         });
     }
 };
