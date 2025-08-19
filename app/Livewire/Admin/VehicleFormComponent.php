@@ -95,7 +95,7 @@ class VehicleFormComponent extends Component
         // Pre-load data for dropdowns and selections
 
 
-        $this->brands = Brand::orderBy('name')->where('is_active', 1)->get();
+        $this->brands = Brand::orderBy('name')->get();
         $this->bodyTypes = BodyType::all();
         $this->fuelTypes = FuelType::all();
         $this->transmissions = Transmission::all();

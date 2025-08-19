@@ -122,7 +122,7 @@
                 </div>
 
                 <div class="col-md-4 mb-3">
-                    <label class="form-label">Registration No.</label>
+                    <label class="form-label">Reference No.</label>
                     <input type="text" class="form-control" wire:model.defer="vehicleData.registration_no">
                     @error('vehicleData.registration_no') <div class="text-danger small mt-2">{{ $message }}</div> @enderror
                 </div>

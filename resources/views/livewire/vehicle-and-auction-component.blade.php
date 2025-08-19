@@ -89,10 +89,10 @@
                                     <input class="form-check-input" wire:model.live="reserve_status" value="reserve_status" type="checkbox" id="a3">
                                     <label class="form-check-label" for="a3">Reserve Met</label>
                                 </div>
-                                <div class="form-check mb-3">
+                                <!-- <div class="form-check mb-3">
                                     <input class="form-check-input" type="checkbox" id="a4">
                                     <label class="form-check-label" for="a4">Buy It Now</label>
-                                </div>
+                                </div> -->
                             </div>
                             @endif
                         </div>

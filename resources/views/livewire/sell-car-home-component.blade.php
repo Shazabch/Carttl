@@ -103,6 +103,12 @@
                     @endforeach
                 </div>
                 @error('formData.brand_id') <span class="text-danger d-block mt-2">{{ $message }}</span> @enderror
+                 <div class="btn_group">
+                  <div></div>
+                    <button class="next-btn text-light btn-primary" wire:click="gotoAllMakes">
+                        All Makes <i class="fa-solid fa-chevron-right text-light"></i>
+                    </button>
+                </div>
             </div>
             @endif
 
