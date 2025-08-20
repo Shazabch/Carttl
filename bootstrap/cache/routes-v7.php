@@ -32,7 +32,7 @@ app('router')->setCompiledRoutes(
         array (
           0 => 
           array (
-            '_route' => 'generated::pSLEJNP3PpjabQh4',
+            '_route' => 'generated::VDKebn2t0jgRH77v',
           ),
           1 => NULL,
           2 => 
@@ -52,7 +52,7 @@ app('router')->setCompiledRoutes(
         array (
           0 => 
           array (
-            '_route' => 'generated::U1Qkd6HZot1EPHNJ',
+            '_route' => 'generated::wXB6gDbcs0uULgrB',
           ),
           1 => NULL,
           2 => 
@@ -91,7 +91,7 @@ app('router')->setCompiledRoutes(
         array (
           0 => 
           array (
-            '_route' => 'generated::OPBAoBrj8n7vVUtc',
+            '_route' => 'generated::FWypOuMIH8aPQA0j',
           ),
           1 => NULL,
           2 => 
@@ -111,7 +111,7 @@ app('router')->setCompiledRoutes(
         array (
           0 => 
           array (
-            '_route' => 'generated::B7FgDOdS6LzTdYzi',
+            '_route' => 'generated::rqFiAnaDoTdgo1Bb',
           ),
           1 => NULL,
           2 => 
@@ -1112,7 +1112,7 @@ app('router')->setCompiledRoutes(
       'waitSeconds' => NULL,
       'withTrashed' => false,
     ),
-    'generated::pSLEJNP3PpjabQh4' => 
+    'generated::VDKebn2t0jgRH77v' => 
     array (
       'methods' => 
       array (
@@ -1124,7 +1124,7 @@ app('router')->setCompiledRoutes(
       array (
         'uses' => 'Livewire\\Mechanisms\\FrontendAssets\\FrontendAssets@returnJavaScriptAsFile',
         'controller' => 'Livewire\\Mechanisms\\FrontendAssets\\FrontendAssets@returnJavaScriptAsFile',
-        'as' => 'generated::pSLEJNP3PpjabQh4',
+        'as' => 'generated::VDKebn2t0jgRH77v',
       ),
       'fallback' => false,
       'defaults' => 
@@ -1140,7 +1140,7 @@ app('router')->setCompiledRoutes(
       'waitSeconds' => NULL,
       'withTrashed' => false,
     ),
-    'generated::U1Qkd6HZot1EPHNJ' => 
+    'generated::wXB6gDbcs0uULgrB' => 
     array (
       'methods' => 
       array (
@@ -1152,7 +1152,7 @@ app('router')->setCompiledRoutes(
       array (
         'uses' => 'Livewire\\Mechanisms\\FrontendAssets\\FrontendAssets@maps',
         'controller' => 'Livewire\\Mechanisms\\FrontendAssets\\FrontendAssets@maps',
-        'as' => 'generated::U1Qkd6HZot1EPHNJ',
+        'as' => 'generated::wXB6gDbcs0uULgrB',
       ),
       'fallback' => false,
       'defaults' => 
@@ -1223,7 +1223,7 @@ app('router')->setCompiledRoutes(
       'waitSeconds' => NULL,
       'withTrashed' => false,
     ),
-    'generated::OPBAoBrj8n7vVUtc' => 
+    'generated::FWypOuMIH8aPQA0j' => 
     array (
       'methods' => 
       array (
@@ -1251,8 +1251,8 @@ app('router')->setCompiledRoutes(
                     return response(\\Illuminate\\Support\\Facades\\View::file(\'/var/www/html/vendor/laravel/framework/src/Illuminate/Foundation/Configuration\'.\'/../resources/health-up.blade.php\', [
                         \'exception\' => $exception,
                     ]), status: $exception ? 500 : 200);
-                }";s:5:"scope";s:54:"Illuminate\\Foundation\\Configuration\\ApplicationBuilder";s:4:"this";N;s:4:"self";s:32:"00000000000007a40000000000000000";}}',
-        'as' => 'generated::OPBAoBrj8n7vVUtc',
+                }";s:5:"scope";s:54:"Illuminate\\Foundation\\Configuration\\ApplicationBuilder";s:4:"this";N;s:4:"self";s:32:"000000000000073c0000000000000000";}}',
+        'as' => 'generated::FWypOuMIH8aPQA0j',
       ),
       'fallback' => false,
       'defaults' => 
@@ -1268,7 +1268,7 @@ app('router')->setCompiledRoutes(
       'waitSeconds' => NULL,
       'withTrashed' => false,
     ),
-    'generated::B7FgDOdS6LzTdYzi' => 
+    'generated::rqFiAnaDoTdgo1Bb' => 
     array (
       'methods' => 
       array (
@@ -1293,13 +1293,13 @@ app('router')->setCompiledRoutes(
     } catch (\\Exception $e) {
         return \'❌ Email sending failed: \' . $e->getMessage();
     }
-}";s:5:"scope";s:37:"Illuminate\\Routing\\RouteFileRegistrar";s:4:"this";N;s:4:"self";s:32:"00000000000007a80000000000000000";}}',
+}";s:5:"scope";s:37:"Illuminate\\Routing\\RouteFileRegistrar";s:4:"this";N;s:4:"self";s:32:"00000000000007400000000000000000";}}',
         'namespace' => NULL,
         'prefix' => '',
         'where' => 
         array (
         ),
-        'as' => 'generated::B7FgDOdS6LzTdYzi',
+        'as' => 'generated::rqFiAnaDoTdgo1Bb',
       ),
       'fallback' => false,
       'defaults' => 
@@ -3087,8 +3087,8 @@ app('router')->setCompiledRoutes(
           0 => 'web',
           1 => 'signed',
         ),
-        'uses' => 'App\\Http\\Controllers\\SharedDocumentController@downloadInspectionReport',
-        'controller' => 'App\\Http\\Controllers\\SharedDocumentController@downloadInspectionReport',
+        'uses' => 'App\\Http\\Controllers\\SharedDocumentController@showPublicReport',
+        'controller' => 'App\\Http\\Controllers\\SharedDocumentController@showPublicReport',
         'namespace' => NULL,
         'prefix' => '',
         'where' => 

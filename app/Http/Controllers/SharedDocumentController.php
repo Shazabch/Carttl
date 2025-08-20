@@ -31,4 +31,12 @@ class SharedDocumentController extends Controller
         // Using `download()` sets the correct headers for the browser.
         return Storage::disk('public')->download($report->file_path);
     }
+
+    public function showPublicReport(VehicleInspectionReport $report)
+    {
+
+        return view('admin.inspection.report-pdf-template', [
+            'reportInView' => $report
+        ]);
+    }
 }

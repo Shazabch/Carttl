@@ -10,7 +10,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
+    <link rel="stylesheet" href="{{ asset('css/inspection.css') }}">
     <style>
         /* --- Customizable CSS Variables --- */
         :root {
@@ -58,18 +58,18 @@
             padding: 0 20px;
         }
 
-        /* --- Premium Header with Golden X Placeholder --- */
-        .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-end;
+        /* This is the main table container for the header */
+        .header-table {
+            width: 100%;
+            border-collapse: collapse;
             padding-bottom: 15px;
             margin-bottom: 30px;
             border-bottom: 1px solid var(--border-color);
             position: relative;
         }
 
-        .header::after {
+        /* This recreates the accent line using a pseudo-element on the table */
+        .header-table::after {
             content: '';
             position: absolute;
             bottom: -1px;
@@ -79,38 +79,24 @@
             background: var(--primary-color);
         }
 
-        .header-logo {
-            flex: 0 0 auto;
-            position: relative;
+        /* Style the table cells */
+        .header-logo-cell,
+        .header-details-cell {
+            padding: 0;
+            border: none;
         }
 
-        .header-logo img {
+        /* Style the logo image within its cell */
+        .header-logo-img {
             max-width: 180px;
             max-height: 60px;
             object-fit: contain;
+            display: block;
+            /* Helps remove extra space below the image */
         }
 
-        /* Golden X Placeholder */
-        .golden-x-placeholder {
-            width: 180px;
-            height: 60px;
-            background: linear-gradient(45deg, var(--primary-color), var(--primary-dark));
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 8px;
-            color: white;
-            font-weight: 700;
-            font-size: 24px;
-            letter-spacing: 2px;
-            box-shadow: var(--shadow-md);
-        }
-
-        .header-details {
-            text-align: right;
-        }
-
-        .header-details h1 {
+        /* Keep the existing styles for the details section */
+        .header-details-cell h1 {
             margin: 0;
             font-size: 24px;
             font-weight: 600;
@@ -118,20 +104,30 @@
             letter-spacing: -0.5px;
         }
 
-        .header-meta {
-            display: flex;
-            gap: 15px;
+        .header-details-cell .header-meta {
+            display: block;
+            /* Use block instead of flex */
             margin-top: 8px;
             font-size: 11px;
             color: var(--text-muted);
         }
 
-        .header-meta span {
-            display: flex;
+        .header-details-cell .header-meta span {
+            display: inline-block;
+            /* Use inline-block for spacing */
+            margin-left: 15px;
             align-items: center;
             gap: 5px;
+            /* Note: gap might not work in dompdf, margin is safer */
         }
 
+        .header-details-cell .header-meta span:first-child {
+            margin-left: 0;
+        }
+
+        /* ==================================================================== */
+        /* == END: NEW HEADER CSS == */
+        /* ==================================================================== */
         /* --- Premium Card Sections --- */
         .report-card {
             border: 1px solid var(--border-color);
@@ -317,7 +313,8 @@
 
         .gallery-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            grid-template-columns: repeat(3, 1fr);
+            /* exactly 3 per row */
             gap: 20px;
             margin-top: 15px;
         }
@@ -328,7 +325,7 @@
             border-radius: 12px;
             overflow: hidden;
             margin: 5px;
-
+            width: 300px !important;
             box-shadow: var(--shadow-md);
             transition: transform 0.2s ease, box-shadow 0.2s ease;
             border: 1px solid var(--border-color);
@@ -340,10 +337,9 @@
         }
 
         .gallery-image {
-
-            width: 300px;
-            height: 300px;
-            /* object-fit: cover; */
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
             display: block;
         }
 
@@ -469,65 +465,78 @@
             font-weight: 600;
         }
 
-        /* --- Print Optimization --- */
-        @media print {
-            body {
-                font-size: 11pt;
-            }
+        /* ==================================================================== */
+        /* == START: PDF Page Layout Fix for Empty First Page == */
+        /* ==================================================================== */
 
-            .footer {
-                position: relative;
-            }
-
-            .report-card {
-                page-break-inside: avoid;
-                break-inside: avoid;
-            }
-
-            .damage-assessment {
-                -webkit-print-color-adjust: exact !important;
-                print-color-adjust: exact !important;
-            }
-
-            .gallery-grid {
-                grid-template-columns: repeat(2, 1fr);
-                gap: 15px;
-            }
-
-            .gallery-item {
-                break-inside: avoid;
-            }
-
-            .gallery-image {
-                height: 150px;
-            }
+        @page {
+            /* Define the physical page margins. This is where the fixed header/footer will live. */
+            margin: 110px 25px 60px 25px;
+            /* Top, Right, Bottom, Left */
         }
+
+        header {
+            position: fixed;
+            top: -100px;
+            /* Pull the header up into the top margin area */
+            left: 0px;
+            right: 0px;
+            height: 90px;
+            /* The approximate height of your header content */
+        }
+
+        footer {
+            position: fixed;
+            bottom: -50px;
+            /* Pull the footer down into the bottom margin area */
+            left: 0px;
+            right: 0px;
+            height: 40px;
+            /* The approximate height of your footer content */
+        }
+
+        /* Optional: Add a page number counter */
+        footer .page-number:after {
+            content: "Page " counter(page);
+        }
+
+        /* This ensures the main content flows correctly and doesn't start on page 2 */
+        main {
+            position: relative;
+            /* No top/bottom padding needed here because the @page margin handles it */
+        }
+
+        /* ==================================================================== */
+        /* == END: PDF Page Layout Fix == */
+        /* ==================================================================== */
     </style>
 </head>
 
 <body>
-    <div class="container">
-        <div class="header">
-            <div class="header-logo">
-                {{-- Golden X Placeholder - Replace with actual logo when available --}}
-                <!-- <div class="golden-x-placeholder">
-                    GOLDEN X
-                </div> -->
-                {{-- Uncomment when you have the actual logo --}}
-                <img src="{{asset('images/golden-x.png')}}" alt="Golden X Logo">
-            </div>
-
-            <div class="header-details">
-                <h1>Vehicle Inspection Report</h1>
-                <div class="header-meta">
-                    <span><i class="fas fa-file-alt"></i> Report #{{ $reportInView->id }}</span>
-                    <span><i class="fas fa-calendar"></i> {{ $reportInView->created_at->format('F d, Y') }}</span>
-                </div>
-            </div>
-        </div>
+    <div class="">
+        <!-- ==================================================================== -->
+        <!-- == START: REFACTORED HEADER (Use this for both web and PDF) == -->
+        <!-- ==================================================================== -->
+        <table class="header-table" width="100%">
+            <tr>
+                <td class="header-logo-cell" valign="bottom">
+                    <img src="{{ asset('images/golden-x.png') }}" alt="Golden X Logo" class="header-logo-img">
+                </td>
+                <td class="header-details-cell" valign="bottom" align="right">
+                    <h1>Vehicle Inspection Report</h1>
+                    <div class="header-meta">
+                        <span><i class="fas fa-file-alt"></i> Report #{{ $reportInView->id }}</span>
+                        <span><i class="fas fa-calendar"></i> {{ $reportInView->created_at->format('F d, Y') }}</span>
+                    </div>
+                </td>
+            </tr>
+        </table>
+        <!-- ==================================================================== -->
+        <!-- == END: REFACTORED HEADER == -->
+        <!-- ==================================================================== -->
 
         @php
-                // Field icons mapping
+        // Field icons mapping
         $fieldIcons = [
         'make' => 'fas fa-industry',
         'model' => 'fas fa-car',
@@ -755,7 +764,7 @@
                             </div>
                             @php
                             $data = $reportInView->{$field} ?? 'N/A';
-                            $statusInfo = $this->getStatusInfo($data);
+                            $statusInfo = getStatusInfo($data);
                             @endphp
 
                             @if(is_array($data))
@@ -785,23 +794,60 @@
         </div>
         @endforeach
 
-        {{-- Premium Image Gallery Section --}}
+        {{-- Premium Image Gallery Section (Table-based for DomPDF) --}}
         <div class="report-card">
             <div class="card-header"><i class="fa-solid fa-images"></i>Vehicle Images</div>
             <div class="card-body image-gallery">
-                <div class="row g-3">
-                    @forelse ($reportInView->images as $image)
-                    <div class="col-6 col-md-4 col-lg-3" wire:key="image-{{ $image->id }}">
-                        <div class="card h-100 shadow-sm">
-                            <div class="position-relative">
-                                <img src="{{ asset('storage/' . $image->path) }}" class="card-img-top" alt="Vehicle Image" style="aspect-ratio: 4 / 3; object-fit: cover;">
-                            </div>
-                        </div>
-                    </div>
-                    @empty
 
-                    @endforelse
+                @php
+                $vehicleImages = $reportInView->images ?? collect();
+                // Ensure we always have a collection to chunk
+                if (!($vehicleImages instanceof \Illuminate\Support\Collection)) {
+                $vehicleImages = collect($vehicleImages ?: []);
+                }
+                @endphp
+
+                @if($vehicleImages->count())
+                <table width="100%" cellspacing="0" cellpadding="8" style="border-collapse: collapse;">
+                    @foreach($vehicleImages->chunk(3) as $row)
+                    <tr>
+                        @foreach($row as $image)
+                        <td width="33.33%" valign="top" style="border: 1px solid #e0e0e0; border-radius: 8px;">
+                            <div style="margin: 4px;">
+                                <img
+                                    src="{{ asset('storage/' . $image->path) }}"
+                                    alt="{{ $image['title'] ?? 'Vehicle Image' }}"
+                                    style="display: block; width: 100%; height: 180px; object-fit: cover; border-radius: 6px;">
+                                <div style="margin-top: 6px; border-top: 1px solid #f0f0f0; padding-top: 6px;">
+                                    <div style="font-size: 12px; font-weight: 600; color: #222;">
+                                        <i class="fas fa-camera" style="color: #d7b236;"></i>
+                                        Vehicle Image #{{$loop->iteration}}
+                                    </div>
+                                    <div style="font-size: 10px; color: #666; margin-top: 2px;">
+                                        <i class="fas fa-clock"></i>
+                                        {{ isset($image->created_at) ? \Carbon\Carbon::parse($image['created_at'])->format('M d, Y') : 'N/A' }}
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                        @endforeach
+
+                        {{-- Fill remaining cells if row has fewer than 3 items --}}
+                        @for($i = $row->count(); $i < 3; $i++)
+                            <td width="33.33%">
+                            </td>
+                            @endfor
+                    </tr>
+                    @endforeach
+                </table>
+                @else
+                <div class="no-images">
+                    <i class="fas fa-image"></i>
+                    <h3>No Images Available</h3>
+                    <p>No vehicle images have been uploaded for this inspection report.</p>
                 </div>
+                @endif
+
             </div>
         </div>
 
