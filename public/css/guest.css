@@ -2496,51 +2496,59 @@ footer .footer-center ul {
     top: 10px;
     z-index: 2;
 }
-
 .car-box-badge {
-    border-radius: 5px;
-    padding: 1px 8px 0px 3px;
-    line-height: 30px;
+    border-radius: 20px;
+    padding: 4px 12px;
     font-size: 12px;
     font-weight: 600;
+    background: #fff;
+    color: #333;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    border: 1px solid transparent;
+    white-space: nowrap;
+}
+.car-box-badge.hot {
+    background: #fce2e2;
+    color: #b71c1c;
+    border-color: #e1999988;
 }
 
-.p-left .car-box-badge {
-    border-radius: 7px;
-    background-color: #fff;
-    color: var(--accent);
-    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
-    display: flex;
-    align-items: center;
+.car-box-badge.inspected {
+    background: #d8e9ff;
+    color: #0b5ed7;
+    border-color: #9dc4ff80;
 }
 
-.p-left .car-box-badge img {
-    width: 19px;
-    margin-top: -5px;
+.car-box-badge.sold {
+    background: #ffedb8;
+    color: #805a00;
+    border-color: #e0b84c85;
+}
+
+.car-box-badge.condition {
+    background: #e0e0e0;
+    color: #2c2c2c;
+    border-color: #b3b3b387;
 }
 
 .car-box-other-detail {
     padding-bottom: 20px;
 }
-
 .car-box-other-detail h3 {
     font-size: 17px;
     font-weight: 600;
     margin-bottom: 18px;
 }
-
 .car-box-price-and-specs {
     display: flex;
     align-items: center;
     justify-content: space-between;
 }
-
 .car-box-specs {
     display: flex;
     align-items: center;
     gap: 7px;
 }
-
 .spec_item {
     display: flex;
     align-items: center;

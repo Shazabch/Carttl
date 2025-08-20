@@ -1,53 +1,5 @@
 <div>
     <div>
-        <style>
-            .timer-wrapper {
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                gap: 10px;
-                background-color: #f8f9fa;
-                /* A light background to frame the timer */
-                padding: 20px;
-                border-radius: 12px;
-                border: 1px solid #e9ecef;
-                /* width: fit-content; */
-            }
-
-            .timer-segment {
-                text-align: center;
-                min-width: 80px;
-            }
-
-            .timer-number {
-                font-size: 2.5rem;
-                /* Larger numbers for impact */
-                font-weight: 700;
-                color: #bd9731;
-                /* Dark text for readability */
-                line-height: 1;
-                display: block;
-            }
-
-            .timer-label {
-                font-size: 0.75rem;
-                text-transform: uppercase;
-                color: #bd9731;
-                /* Muted color for the label */
-                letter-spacing: 0.5px;
-                margin-top: 5px;
-                display: block;
-            }
-
-            .timer-separator {
-                font-size: 2rem;
-                font-weight: 600;
-                color: #bd9731;
-                /* A subtle separator */
-                padding-bottom: 25px;
-                /* Aligns with the number's baseline */
-            }
-        </style>
         <div class="auction-card">
             <div class="auction-header d-flex justify-content-between align-items-center mb-3">
                 <div class="div">
@@ -91,32 +43,39 @@
 
             <!-- I've added an ID here to make it easier to target from the script -->
             <!-- === START: IMPROVED TIMER UI === -->
-            <div class="timer-wrapper my-4">
-                <div class="timer-segment">
-                    <span id="hours" class="timer-number">00</span>
-                    <span class="timer-label">Hours</span>
-                </div>
-                <div class="timer-separator">:</div>
-                <div class="timer-segment">
-                    <span id="minutes" class="timer-number">00</span>
-                    <span class="timer-label">Minutes</span>
-                </div>
-                <div class="timer-separator">:</div>
-                <div class="timer-segment">
-                    <span id="seconds" class="timer-number">00</span>
-                    <span class="timer-label">Seconds</span>
+            <div class="timer-card mb-4">
+                <h3 class="p-22 fw-600 text-detail-primary mb-3">Auction Ends In</h3>
+                <div class="timer-wrapper">
+                    <div class="timer-segment">
+                        <span id="hours" class="timer-number">00</span>
+                        <span class="timer-label">Hours</span>
+                    </div>
+                    <span class="timer-separator">:</span>
+                    <div class="timer-segment">
+                        <span id="minutes" class="timer-number">00</span>
+                        <span class="timer-label">Minutes</span>
+                    </div>
+                    <span class="timer-separator">:</span>
+                    <div class="timer-segment">
+                        <span id="seconds" class="timer-number">00</span>
+                        <span class="timer-label">Seconds</span>
+                    </div>
                 </div>
             </div>
-            <!-- === END: IMPROVED TIMER UI === -->
 
+
+            <!-- === END: IMPROVED TIMER UI === -->
             @if($bids->count() > 0)
             <div class="bid-history">
+                <h3 class="p-22 fw-600 text-detail-primary">Bid History</h3>
                 @foreach($bids as $bid)
-                <div class="bid-item">
-                    <span class="bidder" style="filter: blur(2px);">********</span>
-                    <span class="bid-amount">{{ format_currency($bid->bid_amount) }}</span>
-                    <span class="bid-time">{{ \Carbon\Carbon::parse($bid->created_at)->diffForHumans() }}</span>
-                </div>
+                    <div class="bid-item">
+                        <div class="bid-top">
+                            <span class="bidder">********</span>
+                            <span class="bid-amount">{{ format_currency($bid->bid_amount) }}</span>
+                        </div>
+                        <span class="bid-time">{{ \Carbon\Carbon::parse($bid->created_at)->diffForHumans() }}</span>
+                    </div>
                 @endforeach
             </div>
             @endif
@@ -135,7 +94,7 @@
                 </div>
                 @if(auth()->id())
                 <button wire:click="saveBid" class="btn btn-primary btn-bid">
-                    <i class="fas fa-gavel"></i>
+                    <i class="fas fa-gavel me-2"></i>
                     Place Bid <span wire:loading wire:target="saveBid">
                         <div class="spinner-border" role="status">
                             <span class="sr-only">Loading...</span>
@@ -144,7 +103,7 @@
                 </button>
                 @else
                 <button wire:click="saveBid" class="btn btn-primary btn-bid">
-                    <i class="fas fa-gavel"></i>
+                    <i class="fas fa-gavel me-2"></i>
                     Signin & Place Bid <span wire:loading wire:target="saveBid">
                         <div class="spinner-border" role="status">
                             <span class="sr-only">Loading...</span>

@@ -9,29 +9,28 @@
                 </a>
             </div>
             <div class="overlap-car-box-card">
-                <div class="car-box-type p-left d-flex align-items-center gap-2">
+                <div class="car-box-type p-left d-flex flex-wrap gap-2">
                     @if($item->is_hot)
-                    <span class="car-box-badge">
-                        <img src="{{asset('images/icons/fire.svg')}}" alt="">
+                    <span class="car-box-badge hot">
                         Hot Bid
                     </span>
                     @endif
+
                     @if($item->inspected_by)
-                    <span class="car-box-badge bg-primary text-light">
-                        <img src="{{asset('images/icons/star.svg')}}" alt="">
+                    <span class="car-box-badge inspected">
                         Inspected
                     </span>
                     @endif
+
                     @if(!$item->is_auction && $item->status == 'sold')
-                    <span class="car-box-badge bg-custom-primary text-light" style="background-color: #d7b236;">
-                        <i class="fas fa-check mx-2"></i>
-                        <span>Sold</span>
+                    <span class="car-box-badge sold">
+                        Sold
                     </span>
                     @endif
+
                     @if($item->condition)
-                    <span class="car-box-badge bg-secondary text-light">
-                        <i class="fas fa-car mx-2"></i>
-                        <span>{{ucfirst($item->condition)}}</span>
+                    <span class="car-box-badge condition">
+                        {{ucfirst($item->condition)}}
                     </span>
                     @endif
                 </div>

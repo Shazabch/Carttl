@@ -94,23 +94,39 @@
     <script src="https://cdn.jsdelivr.net/npm/tom-select@2.3.1/dist/js/tom-select.complete.min.js"></script>
     {{-- end::sweetalert --}}
     <script>
-        $(document).ready(function() {
-            // Initialize gallery
-            const galleryElement = document.getElementById('animated-thumbnails');
-            const gallery = lightGallery(galleryElement, {
-                plugins: [lgZoom, lgThumbnail],
-                licenseKey: 'your_license_key',
-                speed: 500,
-                dynamic: false, // false since we’re using existing DOM elements
-            });
-
-            // Open gallery when button is clicked
-            $('#gallery-view').on('click', function() {
-                gallery.openGallery(0); // Opens from the first image (index 0)
-            });
+        // Swiper slider
+        var swiper = new Swiper(".car-detail-slider", {
+            spaceBetween: 10,
+            slidesPerView: 6,
+            freeMode: true,
+            watchSlidesProgress: true,
+            breakpoints: {
+                // when window width is <= 767px (mobile)
+                0: {
+                    slidesPerView: 3,
+                },
+                // tablet
+                768: {
+                    slidesPerView: 6,
+                }
+            }
         });
-    </script>
-    <script>
+
+        var swiper2 = new Swiper(".car-detail-slider2", {
+            spaceBetween: 10,
+            navigation: {
+                nextEl: ".swiper-button-next",
+                prevEl: ".swiper-button-prev",
+            },
+            pagination: {
+                el: ".swiper-pagination",
+                clickable: true,
+            },
+            thumbs: {
+                swiper: swiper,
+            },
+        });
+        
         var toastMixin = Swal.mixin({
             toast: true,
             icon: 'success',

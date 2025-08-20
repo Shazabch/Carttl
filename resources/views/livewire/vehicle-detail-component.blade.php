@@ -11,7 +11,7 @@
             <div class="container mt-4">
                 <div class="row g-4">
                     <div class="col-lg-8">
-                        <div class="hero-gallery">
+                        {{-- <div class="hero-gallery d-none">
                             <div class="main-image-container">
                                 <img src="{{$mainImage ? asset('storage/'.$mainImage) : asset('images/default-car.webp')}}" alt="2023 Porsche 911 Turbo S" class="main-image" id="mainImage">
                                 <div class="image-overlay">
@@ -54,6 +54,64 @@
                                         data-full="{{ asset('images/default-car.webp') }}">
                                     @endforelse
 
+                                </div>
+                            </div>
+                        </div> --}}
+                        <div class="car-detail-images-wrap">
+                            <div class="car-detail-slider-wrap">
+                                {{-- Main slider --}}
+                                <div class="swiper car-detail-slider2 mb-3">
+                                    <div class="swiper-wrapper h-auto" id="animated-thumbnails">
+                                        @forelse($selected_vehicle->images as $image)
+                                            <a href="{{ asset('storage/'.$image->path) }}" class="swiper-slide">
+                                                <img src="{{ asset('storage/'.$image->path) }}" class="obj_fit" />
+                                            </a>
+                                        @empty
+                                            <a href="{{ asset('images/default-car.webp') }}" class="swiper-slide">
+                                                <img src="{{ asset('images/default-car.webp') }}" class="obj_fit" />
+                                            </a>
+                                        @endforelse
+                                    </div>
+                                    {{-- Auction status overlays --}}
+                                    @if($selected_vehicle->live_auction && $selected_vehicle->is_auction)
+                                        <div class="auction-status">
+                                            <span class="status-badge live">LIVE AUCTION</span>
+                                        </div>
+                                    @endif
+
+                                    @if($selected_vehicle->status == 'sold')
+                                        <div class="auction-status">
+                                            <span class="status-badge live">Sold</span>
+                                        </div>
+                                    @endif
+
+                                    {{-- Fullscreen/gallery button --}}
+                                    <button class="control-btn gallery-view" id="gallery-view">
+                                        <i class="fas fa-expand"></i>
+                                    </button>
+
+                                    {{-- Swiper controls --}}
+                                    <div class="swiper-pagination"></div>
+                                    <div class="swiper-button-next">
+                                        <i class="fa-sharp fa-solid fa-chevron-right"></i>
+                                    </div>
+                                    <div class="swiper-button-prev">
+                                        <i class="fa-sharp fa-solid fa-chevron-left"></i>
+                                    </div>
+                                </div>
+                                {{-- Thumbnails slider --}}
+                                <div thumbsSlider="" class="swiper car-detail-slider">
+                                    <div class="swiper-wrapper h-auto">
+                                        @forelse($selected_vehicle->images as $image)
+                                            <div class="swiper-slide">
+                                                <img src="{{ asset('storage/'.$image->path) }}" class="obj_fit" />
+                                            </div>
+                                        @empty
+                                            <div class="swiper-slide">
+                                                <img src="{{ asset('images/default-car.webp') }}" class="obj_fit" />
+                                            </div>
+                                        @endforelse
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -238,16 +296,16 @@
                                 <i class="fas fa-shopping-cart"></i> Buy It Now
                             </button>
                             <a href="#bidding" class="btn btn-light">
-                                <i class="fas fa-gavel"></i> Place Bid
+                                <i class="fas fa-gavel me-2"></i> Place Bid
                             </a>
                             @else
                             <a href="/login" class="btn btn-light text-primary ">
 
-                                <i class="fas fa-shopping-cart"></i>Buy It Now <div class="spinner"></div>
+                                <i class="fas fa-shopping-cart me-2"></i>Buy It Now <div class="spinner"></div>
                             </a>
                             <a href="#bidding" class="btn btn-light text-primary ">
 
-                                <i class="fas fa-gavel"></i>Place Bid <div class="spinner"></div>
+                                <i class="fas fa-gavel me-2"></i>Place Bid <div class="spinner"></div>
                             </a>
                             @endif
 
@@ -466,6 +524,5 @@
             // Perform an initial calculation when the page loads with the default values
             calculateMonthlyPayment();
         });
-    </script>```
-
+    </script>
 </div>
