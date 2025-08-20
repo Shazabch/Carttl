@@ -513,25 +513,27 @@
 </head>
 
 <body>
-    <div class="container">
-        <div class="header">
-            <div class="header-logo">
-                {{-- Golden X Placeholder - Replace with actual logo when available --}}
-                <!-- <div class="golden-x-placeholder">
-                    GOLDEN X
-                </div> -->
-                {{-- Uncomment when you have the actual logo --}}
-                <img src="{{asset('images/golden-x.png')}}" alt="Golden X Logo">
-            </div>
-
-            <div class="header-details">
-                <h1>Vehicle Inspection Report</h1>
-                <div class="header-meta">
-                    <span><i class="fas fa-file-alt"></i> Report #{{ $reportInView->id }}</span>
-                    <span><i class="fas fa-calendar"></i> {{ $reportInView->created_at->format('F d, Y') }}</span>
-                </div>
-            </div>
-        </div>
+    <div class="">
+        <!-- ==================================================================== -->
+        <!-- == START: REFACTORED HEADER (Use this for both web and PDF) == -->
+        <!-- ==================================================================== -->
+        <table class="header-table" width="100%">
+            <tr>
+                <td class="header-logo-cell" valign="bottom">
+                    <img src="{{ asset('images/golden-x.png') }}" alt="Golden X Logo" class="header-logo-img">
+                </td>
+                <td class="header-details-cell" valign="bottom" align="right">
+                    <h1>Vehicle Inspection Report</h1>
+                    <div class="header-meta">
+                        <span><i class="fas fa-file-alt"></i> Report #{{ $reportInView->id }}</span>
+                        <span><i class="fas fa-calendar"></i> Generated on {{ now()->format('M d, Y g:i A') }}</span>
+                    </div>
+                </td>
+            </tr>
+        </table>
+        <!-- ==================================================================== -->
+        <!-- == END: REFACTORED HEADER == -->
+        <!-- ==================================================================== -->
 
         @php
         // Field icons mapping
@@ -639,7 +641,7 @@
                     <tr>
                         <td>
                             <div class="item-label"><i class="{{ $fieldIcons['odometer'] ?? 'fas fa-circle-notch' }}"></i> Mileage/Odometer</div>
-                            <div class="item-value">{{ $reportInView->odometer.'kms' ?? 'N/A' }}</div>
+                            <div class="item-value">{{ $reportInView->odometer.' kms' ?? 'N/A' }}</div>
                         </td>
                         <td>
                             <div class="item-label"><i class="{{ $fieldIcons['engine_cc'] ?? 'fas fa-circle-notch' }}"></i> Engine CC</div>

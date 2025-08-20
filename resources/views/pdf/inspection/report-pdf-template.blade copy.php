@@ -909,7 +909,7 @@
         </div>
 
         <div class="footer">
-            <span class="footer-brand">Golden X</span> &copy; {{ date('Y') }} | Vehicle Inspection Report
+            <span class="footer-brand">Golden X</span> &copy; {{ date('Y') }} | Vehicle Inspection Report | Generated on {{ now()->format('M d, Y g:i A') }}
         </div>
     </div>
 </body>

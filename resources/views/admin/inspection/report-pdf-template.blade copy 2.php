@@ -10,7 +10,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
+    <link rel="stylesheet" href="{{ asset('css/inspection.css') }}">
     <style>
         /* --- Customizable CSS Variables --- */
         :root {
@@ -58,18 +58,18 @@
             padding: 0 20px;
         }
 
-        /* --- Premium Header with Golden X Placeholder --- */
-        .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-end;
+        /* This is the main table container for the header */
+        .header-table {
+            width: 100%;
+            border-collapse: collapse;
             padding-bottom: 15px;
             margin-bottom: 30px;
             border-bottom: 1px solid var(--border-color);
             position: relative;
         }
 
-        .header::after {
+        /* This recreates the accent line using a pseudo-element on the table */
+        .header-table::after {
             content: '';
             position: absolute;
             bottom: -1px;
@@ -79,38 +79,24 @@
             background: var(--primary-color);
         }
 
-        .header-logo {
-            flex: 0 0 auto;
-            position: relative;
+        /* Style the table cells */
+        .header-logo-cell,
+        .header-details-cell {
+            padding: 0;
+            border: none;
         }
 
-        .header-logo img {
+        /* Style the logo image within its cell */
+        .header-logo-img {
             max-width: 180px;
             max-height: 60px;
             object-fit: contain;
+            display: block;
+            /* Helps remove extra space below the image */
         }
 
-        /* Golden X Placeholder */
-        .golden-x-placeholder {
-            width: 180px;
-            height: 60px;
-            background: linear-gradient(45deg, var(--primary-color), var(--primary-dark));
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 8px;
-            color: white;
-            font-weight: 700;
-            font-size: 24px;
-            letter-spacing: 2px;
-            box-shadow: var(--shadow-md);
-        }
-
-        .header-details {
-            text-align: right;
-        }
-
-        .header-details h1 {
+        /* Keep the existing styles for the details section */
+        .header-details-cell h1 {
             margin: 0;
             font-size: 24px;
             font-weight: 600;
@@ -118,20 +104,30 @@
             letter-spacing: -0.5px;
         }
 
-        .header-meta {
-            display: flex;
-            gap: 15px;
+        .header-details-cell .header-meta {
+            display: block;
+            /* Use block instead of flex */
             margin-top: 8px;
             font-size: 11px;
             color: var(--text-muted);
         }
 
-        .header-meta span {
-            display: flex;
+        .header-details-cell .header-meta span {
+            display: inline-block;
+            /* Use inline-block for spacing */
+            margin-left: 15px;
             align-items: center;
             gap: 5px;
+            /* Note: gap might not work in dompdf, margin is safer */
         }
 
+        .header-details-cell .header-meta span:first-child {
+            margin-left: 0;
+        }
+
+        /* ==================================================================== */
+        /* == END: NEW HEADER CSS == */
+        /* ==================================================================== */
         /* --- Premium Card Sections --- */
         .report-card {
             border: 1px solid var(--border-color);
@@ -469,113 +465,99 @@
             font-weight: 600;
         }
 
-        /* --- Print Optimization --- */
-        @media print {
-            body {
-                font-size: 11pt;
-            }
+        /* ==================================================================== */
+        /* == START: PDF Page Layout Fix for Empty First Page == */
+        /* ==================================================================== */
 
-            .footer {
-                position: relative;
-            }
-
-            .report-card {
-                page-break-inside: avoid;
-                break-inside: avoid;
-            }
-
-            .damage-assessment {
-                -webkit-print-color-adjust: exact !important;
-                print-color-adjust: exact !important;
-            }
-
-            .gallery-grid {
-                grid-template-columns: repeat(3, 1fr);
-                /* keep 3 per row in print */
-                gap: 15px;
-            }
-
-            .gallery-image {
-                height: 150px;
-                /* adjust as you like for print */
-            }
-
-            .gallery-item {
-                break-inside: avoid;
-            }
-
-
+        @page {
+            /* Define the physical page margins. This is where the fixed header/footer will live. */
+            margin: 110px 25px 60px 25px;
+            /* Top, Right, Bottom, Left */
         }
+
+        header {
+            position: fixed;
+            top: -100px;
+            /* Pull the header up into the top margin area */
+            left: 0px;
+            right: 0px;
+            height: 90px;
+            /* The approximate height of your header content */
+        }
+
+        footer {
+            position: fixed;
+            bottom: -50px;
+            /* Pull the footer down into the bottom margin area */
+            left: 0px;
+            right: 0px;
+            height: 40px;
+            /* The approximate height of your footer content */
+        }
+
+        /* Optional: Add a page number counter */
+        footer .page-number:after {
+            content: "Page " counter(page);
+        }
+
+        /* This ensures the main content flows correctly and doesn't start on page 2 */
+        main {
+            position: relative;
+            /* No top/bottom padding needed here because the @page margin handles it */
+        }
+
+        /* ==================================================================== */
+        /* == END: PDF Page Layout Fix == */
+        /* ==================================================================== */
     </style>
 </head>
 
 <body>
+<<<<<<< HEAD
+    <div class="">
+        <!-- ==================================================================== -->
+        <!-- == START: REFACTORED HEADER (Use this for both web and PDF) == -->
+        <!-- ==================================================================== -->
+        <table class="header-table" width="100%">
+            <tr>
+                <td class="header-logo-cell" valign="bottom">
+                    <img src="{{ asset('images/golden-x.png') }}" alt="Golden X Logo" class="header-logo-img">
+                </td>
+                <td class="header-details-cell" valign="bottom" align="right">
+                    <h1>Vehicle Inspection Report</h1>
+                    <div class="header-meta">
+                        <span><i class="fas fa-file-alt"></i> Report #{{ $reportInView->id }}</span>
+                        <span><i class="fas fa-calendar"></i> {{ $reportInView->created_at->format('F d, Y') }}</span>
+                    </div>
+                </td>
+            </tr>
+        </table>
+        <!-- ==================================================================== -->
+        <!-- == END: REFACTORED HEADER == -->
+        <!-- ==================================================================== -->
+=======
     <div class="container">
         <div class="header">
             <div class="header-logo">
-
-                <img src="{{ public_path('images/golden-x.png') }}" alt="Golden X Logo">
+                {{-- Golden X Placeholder - Replace with actual logo when available --}}
+                <!-- <div class="golden-x-placeholder">
+                    GOLDEN X
+                </div> -->
+                {{-- Uncomment when you have the actual logo --}}
+                <img src="{{asset('images/golden-x.png')}}" alt="Golden X Logo">
             </div>
 
             <div class="header-details">
                 <h1>Vehicle Inspection Report</h1>
                 <div class="header-meta">
                     <span><i class="fas fa-file-alt"></i> Report #{{ $reportInView->id }}</span>
-                    <span><i class="fas fa-calendar"></i> Generated on {{ now()->format('M d, Y g:i A') }}</span>
+                    <span><i class="fas fa-calendar"></i>  Generated on {{ now()->format('M d, Y g:i A') }}</span>
                 </div>
             </div>
         </div>
+>>>>>>> 144b7857bc3abaa3cc7c6d336c9916f4215ac58d
 
         @php
-        // Helper function to get status class and icon
-        function getStatusInfo($value) {
-        if (is_array($value)) {
-        return ['class' => 'item-value', 'icon' => 'fas fa-list'];
-        }
-
-        $value_lower = is_string($value) ? strtolower(trim($value)) : '';
-
-        // Excellent conditions
-        $excellent_keywords = ['excellent', 'perfect', 'like new'];
-        foreach ($excellent_keywords as $keyword) {
-        if (strpos($value_lower, $keyword) !== false) {
-        return ['class' => 'status-excellent', 'icon' => 'fas fa-star'];
-        }
-        }
-
-        // Good conditions
-        $good_keywords = ['no visible fault', 'no leak', 'no error', 'no smoke', 'available', 'good', 'operational', 'working', 'functional', 'ok', 'normal', 'passed', 'yes'];
-        foreach ($good_keywords as $keyword) {
-        if (strpos($value_lower, $keyword) !== false) {
-        return ['class' => 'status-good', 'icon' => 'fas fa-check-circle'];
-        }
-        }
-
-        // Warning conditions
-        $warning_keywords = ['minor leak', 'judder', 'cranking noise', 'white', 'minor error', 'stuck', 'worn', 'noisy', 'dirty', 'warning light on', 'fair', 'average', 'minor'];
-        foreach ($warning_keywords as $keyword) {
-        if (strpos($value_lower, $keyword) !== false) {
-        return ['class' => 'status-warning', 'icon' => 'fas fa-exclamation-triangle'];
-        }
-        }
-
-        // Danger conditions
-        $danger_keywords = ['major leak', 'hard', 'tappet noise', 'abnormal noise', 'black', 'major error', 'not engaging', 'damaged', 'not working', 'not cooling', 'alignment out', 'worn out', 'arms-bushes crack', 'rusty', 'poor', 'bad', 'broken', 'failed'];
-        foreach ($danger_keywords as $keyword) {
-        if (strpos($value_lower, $keyword) !== false) {
-        return ['class' => 'status-danger', 'icon' => 'fas fa-times-circle'];
-        }
-        }
-
-        // N/A or empty
-        if (empty($value_lower) || $value_lower === 'n/a' || $value_lower === 'not available') {
-        return ['class' => 'status-na', 'icon' => 'fas fa-minus-circle'];
-        }
-
-        // Default info status
-        return ['class' => 'status-info', 'icon' => 'fas fa-info-circle'];
-        }
-
         // Field icons mapping
         $fieldIcons = [
         'make' => 'fas fa-industry',
@@ -748,13 +730,13 @@
                             <div class="item-value">{{ $reportInView->mortgage ?? 'N/A' }}</div>
                         </td>
                     </tr>
-                    <tr>
+                    <!-- <tr>
                         <td>
                             <div class="item-label"><i class="{{ $fieldIcons['is_inspection'] ?? 'fas fa-circle-notch' }}"></i> Inspection</div>
                             <div class="item-value">{{ $reportInView->is_inspection ?? 'N/A' }}</div>
                         </td>
                         <td></td>
-                    </tr>
+                    </tr> -->
                 </table>
             </div>
         </div>
@@ -855,13 +837,13 @@
                         <td width="33.33%" valign="top" style="border: 1px solid #e0e0e0; border-radius: 8px;">
                             <div style="margin: 4px;">
                                 <img
-                                    src="{{ storage_path('app/public/' . $image->path) }}"
+                                    src="{{ asset('storage/' . $image->path) }}"
                                     alt="{{ $image['title'] ?? 'Vehicle Image' }}"
                                     style="display: block; width: 100%; height: 180px; object-fit: cover; border-radius: 6px;">
                                 <div style="margin-top: 6px; border-top: 1px solid #f0f0f0; padding-top: 6px;">
                                     <div style="font-size: 12px; font-weight: 600; color: #222;">
                                         <i class="fas fa-camera" style="color: #d7b236;"></i>
-                                        Vehicle Image
+                                        Vehicle Image #{{$loop->iteration}}
                                     </div>
                                     <div style="font-size: 10px; color: #666; margin-top: 2px;">
                                         <i class="fas fa-clock"></i>
@@ -895,16 +877,7 @@
         <div class="report-card">
             <div class="card-header"><i class="fa-solid fa-triangle-exclamation"></i>Damage Assessment</div>
             <div class="card-body">
-                @if($reportInView->damage_file_path)
-                <img src="{{ storage_path('app/public/' . $reportInView->damage_file_path) }}" alt="Damage Assessment" style="max-width: 100%; height: auto;">
-                @else
-                <div class="damage-assessment">
-                    <div class="status-pill status-good">
-                        <i class="fas fa-check-circle"></i>
-                        No Damage Reported or Image Not Found
-                    </div>
-                </div>
-                @endif
+                <livewire:admin.inspection.car-damage-view :inspectionId="$reportInView->id" />
             </div>
         </div>
 

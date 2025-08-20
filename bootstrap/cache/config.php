@@ -1,4 +1,12 @@
 <?php return array (
+  'view' => 
+  array (
+    'paths' => 
+    array (
+      0 => '/var/www/html/resources/views',
+    ),
+    'compiled' => '/var/www/html/storage/framework/views',
+  ),
   'broadcasting' => 
   array (
     'default' => 'log',
@@ -55,10 +63,6 @@
       ),
     ),
   ),
-  'concurrency' => 
-  array (
-    'default' => 'process',
-  ),
   'cors' => 
   array (
     'paths' => 
@@ -87,6 +91,10 @@
     'max_age' => 0,
     'supports_credentials' => false,
   ),
+  'concurrency' => 
+  array (
+    'default' => 'process',
+  ),
   'hashing' => 
   array (
     'driver' => 'bcrypt',
@@ -104,20 +112,12 @@
     ),
     'rehash_on_login' => true,
   ),
-  'view' => 
-  array (
-    'paths' => 
-    array (
-      0 => 'C:\\projects\\goldenx\\resources\\views',
-    ),
-    'compiled' => 'C:\\projects\\goldenx\\storage\\framework\\views',
-  ),
   'app' => 
   array (
     'name' => 'Laravel',
     'env' => 'local',
     'debug' => true,
-    'url' => 'http://localhost',
+    'url' => 'https://goldenx.ddev.site',
     'frontend_url' => 'http://localhost:3000',
     'asset_url' => NULL,
     'timezone' => 'UTC',
@@ -125,7 +125,7 @@
     'fallback_locale' => 'en',
     'faker_locale' => 'en_US',
     'cipher' => 'AES-256-CBC',
-    'key' => 'base64:X0zFdJCYJmJoEBhM9K7pr6mBBDFPivsi59zPXviaDWk=',
+    'key' => 'base64:VsWcdx4bNd24MGeAms5HcHk2OeOGwOKUHg7ypKEKkcI=',
     'previous_keys' => 
     array (
     ),
@@ -276,8 +276,8 @@
       'file' => 
       array (
         'driver' => 'file',
-        'path' => 'C:\\projects\\goldenx\\storage\\framework/cache/data',
-        'lock_path' => 'C:\\projects\\goldenx\\storage\\framework/cache/data',
+        'path' => '/var/www/html/storage/framework/cache/data',
+        'lock_path' => '/var/www/html/storage/framework/cache/data',
       ),
       'memcached' => 
       array (
@@ -325,14 +325,14 @@
   ),
   'database' => 
   array (
-    'default' => 'mysql',
+    'default' => 'mariadb',
     'connections' => 
     array (
       'sqlite' => 
       array (
         'driver' => 'sqlite',
         'url' => NULL,
-        'database' => 'goldenx',
+        'database' => 'db',
         'prefix' => '',
         'foreign_key_constraints' => true,
         'busy_timeout' => NULL,
@@ -343,11 +343,11 @@
       array (
         'driver' => 'mysql',
         'url' => NULL,
-        'host' => '127.0.0.1',
+        'host' => 'db',
         'port' => '3306',
-        'database' => 'goldenx',
-        'username' => 'root',
-        'password' => '',
+        'database' => 'db',
+        'username' => 'db',
+        'password' => 'db',
         'unix_socket' => '',
         'charset' => 'utf8mb4',
         'collation' => 'utf8mb4_unicode_ci',
@@ -363,11 +363,11 @@
       array (
         'driver' => 'mariadb',
         'url' => NULL,
-        'host' => '127.0.0.1',
+        'host' => 'db',
         'port' => '3306',
-        'database' => 'goldenx',
-        'username' => 'root',
-        'password' => '',
+        'database' => 'db',
+        'username' => 'db',
+        'password' => 'db',
         'unix_socket' => '',
         'charset' => 'utf8mb4',
         'collation' => 'utf8mb4_unicode_ci',
@@ -383,11 +383,11 @@
       array (
         'driver' => 'pgsql',
         'url' => NULL,
-        'host' => '127.0.0.1',
+        'host' => 'db',
         'port' => '3306',
-        'database' => 'goldenx',
-        'username' => 'root',
-        'password' => '',
+        'database' => 'db',
+        'username' => 'db',
+        'password' => 'db',
         'charset' => 'utf8',
         'prefix' => '',
         'prefix_indexes' => true,
@@ -398,11 +398,11 @@
       array (
         'driver' => 'sqlsrv',
         'url' => NULL,
-        'host' => '127.0.0.1',
+        'host' => 'db',
         'port' => '3306',
-        'database' => 'goldenx',
-        'username' => 'root',
-        'password' => '',
+        'database' => 'db',
+        'username' => 'db',
+        'password' => 'db',
         'charset' => 'utf8',
         'prefix' => '',
         'prefix_indexes' => true,
@@ -449,14 +449,14 @@
       'local' => 
       array (
         'driver' => 'local',
-        'root' => 'C:\\projects\\goldenx\\storage\\app',
+        'root' => '/var/www/html/storage/app',
         'throw' => false,
       ),
       'public' => 
       array (
         'driver' => 'local',
-        'root' => 'C:\\projects\\goldenx\\storage\\app/public',
-        'url' => 'http://localhost/storage',
+        'root' => '/var/www/html/storage/app/public',
+        'url' => 'https://goldenx.ddev.site/storage',
         'visibility' => 'public',
         'throw' => false,
       ),
@@ -475,13 +475,13 @@
     ),
     'links' => 
     array (
-      'C:\\projects\\goldenx\\public\\storage' => 'C:\\projects\\goldenx\\storage\\app/public',
+      '/var/www/html/public/storage' => '/var/www/html/storage/app/public',
     ),
   ),
   'livewire' => 
   array (
     'class_namespace' => 'App\\Livewire',
-    'view_path' => 'C:\\projects\\goldenx\\resources\\views/livewire',
+    'view_path' => '/var/www/html/resources/views/livewire',
     'layout' => 'components.layouts.app',
     'lazy_placeholder' => NULL,
     'temporary_file_upload' => 
@@ -545,14 +545,14 @@
       'single' => 
       array (
         'driver' => 'single',
-        'path' => 'C:\\projects\\goldenx\\storage\\logs/laravel.log',
+        'path' => '/var/www/html/storage/logs/laravel.log',
         'level' => 'debug',
         'replace_placeholders' => true,
       ),
       'daily' => 
       array (
         'driver' => 'daily',
-        'path' => 'C:\\projects\\goldenx\\storage\\logs/laravel.log',
+        'path' => '/var/www/html/storage/logs/laravel.log',
         'level' => 'debug',
         'days' => 14,
         'replace_placeholders' => true,
@@ -617,7 +617,7 @@
       ),
       'emergency' => 
       array (
-        'path' => 'C:\\projects\\goldenx\\storage\\logs/laravel.log',
+        'path' => '/var/www/html/storage/logs/laravel.log',
       ),
     ),
   ),
@@ -630,13 +630,13 @@
       array (
         'transport' => 'smtp',
         'url' => NULL,
-        'host' => 'smtp.gmail.com',
-        'port' => '465',
+        'host' => '127.0.0.1',
+        'port' => '1025',
         'encryption' => 'ssl',
         'username' => 'shahzaib.ch2019@gmail.com',
         'password' => 'pjjevjianijwufcp',
         'timeout' => NULL,
-        'local_domain' => 'localhost',
+        'local_domain' => 'goldenx.ddev.site',
       ),
       'ses' => 
       array (
@@ -693,7 +693,7 @@
       'theme' => 'default',
       'paths' => 
       array (
-        0 => 'C:\\projects\\goldenx\\resources\\views/vendor/mail',
+        0 => '/var/www/html/resources/views/vendor/mail',
       ),
     ),
   ),
@@ -789,13 +789,13 @@
     ),
     'batching' => 
     array (
-      'database' => 'mysql',
+      'database' => 'mariadb',
       'table' => 'job_batches',
     ),
     'failed' => 
     array (
       'driver' => 'database-uuids',
-      'database' => 'mysql',
+      'database' => 'mariadb',
       'table' => 'failed_jobs',
     ),
   ),
@@ -830,7 +830,7 @@
     'lifetime' => '120',
     'expire_on_close' => false,
     'encrypt' => false,
-    'files' => 'C:\\projects\\goldenx\\storage\\framework/sessions',
+    'files' => '/var/www/html/storage/framework/sessions',
     'connection' => NULL,
     'table' => 'sessions',
     'store' => NULL,
@@ -852,7 +852,7 @@
     'pdf' => 
     array (
       'enabled' => true,
-      'binary' => '"C:\\Program Files\\wkhtmltopdf\\bin\\wkhtmltopdf.exe"',
+      'binary' => '/usr/bin/wkhtmltopdf',
       'timeout' => false,
       'options' => 
       array (
@@ -864,7 +864,7 @@
     'image' => 
     array (
       'enabled' => true,
-      'binary' => '"C:\\Program Files\\wkhtmltopdf\\bin\\wkhtmltoimage.exe"',
+      'binary' => '/usr/bin/wkhtmltoimage',
       'timeout' => false,
       'options' => 
       array (
@@ -881,10 +881,10 @@
     'convert_entities' => true,
     'options' => 
     array (
-      'font_dir' => 'C:\\projects\\goldenx\\storage\\fonts',
-      'font_cache' => 'C:\\projects\\goldenx\\storage\\fonts',
-      'temp_dir' => 'C:\\Users\\HAMEED~1\\AppData\\Local\\Temp',
-      'chroot' => 'C:\\projects\\goldenx',
+      'font_dir' => '/var/www/html/storage/fonts',
+      'font_cache' => '/var/www/html/storage/fonts',
+      'temp_dir' => '/tmp',
+      'chroot' => '/var/www/html',
       'allowed_protocols' => 
       array (
         'data://' => 
