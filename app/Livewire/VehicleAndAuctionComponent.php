@@ -8,11 +8,10 @@ use App\Models\VehicleModel;
 use Livewire\Component;
 use Livewire\WithPagination;
 
-
 class VehicleAndAuctionComponent extends Component
-
 {
     use WithPagination;
+
     public $sortBy = 'ending_soon';
     public $minPrice;
     public $maxPrice;
@@ -26,45 +25,41 @@ class VehicleAndAuctionComponent extends Component
     public $auctionStatus = [];
     public $brands = [], $models = [];
     public $section = 'Vehicles';
+
     protected string $paginationTheme = 'bootstrap';
 
+
     protected $queryString = [
-        'minPrice',
-        'maxPrice',
-        'make',
-        'model',
-        'reserve_status',
-        'year',
-        'mileage',
-        'live_auction',
-        'endingSoon',
-        'auctionStatus'
+        'sortBy'        => ['except' => 'ending_soon'],
+        'minPrice'      => ['except' => null],
+        'maxPrice'      => ['except' => null],
+        'make'          => ['except' => null],
+        'model'         => ['except' => null],
+        'year'          => ['except' => null],
+        'mileage'       => ['except' => null],
+        'live_auction'  => ['except' => null],
+        'reserve_status' => ['except' => null],
+        'endingSoon'    => ['except' => null],
+        'auctionStatus' => ['except' => []],
     ];
-    public function updated($property)
+
+
+    public function updating($property, $value)
     {
         $this->resetPage();
     }
 
     public function mount($section)
     {
-        $this->brands =  Brand::orderBy('name')->get();
-        // $this->models =  VehicleModel::orderBy('name')->get();
-
-
+        $this->brands = Brand::orderBy('name')->get();
         $this->section = $section;
     }
+
     public function updatedMake($value)
     {
-        if ($value) {
-
-            $this->models = VehicleModel::where('brand_id', $value)->get();
-        } else {
-            $this->models = [];
-        }
-    }
-    public function updatedSortBy()
-    {
-        $this->resetPage();
+        $this->models = $value
+            ? VehicleModel::where('brand_id', $value)->get()
+            : [];
     }
 
     public function resetAll()
@@ -74,22 +69,30 @@ class VehicleAndAuctionComponent extends Component
         $this->make = null;
         $this->model = null;
         $this->mileage = null;
-        $this->auctionStatus = null;
+        $this->auctionStatus = [];
         $this->year = null;
+        $this->live_auction = null;
+        $this->reserve_status = null;
+        $this->endingSoon = null;
+        $this->sortBy = 'ending_soon';
     }
 
     public function render()
     {
         $vehiclesQuery = Vehicle::query();
+        $vehiclesQuery->orderBy('created_at', 'desc');
 
-        if ($this->section == 'Auctions') {
+        // Section filter
+        if ($this->section === 'Auctions') {
             $vehiclesQuery->where('is_auction', 1)->where('status', '!=', 'sold');
         } else {
-
             $vehiclesQuery->where(function ($q) {
-                $q->where('is_auction', 0)->where('status', '!=', 'sold')->orWhereNull('is_auction');
+                $q->where('is_auction', 0)->where('status', '!=', 'sold')
+                    ->orWhereNull('is_auction');
             });
         }
+
+        // Sorting
         switch ($this->sortBy) {
             case 'price_low_high':
                 $vehiclesQuery->orderBy('price', 'asc');
@@ -103,12 +106,13 @@ class VehicleAndAuctionComponent extends Component
             case 'mileage_low_high':
                 $vehiclesQuery->orderBy('mileage', 'asc');
                 break;
-
             case 'ending_soon':
             default:
                 $vehiclesQuery->orderBy('auction_end_date', 'asc');
                 break;
         }
+
+        // Price filter
         if ($this->minPrice) {
             $vehiclesQuery->where('price', '>=', $this->minPrice);
         }
@@ -116,30 +120,35 @@ class VehicleAndAuctionComponent extends Component
             $vehiclesQuery->where('price', '<=', $this->maxPrice);
         }
 
+        // Brand / Model
         if ($this->make) {
             $vehiclesQuery->where('brand_id', $this->make);
         }
-
-
         if ($this->model) {
             $vehiclesQuery->where('vehicle_model_id', $this->model);
         }
 
-
+        // Year
         if ($this->year) {
             $vehiclesQuery->where('year', $this->year);
         }
+
+        // Live auction
         if ($this->live_auction) {
             $vehiclesQuery->where('live_auction', $this->live_auction);
         }
+
+        // Reserve met
         if ($this->reserve_status) {
             $vehiclesQuery->where('reserve_status', 'met');
         }
+
+        // Ending soon
         if ($this->endingSoon) {
             $vehiclesQuery->where('auction_end_date', '<', now()->addDay());
         }
 
-
+        // Mileage
         if ($this->mileage) {
             if ($this->mileage === 'under10k') {
                 $vehiclesQuery->where('mileage', '<', 10000);
@@ -151,16 +160,15 @@ class VehicleAndAuctionComponent extends Component
                 $vehiclesQuery->where('mileage', '>', 50000);
             }
         }
+
+
         if (!empty($this->auctionStatus)) {
             if (in_array('ending-soon', $this->auctionStatus)) {
                 $vehiclesQuery->where('auction_end_date', '<', now()->addDay());
             }
         }
 
-
-
-        $vehicles = $vehiclesQuery->paginate(10);
-
+        $vehicles = $vehiclesQuery->paginate(2)->withQueryString();
 
         return view('livewire.vehicle-and-auction-component', [
             'vehicles' => $vehicles,

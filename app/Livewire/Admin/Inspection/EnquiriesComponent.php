@@ -9,6 +9,7 @@ use Livewire\WithPagination;
 class EnquiriesComponent extends Component
 {
      use WithPagination;
+     protected string $paginationTheme = 'bootstrap';
     public string $search = '';
     public string $sortBy = 'created_at';
     public string $sortDir = 'DESC';

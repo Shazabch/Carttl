@@ -76,8 +76,8 @@
                 </div>
 
                 <div class="col-md-4 mb-3">
-                    <label class="form-label">Mileage</label>
-                    <input type="text" class="form-control @error('vehicleData.mileage') is-invalid @enderror" wire:model.defer="vehicleData.mileage">
+                    <label class="form-label">Mileage(kms)</label>
+                    <input type="number" step="10" class="form-control @error('vehicleData.mileage') is-invalid @enderror" wire:model.defer="vehicleData.mileage">
 
                     @error('vehicleData.mileage')<div class="invalid-feedback">{{ $message }}</div>@enderror
                 </div>
@@ -97,6 +97,12 @@
                     <label class="form-label">No Of Cylinders</label>
                     <input type="number" class="form-control" wire:model="vehicleData.no_of_cylinder">
                     @error('vehicleData.no_of_cylinder') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                </div>
+                <div class="col-md-12 mb-3">
+                    <label class="form-label">Remarks</label>
+                    
+                    <textarea  class="form-control" wire:model="vehicleData.remarks"></textarea>
+                    @error('vehicleData.remarks') <div class="invalid-feedback">{{ $message }}</div> @enderror
                 </div>
             </div>
         </fieldset>

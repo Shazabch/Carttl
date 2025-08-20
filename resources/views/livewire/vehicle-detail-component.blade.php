@@ -76,7 +76,7 @@
                                                 </div>
                                                 <div class="col-lg-6 mb-3">
                                                     <div class="spec-item"><i class="fas fa-tachometer-alt"></i>
-                                                        <div><span class="spec-label">Mileage</span><span class="spec-value">{{$selected_vehicle->mileage}} miles</span></div>
+                                                        <div><span class="spec-label">Mileage</span><span class="spec-value">{{$selected_vehicle->mileage.'kms'}}</span></div>
                                                     </div>
                                                 </div>
                                                 <div class="col-lg-6 mb-3">
@@ -113,8 +113,8 @@
                                     <div id="collapseSix" class="accordion-collapse collapse" aria-labelledby="headingSix" data-bs-parent="#vehicleDetailsAccordion">
                                         <div class="detail-content">
                                             <div class="row g-3">
-                                                <div class="col-md-12">
-                                                    {{$selected_vehicle->description}}
+                                                <div class="col-md-12 mx-2">
+                                                    {{$selected_vehicle->description ?? 'No Description Available'}}
                                                 </div>
                                             </div>
                                         </div>
@@ -243,11 +243,11 @@
                             @else
                             <a href="/login" class="btn btn-light text-primary ">
 
-                                Buy It Now <div class="spinner"></div>
+                                <i class="fas fa-shopping-cart"></i>Buy It Now <div class="spinner"></div>
                             </a>
                             <a href="#bidding" class="btn btn-light text-primary ">
 
-                                Place Bid <div class="spinner"></div>
+                                <i class="fas fa-gavel"></i>Place Bid <div class="spinner"></div>
                             </a>
                             @endif
 

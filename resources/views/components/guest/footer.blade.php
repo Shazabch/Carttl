@@ -49,7 +49,7 @@
             </div>
           </div>
           <div class="copyright">
-              <p class="mb-0"><i class="fas fa-copyright me-2"></i>{{ now()->year }} GoldenX. All rights reserved
+              <p class="mb-0">Copyright <i class="fas fa-copyright me-2"></i>{{ now()->year }}. All rights reserved by <a href="/" class="text-primary text-decoration-none fw-normal">GoldenX</a> LLc
               </p>
           </div>
       </div>

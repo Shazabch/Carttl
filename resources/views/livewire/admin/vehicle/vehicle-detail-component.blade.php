@@ -135,10 +135,10 @@
                         </div>
 
                         {{-- Performance measurements --}}
-                        <div class="col-md-4">
+                        <div class="col-md-6">
                             <p><strong>0–60 mph:</strong> {{ $vehicle->{'zero_to_sixty'} ? $vehicle->{'zero_to_sixty'} . ' s' : 'N/A' }}</p>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-6">
                             <p><strong>Quarter Mile:</strong> {{ $vehicle->quater_mile ? $vehicle->quater_mile . ' s' : 'N/A' }}</p>
                         </div>
 
@@ -153,6 +153,15 @@
                 </div>
                 <div class="card-body">
                     <p>{{ $vehicle->description ?? 'No description provided.' }}</p>
+                </div>
+            </div>
+            {{-- Remarks Card --}}
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="mb-0">Remarks</h5>
+                </div>
+                <div class="card-body">
+                    <p>{{ $vehicle->remarks ?? 'No remarks provided.' }}</p>
                 </div>
             </div>
 

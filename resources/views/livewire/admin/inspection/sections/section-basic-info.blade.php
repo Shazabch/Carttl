@@ -47,12 +47,9 @@
 
             <div class="col-md-4">
                 <div class="form-item">
-                    <label class="form-label">Mileage / Odometer</label>
-                    <select name="mileage" class="form-control @error('reportData.odometer') is-invalid @enderror" wire:model="reportData.odometer">
-                        @foreach(\App\Enums\MileageRange::options() as $value => $label)
-                        <option value="{{ $value }}">{{ $label }}</option>
-                        @endforeach
-                    </select>
+                    <label class="form-label">Mileage / Odometer(kms)</label>
+                    <input type="number" step="10" class="form-control @error('reportData.odometer') is-invalid @enderror" wire:model.defer="reportData.odometer">
+
                     @error('reportData.odometer')<div class="invalid-feedback">{{ $message }}</div>@enderror
                 </div>
             </div>
