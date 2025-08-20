@@ -130,8 +130,8 @@ $(function () {
   $("#slider-range").slider({
     range: true,
     min: 0,
-    max: 10000,
-    values: [1000, 9000],
+    max: 1000000000,
+    values: [1000, 1000000000],
     slide: function (event, ui) {
       $("#min_price").val(ui.values[0]);
       $("#max_price").val(ui.values[1]);

@@ -53,7 +53,7 @@ class VehicleListingComponent extends Component
     public function render()
     {
         $query = Vehicle::query();
-
+         
         // Apply status filter based on type
         if ($this->type == 'sold') {
             $query->where('status', 'sold');
@@ -74,10 +74,8 @@ class VehicleListingComponent extends Component
         }
 
         // Get results with relations and pagination
-        $vehicles = $query->with(['brand', 'vehicleModel'])
-            ->latest()
-            ->paginate(10);
-
+        $vehicles = $query->with(['brand', 'vehicleModel'])->orderBy('created_at','desc')->paginate(10);
+       
         return view('livewire.admin.vehicle-listing-component', compact('vehicles'));
     }
 }

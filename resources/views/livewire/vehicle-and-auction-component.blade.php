@@ -47,10 +47,10 @@
                                 <div class="price-range-block">
                                     <div class="row g-2 mb-3">
                                         <div class="col-6">
-                                            <input type="number" wire:model.live="minPrice" min="0" max="9900" oninput="validity.valid||(value='0');" id="min_price" placeholder="Min" class="form-control price-range-field" />
+                                            <input type="number" wire:model.live="minPrice" min="0" oninput="validity.valid||(value='0');" id="min_price" placeholder="Min" class="form-control price-range-field" />
                                         </div>
                                         <div class="col-6">
-                                            <input type="number" wire:model.live="maxPrice" min="0" max="1000000000" oninput="validity.valid||(value='1000000000');" id="max_price" placeholder="Max" class="form-control price-range-field" />
+                                            <input type="number" wire:model.live="maxPrice" min="0" max="1000000000" oninput="validity.valid||(value='100');" id="max_price" placeholder="Max" class="form-control price-range-field" />
                                         </div>
                                     </div>
                                     <div id="slider-range" class="price-filter-range" name="rangeInput"></div>
@@ -92,10 +92,7 @@
                                     <input class="form-check-input" wire:model.live="reserve_status" value="reserve_status" type="checkbox" id="a3">
                                     <label class="form-check-label" for="a3">Reserve Met</label>
                                 </div>
-                                <!-- <div class="form-check mb-3">
-                                    <input class="form-check-input" type="checkbox" id="a4">
-                                    <label class="form-check-label" for="a4">Buy It Now</label>
-                                </div> -->
+                               
                             </div>
                             @endif
                         </div>
@@ -136,48 +133,40 @@
                     <!-- Car Listings -->
                     <div class="car-listings" id="carListings">
                         <div class="row g-4" id="gridView">
-                            <!-- Car Card 1 -->
-                            @foreach($vehicles as $item)
-                            @if($section=='Vehicles')
+                            @forelse($vehicles as $item)
+                            @if($section == 'Vehicles')
                             @include('components.guest.listing-card-vehicle')
                             @else
                             @include('components.guest.listing-card-auction')
                             @endif
-                            @endforeach
+                            @empty
+                            <div class="col-12">
+                                <div class="alert alert-light text-center py-5 shadow-sm rounded">
+                                    <h4 class="mb-2">🚗 No Results Found</h4>
+                                    <p class="mb-0">Try adjusting your filters or check back later.</p>
+                                </div>
+                            </div>
+                            @endforelse
                         </div>
+
 
                         <!-- List View (Hidden by default) -->
                         <div class="list-view d-none" id="listView">
-                            @foreach($vehicles as $item)
+                            @forelse($vehicles as $item)
                             @if($section=='Vehicles')
                             @include('components.guest.listing-card-vehicle-list-view')
                             @else
                             @include('components.guest.listing-card-auction-list-view')
                             @endif
-                            @endforeach
-                            <!-- <div class="car-list-item">
-                                <div class="row align-items-center">
-                                    <div class="col-md-3">
-                                        <img src="https://placehold.co/300x200/1e293b/f8fafc?text=Porsche+911"
-                                            class="img-fluid rounded" alt="Porsche 911">
-                                    </div>
-                                    <div class="col-md-6">
-                                        <h5 class="mb-2">2021 Porsche 911 Turbo S</h5>
-                                        <div class="fw-bold mb-2 current-bid">Current Bid: $185,000</div>
-                                        <div class="d-flex gap-3 text-secondary small">
-                                            <span><i class="fas fa-tachometer-alt me-1"></i>3,200 miles</span>
-                                            <span><i class="fas fa-clock me-1"></i>Ends in 2d</span>
-                                            <span><i class="fas fa-user me-1"></i>18 bids</span>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-3 text-end">
-                                        <div class="d-flex flex-column gap-2">
-                                            <a href="#" class="btn btn-warning btn-sm">View Details</a>
-                                            <a href="#" class="btn btn-outline-warning btn-sm">Watch</a>
-                                        </div>
-                                    </div>
+                              @empty
+                            <div class="col-12">
+                                <div class="alert alert-light text-center py-5 shadow-sm rounded">
+                                    <h4 class="mb-2">🚗 No Results Found</h4>
+                                    <p class="mb-0">Try adjusting your filters or check back later.</p>
                                 </div>
-                            </div> -->
+                            </div>
+                            @endforelse
+                          
                         </div>
                     </div>
                     <div class="mt-3">

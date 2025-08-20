@@ -521,7 +521,7 @@
                 <h1>Vehicle Inspection Report</h1>
                 <div class="header-meta">
                     <span><i class="fas fa-file-alt"></i> Report #{{ $reportInView->id }}</span>
-                    <span><i class="fas fa-calendar"></i> {{ $reportInView->created_at->format('F d, Y') }}</span>
+                    <span><i class="fas fa-calendar"></i> Generated on {{ now()->format('M d, Y g:i A') }}</span>
                 </div>
             </div>
         </div>
@@ -681,7 +681,7 @@
                     <tr>
                         <td>
                             <div class="item-label"><i class="{{ $fieldIcons['odometer'] ?? 'fas fa-circle-notch' }}"></i> Mileage/Odometer</div>
-                            <div class="item-value">{{ $reportInView->getOdometerLabelAttribute() ?? 'N/A' }}</div>
+                            <div class="item-value">{{ $reportInView->odometer.'kms' ?? 'N/A' }}</div>
                         </td>
                         <td>
                             <div class="item-label"><i class="{{ $fieldIcons['engine_cc'] ?? 'fas fa-circle-notch' }}"></i> Engine CC</div>
