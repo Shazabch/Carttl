@@ -132,7 +132,7 @@ class SellCarComponent extends Component
             'faq'           => 'nullable',
             'notes'         => 'nullable',
             // 'images'        => 'required|array|min:1|max:6',
-            // 'images.*'      => 'image|max:2048',
+            // 'images.*'      => 'image|max:10240',
         ]);
 
         // Create the main enquiry record

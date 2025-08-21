@@ -33,7 +33,7 @@ class BlogComponent extends Component
             'image' => [
                 $this->isEditing ? 'nullable' : 'required',
                 'image',
-                'max:2048'
+                'max:10240'
             ],
             'is_published' => 'boolean',
         ];
@@ -47,7 +47,6 @@ class BlogComponent extends Component
         $this->resetForm();
         $this->showForm = true;
         $this->isEditing = false;
-
     }
     public function editBlog(Blog $blog)
     {
@@ -67,7 +66,7 @@ class BlogComponent extends Component
         $validatedData = $this->validate();
         if ($this->image) {
             $validatedData['image'] = $this->image->store('blog-images', 'public');
-        }elseif ($this->isEditing && $this->editingBlog->image) {
+        } elseif ($this->isEditing && $this->editingBlog->image) {
             $validatedData['image'] = $this->editingBlog->image;
         } else {
             $validatedData['image'] = null;
@@ -75,12 +74,11 @@ class BlogComponent extends Component
 
         if ($this->isEditing) {
             $this->editingBlog->update($validatedData);
-             $this->dispatch('success-notification', message: 'Item Updated Successfully');
+            $this->dispatch('success-notification', message: 'Item Updated Successfully');
             session()->flash('success', 'Blog post updated successfully.');
-
         } else {
             Blog::create($validatedData);
-             $this->dispatch('success-notification', message: 'Item Created Successfully');
+            $this->dispatch('success-notification', message: 'Item Created Successfully');
             session()->flash('success', 'Blog post created successfully.');
         }
 
@@ -100,7 +98,7 @@ class BlogComponent extends Component
         }
 
         $blog->delete();
-         $this->dispatch('success-notification', message: 'Item Deleted Successfully');
+        $this->dispatch('success-notification', message: 'Item Deleted Successfully');
         session()->flash('success', 'Blog post deleted successfully.');
     }
 

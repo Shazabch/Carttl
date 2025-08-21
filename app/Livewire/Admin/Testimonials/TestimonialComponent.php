@@ -34,7 +34,7 @@ class TestimonialComponent extends Component
             'image_path' => [
                 $this->isEditing ? 'nullable' : 'required',
                 'image',
-                'max:2048'
+                'max:10240'
             ],
             'status' => 'boolean',
         ];
@@ -65,7 +65,7 @@ class TestimonialComponent extends Component
 
         if ($this->image_path) {
             $validatedData['image_path'] = $this->image_path->store('testimonial-images', 'public');
-        }elseif ($this->isEditing && $this->editingTestimonial->image_path) {
+        } elseif ($this->isEditing && $this->editingTestimonial->image_path) {
             $validatedData['image_path'] = $this->editingTestimonial->image_path;
         } else {
             $validatedData['image_path'] = null;
@@ -74,12 +74,11 @@ class TestimonialComponent extends Component
         if ($this->isEditing) {
             $this->editingTestimonial->update($validatedData);
             session()->flash('success', 'Testimonial updated successfully.');
-             $this->dispatch('success-notification', message: 'Record Updated Successfully');
-
+            $this->dispatch('success-notification', message: 'Record Updated Successfully');
         } else {
             Testimonial::create($validatedData);
             session()->flash('success', 'Testimonial created successfully.');
-             $this->dispatch('success-notification', message: 'Record Saved Successfully');
+            $this->dispatch('success-notification', message: 'Record Saved Successfully');
         }
 
         $this->showForm = false;
@@ -104,7 +103,7 @@ class TestimonialComponent extends Component
     // Reset form fields and validation
     private function resetForm()
     {
-        $this->reset(['name', 'comment','rank' ,'image_path', 'status', 'editingTestimonial']);
+        $this->reset(['name', 'comment', 'rank', 'image_path', 'status', 'editingTestimonial']);
         $this->resetErrorBag();
     }
 
