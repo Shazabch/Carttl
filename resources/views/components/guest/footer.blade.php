@@ -38,10 +38,11 @@
                     <div class="social-area">
                       <h3 class="">Follow Us</h3>
                       <ul>
-                        <li><a href="https://www.facebook.com/"><i class="fab fa-facebook-f"></i></a></li>
-                        <li><a href="https://twitter.com/"><i class="fab fa-twitter"></i></a></li>
-                        <li><a href="https://www.linkedin.com/"><i class="fab fa-linkedin-in"></i></a></li>
-                        <li><a href="https://www.instagram.com/"><i class="fab fa-instagram"></i></a></li>
+                        <li><a href="https://www.facebook.com/share/1FpUebaKTf/"><i class="fab fa-facebook-f"></i></a></li>
+                        <li><a href="https://www.tiktok.com/@goldenx.cars?_t=ZS-8z3eQAqhTUo&_r=1"><i class="fab fa-tiktok"></i></a></li>
+                        <li><a href="https://www.snapchat.com/add/goldenxmotors"><i class="fab fa-snapchat-ghost"></i></a></li>
+                        <li><a href="https://www.instagram.com/goldenxcars.ae?igsh=aXdhcHhwZDZhMXgz"><i class="fab fa-instagram"></i></a></li>
+                        <li><a href="https://youtube.com/@goldenxllc?si=4vyz46a7g-Ss3m-P"><i class="fab fa-youtube"></i></a></li>
                       </ul>
                     </div>
                 </div>

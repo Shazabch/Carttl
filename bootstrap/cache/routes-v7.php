@@ -32,7 +32,7 @@ app('router')->setCompiledRoutes(
         array (
           0 => 
           array (
-            '_route' => 'generated::ZnTII4UXTtPBzgga',
+            '_route' => 'generated::pk4Gy18WqBlvdYy5',
           ),
           1 => NULL,
           2 => 
@@ -52,7 +52,7 @@ app('router')->setCompiledRoutes(
         array (
           0 => 
           array (
-            '_route' => 'generated::n8e7NZuikWDoBGgk',
+            '_route' => 'generated::25mxZzSYGjQiMzcc',
           ),
           1 => NULL,
           2 => 
@@ -91,7 +91,7 @@ app('router')->setCompiledRoutes(
         array (
           0 => 
           array (
-            '_route' => 'generated::x8ST4UXdgsIhB72f',
+            '_route' => 'generated::vE5Pe3UuimBt7GQc',
           ),
           1 => NULL,
           2 => 
@@ -111,7 +111,7 @@ app('router')->setCompiledRoutes(
         array (
           0 => 
           array (
-            '_route' => 'generated::wikCR4qT8tEpNChC',
+            '_route' => 'generated::Vaxx8iD009bxHZ75',
           ),
           1 => NULL,
           2 => 
@@ -1112,7 +1112,7 @@ app('router')->setCompiledRoutes(
       'waitSeconds' => NULL,
       'withTrashed' => false,
     ),
-    'generated::ZnTII4UXTtPBzgga' => 
+    'generated::pk4Gy18WqBlvdYy5' => 
     array (
       'methods' => 
       array (
@@ -1124,7 +1124,7 @@ app('router')->setCompiledRoutes(
       array (
         'uses' => 'Livewire\\Mechanisms\\FrontendAssets\\FrontendAssets@returnJavaScriptAsFile',
         'controller' => 'Livewire\\Mechanisms\\FrontendAssets\\FrontendAssets@returnJavaScriptAsFile',
-        'as' => 'generated::ZnTII4UXTtPBzgga',
+        'as' => 'generated::pk4Gy18WqBlvdYy5',
       ),
       'fallback' => false,
       'defaults' => 
@@ -1140,7 +1140,7 @@ app('router')->setCompiledRoutes(
       'waitSeconds' => NULL,
       'withTrashed' => false,
     ),
-    'generated::n8e7NZuikWDoBGgk' => 
+    'generated::25mxZzSYGjQiMzcc' => 
     array (
       'methods' => 
       array (
@@ -1152,7 +1152,7 @@ app('router')->setCompiledRoutes(
       array (
         'uses' => 'Livewire\\Mechanisms\\FrontendAssets\\FrontendAssets@maps',
         'controller' => 'Livewire\\Mechanisms\\FrontendAssets\\FrontendAssets@maps',
-        'as' => 'generated::n8e7NZuikWDoBGgk',
+        'as' => 'generated::25mxZzSYGjQiMzcc',
       ),
       'fallback' => false,
       'defaults' => 
@@ -1223,7 +1223,7 @@ app('router')->setCompiledRoutes(
       'waitSeconds' => NULL,
       'withTrashed' => false,
     ),
-    'generated::x8ST4UXdgsIhB72f' => 
+    'generated::vE5Pe3UuimBt7GQc' => 
     array (
       'methods' => 
       array (
@@ -1233,7 +1233,7 @@ app('router')->setCompiledRoutes(
       'uri' => 'up',
       'action' => 
       array (
-        'uses' => 'O:55:"Laravel\\SerializableClosure\\UnsignedSerializableClosure":1:{s:12:"serializable";O:46:"Laravel\\SerializableClosure\\Serializers\\Native":5:{s:3:"use";a:0:{}s:8:"function";s:807:"function () {
+        'uses' => 'O:55:"Laravel\\SerializableClosure\\UnsignedSerializableClosure":1:{s:12:"serializable";O:46:"Laravel\\SerializableClosure\\Serializers\\Native":5:{s:3:"use";a:0:{}s:8:"function";s:822:"function () {
                     $exception = null;
 
                     try {
@@ -1248,11 +1248,11 @@ app('router')->setCompiledRoutes(
                         $exception = $e->getMessage();
                     }
 
-                    return response(\\Illuminate\\Support\\Facades\\View::file(\'/var/www/html/vendor/laravel/framework/src/Illuminate/Foundation/Configuration\'.\'/../resources/health-up.blade.php\', [
+                    return response(\\Illuminate\\Support\\Facades\\View::file(\'C:\\\\projects\\\\goldenx\\\\vendor\\\\laravel\\\\framework\\\\src\\\\Illuminate\\\\Foundation\\\\Configuration\'.\'/../resources/health-up.blade.php\', [
                         \'exception\' => $exception,
                     ]), status: $exception ? 500 : 200);
-                }";s:5:"scope";s:54:"Illuminate\\Foundation\\Configuration\\ApplicationBuilder";s:4:"this";N;s:4:"self";s:32:"000000000000073c0000000000000000";}}',
-        'as' => 'generated::x8ST4UXdgsIhB72f',
+                }";s:5:"scope";s:54:"Illuminate\\Foundation\\Configuration\\ApplicationBuilder";s:4:"this";N;s:4:"self";s:32:"000000000000073b0000000000000000";}}',
+        'as' => 'generated::vE5Pe3UuimBt7GQc',
       ),
       'fallback' => false,
       'defaults' => 
@@ -1268,7 +1268,7 @@ app('router')->setCompiledRoutes(
       'waitSeconds' => NULL,
       'withTrashed' => false,
     ),
-    'generated::wikCR4qT8tEpNChC' => 
+    'generated::Vaxx8iD009bxHZ75' => 
     array (
       'methods' => 
       array (
@@ -1293,13 +1293,13 @@ app('router')->setCompiledRoutes(
     } catch (\\Exception $e) {
         return \'❌ Email sending failed: \' . $e->getMessage();
     }
-}";s:5:"scope";s:37:"Illuminate\\Routing\\RouteFileRegistrar";s:4:"this";N;s:4:"self";s:32:"00000000000007400000000000000000";}}',
+}";s:5:"scope";s:37:"Illuminate\\Routing\\RouteFileRegistrar";s:4:"this";N;s:4:"self";s:32:"000000000000073f0000000000000000";}}',
         'namespace' => NULL,
         'prefix' => '',
         'where' => 
         array (
         ),
-        'as' => 'generated::wikCR4qT8tEpNChC',
+        'as' => 'generated::Vaxx8iD009bxHZ75',
       ),
       'fallback' => false,
       'defaults' => 
