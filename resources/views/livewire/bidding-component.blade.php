@@ -43,7 +43,7 @@
 
             <!-- I've added an ID here to make it easier to target from the script -->
             <!-- === START: IMPROVED TIMER UI === -->
-            <div class="timer-card mb-4">
+            <div id="auctionTimerContainer" class="timer-card mb-4">
                 <h3 class="p-22 fw-600 text-detail-primary mb-3">Auction Ends In</h3>
                 <div class="timer-wrapper">
                     <div class="timer-segment">
@@ -69,13 +69,13 @@
             <div class="bid-history">
                 <h3 class="p-22 fw-600 text-detail-primary">Bid History</h3>
                 @foreach($bids as $bid)
-                    <div class="bid-item">
-                        <div class="bid-top">
-                            <span class="bidder">********</span>
-                            <span class="bid-amount">{{ format_currency($bid->bid_amount) }}</span>
-                        </div>
-                        <span class="bid-time">{{ \Carbon\Carbon::parse($bid->created_at)->diffForHumans() }}</span>
+                <div class="bid-item">
+                    <div class="bid-top">
+                        <span class="bidder">********</span>
+                        <span class="bid-amount">{{ format_currency($bid->bid_amount) }}</span>
                     </div>
+                    <span class="bid-time">{{ \Carbon\Carbon::parse($bid->created_at)->diffForHumans() }}</span>
+                </div>
                 @endforeach
             </div>
             @endif
@@ -131,36 +131,37 @@
         </div>
         <script>
             document.addEventListener("DOMContentLoaded", function() {
-                // Get auction end time from backend
                 const auctionEndTime = new Date("{{ \Carbon\Carbon::parse($selected_vehicle->auction_end_date)->format('Y-m-d H:i:s') }}").getTime();
-                const timerContainer = document.getElementById("auctionTimerContainer");
+                const timerTitle = document.getElementById("auctionTimerTitle");
 
                 function updateTimer() {
                     const now = new Date().getTime();
                     const distance = auctionEndTime - now;
 
-                    // When the timer runs out, display "Auction Ended"
                     if (distance <= 0) {
-                        if (timerContainer) {
-                            timerContainer.innerHTML = `<div class="d-flex justify-content-center mb-3"><span class="badge-custom p-3 fw-bold">Auction Ended</span></div>`;
-                        }
+                        // Freeze at 00:00:00
+                        document.getElementById("hours").textContent = "00";
+                        document.getElementById("minutes").textContent = "00";
+                        document.getElementById("seconds").textContent = "00";
+
+                        // Change title
+                        timerTitle.textContent = "Auction Ended";
+
                         clearInterval(timerInterval);
                         return;
                     }
 
-                    // Improved time calculations to show total hours
                     const hours = String(Math.floor(distance / (1000 * 60 * 60))).padStart(2, '0');
                     const minutes = String(Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60))).padStart(2, '0');
                     const seconds = String(Math.floor((distance % (1000 * 60)) / 1000)).padStart(2, '0');
 
-                    // Display the remaining time
                     document.getElementById("hours").textContent = hours;
                     document.getElementById("minutes").textContent = minutes;
                     document.getElementById("seconds").textContent = seconds;
                 }
 
                 const timerInterval = setInterval(updateTimer, 1000);
-                updateTimer(); // Call it once immediately so the timer doesn't start at 00:00:00 for a second
+                updateTimer();
             });
         </script>
 

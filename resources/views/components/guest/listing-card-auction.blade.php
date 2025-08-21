@@ -34,7 +34,7 @@
                     </span>
                     @endif
                 </div>
-                 <livewire:favorite-button-component :vehicleId="$item->id" />
+                <livewire:favorite-button-component :vehicleId="$item->id" />
             </div>
         </div>
         <div class="car-box-card-content">
@@ -47,7 +47,11 @@
                     </div>
                     <div class="spec_item">
                         <i class="fas fa-calendar-alt"></i>
+                        @if(\Carbon\Carbon::parse($item->auction_end_date)->isPast())
+                        <span>Auction Ended</span>
+                        @else
                         <span>Ends In {{ \Carbon\Carbon::parse($item->auction_end_date)->shortAbsoluteDiffForHumans() }}</span>
+                        @endif
                     </div>
                     <div class="spec_item">
                         <i class="fas fa-gavel"></i>

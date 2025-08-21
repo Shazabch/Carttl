@@ -217,7 +217,7 @@
     </section> --}}
     <section class="home-banner">
         <video class="bg-video" autoplay muted loop playsinline>
-            <source src="{{asset('images/h-banner.mp4')}}" type="video/mp4">
+            <source src="{{asset('images/h-banner-2.mp4')}}" type="video/mp4">
             Your browser does not support the video tag.
         </video>
         <div class="overlay"></div>

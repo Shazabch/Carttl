@@ -287,7 +287,32 @@
                     <div class="col-lg-4">
                         @if($selected_vehicle->is_auction)
 
-                        <div class="buy-now-card my-2">
+                     
+                        <!-- Contact Card -->
+                        <div class="contact-card my-2">
+                            <h4><i class="fas fa-phone"></i> Need Help?</h4>
+                            <p>Our specialists are here to assist you</p>
+                            <div class="contact-options">
+                                <button class="btn btn-primary btn-bid">
+                                    <i class="fab fa-whatsapp"></i>
+                                    Whatsapp
+                                </button>
+                                <button class="btn btn-outline-primary btn-auto-bid">
+                                    <i class="fas fa-envelope"></i>
+                                    Email
+                                </button>
+                            </div>
+                        </div>
+
+                        @endif
+                        @if($selected_vehicle->is_auction)
+                        <div id="bidding" class="sticky-sidebar">
+                            @livewire('bidding-component',['selected_vehicle' => $selected_vehicle])
+
+                            <!-- Buy It Now Card -->
+
+                        </div>
+                           <div class="buy-now-card my-2">
                             <h4>Buy It Now</h4>
                             <div class="buy-now-price">{{format_currency($selected_vehicle->price)}}</div>
                             <p>Skip the auction and purchase immediately</p>
@@ -309,30 +334,6 @@
                             </a>
                             @endif
 
-
-                        </div>
-                        <!-- Contact Card -->
-                        <div class="contact-card my-2">
-                            <h4><i class="fas fa-phone"></i> Need Help?</h4>
-                            <p>Our specialists are here to assist you</p>
-                            <div class="contact-options">
-                                <button class="btn btn-primary btn-bid">
-                                    <i class="fas fa-phone"></i>
-                                    Call Now
-                                </button>
-                                <button class="btn btn-outline-primary btn-auto-bid">
-                                    <i class="fas fa-envelope"></i>
-                                    Email
-                                </button>
-                            </div>
-                        </div>
-
-                        @endif
-                        @if($selected_vehicle->is_auction)
-                        <div id="bidding" class="sticky-sidebar">
-                            @livewire('bidding-component',['selected_vehicle' => $selected_vehicle])
-
-                            <!-- Buy It Now Card -->
 
                         </div>
 
@@ -377,8 +378,8 @@
                                 <p>Our specialists are here to assist you</p>
                                 <div class="contact-options">
                                     <button class="btn btn-primary btn-bid">
-                                        <i class="fas fa-phone"></i>
-                                        Call Now
+                                        <i class="fab fa-whatsapp"></i>
+                                        Whatsapp
                                     </button>
                                     <button class="btn btn-outline-primary btn-auto-bid">
                                         <i class="fas fa-envelope"></i>
