@@ -351,58 +351,6 @@ class GenerationComponent extends Component
 
         return; // important: stop here, don’t also return a redirect
     }
-    // Helper function to get status class and icon
-    public static function getStatusInfo($value)
-    {
-        if (is_array($value)) {
-            return ['class' => 'item-value', 'icon' => 'fas fa-list'];
-        }
-
-        $value_lower = is_string($value) ? strtolower(trim($value)) : '';
-
-        // Excellent conditions
-        $excellent_keywords = ['excellent', 'perfect', 'like new'];
-        foreach ($excellent_keywords as $keyword) {
-            if (strpos($value_lower, $keyword) !== false) {
-                return ['class' => 'status-excellent', 'icon' => 'fas fa-star'];
-            }
-        }
-
-        // Good conditions
-        $good_keywords = ['no visible fault', 'no leak', 'no error', 'no smoke', 'available', 'good', 'operational', 'working', 'functional', 'ok', 'normal', 'passed', 'yes'];
-        foreach ($good_keywords as $keyword) {
-            if (strpos($value_lower, $keyword) !== false) {
-                return ['class' => 'status-good', 'icon' => 'fas fa-check-circle'];
-            }
-        }
-
-        // Warning conditions
-        $warning_keywords = ['minor leak', 'judder', 'cranking noise', 'white', 'minor error', 'stuck', 'worn', 'noisy', 'dirty', 'warning light on', 'fair', 'average', 'minor'];
-        foreach ($warning_keywords as $keyword) {
-            if (strpos($value_lower, $keyword) !== false) {
-                return ['class' => 'status-warning', 'icon' => 'fas fa-exclamation-triangle'];
-            }
-        }
-
-        // Danger conditions
-        $danger_keywords = ['major leak', 'hard', 'tappet noise', 'abnormal noise', 'black', 'major error', 'not engaging', 'damaged', 'not working', 'not cooling', 'alignment out', 'worn out', 'arms-bushes crack', 'rusty', 'poor', 'bad', 'broken', 'failed'];
-        foreach ($danger_keywords as $keyword) {
-            if (strpos($value_lower, $keyword) !== false) {
-                return ['class' => 'status-danger', 'icon' => 'fas fa-times-circle'];
-            }
-        }
-
-        // N/A or empty
-        if (empty($value_lower) || $value_lower === 'n/a' || $value_lower === 'not available') {
-            return ['class' => 'status-na', 'icon' => 'fas fa-minus-circle'];
-        }
-
-        // Default info status
-        return ['class' => 'status-info', 'icon' => 'fas fa-info-circle'];
-    }
-
-
-
 
     #[On('deleteReport')]
     public function deleteReport($id)
