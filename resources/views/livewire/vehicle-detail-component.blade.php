@@ -355,12 +355,12 @@
                                 </div>
                                 <div class="action-buttons mb-2">
                                     <livewire:favorite-button-detail-component :vehicleId="$selected_vehicle->id" />
-                                    <button class="btn-icon" data-bs-toggle="tooltip" title="Share">
+                                    <!-- <button class="btn-icon" data-bs-toggle="tooltip" title="Share">
                                         <i class="fas fa-share-alt"></i>
                                     </button>
                                     <button class="btn-icon" data-bs-toggle="tooltip" title="Print">
                                         <i class="fas fa-print"></i>
-                                    </button>
+                                    </button> -->
                                 </div>
 
 

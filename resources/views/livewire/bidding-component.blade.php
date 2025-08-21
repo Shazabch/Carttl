@@ -33,12 +33,12 @@
 
                 <livewire:favorite-button-detail-component :vehicleId="$selected_vehicle->id" />
 
-                <button class="btn-icon" data-bs-toggle="tooltip" title="Share">
+                <!-- <button class="btn-icon" data-bs-toggle="tooltip" title="Share">
                     <i class="fas fa-share-alt"></i>
                 </button>
                 <button class="btn-icon" data-bs-toggle="tooltip" title="Print">
                     <i class="fas fa-print"></i>
-                </button>
+                </button> -->
             </div>
 
             <!-- I've added an ID here to make it easier to target from the script -->
@@ -132,21 +132,17 @@
         <script>
             document.addEventListener("DOMContentLoaded", function() {
                 const auctionEndTime = new Date("{{ \Carbon\Carbon::parse($selected_vehicle->auction_end_date)->format('Y-m-d H:i:s') }}").getTime();
-                const timerTitle = document.getElementById("auctionTimerTitle");
+                const timerContainer = document.getElementById("auctionTimerContainer");
 
                 function updateTimer() {
                     const now = new Date().getTime();
                     const distance = auctionEndTime - now;
 
                     if (distance <= 0) {
-                        // Freeze at 00:00:00
-                        document.getElementById("hours").textContent = "00";
-                        document.getElementById("minutes").textContent = "00";
-                        document.getElementById("seconds").textContent = "00";
-
-                        // Change title
-                        timerTitle.textContent = "Auction Ended";
-
+                        timerContainer.innerHTML = `
+              
+                   <h3 class="p-22 fw-600 text-detail-primary mb-3">Auction Ended</h3>
+            `;
                         clearInterval(timerInterval);
                         return;
                     }
