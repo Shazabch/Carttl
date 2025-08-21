@@ -34,7 +34,6 @@ class TestimonialComponent extends Component
             'image_path' => [
                 $this->isEditing ? 'nullable' : 'required',
                 'image',
-                'max:10240'
             ],
             'status' => 'boolean',
         ];

@@ -33,7 +33,6 @@ class BlogComponent extends Component
             'image' => [
                 $this->isEditing ? 'nullable' : 'required',
                 'image',
-                'max:10240'
             ],
             'is_published' => 'boolean',
         ];

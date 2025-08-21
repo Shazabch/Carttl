@@ -23,7 +23,7 @@ class VehicleHistoryComponent extends Component
     public function save()
     {
         $this->validate([
-            'uploads.*' => 'image|max:10240', // 2MB Max per image
+            'uploads.*' => 'image', // 2MB Max per image
         ]);
 
         foreach ($this->uploads as $photo) {
