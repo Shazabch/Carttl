@@ -18,5 +18,5 @@ yarn-error.log
 /.fleet
 /.idea
 /.vscode
-/bootstrap/cache/config.php
+/bootstrap/cache
 /composer.lock

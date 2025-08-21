@@ -168,7 +168,7 @@ class VehicleAndAuctionComponent extends Component
             }
         }
 
-        $vehicles = $vehiclesQuery->paginate(2)->withQueryString();
+        $vehicles = $vehiclesQuery->paginate(20)->withQueryString();
 
         return view('livewire.vehicle-and-auction-component', [
             'vehicles' => $vehicles,
