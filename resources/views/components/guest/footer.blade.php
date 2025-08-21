@@ -34,11 +34,18 @@
               <h3>Contact</h3>
               <ul class="list-unstyled">
                 <li>
-                  <a href="mailto:info@thegoldenx.com">
-                    <i class="fa-solid fa-envelope me-2 text-primary"></i> info@thegoldenx.com
+                  <a href="mailto:info@thegoldenx.com" class="d-inline-flex align-items-center text-decoration-none">
+                    <span class="d-inline-flex justify-content-center align-items-center rounded-circle border border-1 border-muted text-primary me-2" style="width:28px; height:28px;">
+                      <i class="fa-solid fa-envelope"></i>
+                    </span>
+                    info@thegoldenx.com
                   </a>
                 </li>
               </ul>
+
+
+
+
 
               <div class="social-area">
                 <h3 class="">Follow Us</h3>
