@@ -27,7 +27,7 @@
                 <button wire:click="generatePdf({{ $reportInView->id }})" class="btn btn-danger">
                     <i class="fas fa-file-pdf"></i> Generate PDF Report
                     <span wire:loading wire:target="generatePdf">
-                        <div class="spinner-border" role="status">
+                        <div class="spinner-border" style="width: 15px; height: 15px;" role="status">
                             <span class="sr-only">Loading...</span>
                         </div>
                     </span>
