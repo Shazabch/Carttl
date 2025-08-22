@@ -10,7 +10,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
+    <link rel="stylesheet" href="{{ asset('css/inspection.css') }}">
     <style>
         /* --- Customizable CSS Variables --- */
         :root {
@@ -58,13 +58,82 @@
             padding: 0 20px;
         }
 
+        /* This is the main table container for the header */
+        .header-table {
+            width: 100%;
+            border-collapse: collapse;
+            padding-bottom: 15px;
+            margin-bottom: 30px;
+            border-bottom: 1px solid var(--border-color);
+            position: relative;
+        }
 
+        /* This recreates the accent line using a pseudo-element on the table */
+        .header-table::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            width: 120px;
+            height: 3px;
+            background: var(--primary-color);
+        }
+
+        /* Style the table cells */
+        .header-logo-cell,
+        .header-details-cell {
+            padding: 0;
+            border: none;
+        }
+
+        /* Style the logo image within its cell */
+        .header-logo-img {
+            max-width: 180px;
+            max-height: 60px;
+            object-fit: contain;
+            display: block;
+            /* Helps remove extra space below the image */
+        }
+
+        /* Keep the existing styles for the details section */
+        .header-details-cell h1 {
+            margin: 0;
+            font-size: 24px;
+            font-weight: 600;
+            color: var(--text-dark);
+            letter-spacing: -0.5px;
+        }
+
+        .header-details-cell .header-meta {
+            display: block;
+            /* Use block instead of flex */
+            margin-top: 8px;
+            font-size: 11px;
+            color: var(--text-muted);
+        }
+
+        .header-details-cell .header-meta span {
+            display: inline-block;
+            /* Use inline-block for spacing */
+            margin-left: 15px;
+            align-items: center;
+            gap: 5px;
+            /* Note: gap might not work in dompdf, margin is safer */
+        }
+
+        .header-details-cell .header-meta span:first-child {
+            margin-left: 0;
+        }
+
+        /* ==================================================================== */
+        /* == END: NEW HEADER CSS == */
+        /* ==================================================================== */
         /* --- Premium Card Sections --- */
         .report-card {
             border: 1px solid var(--border-color);
             border-radius: 8px;
             margin-bottom: 25px;
-
+            page-break-inside: avoid;
             overflow: hidden;
             background: #fff;
             box-shadow: var(--shadow-sm);
@@ -396,140 +465,77 @@
             font-weight: 600;
         }
 
-        /* --- Print Optimization --- */
-        @media print {
-            body {
-                font-size: 11pt;
-            }
+        /* ==================================================================== */
+        /* == START: PDF Page Layout Fix for Empty First Page == */
+        /* ==================================================================== */
 
-            .footer {
-                position: relative;
-            }
-
-            .report-card {
-                page-break-inside: avoid;
-                /* break-inside: avoid; */
-            }
-
-            .damage-assessment {
-                -webkit-print-color-adjust: exact !important;
-                print-color-adjust: exact !important;
-            }
-
-            .gallery-grid {
-                grid-template-columns: repeat(3, 1fr);
-                /* keep 3 per row in print */
-                gap: 15px;
-            }
-
-            .gallery-image {
-                height: 150px;
-                /* adjust as you like for print */
-            }
-
-            .gallery-item {
-                break-inside: avoid;
-            }
-
-
+        @page {
+            /* Define the physical page margins. This is where the fixed header/footer will live. */
+            margin: 110px 25px 60px 25px;
+            /* Top, Right, Bottom, Left */
         }
 
-        /* --- NEW & IMPROVED: Full-Page Vertical Centered Header --- */
-        .cover-page {
-            /* This forces the cover page to take up the entire first page */
-            height: 100vh;
-            width: 100%;
-
-            /* This ensures that the content that follows starts on a new, second page */
-            page-break-after: always;
+        header {
+            position: fixed;
+            top: -100px;
+            /* Pull the header up into the top margin area */
+            left: 0px;
+            right: 0px;
+            height: 90px;
+            /* The approximate height of your header content */
         }
 
-        .cover-page-table {
-            width: 100%;
-            height: 100%;
-            border-collapse: collapse;
+        footer {
+            position: fixed;
+            bottom: -50px;
+            /* Pull the footer down into the bottom margin area */
+            left: 0px;
+            right: 0px;
+            height: 40px;
+            /* The approximate height of your footer content */
         }
 
-        .cover-page-content {
-            /* This is the key to vertical centering in a table */
-            vertical-align: middle !important;
-
-            /* This handles the horizontal centering */
-            text-align: center !important;
-
-            /* Add some padding so content isn't flush with the page edges */
-            padding: 40px !important;
+        /* Optional: Add a page number counter */
+        footer .page-number:after {
+            content: "Page " counter(page);
         }
 
-        .header-logo {
-            margin-top: 300px !important;
-            max-width: 250px;
-            /* Made the logo a bit bigger for a cover page */
-            margin: 40px auto 0 auto;
-            /* Add space above the logo, centered horizontally */
+        /* This ensures the main content flows correctly and doesn't start on page 2 */
+        main {
+            position: relative;
+            /* No top/bottom padding needed here because the @page margin handles it */
         }
 
-        .header-logo img {
-            /* width: 100%; */
-            /* height: auto; */
-        }
-
-        .header-title {
-            font-size: 36px;
-            /* Larger title for a cover page */
-            font-weight: 700;
-            color: var(--text-dark);
-            margin: 0 0 15px 0;
-        }
-
-        .header-meta {
-            font-size: 14px;
-            /* Slightly larger meta text */
-            color: var(--text-muted);
-        }
-
-        .header-meta span {
-            display: inline-block;
-            margin: 0 12px;
-        }
-
-        .header-meta .fas {
-            margin-right: 6px;
-        }
+        /* ==================================================================== */
+        /* == END: PDF Page Layout Fix == */
+        /* ==================================================================== */
     </style>
 </head>
 
 <body>
-    <div class="container">
-        <!-- NEW, CENTERED HEADER STRUCTURE -->
-        <!-- NEW: FULL-PAGE COVER HEADER -->
-        <div class="cover-page">
-            <table class="cover-page-table">
-                <tr>
-                    <td class="cover-page-content">
-                        <!-- All your header content now goes inside this single table cell -->
+    <div class="">
+        <!-- ==================================================================== -->
+        <!-- == START: REFACTORED HEADER (Use this for both web and PDF) == -->
+        <!-- ==================================================================== -->
+        <table class="header-table" width="100%">
+            <tr>
+                <td class="header-logo-cell" valign="bottom">
+                    <img src="{{ asset('images/golden-x.png') }}" alt="Golden X Logo" class="header-logo-img">
+                </td>
+                <td class="header-details-cell" valign="bottom" align="right">
+                    <h1>Vehicle Inspection Report</h1>
+                    <div class="header-meta">
+                        <span><i class="fas fa-file-alt"></i> Report #{{ $reportInView->id }}</span>
+                        <span><i class="fas fa-calendar"></i> Generated on {{ now()->format('M d, Y g:i A') }}</span>
+                    </div>
+                </td>
+            </tr>
+        </table>
+        <!-- ==================================================================== -->
+        <!-- == END: REFACTORED HEADER == -->
+        <!-- ==================================================================== -->
 
-                        <h1 class="header-title">Vehicle Inspection Report</h1>
-
-                        <div class="header-meta">
-                            <span><i class="fas fa-file-alt"></i> Report #{{ $reportInView->id }}</span>
-                            <span><i class="fas fa-calendar"></i> Generated on {{ now()->format('M d, Y g:i A') }}</span>
-                            @if($reportInView->vin)
-                            <span><i class="fas fa-barcode"></i> VIN: {{ $reportInView->vin }}</span>
-                            @endif
-                        </div>
-
-                        <div class="header-logo">
-                            <img src="{{ public_path('images/golden-x.png') }}" alt="Golden X Logo">
-                        </div>
-
-                    </td>
-                </tr>
-            </table>
-        </div>
         @php
-
-
         // Field icons mapping
         $fieldIcons = [
         'make' => 'fas fa-industry',
@@ -614,89 +620,109 @@
                 <table class="details-table">
                     <tr>
                         <td>
-                            <div class="item-label"><i class="{{ $fieldIcons['make'] ?? 'fas fa-circle-notch' }}"></i> Make </div>
-                            <div class="item-value">{{ $reportInView->brand?->name ?? 'N/A' }}</div>
+                            <div class="item-label"><i class="{{ $fieldIcons['make'] ?? 'fas fa-circle-notch' }}"></i> Make <div class="item-value">{{ $reportInView->brand?->name ?? 'N/A' }}</div>
+                            </div>
 
                         </td>
                         <td>
-                            <div class="item-label"><i class="{{ $fieldIcons['model'] ?? 'fas fa-circle-notch' }}"></i> Model</div>
-                            <div class="item-value">{{ $reportInView->vehicleModel?->name ?? 'N/A' }}</div>
+                            <div class="item-label"><i class="{{ $fieldIcons['model'] ?? 'fas fa-circle-notch' }}"></i> Model <div class="item-value">{{ $reportInView->vehicleModel?->name ?? 'N/A' }}</div>
+                            </div>
+
                         </td>
 
                         <td>
-                            <div class="item-label"><i class="{{ $fieldIcons['year'] ?? 'fas fa-circle-notch' }}"></i> Year</div>
-                            <div class="item-value">{{ $reportInView->year ?? 'N/A' }}</div>
+                            <div class="item-label"><i class="{{ $fieldIcons['year'] ?? 'fas fa-circle-notch' }}"></i> Year <div class="item-value">{{ $reportInView->year ?? 'N/A' }}</div>
+                            </div>
+
                         </td>
                         <td>
-                            <div class="item-label"><i class="{{ $fieldIcons['vin'] ?? 'fas fa-circle-notch' }}"></i> VIN</div>
-                            <div class="item-value">{{ $reportInView->vin ?? 'N/A' }}</div>
+                            <div class="item-label"><i class="{{ $fieldIcons['vin'] ?? 'fas fa-circle-notch' }}"></i> VIN
+                                <div class="item-value">{{ $reportInView->vin ?? 'N/A' }}</div>
+                            </div>
                         </td>
                     </tr>
                     <tr>
                         <td>
-                            <div class="item-label"><i class="{{ $fieldIcons['odometer'] ?? 'fas fa-circle-notch' }}"></i> Mileage/Odometer</div>
-                            <div class="item-value">{{ $reportInView->odometer.' kms' ?? 'N/A' }}</div>
+                            <div class="item-label"><i class="{{ $fieldIcons['odometer'] ?? 'fas fa-circle-notch' }}"></i> Mileage/Odometer
+                                <div class="item-value">{{ $reportInView->odometer.' kms' ?? 'N/A' }}</div>
+                            </div>
                         </td>
                         <td>
-                            <div class="item-label"><i class="{{ $fieldIcons['engine_cc'] ?? 'fas fa-circle-notch' }}"></i> Engine CC</div>
-                            <div class="item-value">{{ $reportInView->engine_cc ?? 'N/A' }}</div>
-                        </td>
-
-                        <td>
-                            <div class="item-label"><i class="{{ $fieldIcons['horsepower'] ?? 'fas fa-circle-notch' }}"></i> Horsepower</div>
-                            <div class="item-value">{{ $reportInView->horsepower ?? 'N/A' }}</div>
-                        </td>
-                        <td>
-                            <div class="item-label"><i class="{{ $fieldIcons['noOfCylinders'] ?? 'fas fa-circle-notch' }}"></i> No. of Cylinders</div>
-                            <div class="item-value">{{ $reportInView->noOfCylinders ?? 'N/A' }}</div>
+                            <div class="item-label"><i class="{{ $fieldIcons['engine_cc'] ?? 'fas fa-circle-notch' }}"></i> Engine CC
+                                <div class="item-value">{{ $reportInView->engine_cc ?? 'N/A' }}</div>
+                            </div>
                         </td>
                     </tr>
                     <tr>
                         <td>
-                            <div class="item-label"><i class="{{ $fieldIcons['color'] ?? 'fas fa-circle-notch' }}"></i> Color</div>
-                            <div class="item-value">{{ $reportInView->color ?? 'N/A' }}</div>
+                            <div class="item-label"><i class="{{ $fieldIcons['horsepower'] ?? 'fas fa-circle-notch' }}"></i> Horsepower
+                                <div class="item-value">{{ $reportInView->horsepower ?? 'N/A' }}</div>
+                            </div>
                         </td>
                         <td>
-                            <div class="item-label"><i class="{{ $fieldIcons['specs'] ?? 'fas fa-circle-notch' }}"></i> Specs</div>
-                            <div class="item-value">{{ $reportInView->specs ?? 'N/A' }}</div>
-                        </td>
-
-                        <td>
-                            <div class="item-label"><i class="{{ $fieldIcons['registeredEmirates'] ?? 'fas fa-circle-notch' }}"></i> Registered Emirates</div>
-                            <div class="item-value">{{ $reportInView->registerEmirates ?? 'N/A' }}</div>
-                        </td>
-                        <td>
-                            <div class="item-label"><i class="{{ $fieldIcons['body_type'] ?? 'fas fa-circle-notch' }}"></i> Body Type</div>
-                            <div class="item-value">{{ $reportInView->body_type ?? 'N/A' }}</div>
+                            <div class="item-label"><i class="{{ $fieldIcons['noOfCylinders'] ?? 'fas fa-circle-notch' }}"></i> No. of Cylinders
+                                <div class="item-value">{{ $reportInView->noOfCylinders ?? 'N/A' }}</div>
+                            </div>
                         </td>
                     </tr>
                     <tr>
                         <td>
-                            <div class="item-label"><i class="{{ $fieldIcons['transmission'] ?? 'fas fa-circle-notch' }}"></i> Transmission</div>
-                            <div class="item-value">{{ $reportInView->transmission ?? 'N/A' }}</div>
+                            <div class="item-label"><i class="{{ $fieldIcons['color'] ?? 'fas fa-circle-notch' }}"></i> Color
+                                <div class="item-value">{{ $reportInView->color ?? 'N/A' }}</div>
+                            </div>
                         </td>
                         <td>
-                            <div class="item-label"><i class="{{ $fieldIcons['warrantyAvailable'] ?? 'fas fa-circle-notch' }}"></i> Warranty Available</div>
-                            <div class="item-value">{{ $reportInView->warrantyAvailable ?? 'N/A' }}</div>
-                        </td>
-
-                        <td>
-                            <div class="item-label"><i class="{{ $fieldIcons['serviceContractAvailable'] ?? 'fas fa-circle-notch' }}"></i> Service Contract</div>
-                            <div class="item-value">{{ $reportInView->serviceContractAvailable ?? 'N/A' }}</div>
-                        </td>
-                        <td>
-                            <div class="item-label"><i class="{{ $fieldIcons['serviceHistory'] ?? 'fas fa-circle-notch' }}"></i> Service History</div>
-                            <div class="item-value">{{ $reportInView->serviceHistory ?? 'N/A' }}</div>
+                            <div class="item-label"><i class="{{ $fieldIcons['specs'] ?? 'fas fa-circle-notch' }}"></i> Specs
+                                <div class="item-value">{{ $reportInView->specs ?? 'N/A' }}</div>
+                            </div>
                         </td>
                     </tr>
                     <tr>
                         <td>
-                            <div class="item-label"><i class="{{ $fieldIcons['noOfKeys'] ?? 'fas fa-circle-notch' }}"></i> No Of Keys</div>
-                            <div class="item-value">{{ $reportInView->noOfKeys ?? 'N/A' }}</div>
+                            <div class="item-label"><i class="{{ $fieldIcons['registeredEmirates'] ?? 'fas fa-circle-notch' }}"></i> Registered Emirates
+                                <div class="item-value">{{ $reportInView->registerEmirates ?? 'N/A' }}</div>
+                            </div>
                         </td>
                         <td>
-                            <div class="item-label"><i class="{{ $fieldIcons['mortgage'] ?? 'fas fa-circle-notch' }}"></i> Mortgage</div>
-                            <div class="item-value">{{ $reportInView->mortgage ?? 'N/A' }}</div>
+                            <div class="item-label"><i class="{{ $fieldIcons['body_type'] ?? 'fas fa-circle-notch' }}"></i> Body Type
+                                <div class="item-value">{{ $reportInView->body_type ?? 'N/A' }}</div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="item-label"><i class="{{ $fieldIcons['transmission'] ?? 'fas fa-circle-notch' }}"></i> Transmission
+                                <div class="item-value">{{ $reportInView->transmission ?? 'N/A' }}</div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="item-label"><i class="{{ $fieldIcons['warrantyAvailable'] ?? 'fas fa-circle-notch' }}"></i> Warranty Available
+                                <div class="item-value">{{ $reportInView->warrantyAvailable ?? 'N/A' }}</div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="item-label"><i class="{{ $fieldIcons['serviceContractAvailable'] ?? 'fas fa-circle-notch' }}"></i> Service Contract
+                                <div class="item-value">{{ $reportInView->serviceContractAvailable ?? 'N/A' }}</div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="item-label"><i class="{{ $fieldIcons['serviceHistory'] ?? 'fas fa-circle-notch' }}"></i> Service History
+                                <div class="item-value">{{ $reportInView->serviceHistory ?? 'N/A' }}</div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="item-label"><i class="{{ $fieldIcons['noOfKeys'] ?? 'fas fa-circle-notch' }}"></i> No Of Keys
+                                <div class="item-value">{{ $reportInView->noOfKeys ?? 'N/A' }}</div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="item-label"><i class="{{ $fieldIcons['mortgage'] ?? 'fas fa-circle-notch' }}"></i> Mortgage
+                                <div class="item-value">{{ $reportInView->mortgage ?? 'N/A' }}</div>
+                            </div>
                         </td>
                     </tr>
                     <!-- <tr>
@@ -712,7 +738,6 @@
 
         {{-- Dynamic Sections Loop - Show ALL fields --}}
         @php
-        $columnsPerRow = 4;
         $sections = [
         'Engine & Transmission' => [
         'icon' => 'fa-solid fa-gears',
@@ -746,60 +771,7 @@
             <div class="card-header"><i class="{{ $sectionDetails['icon'] }}"></i>{{ $sectionName }}</div>
             <div class="card-body">
                 <table class="details-table">
-                    @php
-                    // Make a mutable copy of the fields to render for this section
-                    $fieldsToRender = $sectionDetails['fields'];
-                    @endphp
-
-                    {{-- ==================================================================== --}}
-                    {{-- == START: SPECIAL HANDLING FOR paintCondition                       == --}}
-                    {{-- ==================================================================== --}}
-                    @if($sectionName === 'Exterior')
-                    @php
-                    // Find the key for 'paintCondition'
-                    $fieldKey = array_search('paintCondition', $fieldsToRender);
-
-                    // If it exists in the array...
-                    if ($fieldKey !== false) {
-                    $field = 'paintCondition';
-
-                    // ...remove it from the array so it isn't rendered again later.
-                    unset($fieldsToRender[$fieldKey]);
-                    @endphp
-                    {{-- Render it in its own full-width row --}}
-                    <tr>
-                        <td colspan="{{ $columnsPerRow }}">
-                            <div class="item-label">
-                                <i class="{{ $fieldIcons[$field] ?? 'fas fa-circle-notch' }}"></i>
-                                {{ Str::of($field)->kebab()->replace('-', ' ')->title() }}
-                            </div>
-                            @php
-                            $data = $reportInView->{$field} ?? 'N/A';
-                            $statusInfo = getStatusInfo($data);
-                            @endphp
-
-                            @if(is_array($data))
-                            <div class="item-value">
-                                <ul class="item-value-list">
-                                    @foreach($data as $value)
-                                    <li>{{ $value }}</li>
-                                    @endforeach
-                                </ul>
-                            </div>
-                            @elseif($statusInfo['class'] !== 'item-value')
-                            <div class="status-pill {{ $statusInfo['class'] }}">
-                                <i class="{{ $statusInfo['icon'] }}"></i>{{ $data }}
-                            </div>
-                            @else
-                            <div class="item-value">{{ $data }}</div>
-                            @endif
-                        </td>
-                    </tr>
-                    @php
-                    } // end if fieldKey exists
-                    @endphp
-                    @endif
-                    @foreach(array_chunk($fieldsToRender, $columnsPerRow) as $chunk)
+                    @foreach(array_chunk($sectionDetails['fields'], 2) as $chunk)
                     <tr>
                         @foreach($chunk as $field)
                         <td>
@@ -850,6 +822,7 @@
                 if (!($vehicleImages instanceof \Illuminate\Support\Collection)) {
                 $vehicleImages = collect($vehicleImages ?: []);
                 }
+
                 $imageNum=1;
                 @endphp
 
@@ -861,7 +834,7 @@
                         <td width="33.33%" valign="top" style="border: 1px solid #e0e0e0; border-radius: 8px;">
                             <div style="margin: 4px;">
                                 <img
-                                    src="{{ storage_path('app/public/' . $image->path) }}"
+                                    src="{{ asset('storage/' . $image->path) }}"
                                     alt="{{ $image['title'] ?? 'Vehicle Image' }}"
                                     style="display: block; width: 100%; height: 180px; object-fit: cover; border-radius: 6px;">
                                 <div style="margin-top: 6px; border-top: 1px solid #f0f0f0; padding-top: 6px;">
@@ -905,27 +878,7 @@
         <div class="report-card">
             <div class="card-header"><i class="fa-solid fa-triangle-exclamation"></i>Damage Assessment</div>
             <div class="card-body">
-                @if($reportInView->damage_file_path)
-                <img src="{{ storage_path('app/public/' . $reportInView->damage_file_path) }}" alt="Damage Assessment" style="max-width: 100%; height: auto;">
-                @else
-                <div class="damage-assessment">
-                    <div class="status-pill status-good">
-                        <i class="fas fa-check-circle"></i>
-                        No Damage Reported or Image Not Found
-                    </div>
-                </div>
-                @endif
-                <div style="margin-top: 15px; padding-top: 10px; border-top: 1px solid #eee;">
-                    <p style="font-size: 12px; color: #333; margin: 0; padding: 0;">
-                        For a live and detailed view, access the full interactive report online:
-                        <br>
-                        <a href="{{ $damageAssessmentLink }}" target="_blank" style="color: #0056b3; text-decoration: none; font-weight: bold;">
-                            {{-- This creates a descriptive, unique link text --}}
-                            View Full Report for VIN: {{ $reportInView->vin }}
-                        </a>
-                    </p>
-                    <p style="font-size: 10px; color: #777; margin-top: 4px;">(Link valid until {{ now()->addDays(30)->format('F j, Y') }})</p>
-                </div>
+                <livewire:admin.inspection.car-damage-view :inspectionId="$reportInView->id" />
             </div>
         </div>
 

@@ -168,7 +168,7 @@
         }
 
         .details-table tr:nth-child(even) td {
-            background-color: var(--background-light);
+            /* background-color: var(--background-light); */
         }
 
         .details-table td {
@@ -620,15 +620,15 @@
                 <table class="details-table">
                     <tr>
                         <td>
-                            <div class="item-label"><i class="{{ $fieldIcons['make'] ?? 'fas fa-circle-notch' }}"></i> Make</div>
+                            <div class="item-label"><i class="{{ $fieldIcons['make'] ?? 'fas fa-circle-notch' }}"></i> Make </div>
                             <div class="item-value">{{ $reportInView->brand?->name ?? 'N/A' }}</div>
+
                         </td>
                         <td>
                             <div class="item-label"><i class="{{ $fieldIcons['model'] ?? 'fas fa-circle-notch' }}"></i> Model</div>
                             <div class="item-value">{{ $reportInView->vehicleModel?->name ?? 'N/A' }}</div>
                         </td>
-                    </tr>
-                    <tr>
+
                         <td>
                             <div class="item-label"><i class="{{ $fieldIcons['year'] ?? 'fas fa-circle-notch' }}"></i> Year</div>
                             <div class="item-value">{{ $reportInView->year ?? 'N/A' }}</div>
@@ -647,8 +647,7 @@
                             <div class="item-label"><i class="{{ $fieldIcons['engine_cc'] ?? 'fas fa-circle-notch' }}"></i> Engine CC</div>
                             <div class="item-value">{{ $reportInView->engine_cc ?? 'N/A' }}</div>
                         </td>
-                    </tr>
-                    <tr>
+
                         <td>
                             <div class="item-label"><i class="{{ $fieldIcons['horsepower'] ?? 'fas fa-circle-notch' }}"></i> Horsepower</div>
                             <div class="item-value">{{ $reportInView->horsepower ?? 'N/A' }}</div>
@@ -667,8 +666,7 @@
                             <div class="item-label"><i class="{{ $fieldIcons['specs'] ?? 'fas fa-circle-notch' }}"></i> Specs</div>
                             <div class="item-value">{{ $reportInView->specs ?? 'N/A' }}</div>
                         </td>
-                    </tr>
-                    <tr>
+
                         <td>
                             <div class="item-label"><i class="{{ $fieldIcons['registeredEmirates'] ?? 'fas fa-circle-notch' }}"></i> Registered Emirates</div>
                             <div class="item-value">{{ $reportInView->registerEmirates ?? 'N/A' }}</div>
@@ -687,8 +685,7 @@
                             <div class="item-label"><i class="{{ $fieldIcons['warrantyAvailable'] ?? 'fas fa-circle-notch' }}"></i> Warranty Available</div>
                             <div class="item-value">{{ $reportInView->warrantyAvailable ?? 'N/A' }}</div>
                         </td>
-                    </tr>
-                    <tr>
+
                         <td>
                             <div class="item-label"><i class="{{ $fieldIcons['serviceContractAvailable'] ?? 'fas fa-circle-notch' }}"></i> Service Contract</div>
                             <div class="item-value">{{ $reportInView->serviceContractAvailable ?? 'N/A' }}</div>
@@ -721,6 +718,7 @@
 
         {{-- Dynamic Sections Loop - Show ALL fields --}}
         @php
+        $columnsPerRow = 5;
         $sections = [
         'Engine & Transmission' => [
         'icon' => 'fa-solid fa-gears',
@@ -754,7 +752,60 @@
             <div class="card-header"><i class="{{ $sectionDetails['icon'] }}"></i>{{ $sectionName }}</div>
             <div class="card-body">
                 <table class="details-table">
-                    @foreach(array_chunk($sectionDetails['fields'], 2) as $chunk)
+                    @php
+                    // Make a mutable copy of the fields to render for this section
+                    $fieldsToRender = $sectionDetails['fields'];
+                    @endphp
+
+                    {{-- ==================================================================== --}}
+                    {{-- == START: SPECIAL HANDLING FOR paintCondition                       == --}}
+                    {{-- ==================================================================== --}}
+                    @if($sectionName === 'Exterior')
+                    @php
+                    // Find the key for 'paintCondition'
+                    $fieldKey = array_search('paintCondition', $fieldsToRender);
+
+                    // If it exists in the array...
+                    if ($fieldKey !== false) {
+                    $field = 'paintCondition';
+
+                    // ...remove it from the array so it isn't rendered again later.
+                    unset($fieldsToRender[$fieldKey]);
+                    @endphp
+                    {{-- Render it in its own full-width row --}}
+                    <tr>
+                        <td colspan="{{ $columnsPerRow }}">
+                            <div class="item-label">
+                                <i class="{{ $fieldIcons[$field] ?? 'fas fa-circle-notch' }}"></i>
+                                {{ Str::of($field)->kebab()->replace('-', ' ')->title() }}
+                            </div>
+                            @php
+                            $data = $reportInView->{$field} ?? 'N/A';
+                            $statusInfo = getStatusInfo($data);
+                            @endphp
+
+                            @if(is_array($data))
+                            <div class="item-value">
+                                <ul class="item-value-list">
+                                    @foreach($data as $value)
+                                    <li>{{ $value }}</li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                            @elseif($statusInfo['class'] !== 'item-value')
+                            <div class="status-pill {{ $statusInfo['class'] }}">
+                                <i class="{{ $statusInfo['icon'] }}"></i>{{ $data }}
+                            </div>
+                            @else
+                            <div class="item-value">{{ $data }}</div>
+                            @endif
+                        </td>
+                    </tr>
+                    @php
+                    } // end if fieldKey exists
+                    @endphp
+                    @endif
+                    @foreach(array_chunk($fieldsToRender, $columnsPerRow) as $chunk)
                     <tr>
                         @foreach($chunk as $field)
                         <td>

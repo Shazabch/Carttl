@@ -171,6 +171,7 @@
                                             {{ ucfirst($damage['severity']) }}
                                         </span>
                                     </td>
+                                    <td>
 
                                         <p class="mb-0 small">{{ $damage['remark'] ?? 'N/A' }}</p>
                                     </td>
