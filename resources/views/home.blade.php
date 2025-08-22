@@ -447,10 +447,7 @@
             </div>
         </div>
     </section>
-    <div class="modern-car-search">
-        <input type="text" placeholder="Search cars by model or city..." class="search-input">
-        <button class="search-btn">Search</button>
-    </div>
+   
 
     <!-- Featured Section -->
     @livewire('vehicle-listing-component', ['section' => 'Vehicles','type' => 'featured'])

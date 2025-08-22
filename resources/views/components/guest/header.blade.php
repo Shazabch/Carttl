@@ -13,9 +13,7 @@
             </ul>
         </div>
         <div class="header-action">
-            <a href="#" class="header-icon" id="openSearchBtn">
-                <img src="{{ asset('images/icons/search.svg') }}" alt="">
-            </a>
+          @livewire('global-search')
            @if(auth()->id())
              <a href="{{ route('account.dashboard') }}" class="header-icon">
                 <img src="{{ asset('images/icons/user.svg') }}" alt="">
