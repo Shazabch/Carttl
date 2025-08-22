@@ -49,7 +49,7 @@ class BookInspectionComponent extends Component
     public $brands = [], $models = [];
     public function mount()
     {
-         $this->brands = Brand::orderBy('name')->get(['id', 'name'])->toArray();
+         $this->brands = Brand::orderBy('name')->whereHas('models')->get(['id', 'name'])->toArray();
     }
     public function updatedMake($value)
     {

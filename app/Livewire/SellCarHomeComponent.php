@@ -260,7 +260,9 @@ class SellCarHomeComponent extends Component
 
     public function render()
     {
-        $this->brands = Brand::where('name', 'like', '%' . $this->brandSearch . '%')->get();
+        $this->brands = Brand::whereHas('models') 
+            ->where('name', 'like', '%' . $this->brandSearch . '%') 
+            ->get();
         return view('livewire.sell-car-home-component');
     }
 }

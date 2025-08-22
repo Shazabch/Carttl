@@ -51,7 +51,7 @@ class VehicleAndAuctionComponent extends Component
 
     public function mount($section)
     {
-        $this->brands = Brand::orderBy('name')->get();
+        $this->brands = Brand::orderBy('name')->whereHas('models')->get();
         $this->section = $section;
     }
 
