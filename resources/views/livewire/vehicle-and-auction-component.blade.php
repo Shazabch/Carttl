@@ -123,7 +123,7 @@
                                         <option value="price_high_low">Price: High to Low</option>
                                         <option value="year_newest">Year: Newest First</option>
                                         <option value="mileage_low_high">Mileage: Low to High</option>
-                                        <option>Most Watched</option>
+                                        <!-- <option>Most Watched</option> -->
                                     </select>
                                 </div>
                             </div>

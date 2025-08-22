@@ -10,18 +10,21 @@ use App\Models\Brand;
 use App\Models\User;
 use App\Models\Vehicle;
 use App\Models\VehicleModel;
+use App\Notifications\AccountCreatedConfirmation;
 use App\Notifications\VehicleEnquiryNotification;
 use App\Notifications\VehicleEnquiryReceivedConfirmation;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Notification;
 use Livewire\Attributes\Rule;
+use Illuminate\Support\Str;
 
 class SellCarComponent extends Component
 {
     use WithFileUploads;
 
     // Step 1: Car Details
-    public $brand_id, $make_id, $year, $mileage, $specification, $faq, $notes;
+    public $brand_id, $make_id, $year, $mileage, $specification, $faq, $notes,$user_id;
 
     // Step 2: Personal Info
     public $name, $email;
@@ -60,9 +63,7 @@ class SellCarComponent extends Component
     // This runs when the brand_id is updated
     public function updatedBrandId($value)
     {
-        if (!Auth::check()) {
-            $this->dispatch('show-login-modal');
-        } else {
+      
             $this->models = empty($value)
                 ? []
                 : VehicleModel::where('brand_id', $value)
@@ -72,7 +73,7 @@ class SellCarComponent extends Component
 
             $this->reset('make_id');
             $this->dispatch('models-updated', options: $this->models);
-        }
+        
 
 
         $this->reset('make_id');
@@ -135,6 +136,30 @@ class SellCarComponent extends Component
         ]);
 
         // Create the main enquiry record
+    
+         $user = null;
+            $email = $this->email ?? null;
+
+            if ($email) {
+                $user = User::where('email', $email)->first();
+
+                if (!$user) {
+                    $tempPassword = Str::random(10);
+                    $user = User::create([
+                        'name' => $this->name ?: 'Customer',
+                        'email' => $email,
+                        'role' => 'customer',
+                        'password' => Hash::make($tempPassword),
+                    ]);
+                    Notification::send($user, new AccountCreatedConfirmation($user, $tempPassword));
+                    $user->syncRoles('customer');
+                }
+            }
+
+            if ($user) {
+                $this->user_id = $user->id;
+            }
+
         $enquiry = VehicleEnquiry::create([
             'name'          => $this->name,
             'email'          => $this->email,
@@ -147,14 +172,14 @@ class SellCarComponent extends Component
             // 'faq'           => $this->faq,
             'notes'         => $this->notes,
             'type'         => 'sale',
-            'user_id'         => auth()->id(),
+            'user_id'         => $this->user_id,
         ]);
-        $recipients = User::role(['admin', 'super-admin'])->get();
-        // Notification::send($recipients, new VehicleEnquiryNotification($enquiry));
-        $user = User::where('email', $this->email)->first();
-        if ($user) {
-            Notification::send($user, new VehicleEnquiryReceivedConfirmation($enquiry));
-        }
+            $recipients = User::role(['admin', 'super-admin'])->get();
+            Notification::send($recipients, new VehicleEnquiryNotification($enquiry));
+
+            if ($user) {
+                Notification::send($user, new VehicleEnquiryReceivedConfirmation($enquiry));
+            }
 
         // Store images and prepare data for the images table
         $imagePaths = [];
