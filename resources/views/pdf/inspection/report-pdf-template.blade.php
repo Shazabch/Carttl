@@ -798,6 +798,7 @@
                 if (!($vehicleImages instanceof \Illuminate\Support\Collection)) {
                 $vehicleImages = collect($vehicleImages ?: []);
                 }
+                $imageNum=1;
                 @endphp
 
                 @if($vehicleImages->count())
@@ -814,7 +815,7 @@
                                 <div style="margin-top: 6px; border-top: 1px solid #f0f0f0; padding-top: 6px;">
                                     <div style="font-size: 12px; font-weight: 600; color: #222;">
                                         <i class="fas fa-camera" style="color: #d7b236;"></i>
-                                        Vehicle Image
+                                        Vehicle Image #{{$imageNum}}
                                     </div>
                                     <div style="font-size: 10px; color: #666; margin-top: 2px;">
                                         <i class="fas fa-clock"></i>
@@ -823,6 +824,10 @@
                                 </div>
                             </div>
                         </td>
+                         @php
+                        $imageNum++;
+
+                        @endphp
                         @endforeach
 
                         {{-- Fill remaining cells if row has fewer than 3 items --}}
