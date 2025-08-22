@@ -25,7 +25,7 @@ class VehicleAssetsComponent extends Component
     {
         return [
             // Validate that new_images is an array of image files.
-            'new_images.*' => 'image|max:2048', // 2MB Max per image
+            'new_images.*' => 'image', // 2MB Max per image
         ];
     }
 
@@ -53,7 +53,7 @@ class VehicleAssetsComponent extends Component
      */
     public function updatedNewImages()
     {
-        $this->validate(['new_images.*' => 'image|max:2048']);
+        $this->validate(['new_images.*' => 'image']);
 
         // Check if a cover image already exists for this vehicle
         $hasCover = $this->vehicle->images()->where('is_cover', true)->exists();

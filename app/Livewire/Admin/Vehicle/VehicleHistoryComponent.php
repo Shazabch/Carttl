@@ -9,7 +9,7 @@ use Livewire\Features\SupportFileUploads\WithFileUploads;
 class VehicleHistoryComponent extends Component
 {
 
-     use WithFileUploads;
+    use WithFileUploads;
 
     public Vehicle $vehicle;
 
@@ -23,7 +23,7 @@ class VehicleHistoryComponent extends Component
     public function save()
     {
         $this->validate([
-            'uploads.*' => 'image|max:2048', // 2MB Max per image
+            'uploads.*' => 'image', // 2MB Max per image
         ]);
 
         foreach ($this->uploads as $photo) {
