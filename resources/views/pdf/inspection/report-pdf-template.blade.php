@@ -452,16 +452,17 @@
 
         .cover-page-content {
             /* This is the key to vertical centering in a table */
-            vertical-align: middle;
+            vertical-align: middle !important;
 
             /* This handles the horizontal centering */
-            text-align: center;
+            text-align: center !important;
 
             /* Add some padding so content isn't flush with the page edges */
-            padding: 40px;
+            padding: 40px !important;
         }
 
         .header-logo {
+            margin-top: 300px !important;
             max-width: 250px;
             /* Made the logo a bit bigger for a cover page */
             margin: 40px auto 0 auto;
@@ -469,8 +470,8 @@
         }
 
         .header-logo img {
-            width: 100%;
-            height: auto;
+            /* width: 100%; */
+            /* height: auto; */
         }
 
         .header-title {
