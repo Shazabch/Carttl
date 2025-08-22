@@ -35,7 +35,7 @@
             </div>
         </div>
         <div class="col-md-6 pt-md-0 pt-4">
-            <h5 class="list-car-title" >{{$item->title}}</h5>
+            <h5 class="list-car-title">{{$item->title}}</h5>
             <div class="car-box-price mb-4">
                 <h4 class="mb-0">Current Bid:</h4>
                 <h4 class="mb-0 car-box-price-text">{{ $item->latestBid ? format_currency($item->latestBid->bid_amount) : 'No bids yet' }}</h4>
@@ -47,7 +47,11 @@
                 </div>
                 <div class="spec_item">
                     <i class="fas fa-calendar-alt"></i>
+                    @if(\Carbon\Carbon::parse($item->auction_end_date)->isPast())
+                    <span>Auction Ended</span>
+                    @else
                     <span>Ends In {{ \Carbon\Carbon::parse($item->auction_end_date)->shortAbsoluteDiffForHumans() }}</span>
+                    @endif
                 </div>
                 <div class="spec_item">
                     <i class="fas fa-gavel"></i>
