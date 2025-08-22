@@ -58,79 +58,6 @@
             padding: 0 20px;
         }
 
-        /* --- Premium Header with Golden X Placeholder --- */
-        .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-end;
-            padding-bottom: 15px;
-            margin-bottom: 30px;
-            border-bottom: 1px solid var(--border-color);
-            position: relative;
-        }
-
-        .header::after {
-            content: '';
-            position: absolute;
-            bottom: -1px;
-            left: 0;
-            width: 120px;
-            height: 3px;
-            background: var(--primary-color);
-        }
-
-        .header-logo {
-            flex: 0 0 auto;
-            position: relative;
-        }
-
-        .header-logo img {
-            max-width: 180px;
-            max-height: 60px;
-            object-fit: contain;
-        }
-
-        /* Golden X Placeholder */
-        .golden-x-placeholder {
-            width: 180px;
-            height: 60px;
-            background: linear-gradient(45deg, var(--primary-color), var(--primary-dark));
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 8px;
-            color: white;
-            font-weight: 700;
-            font-size: 24px;
-            letter-spacing: 2px;
-            box-shadow: var(--shadow-md);
-        }
-
-        .header-details {
-            text-align: right;
-        }
-
-        .header-details h1 {
-            margin: 0;
-            font-size: 24px;
-            font-weight: 600;
-            color: var(--text-dark);
-            letter-spacing: -0.5px;
-        }
-
-        .header-meta {
-            display: flex;
-            gap: 15px;
-            margin-top: 8px;
-            font-size: 11px;
-            color: var(--text-muted);
-        }
-
-        .header-meta span {
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
 
         /* --- Premium Card Sections --- */
         .report-card {
@@ -506,26 +433,99 @@
 
 
         }
+
+        /* --- NEW & IMPROVED: Full-Page Vertical Centered Header --- */
+        .cover-page {
+            /* This forces the cover page to take up the entire first page */
+            height: 100vh;
+            width: 100%;
+
+            /* This ensures that the content that follows starts on a new, second page */
+            page-break-after: always;
+        }
+
+        .cover-page-table {
+            width: 100%;
+            height: 100%;
+            border-collapse: collapse;
+        }
+
+        .cover-page-content {
+            /* This is the key to vertical centering in a table */
+            vertical-align: middle;
+
+            /* This handles the horizontal centering */
+            text-align: center;
+
+            /* Add some padding so content isn't flush with the page edges */
+            padding: 40px;
+        }
+
+        .header-logo {
+            max-width: 250px;
+            /* Made the logo a bit bigger for a cover page */
+            margin: 40px auto 0 auto;
+            /* Add space above the logo, centered horizontally */
+        }
+
+        .header-logo img {
+            width: 100%;
+            height: auto;
+        }
+
+        .header-title {
+            font-size: 36px;
+            /* Larger title for a cover page */
+            font-weight: 700;
+            color: var(--text-dark);
+            margin: 0 0 15px 0;
+        }
+
+        .header-meta {
+            font-size: 14px;
+            /* Slightly larger meta text */
+            color: var(--text-muted);
+        }
+
+        .header-meta span {
+            display: inline-block;
+            margin: 0 12px;
+        }
+
+        .header-meta .fas {
+            margin-right: 6px;
+        }
     </style>
 </head>
 
 <body>
     <div class="container">
-        <div class="header">
-            <div class="header-logo">
+        <!-- NEW, CENTERED HEADER STRUCTURE -->
+        <!-- NEW: FULL-PAGE COVER HEADER -->
+        <div class="cover-page">
+            <table class="cover-page-table">
+                <tr>
+                    <td class="cover-page-content">
+                        <!-- All your header content now goes inside this single table cell -->
 
-                <img src="{{ public_path('images/golden-x.png') }}" alt="Golden X Logo">
-            </div>
+                        <h1 class="header-title">Vehicle Inspection Report</h1>
 
-            <div class="header-details">
-                <h1>Vehicle Inspection Report</h1>
-                <div class="header-meta">
-                    <span><i class="fas fa-file-alt"></i> Report #{{ $reportInView->id }}</span>
-                    <span><i class="fas fa-calendar"></i> Generated on {{ now()->format('M d, Y g:i A') }}</span>
-                </div>
-            </div>
+                        <div class="header-meta">
+                            <span><i class="fas fa-file-alt"></i> Report #{{ $reportInView->id }}</span>
+                            <span><i class="fas fa-calendar"></i> Generated on {{ now()->format('M d, Y g:i A') }}</span>
+                            @if($reportInView->vin)
+                            <span><i class="fas fa-barcode"></i> VIN: {{ $reportInView->vin }}</span>
+                            @endif
+                        </div>
+
+                        <div class="header-logo">
+                            <img src="{{ public_path('images/golden-x.png') }}" alt="Golden X Logo">
+                        </div>
+
+                    </td>
+                </tr>
+            </table>
         </div>
-
         @php
 
 
@@ -824,7 +824,7 @@
                                 </div>
                             </div>
                         </td>
-                         @php
+                        @php
                         $imageNum++;
 
                         @endphp
@@ -863,6 +863,17 @@
                     </div>
                 </div>
                 @endif
+                <div style="margin-top: 15px; padding-top: 10px; border-top: 1px solid #eee;">
+                    <p style="font-size: 12px; color: #333; margin: 0; padding: 0;">
+                        For a live and detailed view, access the full interactive report online:
+                        <br>
+                        <a href="{{ $damageAssessmentLink }}" target="_blank" style="color: #0056b3; text-decoration: none; font-weight: bold;">
+                            {{-- This creates a descriptive, unique link text --}}
+                            View Full Report for VIN: {{ $reportInView->vin }}
+                        </a>
+                    </p>
+                    <p style="font-size: 10px; color: #777; margin-top: 4px;">(Link valid until {{ now()->addDays(30)->format('F j, Y') }})</p>
+                </div>
             </div>
         </div>
 

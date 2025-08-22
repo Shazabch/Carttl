@@ -100,8 +100,7 @@ class GenerationComponent extends Component
     public function mount($vehicleId = null, $enquiryId = null)
     {
 
-
-        $this->brands =  Brand::orderBy('name')->where('is_active', 1)->get();
+        $this->brands =  Brand::orderBy('name')->whereHas('models')->get();
         $this->bodyTypes = BodyType::all();
         $this->fuelTypes = FuelType::all();
         $this->transmissions = Transmission::all();
@@ -290,7 +289,7 @@ class GenerationComponent extends Component
                 VehicleDocument::where('file_path', $path)->delete();
             }
         }
-        $is_image=true;
+        $is_image = true;
         if ($is_image) {
             $html = view('pdf.inspection.damage-assessment-image', compact('reportInView'))->render();
             $snappyImage = app('snappy.image');
@@ -323,12 +322,21 @@ class GenerationComponent extends Component
             $reportInView->damage_file_path = $pngPath;
             $reportInView->save();
         }
+        $damageAssessmentLink = URL::temporarySignedRoute(
+            'inspection.report.damage-assessment.view', // The name of the route we created
+            now()->addDays(30), // Set the expiration time for the link
+            ['report' => $reportInView->id] // Pass the report ID to the route
+        );
+
         $directory = 'inspection_pdf';
         if (!Storage::disk('public')->exists($directory)) {
             Storage::disk('public')->makeDirectory($directory);
         }
 
-        $pdf = Pdf::loadView('pdf.inspection.report-pdf-template', ['reportInView' => $reportInView])
+        $pdf = Pdf::loadView('pdf.inspection.report-pdf-template', [
+            'reportInView' => $reportInView,
+            'damageAssessmentLink' => $damageAssessmentLink // <-- Pass the link here
+        ])
             ->setPaper('a4', 'portrait');
 
         $filename = 'inspection_' . $reportInView->id  . '_' . now()->format('Ymd_His') . '.pdf';

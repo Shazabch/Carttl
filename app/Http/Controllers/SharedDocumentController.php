@@ -39,4 +39,13 @@ class SharedDocumentController extends Controller
             'reportInView' => $report
         ]);
     }
+
+    public function showDamageAssessment(VehicleInspectionReport $report)
+    {
+        // We reuse the same view component that generates the image for the PDF,
+        // but wrap it in a full HTML layout.
+        return view('admin.inspection.damage-assessment-public-view', [
+            'reportInView' => $report
+        ]);
+    }
 }

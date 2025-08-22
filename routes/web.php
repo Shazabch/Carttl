@@ -20,7 +20,7 @@ Route::get('/test-email', function () {
     try {
         Mail::raw('This is a test email from Laravel SMTP.', function ($message) {
             $message->to('theiqbal111@gmail.com') // Change to your email
-                    ->subject('SMTP Test Email');
+                ->subject('SMTP Test Email');
         });
 
         return '✅ Test email sent successfully!';
@@ -94,14 +94,15 @@ Route::group(['prefix' => 'admin'], function () {
         Route::view('/testimonials', 'admin.testimonials.index')->name('admin.testimonials');
         Route::view('/inspection-enquiries', 'admin.inspection.index')->name('admin.inspection.enquiries');
         Route::view('/inspection-generate', 'admin.inspection.generate-report')->name('admin.inspection.generate');
-        Route::get('/inspection-generate/from-vehicle/{vehicle}',[VehicleManagerController::class, 'generateInspectionVehicle'])->name('admin.inspection.generate.from-vehicle');
-        Route::get('/inspection-generate/from-enquiry/{enquiry}',[VehicleManagerController::class, 'generateInspectionEnquiry'])->name('admin.inspection.generate.from-enquiry');
-
-
+        Route::get('/inspection-generate/from-vehicle/{vehicle}', [VehicleManagerController::class, 'generateInspectionVehicle'])->name('admin.inspection.generate.from-vehicle');
+        Route::get('/inspection-generate/from-enquiry/{enquiry}', [VehicleManagerController::class, 'generateInspectionEnquiry'])->name('admin.inspection.generate.from-enquiry');
     });
 });
 
 Route::get('/inspection-report/download/signed/{report}', [SharedDocumentController::class, 'showPublicReport'])
     ->name('inspection.report.download.signed') // This name is crucial
+    ->middleware('signed');
+Route::get('/inspection/report/{report}/damage-assessment', [SharedDocumentController::class, 'showDamageAssessment'])
+    ->name('inspection.report.damage-assessment.view')
     ->middleware('signed');
 Route::view('/un-authenticated', 'un-auth')->name('un-auth');

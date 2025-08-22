@@ -137,8 +137,8 @@
                                     <th scope="col">ID</th>
                                     <th scope="col">Damage Type</th>
                                     <th scope="col">Body Part</th>
-                                    <th scope="col">Severity Level</th>
-                                    <th scope="col">Position</th>
+                                    <th scope="col">Damage Level</th>
+
                                     <th scope="col">Remarks</th>
                                 </tr>
                             </thead>
@@ -171,13 +171,7 @@
                                             {{ ucfirst($damage['severity']) }}
                                         </span>
                                     </td>
-                                    <td>
-                                        <small class="text-muted">
-                                            X: {{ round($damage['x']) }}<br>
-                                            Y: {{ round($damage['y']) }}
-                                        </small>
-                                    </td>
-                                    <td>
+
                                         <p class="mb-0 small">{{ $damage['remark'] ?? 'N/A' }}</p>
                                     </td>
                                 </tr>
