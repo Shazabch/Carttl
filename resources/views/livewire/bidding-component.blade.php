@@ -26,8 +26,15 @@
                     <span class="bid-amount">{{format_currency($selected_vehicle->starting_bid_amount)}}</span>
                 </div>
             </div>
-            <div class="current-bid">
-                <span class="bid-count">{{$totalBids}} bids</span>
+            <div class="current-bid d-flex">
+                <div class="col-6">
+                    <span class="bid-count">{{$totalBids}} bids</span>
+                </div>
+                <div class="col-6 text-end">
+                    <span class="bid-label mb-0">Starting Date</span>
+                    <span class="bid-amount">{{ \Carbon\Carbon::parse($selected_vehicle->auction_start_date)->format('Y-m-d H:i:s') }}</span>
+                </div>
+
             </div>
             <div class="action-buttons mb-2">
 
@@ -72,7 +79,7 @@
                 <div class="bid-item">
                     <div class="bid-top">
                         <span class="bidder">********</span>
-                        <span @if(auth()->id()) class="bid-amount" @else class="bidder" @endif  >{{ format_currency($bid->bid_amount) }}</span>
+                        <span @if(auth()->id()) class="bid-amount" @else class="bidder" @endif >{{ format_currency($bid->bid_amount) }}</span>
                     </div>
                     <span class="bid-time">{{ \Carbon\Carbon::parse($bid->created_at)->diffForHumans() }}</span>
                 </div>
@@ -134,7 +141,12 @@
         <script>
             document.addEventListener("DOMContentLoaded", function() {
                 // const auctionEndTime = new Date("{{ \Carbon\Carbon::parse($selected_vehicle->auction_end_date)->format('Y-m-d H:i:s') }}").getTime();
-                 const auctionEndTime = {{ \Carbon\Carbon::parse($selected_vehicle->auction_end_date)->timestamp }} * 1000;
+                const auctionEndTime = {
+                    {
+                        \
+                        Carbon\ Carbon::parse($selected_vehicle - > auction_end_date) - > timestamp
+                    }
+                }* 1000;
                 const timerContainer = document.getElementById("auctionTimerContainer");
 
                 function updateTimer() {

@@ -131,7 +131,14 @@
                     <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
                 </div>
-
+                <div class="col-md-4 mb-3">
+                    <label class="form-label">Auction Start Date</label>
+                    <input type="datetime-local" class="form-control @error('vehicleData.auction_start_date') is-invalid @enderror"
+                        wire:model.defer="vehicleData.auction_start_date">
+                    @error('vehicleData.auction_start_date')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
+                </div>
                 <div class="col-md-4 mb-3">
                     <label class="form-label">Auction End Date</label>
                     <input type="datetime-local" class="form-control @error('vehicleData.auction_end_date') is-invalid @enderror"
@@ -140,6 +147,7 @@
                     <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
                 </div>
+                 
                 @endif
             </div>
         </fieldset>
