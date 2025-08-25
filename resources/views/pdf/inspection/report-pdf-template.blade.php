@@ -611,7 +611,7 @@
         <div class="report-card">
             <div class="card-header"><i class="fa-solid fa-car"></i>Basic Vehicle Information</div>
             <div class="card-body">
-                <table class="details-table">
+               <table class="details-table">
                     <tr>
                         <td>
                             <div class="item-label"><i class="{{ $fieldIcons['make'] ?? 'fas fa-circle-notch' }}"></i> Make </div>
@@ -622,17 +622,22 @@
                             <div class="item-label"><i class="{{ $fieldIcons['model'] ?? 'fas fa-circle-notch' }}"></i> Model</div>
                             <div class="item-value">{{ $reportInView->vehicleModel?->name ?? 'N/A' }}</div>
                         </td>
+                         <td>
+                            <div class="item-label"><i class="{{ $fieldIcons['trim'] ?? 'fas fa-circle-notch' }}"></i> Trim</div>
+                            <div class="item-value">{{ $reportInView->trim ?? 'N/A' }}</div>
+                        </td>
 
                         <td>
                             <div class="item-label"><i class="{{ $fieldIcons['year'] ?? 'fas fa-circle-notch' }}"></i> Year</div>
                             <div class="item-value">{{ $reportInView->year ?? 'N/A' }}</div>
                         </td>
-                        <td>
+                      
+                    </tr>
+                    <tr>
+                          <td>
                             <div class="item-label"><i class="{{ $fieldIcons['vin'] ?? 'fas fa-circle-notch' }}"></i> VIN</div>
                             <div class="item-value">{{ $reportInView->vin ?? 'N/A' }}</div>
                         </td>
-                    </tr>
-                    <tr>
                         <td>
                             <div class="item-label"><i class="{{ $fieldIcons['odometer'] ?? 'fas fa-circle-notch' }}"></i> Mileage/Odometer</div>
                             <div class="item-value">{{ $reportInView->odometer.' kms' ?? 'N/A' }}</div>
@@ -646,10 +651,7 @@
                             <div class="item-label"><i class="{{ $fieldIcons['horsepower'] ?? 'fas fa-circle-notch' }}"></i> Horsepower</div>
                             <div class="item-value">{{ $reportInView->horsepower ?? 'N/A' }}</div>
                         </td>
-                        <td>
-                            <div class="item-label"><i class="{{ $fieldIcons['noOfCylinders'] ?? 'fas fa-circle-notch' }}"></i> No. of Cylinders</div>
-                            <div class="item-value">{{ $reportInView->noOfCylinders ?? 'N/A' }}</div>
-                        </td>
+                        
                     </tr>
                     <tr>
                         <td>
@@ -697,6 +699,10 @@
                         <td>
                             <div class="item-label"><i class="{{ $fieldIcons['mortgage'] ?? 'fas fa-circle-notch' }}"></i> Mortgage</div>
                             <div class="item-value">{{ $reportInView->mortgage ?? 'N/A' }}</div>
+                        </td>
+                        <td>
+                            <div class="item-label"><i class="{{ $fieldIcons['noOfCylinders'] ?? 'fas fa-circle-notch' }}"></i> No. of Cylinders</div>
+                            <div class="item-value">{{ $reportInView->noOfCylinders ?? 'N/A' }}</div>
                         </td>
                     </tr>
                     <!-- <tr>
@@ -926,6 +932,67 @@
                     </p>
                     <p style="font-size: 10px; color: #777; margin-top: 4px;">(Link valid until {{ now()->addDays(30)->format('F j, Y') }})</p>
                 </div>
+            </div>
+        </div>
+         <div class="report-card">
+            <!-- <div class="card-header"><i class="fa-solid fa-car"></i>Basic Vehicle Information</div> -->
+            <div class="card-body">
+                <table class="details-table">
+                    <tr>
+                        <td>
+                            <div class="item-label">Approval </div>
+                           
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="item-label">Date and time of approval </div>
+                            
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="item-label">Approver's signature </div>
+                            
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            <div class="item-label">Disclaimer </div>
+                            <div class="item-value">
+                                 <p style="justify-content: center;" >
+                            The inspection is strictly limited to the items listed in this Inspection Report and does not
+                            cover any other items. 2. The inspection is visual and non-mechanical only. If you wish to
+                            complete a mechanical inspection or an inspection of the internal parts of the vehicle,
+                            Golden X encourages you to contact a different service provider who undertakes that type
+                            of inspection. 3. Golden X does not inspect historic service records or accident records for
+                            the vehicle, and does not check whether the vehicle is subject to a recall notice. 4. While
+                            Golden X uses accepted methods for inspecting the vehicle, these methods do not
+                            necessarily identify all faults with the vehicle. In particular, the inspection does not cover
+                            intermittent problems which are not apparent at the time of the inspection. 5. This
+                            Inspection Report, and all intellectual property rights therein, will remain the exclusive
+                            property of Golden X. 6. This Inspection Report represents Golden X subjective opinion as to
+                            the condition of the vehicle (limited to the specific items listed in this Inspection Report),
+                            considering the age and condition of the vehicle at the time of inspection and based on the
+                            Golden Xinspector’s knowledge and experience. This Inspection Report is designed to assist
+                            you to make decisions based on the general condition of the vehicle only. Golden X will not
+                            provide a recommendation as to whether to sell or purchase the vehicle. 7. Golden X can
+                            only advise on the condition of the vehicle at the time of the inspection, and this Inspection
+                            Report is only current as at the time it is issued. If you are considering purchasing the
+                            vehicle, it is your responsibility to conduct a further inspection of the vehicle at the time of
+                            purchase. 8. This Inspection Report is provided by Golden X ‘as is’ for your information only,
+                            without any warranties whatsoever. In particular, Golden X does not provide any warranty
+                            regarding the accuracy or completeness of any information contained in this Inspection
+                            Report, or the fitness of the information contained in this Inspection Report for any purpose
+                            intended. 9. If this Inspection Report is provided to you directly by Golden X, only you may
+                        </p>
+                            </div>
+                        </td>
+
+                       
+                    </tr>
+                </table>
             </div>
         </div>
 

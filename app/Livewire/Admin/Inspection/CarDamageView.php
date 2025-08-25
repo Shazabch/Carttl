@@ -19,6 +19,10 @@ class CarDamageView extends Component
         'e' => ['name' => 'Dent',          'color' => '#0000FF'], // Pure Blue (structural)
         'f' => ['name' => 'Repainted',     'color' => '#4B0082'], // Indigo (aftermarket work)
         'g' => ['name' => 'Repaired',      'color' => '#b87bd2ff'], // Violet (repair history)
+        'h' => ['name' => 'Foild Wranp',      'color' => '#6e5606ff'], // Violet (repair history)
+        'i' => ['name' => 'Full ppl',      'color' => '#d80881ff'], // Violet (repair history)
+        'j' => ['name' => 'Just',      'color' => '#302e2fff'], // Violet (repair history)
+
     ];
     /**
      * Mount the component and load the damages for the given inspection ID.
