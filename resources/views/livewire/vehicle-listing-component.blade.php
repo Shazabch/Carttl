@@ -1,5 +1,5 @@
 <div>
-
+    @if($vehicles->count()>0)
     <section class="ox-hidden section-auction">
         <div class="card-slider-wrap">
             <div class="row mb-5 align-items-end">
@@ -139,4 +139,5 @@
             </div>
         </div>
     </section>
+    @endif
 </div>

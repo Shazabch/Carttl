@@ -447,7 +447,7 @@
             </div>
         </div>
     </section>
-   
+
 
     <!-- Featured Section -->
     @livewire('vehicle-listing-component', ['section' => 'Vehicles','type' => 'featured'])
@@ -490,6 +490,7 @@
         </div>
     </section>
     <!-- SERVICES -->
+
     @livewire('vehicle-listing-component', ['section' => 'Vehicles','type' => 'sold'])
     <section class="our-services ox-hidden">
         <div class="container">

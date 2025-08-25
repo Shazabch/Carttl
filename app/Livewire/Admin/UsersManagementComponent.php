@@ -12,35 +12,41 @@ class UsersManagementComponent extends Component
 {
     use WithPagination;
     protected string $paginationTheme = 'bootstrap';
-    public ?User $editingUser = null;
-    public bool $showModal = false;
 
+    // --- State Properties ---
+    public bool $showForm = false;
     public string $search = '';
     public int $perPage = 10;
-    public string $password = ''; // keep password separate from model binding
 
-    // protected function rules()
-    // {
-    //     $userId = $this->editingUser?->id ?? 'NULL';
+    // --- Form Properties (Separate Variables) ---
+    public $editingUserId = null; // This will hold the ID of the user we are editing
+    public string $name = '';
+    public string $email = '';
+    public string $role = '';
+    public string $password = '';
 
-    //     return [
-    //         'editingUser.name' => 'required|string',
-    //         'editingUser.email' => 'required|email' . $userId,
-    //         'editingUser.role' => 'required|string',
-    //         'password' => 'required',
-    //     ];
-    // }
-
-    public function mount()
+    protected function rules()
     {
-        $this->editingUser = new User();
+        return [
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|max:255|unique:users,email,' . $this->editingUserId,
+            'role' => 'required|in:admin,customer',
+
+            // The password is required only when creating a new user (editingUserId is null).
+            'password' => ($this->editingUserId ? 'nullable' : 'required') . '|min:8',
+        ];
     }
+
+    // No mount method is needed as properties are initialized above.
 
     public function render()
     {
         $users = User::query()
-            ->where('name', 'like', "%{$this->search}%")
-            ->orWhere('email', 'like', "%{$this->search}%")
+            ->where(function ($query) {
+                $query->where('name', 'like', "%{$this->search}%")
+                    ->orWhere('email', 'like', "%{$this->search}%");
+            })
+            ->latest()
             ->paginate($this->perPage);
 
         return view('livewire.admin.users-management-component', [
@@ -48,53 +54,77 @@ class UsersManagementComponent extends Component
         ]);
     }
 
+    // --- Actions ---
+
     public function addNew()
     {
-        // $this->resetValidation();
-        $this->editingUser = new User();
-        $this->password = '';
-        $this->showModal = true;
+        $this->resetForm(); // Reset all form fields
+        $this->showForm = true;
     }
 
     public function editItem(int $id)
     {
-        $this->editingUser = User::findOrFail($id);
-        $this->password = '';
-        $this->resetValidation();
-        $this->showModal = true;
+        $user = User::findOrFail($id);
+
+        $this->resetErrorBag();
+        $this->editingUserId = $user->id;
+        $this->name = $user->name;
+        $this->email = $user->email;
+        $this->role = $user->role;
+        $this->password = ''; // Clear password field for editing
+        $this->showForm = true;
+    }
+
+    public function cancel()
+    {
+        $this->showForm = false;
+        $this->resetForm();
     }
 
     public function saveUser()
     {
-        // $this->validate();
+        $validatedData = $this->validate();
 
-        $data = $this->editingUser->toArray();
-         dd($data);
+        // Prepare the data array for creation/update
+        $data = [
+            'name' => $this->name,
+            'email' => $this->email,
+            'role' => $this->role,
+        ];
+
+        // If a new password was provided, hash and add it to the data array.
         if (!empty($this->password)) {
             $data['password'] = Hash::make($this->password);
-        } elseif ($this->editingUser->exists) {
-            unset($data['password']);
         }
 
-        User::updateOrCreate(
-            ['id' => $this->editingUser->id],
-            $data
-        );
+        // Use updateOrCreate to handle both creating and updating in one line.
+        User::updateOrCreate(['id' => $this->editingUserId], $data);
 
-        $this->showModal = false;
-
-        $message = $this->editingUser->id ? 'User updated successfully.' : 'User created successfully.';
+        // Determine the success message
+        $message = $this->editingUserId ? 'User updated successfully.' : 'User created successfully.';
         $this->dispatch('success-notification', message: $message);
 
-        $this->editingUser = new User();
-        $this->password = '';
+        // Hide and reset the form
+        $this->showForm = false;
+        $this->resetForm();
+    }
+
+    // A helper method to reset all form-related properties.
+    private function resetForm()
+    {
+        $this->reset(['editingUserId', 'name', 'email', 'role', 'password']);
+        $this->resetErrorBag();
     }
 
     #[On('deleteItem')]
     public function deleteItem(int $id)
     {
-        User::findOrFail($id)->delete();
+        // Safety check: if the user being deleted is the one in the form, close the form.
+        if ($this->editingUserId == $id) {
+            $this->cancel();
+        }
 
+        User::findOrFail($id)->delete();
         $this->dispatch('success-notification', message: 'User deleted successfully.');
     }
 }
