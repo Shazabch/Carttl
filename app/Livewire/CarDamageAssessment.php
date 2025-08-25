@@ -24,9 +24,9 @@ class CarDamageAssessment extends Component
         'e' => ['name' => 'Dent',          'color' => '#0000FF'], // Pure Blue (structural)
         'f' => ['name' => 'Repainted',     'color' => '#4B0082'], // Indigo (aftermarket work)
         'g' => ['name' => 'Repaired',      'color' => '#b87bd2ff'], // Violet (repair history)
-        'h' => ['name' => 'Foild Wranp',      'color' => '#6e5606ff'], // Violet (repair history)
-        'i' => ['name' => 'Full ppl',      'color' => '#d80881ff'], // Violet (repair history)
-        'j' => ['name' => 'Just',      'color' => '#302e2fff'], // Violet (repair history)
+        'h' => ['name' => 'Foiled Wrap',      'color' => '#706c6eff'], // Violet (repair history)
+        'i' => ['name' => 'Full PPF',      'color' => '#d80881ff'], // Violet (repair history)
+        'j' => ['name' => 'Rust',      'color' => '#6b5407ff'], // Violet (repair history)
     ];
     public $severityLevels = [
         'low' => ['name' => 'Low', 'description' => 'Minor damage, cosmetic only'],
