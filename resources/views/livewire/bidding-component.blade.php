@@ -30,10 +30,12 @@
                 <div class="col-6">
                     <span class="bid-count">{{$totalBids}} bids</span>
                 </div>
+                @if($selected_vehicle->auction_start_date)
                 <div class="col-6 text-end">
                     <span class="bid-label mb-0">Starting Date</span>
                     <span class="bid-amount">{{ \Carbon\Carbon::parse($selected_vehicle->auction_start_date)->format('Y-m-d H:i:s') }}</span>
                 </div>
+                @endif
 
             </div>
             <div class="action-buttons mb-2">
@@ -155,7 +157,7 @@
 
                     if (distance <= 0) {
                         timerContainer.innerHTML = `
-              
+
                    <h3 class="p-22 fw-600 text-detail-primary mb-3">Auction Ended</h3>
             `;
                         clearInterval(timerInterval);
