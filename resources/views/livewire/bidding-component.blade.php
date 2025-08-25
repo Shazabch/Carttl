@@ -72,7 +72,7 @@
                 <div class="bid-item">
                     <div class="bid-top">
                         <span class="bidder">********</span>
-                        <span class="bid-amount">{{ format_currency($bid->bid_amount) }}</span>
+                        <span @if(auth()->id()) class="bid-amount" @else class="bidder" @endif  >{{ format_currency($bid->bid_amount) }}</span>
                     </div>
                     <span class="bid-time">{{ \Carbon\Carbon::parse($bid->created_at)->diffForHumans() }}</span>
                 </div>
@@ -80,6 +80,7 @@
             </div>
             @endif
             <div class="bid-actions">
+                @if(auth()->id())
                 <div class="bid-input-group">
                     <input type="number" wire:model.live="current_bid" class="form-control bid-input"
                         placeholder="Enter bid " step="500" @if($is_not_login) disabled @endif min="{{$current_bid}}">
@@ -92,6 +93,7 @@
                     @error('max_bid') <div class="text-danger small mt-1">{{ $message }}</div> @enderror
                     <span class="input-addon">AED</span>
                 </div>
+                @endif
                 @if(auth()->id())
                 <button wire:click="saveBid" class="btn btn-primary btn-bid">
                     <i class="fas fa-gavel me-2"></i>
@@ -131,7 +133,8 @@
         </div>
         <script>
             document.addEventListener("DOMContentLoaded", function() {
-                const auctionEndTime = new Date("{{ \Carbon\Carbon::parse($selected_vehicle->auction_end_date)->format('Y-m-d H:i:s') }}").getTime();
+                // const auctionEndTime = new Date("{{ \Carbon\Carbon::parse($selected_vehicle->auction_end_date)->format('Y-m-d H:i:s') }}").getTime();
+                 const auctionEndTime = {{ \Carbon\Carbon::parse($selected_vehicle->auction_end_date)->timestamp }} * 1000;
                 const timerContainer = document.getElementById("auctionTimerContainer");
 
                 function updateTimer() {

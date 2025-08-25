@@ -29,6 +29,9 @@
                         <div class="col-md-6">
                             <p><strong>Model:</strong> {{ $vehicle->vehicleModel?->name ?? 'N/A' }}</p>
                         </div>
+                         <div class="col-md-6">
+                            <p><strong>Trim:</strong> {{ $vehicle->trim ?? 'N/A' }}</p>
+                        </div>
                         <div class="col-md-6">
                             <p><strong>Variant:</strong> {{ $vehicle->variant ?? 'N/A' }}</p>
                         </div>

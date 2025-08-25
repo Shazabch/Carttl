@@ -319,7 +319,7 @@
                                                 </div>
                                                 <span>(4.9/5 - 127 reviews)</span>
                                             </div> -->
-                                            <p>Premium car collector with 15+ years of experience. All vehicles come
+                                            <p>Premium car company with 15+ years of experience. All vehicles come
                                                 with
                                                 detailed documentation and service records.</p>
                                             <!-- <div class="seller-stats">
@@ -345,14 +345,14 @@
                                 <h4><i class="fas fa-phone"></i> Need Help?</h4>
                                 <p>Our specialists are here to assist you</p>
                                 <div class="contact-options">
-                                    <button class="btn btn-primary btn-bid">
+                                    <a href="https://wa.me/+971545752757" class="btn btn-primary btn-bid">
                                         <i class="fab fa-whatsapp"></i>
                                         Whatsapp
-                                    </button>
-                                    <button class="btn btn-outline-primary btn-auto-bid">
+                                    </a>
+                                    <a href="mailto:info@thegoldenx.com" class="btn btn-outline-primary btn-auto-bid">
                                         <i class="fas fa-envelope"></i>
                                         Email
-                                    </button>
+                                    </a>
                                 </div>
                             </div>
                         @endif
@@ -425,16 +425,16 @@
                                 <div class="contact-card">
                                     <h4><i class="fas fa-phone"></i> Need Help?</h4>
                                     <p>Our specialists are here to assist you</p>
-                                    <div class="contact-options">
-                                        <button class="btn btn-primary btn-bid">
-                                            <i class="fab fa-whatsapp"></i>
-                                            Whatsapp
-                                        </button>
-                                        <button class="btn btn-outline-primary btn-auto-bid">
-                                            <i class="fas fa-envelope"></i>
-                                            Email
-                                        </button>
-                                    </div>
+                                     <div class="contact-options">
+                                    <a href="https://wa.me/+971545752757" class="btn btn-primary btn-bid">
+                                        <i class="fab fa-whatsapp"></i>
+                                        Whatsapp
+                                    </a>
+                                    <a href="mailto:info@thegoldenx.com" class="btn btn-outline-primary btn-auto-bid">
+                                        <i class="fas fa-envelope"></i>
+                                        Email
+                                    </a>
+                                </div>
                                 </div>
                                 @if ($selected_vehicle->status !== 'sold')
                                     <div class="auction-card">

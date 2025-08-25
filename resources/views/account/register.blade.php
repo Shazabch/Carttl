@@ -11,7 +11,7 @@
                         <h1 class="fw-bold mb-2">Create Account</h1>
                         <p class="text-secondary">Join our exclusive community of automotive enthusiasts</p>
                     </div>
-                    <div class="d-flex gap-2 mb-4">
+                    <!-- <div class="d-flex gap-2 mb-4">
                         <a href="#"
                             class="btn btn-outline-secondary w-50 d-flex align-items-center justify-content-center gap-2">
                             <i class="fab fa-google"></i> Google
@@ -25,7 +25,7 @@
                         <hr class="flex-grow-1">
                         <span class="mx-2 text-secondary text-uppercase small">or register with</span>
                         <hr class="flex-grow-1">
-                    </div>
+                    </div> -->
                     <form action="{{ route('account.processRegister') }}" method="POST" class="mb-0">
                         @csrf
                         <div class="row">

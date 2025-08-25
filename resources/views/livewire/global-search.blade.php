@@ -19,7 +19,7 @@
                 autofocus
             >
 
-            @if(!empty($query) && strlen($query) > 2)
+            @if(!empty($query) && strlen($query) > 0)
                 <ul class="search-results">
                     @forelse($vehicles as $vehicle)
                         <li wire:click="selectVehicle({{ $vehicle->id }})">{{ $vehicle->title }}</li>

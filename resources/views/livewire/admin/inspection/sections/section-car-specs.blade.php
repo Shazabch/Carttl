@@ -1,5 +1,7 @@
 <div class="form-section">
-    <div class="form-section-header"><h5>Car Specs</h5></div>
+    <div class="form-section-header">
+        <h5>Car Specs</h5>
+    </div>
     <div class="form-section-body">
         <div class="row">
             <div class="col-md-6">@include('livewire.admin.inspection.sections.partials.toggle-single', ['label' => 'Parking Sensors', 'property' => 'parkingSensors', 'options' => ['Front', 'Front & Rear', 'N/A']])</div>
@@ -15,6 +17,13 @@
             <div class="col-md-6">@include('livewire.admin.inspection.sections.partials.toggle-single', ['label' => 'Heads Up Display', 'property' => 'headsDisplay', 'options' => ['Available', 'N/A']])</div>
             <div class="col-md-6">@include('livewire.admin.inspection.sections.partials.toggle-single', ['label' => 'Premium Sound System', 'property' => 'premiumSound', 'options' => ['Available', 'N/A']])</div>
             <div class="col-md-6">@include('livewire.admin.inspection.sections.partials.toggle-single', ['label' => 'Carbon Fiber Interior', 'property' => 'carbonFiber', 'options' => ['Available', 'N/A']])</div>
+            <div class="col-md-6">
+                @include('livewire.admin.inspection.sections.partials.toggle-single', ['label' => 'Convertible', 'property' => 'convertible', 'options' => ['Soft Top', 'Hard Top', 'Not Available']])
+            </div>
+
+            <div class="col-md-6">
+                @include('livewire.admin.inspection.sections.partials.toggle-single', ['label' => 'Side steps', 'property' => 'sideSteps', 'options' => ['Available', 'Not Available']])
+            </div>
 
         </div>
     </div>

@@ -39,6 +39,11 @@
                     </select>
                     @error('vehicleData.vehicle_model_id') <div class="text-danger small mt-2">{{ $message }}</div> @enderror
                 </div>
+                <div class="col-md-4 mb-3">
+                    <label class="form-label">Trim</label>
+                    <input type="text" class="form-control @error('vehicleData.trim') is-invalid @enderror" wire:model.defer="vehicleData.trim">
+                    @error('vehicleData.trim') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                </div>
 
                 <div class="col-md-4 mb-3">
                     <label class="form-label">Year</label>

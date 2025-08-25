@@ -14,8 +14,12 @@ enum EngineDisplacement: string
     case L_2_6 = '2.6';
     case L_3_0 = '3.0';
     case L_3_5 = '3.5';
+    case L_3_6 = '3.6';
     case L_4_0 = '4.0';
     case L_5_0 = '5.0';
+    case L_6_2 = '6.2';
+    case L_6_7 = '6.7';
+    case L_6_9 = '6.9';
 
     public function label(): string
     {

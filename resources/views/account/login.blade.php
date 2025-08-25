@@ -9,7 +9,7 @@
                 <h1 class="fw-bold mb-2">Sign In</h1>
                 <p class="text-secondary">Access your account to manage bids and listings</p>
             </div>
-            <div class="d-flex gap-2 mb-4">
+            <!-- <div class="d-flex gap-2 mb-4">
                 <a href="#"
                     class="btn btn-outline-secondary w-50 d-flex align-items-center justify-content-center gap-2">
                     <i class="fab fa-google"></i> Google
@@ -23,7 +23,7 @@
                 <hr class="flex-grow-1">
                 <span class="mx-2 text-secondary text-uppercase small">or continue with</span>
                 <hr class="flex-grow-1">
-            </div>
+            </div> -->
             <div class="row">
                 <div class="col-12">
                     @if (Session::has('success'))

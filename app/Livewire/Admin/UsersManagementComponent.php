@@ -11,7 +11,7 @@ use Livewire\Component;
 class UsersManagementComponent extends Component
 {
     use WithPagination;
-
+    protected string $paginationTheme = 'bootstrap';
     public ?User $editingUser = null;
     public bool $showModal = false;
 
@@ -19,17 +19,17 @@ class UsersManagementComponent extends Component
     public int $perPage = 10;
     public string $password = ''; // keep password separate from model binding
 
-    protected function rules()
-    {
-        $userId = $this->editingUser?->id ?? 'NULL';
+    // protected function rules()
+    // {
+    //     $userId = $this->editingUser?->id ?? 'NULL';
 
-        return [
-            'editingUser.name' => 'required|string|max:255',
-            'editingUser.email' => 'required|email|unique:users,email,' . $userId,
-            'editingUser.role' => 'required|string',
-            'password' => $this->editingUser?->id ? 'nullable|min:6' : 'required|min:6',
-        ];
-    }
+    //     return [
+    //         'editingUser.name' => 'required|string',
+    //         'editingUser.email' => 'required|email' . $userId,
+    //         'editingUser.role' => 'required|string',
+    //         'password' => 'required',
+    //     ];
+    // }
 
     public function mount()
     {
@@ -50,7 +50,7 @@ class UsersManagementComponent extends Component
 
     public function addNew()
     {
-        $this->resetValidation();
+        // $this->resetValidation();
         $this->editingUser = new User();
         $this->password = '';
         $this->showModal = true;
@@ -66,10 +66,10 @@ class UsersManagementComponent extends Component
 
     public function saveUser()
     {
-        $this->validate();
+        // $this->validate();
 
         $data = $this->editingUser->toArray();
-
+         dd($data);
         if (!empty($this->password)) {
             $data['password'] = Hash::make($this->password);
         } elseif ($this->editingUser->exists) {

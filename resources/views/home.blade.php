@@ -490,7 +490,7 @@
         </div>
     </section>
     <!-- SERVICES -->
-    {{-- @livewire('vehicle-listing-component', ['section' => 'Vehicles','type' => 'sold']) --}}
+    @livewire('vehicle-listing-component', ['section' => 'Vehicles','type' => 'sold'])
     <section class="our-services ox-hidden">
         <div class="container">
             <div class="row justify-content-center mb-5">

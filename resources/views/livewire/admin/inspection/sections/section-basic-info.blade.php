@@ -29,6 +29,14 @@
                     @error('reportData.model') <div class="text-danger small mt-2">{{ $message }}</div> @enderror
                 </div>
             </div>
+            <div class="col-md-4">
+                <div class="form-item">
+                    <label class="form-label">Trim</label>
+                    <input type="text" class="form-control @error('reportData.trim') is-invalid @enderror" wire:model.defer="reportData.trim">
+
+                    @error('reportData.trim')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                </div>
+            </div>
 
             <div class="col-md-4">
                 <div class="form-item">

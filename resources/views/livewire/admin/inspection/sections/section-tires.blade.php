@@ -32,6 +32,15 @@
                 'Damaged' => 'active-red',
                 ]])
             </div>
+             <div class="col-md-6">
+                @include('livewire.admin.inspection.sections.partials.input-text', ['label' => 'Wheels Type', 'property' => 'wheelsType'])
+            </div>
+            <div class="col-md-6">
+                @include('livewire.admin.inspection.sections.partials.input-text', ['label' => 'Rims size (Front)', 'property' => 'rimsSizeFront'])
+            </div>
+            <div class="col-md-6">
+                @include('livewire.admin.inspection.sections.partials.input-text', ['label' => 'Rims size (Rear)', 'property' => 'rimsSizeRear'])
+            </div>
             <div class="col-md-6">
                 @include('livewire.admin.inspection.sections.partials.input-text', ['label' => 'Tires size', 'property' => 'tiresSize'])
             </div>
