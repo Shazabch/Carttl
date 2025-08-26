@@ -53,8 +53,8 @@
             <!-- I've added an ID here to make it easier to target from the script -->
             <!-- === START: IMPROVED TIMER UI === -->
             <div id="auctionTimerContainer" class="timer-card mb-4">
-                <h3 class="p-22 fw-600 text-detail-primary mb-3">Auction Ends In</h3>
-                <div class="timer-wrapper">
+                <h3 id="auctionTimerHeading" class="p-22 fw-600 text-detail-primary mb-3">Auction Ends In</h3>
+                <div id="auctionTimerWrapper" class="timer-wrapper">
                     <div class="timer-segment">
                         <span id="hours" class="timer-number">00</span>
                         <span class="timer-label">Hours</span>
@@ -71,6 +71,10 @@
                     </div>
                 </div>
             </div>
+
+
+
+
 
 
             <!-- === END: IMPROVED TIMER UI === -->
@@ -142,41 +146,54 @@
         </div>
         <script>
             document.addEventListener("DOMContentLoaded", function() {
-                // const auctionEndTime = new Date("{{ \Carbon\Carbon::parse($selected_vehicle->auction_end_date)->format('Y-m-d H:i:s') }}").getTime();
-                const auctionEndTime = {
-                    {
-                        \
-                        Carbon\ Carbon::parse($selected_vehicle - > auction_end_date) - > timestamp
-                    }
-                }* 1000;
-                const timerContainer = document.getElementById("auctionTimerContainer");
 
+                const startDate = new Date("{{ \Carbon\Carbon::parse($selected_vehicle->auction_start_date)->toIso8601String() }}").getTime();
+                const endDate = new Date("{{ \Carbon\Carbon::parse($selected_vehicle->auction_end_date)->toIso8601String() }}").getTime();
+                const heading = document.getElementById("auctionTimerHeading");
+                const wrapper = document.getElementById("auctionTimerWrapper");
+                const hoursEl = document.getElementById("hours");
+                const minutesEl = document.getElementById("minutes");
+                const secondsEl = document.getElementById("seconds");
+                
                 function updateTimer() {
                     const now = new Date().getTime();
-                    const distance = auctionEndTime - now;
 
-                    if (distance <= 0) {
-                        timerContainer.innerHTML = `
-
-                   <h3 class="p-22 fw-600 text-detail-primary mb-3">Auction Ended</h3>
-            `;
+                    if (now < startDate) {
+                        // Before auction
+                        heading.textContent = "";
+                        wrapper.style.display = "none";
                         clearInterval(timerInterval);
                         return;
                     }
 
-                    const hours = String(Math.floor(distance / (1000 * 60 * 60))).padStart(2, '0');
-                    const minutes = String(Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60))).padStart(2, '0');
-                    const seconds = String(Math.floor((distance % (1000 * 60)) / 1000)).padStart(2, '0');
+                    if (now >= startDate && now <= endDate) {
+                        // During auction
+                        const diff = endDate - now;
+                        heading.textContent = "Auction Ends In";
+                        wrapper.style.display = "flex";
 
-                    document.getElementById("hours").textContent = hours;
-                    document.getElementById("minutes").textContent = minutes;
-                    document.getElementById("seconds").textContent = seconds;
+                        const hours = Math.floor(diff / (1000 * 60 * 60));
+                        const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+                        const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+                        hoursEl.textContent = String(hours).padStart(2, '0');
+                        minutesEl.textContent = String(minutes).padStart(2, '0');
+                        secondsEl.textContent = String(seconds).padStart(2, '0');
+                        return;
+                    }
+
+                    if (now > endDate) {
+                        // After auction
+                        heading.textContent = "Auction Ended";
+                        wrapper.style.display = "none";
+                        clearInterval(timerInterval);
+                        return;
+                    }
                 }
 
+                updateTimer(); // run instantly
                 const timerInterval = setInterval(updateTimer, 1000);
-                updateTimer();
             });
         </script>
-
 
     </div>

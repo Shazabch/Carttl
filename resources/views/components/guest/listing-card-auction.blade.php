@@ -47,12 +47,21 @@
                     </div>
                     <div class="spec_item">
                         <i class="fas fa-calendar-alt"></i>
-                        @if(\Carbon\Carbon::parse($item->auction_end_date)->isPast())
-                        <span>Auction Ended</span>
+                        @php
+                        $start = \Carbon\Carbon::parse($item->auction_start_date);
+                        $end = \Carbon\Carbon::parse($item->auction_end_date);
+                        $now = now();
+                        @endphp
+
+                        @if($now->lt($start))
+                        <span>Starts In {{ $start->shortAbsoluteDiffForHumans() }}</span>
+                        @elseif($now->between($start, $end))
+                        <span>Ends In {{ $end->shortAbsoluteDiffForHumans() }}</span>
                         @else
-                        <span>Ends In {{ \Carbon\Carbon::parse($item->auction_end_date)->shortAbsoluteDiffForHumans() }}</span>
+                        <span>Auction Ended</span>
                         @endif
                     </div>
+
                     <div class="spec_item">
                         <i class="fas fa-gavel"></i>
                         <span>{{ $item->bids->count() ?? 0 }} Bids</span>
