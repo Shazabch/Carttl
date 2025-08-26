@@ -41,19 +41,19 @@
                 <h4 class="mb-0 car-box-price-text">{{format_currency($item->price)}}</h4>
             </div>
             <div class="car-box-specs">
-                <div class="spec_item">
-                    <i class="fas fa-tachometer-alt"></i>
-                    <span>{{$item->engine_type}}</span>
+                    <div class="spec_item">
+                        <i class="fas fa-oil-can"></i>
+                        <span>{{$item->engine_type}}</span>
+                    </div>
+                    <div class="spec_item">
+                        <i class="fas fa-palette"></i>
+                        <span>{{$item->color}}</span>
+                    </div>
+                    <div class="spec_item">
+                        <i class="fas fa-tachometer-alt"></i>
+                        <span>{{$item->drive_type ?? 'FWD'}}</span>
+                    </div>
                 </div>
-                <div class="spec_item">
-                    <i class="fas fa-palette"></i>
-                    <span>{{$item->color}}</span>
-                </div>
-                <div class="spec_item">
-                    <i class="fas fa-user-check"></i>
-                    <span>{{$item->drive_type}}</span>
-                </div>
-            </div>
             <a href="{{ route('car-detail-page',$item->id) }}" class="view-detail-btn mt-3">View Details</a>
         </div>
     </div>
