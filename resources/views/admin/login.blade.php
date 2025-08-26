@@ -38,7 +38,7 @@
                         <i class="fas fa-user input-icon"></i>
                         <div class="form-floating">
                             {{-- Changed type to "password" to allow toggling --}}
-                            <input type="password" name="email" class="form-control  @error('email') is-invalid @enderror"
+                            <input type="email" name="email" class="form-control  @error('email') is-invalid @enderror"
                                 id="username" placeholder="Username">
                             <label for="username">Username</label>
                         </div>
