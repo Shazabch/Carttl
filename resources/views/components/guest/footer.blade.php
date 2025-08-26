@@ -1,82 +1,86 @@
   <footer class="text-white">
-    <div class="container">
-      <div class="row g-4">
-        <div class="col-lg-5">
-          <div class="footer-logo">
-            <img src="{{ asset('images/goldenlogo.png') }}" alt="footer-logo">
-          </div>
-          <p>
-            Goldenx stands as the
-            UAE's foremost platform for automotive
-            transactions, streamlining the buying and
-            selling experience.
-          </p>
-        </div>
-        <div class="col-lg-7">
-          <div class="row">
-            <div class="col-lg-4 col-6   footer-section">
-              <h3>Cars By Makes</h3>
-              <ul class="list-unstyled">
-                <li class="menu-item"><a href="#">Rolls Royce</a></li>
-                <li class="menu-item"><a href="#">Lamborghini</a></li>
-                <li class="menu-item"><a href="#">Ferrari</a></li>
-                <li class="menu-item"><a href="#">Maclaren</a></li>
-              </ul>
-            </div>
-            <div class="col-lg-4 col-6   footer-section">
-              <h3>Cars By Location</h3>
-              <ul class="list-unstyled">
-                <li><a href="#">Dubai</a></li>
-                <li><a href="#">Abu Dhabi</a></li>
-                <li><a href="#">Sharjah</a></li>
-                <li><a href="#">Ajman</a></li>
-              </ul>
-            </div>
-            <div class="col-lg-4 footer-section">
-              <h3>Contact</h3>
-              <ul class="list-unstyled">
-                <li>
-                  <a href="mailto:info@thegoldenx.com"
-                    class="d-inline-flex align-items-center text-decoration-none">
-                    <span
-                      class="d-inline-flex justify-content-center align-items-center rounded-circle border border-1 border-muted text-primary me-2"
-                      style="width:28px; height:28px;">
-                      <i class="fa-solid fa-envelope"></i>
-                    </span>
-                    info@thegoldenx.com
-                  </a>
-                </li>
-              </ul>
-
-
-
-
-
-              <div class="social-area">
-                <h3 class="">Follow Us</h3>
-                <ul>
-                  <li><a href="https://www.facebook.com/share/1FpUebaKTf/"><i
-                        class="fab fa-facebook-f"></i></a></li>
-                  <li><a href="https://www.tiktok.com/@goldenx.cars?_t=ZS-8z3eQAqhTUo&_r=1"><i
-                        class="fab fa-tiktok"></i></a></li>
-                  <li><a href="https://www.snapchat.com/add/goldenxmotors"><i
-                        class="fab fa-snapchat-ghost"></i></a></li>
-                  <li><a href="https://www.instagram.com/goldenxcars.ae?igsh=aXdhcHhwZDZhMXgz"><i
-                        class="fab fa-instagram"></i></a></li>
-                  <li><a href="https://youtube.com/@goldenxllc?si=4vyz46a7g-Ss3m-P"><i
-                        class="fab fa-youtube"></i></a></li>
-                </ul>
+      <div class="container">
+          <div class="row g-4">
+              <div class="col-lg-5">
+                  <div class="footer-logo">
+                      <img src="{{ asset('images/goldenlogo.png') }}" alt="footer-logo">
+                  </div>
+                  <p>
+                      Goldenx stands as the
+                      UAE's foremost platform for automotive
+                      transactions, streamlining the buying and
+                      selling experience.
+                  </p>
               </div>
-            </div>
+              <div class="col-lg-7">
+                  <div class="row">
+                      <div class="col-lg-4 col-6   footer-section">
+                          <h3>Cars By Makes</h3>
+                          <ul class="list-unstyled">
+                              <li class="menu-item"><a href="#">Rolls Royce</a></li>
+                              <li class="menu-item"><a href="#">Lamborghini</a></li>
+                              <li class="menu-item"><a href="#">Ferrari</a></li>
+                              <li class="menu-item"><a href="#">Maclaren</a></li>
+                          </ul>
+                      </div>
+                      <div class="col-lg-4 col-6   footer-section">
+                          <h3>Cars By Location</h3>
+                          <ul class="list-unstyled">
+                              <li><a href="#">Dubai</a></li>
+                              <li><a href="#">Abu Dhabi</a></li>
+                              <li><a href="#">Sharjah</a></li>
+                              <li><a href="#">Ajman</a></li>
+                          </ul>
+                      </div>
+                      <div class="col-lg-4 footer-section">
+                          <h3>Contact</h3>
+                          <ul class="list-unstyled">
+                              <li>
+                                  <a href="mailto:info@thegoldenx.com"
+                                      class="d-inline-flex align-items-center text-decoration-none">
+                                      <span
+                                          class="d-inline-flex justify-content-center align-items-center rounded-circle border border-1 border-muted text-primary me-2"
+                                          style="width:28px; height:28px;">
+                                          <i class="fa-solid fa-envelope"></i>
+                                      </span>
+                                      info@thegoldenx.com
+                                  </a>
+                              </li>
+                          </ul>
+
+
+
+
+
+                          <div class="social-area">
+                              <h3 class="">Follow Us</h3>
+                              <ul>
+                                  <li><a href="https://www.facebook.com/share/1FpUebaKTf/"><i
+                                              class="fab fa-facebook-f"></i></a></li>
+                                  <li><a href="https://www.tiktok.com/@goldenx.cars?_t=ZS-8z3eQAqhTUo&_r=1"><i
+                                              class="fab fa-tiktok"></i></a></li>
+                                  <li><a href="https://www.snapchat.com/add/goldenxmotors"><i
+                                              class="fab fa-snapchat-ghost"></i></a></li>
+                                  <li><a href="https://www.instagram.com/goldenxcars.ae?igsh=aXdhcHhwZDZhMXgz"><i
+                                              class="fab fa-instagram"></i></a></li>
+                                  <li><a href="https://youtube.com/@goldenxllc?si=4vyz46a7g-Ss3m-P"><i
+                                              class="fab fa-youtube"></i></a></li>
+                              </ul>
+                          </div>
+                      </div>
+                  </div>
+              </div>
           </div>
-        </div>
+          <div class="copyright">
+              <p class="mb-0">Copyright <i class="fas fa-copyright me-2"></i>{{ now()->year }}. All rights reserved
+                  by <a href="/" class="text-primary text-decoration-none fw-normal">GoldenX</a> LLc.
+                  Designed and developed by
+                  <a href="https://logixcontact.com/" class="text-primary text-decoration-none fw-normal">Logix
+                      Contact Pvt Ltd</a>
+              </p>
+          </div>
+
       </div>
-      <div class="copyright">
-        <p class="mb-0">Copyright <i class="fas fa-copyright me-2"></i>{{ now()->year }}. All rights reserved
-          by <a href="/" class="text-primary text-decoration-none fw-normal">GoldenX</a> LLc
-        </p>
-      </div>
-    </div>
   </footer>
   {{-- <footer>
   <div class="container-fluid">
