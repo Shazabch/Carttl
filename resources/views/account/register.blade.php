@@ -86,9 +86,9 @@
                             <input class="form-check-input" type="checkbox" id="terms" name="terms" required>
                             <label class="form-check-label" for="terms">
                                 I agree to the
-                                <a href="#" class="text-warning fw-medium text-decoration-none">Terms of Service</a>
+                                <a href="{{route('terms')}}" class="text-warning fw-medium text-decoration-none">Terms of Service</a>
                                 and
-                                <a href="#" class="text-warning fw-medium text-decoration-none">Privacy Policy</a>
+                                <a href="{{route('privacy-policy')}}" class="text-warning fw-medium text-decoration-none">Privacy Policy</a>
                             </label>
                         </div>
                         <button type="submit" class="btn btn-warning w-100 fw-bold py-3">Create Account</button>

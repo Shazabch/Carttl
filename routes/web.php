@@ -40,6 +40,8 @@ Route::view('/sell-car', 'sell-car')->name('sell-car');
 Route::view('/car-favorites', 'favorites')->name('favorites');
 Route::get('/car-detail/{id}', [VehicleController::class, 'vehicleDetails'])->name('car-detail-page');
 Route::view('/contact-us', 'contact-us')->name('contact-us');
+Route::view('/terms-of-services', 'terms-of-services')->name('terms');
+Route::view('/privacy-policy', 'privacy-policy')->name('privacy-policy');
 
 // Route::group(['prefix' => 'account'], function(){
 // Guest middleware
