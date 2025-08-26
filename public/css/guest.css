@@ -3249,8 +3249,8 @@ footer .footer-center ul {
     font-size: 14px;
 }
 .form-widget-head img {
-    width: 177px;
-    height: 90px;
+    width: 250px;
+    height: 110px;
     object-fit: contain;
 }
 /* Step container */
@@ -3588,8 +3588,8 @@ footer .footer-center ul {
         align-items: baseline;
     }
     .form-widget-head img{
-        width: 130px;
-        height: 53px;
+        width: 230px;
+        height: auto;
         margin-left: auto;
     }
 }

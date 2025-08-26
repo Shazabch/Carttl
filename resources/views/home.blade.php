@@ -616,7 +616,8 @@
                     </a>
                 </div>
                 <div class="col-lg-5 text-center mt-4 mt-lg-0">
-                    <img src="{{ asset('images/inspection-cta.svg') }}" alt="Car Image" class="cta-img" />
+                    <!-- <img src="{{ asset('images/ready-to-get-r.png') }}" alt="Car Image" class="cta-img" /> -->
+                    <img src="{{ asset('images/ready-to-get-l.png') }}" alt="Car Image" class="cta-img" />
                 </div>
             </div>
         </div>

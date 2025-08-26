@@ -84,7 +84,7 @@
                         <li>Instant payment</li>
                     </ul>
                 </div>
-                <img src="{{ asset('images/sell-cars.svg') }}">
+                <img src="{{ asset('images/sell-car-home.png') }}">
             </div>
             <div class="step-section active">
                 <div class="step-section-header">
