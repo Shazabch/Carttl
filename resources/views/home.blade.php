@@ -466,7 +466,7 @@
                         <img src="{{ asset('images/icons/search-car.svg') }}" alt="Search Icon" class="icon">
                         <h5>Are you looking for a car?</h5>
                         <p>Save time and effort as you no longer need to visit multiple stores to find the right car.</p>
-                        <a href="" class="btn-main">
+                        <a href="/buy-cars" class="btn-main">
                             Buy cars
                             <i class="fa-solid fa-magnifying-glass"></i>
                         </a>
