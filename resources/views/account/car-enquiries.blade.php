@@ -59,14 +59,9 @@
                                 </td>
                                 <td>{{ $enquiry->getMileageLabelAttribute() }}</td>
                                 <td>
-                                    @if($enquiry->imageSet)
+                                    @if($enquiry->vehicle)
                                     <div class="d-flex flex-wrap gap-1">
-                                        @foreach(range(1, 3) as $i)
-                                        @php $img = $enquiry->imageSet->{'image' . $i}; @endphp
-                                        @if($img)
-                                        <img src="{{ asset('storage/' . $img) }}" width="40" height="40" class="rounded shadow-sm" style="object-fit: cover;" alt="Vehicle Image">
-                                        @endif
-                                        @endforeach
+                                        <img src="{{ asset('storage/' . $enquiry->vehicle->coverImage->path) }}" width="40" height="40" class="rounded shadow-sm" style="object-fit: cover;" alt="Vehicle Image">
                                     </div>
                                     @else
                                     <span class="badge bg-secondary">No Images</span>
@@ -168,7 +163,7 @@
                 <th>Email</th>
                 <th>Vehicle</th>
                 <th>Mileage</th>
-                <th>Images</th>
+                <th>Image</th>
                 <th class="text-center">Date</th>
                 <th class="text-center">View</th>
             </tr>
@@ -188,18 +183,13 @@
                 </td>
                 <td>{{ $enquiry->getMileageLabelAttribute() ?? 'N/A' }}</td>
                 <td>
-                    @if($enquiry->imageSet)
-                    <div class="d-flex flex-wrap gap-1">
-                        @foreach(range(1, 3) as $i)
-                            @php $img = $enquiry->imageSet->{'image' . $i}; @endphp
-                            @if($img)
-                            <img src="{{ asset('storage/' . $img) }}" width="40" height="40" class="rounded shadow-sm" style="object-fit: cover;" alt="Vehicle Image">
-                            @endif
-                        @endforeach
-                    </div>
-                    @else
-                    <span class="badge bg-secondary">No Images</span>
-                    @endif
+                     @if($enquiry->vehicle)
+                                    <div class="d-flex flex-wrap gap-1">
+                                        <img src="{{ asset('storage/' . $enquiry->vehicle->coverImage->path) }}" width="40" height="40" class="rounded shadow-sm" style="object-fit: cover;" alt="Vehicle Image">
+                                    </div>
+                                    @else
+                                    <span class="badge bg-secondary">No Images</span>
+                                    @endif
                 </td>
                 <td class="text-center">{{ $enquiry->created_at->format('Y-m-d') }}</td>
                 <td class="text-center">

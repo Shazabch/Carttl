@@ -13,7 +13,7 @@ class VehicleEnquiry extends Model
 {
     return $this->belongsTo(\App\Models\Vehicle::class, 'vehicle_id');
 }
-public function imageSet(): HasOne
+    public function imageSet(): HasOne
     {
         return $this->hasOne(VehicleImage::class, 'vehicle_id');
     }

@@ -50,7 +50,7 @@
                             <h3 class="title-line-clamp-2">{{$item->title}}</h3>
                             <div class="car-box-specs">
                                 <div class="spec_item">
-                                    <i class="fas fa-tachometer-alt"></i>
+                                    <i class="fas fa-oil-can"></i>
                                     <span>{{$item->engine_type}}</span>
                                 </div>
                                 <div class="spec_item">
@@ -58,8 +58,8 @@
                                     <span>{{$item->color}}</span>
                                 </div>
                                 <div class="spec_item">
-                                    <i class="fas fa-user"></i>
-                                    <span>{{$item->seats}}</span>
+                                    <i class="fas fa-tachometer-alt"></i>
+                                   <span>{{$item->drive_type ?? 'FWD'}}</span>
                                 </div>
                             </div>
                         </div>
