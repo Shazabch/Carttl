@@ -7,6 +7,7 @@
 
     {{-- Google Fonts & Font Awesome for Icons --}}
     <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="shortcut icon" href="{{ public_path('images/favicon@72x.ico') }}">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -715,45 +716,127 @@
                 </table>
             </div>
         </div>
-
-        {{-- Dynamic Sections Loop - Show ALL fields --}}
         @php
-        $columnsPerRow = 4;
-        $sections = [
-        'Exterior' => [
-        'icon' => 'fa-solid fa-brush',
-        'fields' => ['paintCondition', 'convertible', 'blindSpot', 'sideSteps', 'wheelsType', 'rimsSizeFront', 'rimsSizeRear']
-        ],
-        'Damage Assessment' => [
-        'icon' => 'fa-solid fa-triangle-exclamation',
-        ],'Engine & Transmission' => [
-        'icon' => 'fa-solid fa-gears',
-        'fields' => ['engineOil', 'gearOil', 'gearshifting', 'engineNoise', 'engineSmoke', 'fourWdSystemCondition', 'obdError', 'remarks']
-        ],
-        'Tires' => [
-        'icon' => 'fa-solid fa-circle-dot',
-        'fields' => ['frontLeftTire', 'frontRightTire', 'rearLeftTire', 'rearRightTire', 'tiresSize', 'spareTire','commentTire']
-        ],
-        'Car Specs' => [
-        'icon' => 'fa-solid fa-sliders',
-        'fields' => ['parkingSensors', 'keylessStart', 'seats', 'cooledSeats', 'heatedSeats', 'powerSeats', 'viveCamera', 'sunroofType', 'drive','blindSpot','headsDisplay','premiumSound','carbonFiber']
-        ],
-        'Interior, Electrical & Air Conditioner' => [
-        'icon' => 'fa-solid fa-bolt',
-        'fields' => ['speedmeterCluster', 'headLining', 'seatControls', 'seatsCondition', 'centralLockOperation', 'sunroofCondition', 'windowsControl', 'cruiseControl', 'acCooling', 'comment_section2']
-        ],
-        'Steering, Suspension & Brakes' => [
-        'icon' => 'fa-solid fa-car-burst',
-        'fields' => ['steeringOperation', 'wheelAlignment', 'brakePads', 'suspension', 'brakeDiscs', 'shockAbsorberOperation', 'comment_section1']
-        ],
+        // These variables are now only needed for the hardcoded logic inside the template.
+        $columnsPerRow = 5;
+
+        // It's still helpful to have the icons in one place.
+        $fieldIcons = [
+        'paintCondition' => 'fa-solid fa-spray-can',
+        'convertible' => 'fa-solid fa-car',
+        'blindSpot' => 'fa-solid fa-car-on',
+        'sideSteps' => 'fa-solid fa-shoe-prints',
+        'wheelsType' => 'fa-solid fa-circle-dot',
+        'rimsSizeFront' => 'fa-solid fa-arrows-left-right',
+        'rimsSizeRear' => 'fa-solid fa-arrows-left-right',
+        'engineOil' => 'fa-solid fa-oil-can',
+        'gearOil' => 'fa-solid fa-gear',
+        'gearshifting' => 'fa-solid fa-gears',
+        'engineNoise' => 'fa-solid fa-volume-high',
+        'engineSmoke' => 'fa-solid fa-smog',
+        'fourWdSystemCondition' => 'fa-solid fa-car-side',
+        'obdError' => 'fa-solid fa-triangle-exclamation',
+        'remarks' => 'fa-solid fa-comment-dots',
+        'frontLeftTire' => 'fa-solid fa-circle-dot',
+        'frontRightTire' => 'fa-solid fa-circle-dot',
+        'rearLeftTire' => 'fa-solid fa-circle-dot',
+        'rearRightTire' => 'fa-solid fa-circle-dot',
+        'tiresSize' => 'fa-solid fa-ruler-combined',
+        'spareTire' => 'fa-solid fa-life-ring',
+        'commentTire' => 'fa-solid fa-comment',
+        'parkingSensors' => 'fa-solid fa-car-burst',
+        'keylessStart' => 'fa-solid fa-key',
+        'seats' => 'fa-solid fa-chair',
+        'cooledSeats' => 'fa-solid fa-snowflake',
+        'heatedSeats' => 'fa-solid fa-fire',
+        'powerSeats' => 'fa-solid fa-bolt',
+        'viveCamera' => 'fa-solid fa-camera-retro',
+        'sunroofType' => 'fa-solid fa-sun',
+        'drive' => 'fa-solid fa-road',
+        'headsDisplay' => 'fa-solid fa-desktop',
+        'premiumSound' => 'fa-solid fa-music',
+        'carbonFiber' => 'fa-solid fa-cubes',
+        'speedmeterCluster' => 'fa-solid fa-gauge-high',
+        'headLining' => 'fa-solid fa-arrow-up',
+        'seatControls' => 'fa-solid fa-toggle-on',
+        'seatsCondition' => 'fa-solid fa-check-double',
+        'centralLockOperation' => 'fa-solid fa-lock',
+        'sunroofCondition' => 'fa-solid fa-sun',
+        'windowsControl' => 'fa-solid fa-window-maximize',
+        'cruiseControl' => 'fa-solid fa-forward',
+        'acCooling' => 'fa-solid fa-wind',
+        'comment_section2' => 'fa-solid fa-comments',
+        'steeringOperation' => 'fa-solid fa-dharmachakra',
+        'wheelAlignment' => 'fa-solid fa-arrows-to-dot',
+        'brakePads' => 'fa-solid fa-compact-disc',
+        'suspension' => 'fa-solid fa-car-burst',
+        'brakeDiscs' => 'fa-solid fa-compact-disc',
+        'shockAbsorberOperation' => 'fa-solid fa-car-burst',
+        'comment_section1' => 'fa-solid fa-comments',
         ];
         @endphp
 
-        @foreach($sections as $sectionName => $sectionDetails)
+
+        {{-- ==================================================================== --}}
+        {{-- == 1. Exterior Section                                            == --}}
+        {{-- ==================================================================== --}}
         <div class="report-card">
-            @if($sectionName=='Damage Assessment')
+            <div class="card-header"><i class="fa-solid fa-brush"></i>Exterior</div>
+            <div class="card-body">
+                <table class="details-table">
+                    {{-- Special full-width row for Paint Condition --}}
+                    <tr>
+                        <td colspan="{{ $columnsPerRow }}">
+                            @php $field = 'paintCondition'; $data = $reportInView->{$field} ?? 'N/A'; $statusInfo = getStatusInfo($data); @endphp
+                            <div class="item-label"><i class="{{ $fieldIcons[$field] ?? 'fas fa-circle-notch' }}"></i> {{ Str::of($field)->kebab()->replace('-', ' ')->title() }}</div>
+                            @if(is_array($data)) <div class="item-value">
+                                <ul class="item-value-list">@foreach($data as $value)<li>{{ $value }}</li>@endforeach</ul>
+                            </div>
+                            @elseif($statusInfo['class'] !== 'item-value') <div class="status-pill {{ $statusInfo['class'] }}"><i class="{{ $statusInfo['icon'] }}"></i>{{ $data }}</div>
+                            @else <div class="item-value">{{ $data }}</div> @endif
+                        </td>
+                    </tr>
+                    {{-- Row 1 of other fields --}}
+                    <tr>
+                        @foreach(['convertible', 'blindSpot', 'sideSteps', 'wheelsType', 'rimsSizeFront'] as $field)
+                        <td>
+                            <div class="item-label"><i class="{{ $fieldIcons[$field] ?? 'fas fa-circle-notch' }}"></i> {{ Str::of($field)->kebab()->replace('-', ' ')->title() }}</div>
+                            @php $data = $reportInView->{$field} ?? 'N/A'; $statusInfo = getStatusInfo($data); @endphp
+                            @if(is_array($data)) <div class="item-value">
+                                <ul class="item-value-list">@foreach($data as $value)<li>{{ $value }}</li>@endforeach</ul>
+                            </div>
+                            @elseif($statusInfo['class'] !== 'item-value') <div class="status-pill {{ $statusInfo['class'] }}"><i class="{{ $statusInfo['icon'] }}"></i>{{ $data }}</div>
+                            @else <div class="item-value">{{ $data }}</div> @endif
+                        </td>
+                        @endforeach
+                    </tr>
+                    {{-- Row 2 of other fields --}}
+                    <tr>
+                        @foreach(['rimsSizeRear'] as $field)
+                        <td>
+                            <div class="item-label"><i class="{{ $fieldIcons[$field] ?? 'fas fa-circle-notch' }}"></i> {{ Str::of($field)->kebab()->replace('-', ' ')->title() }}</div>
+                            @php $data = $reportInView->{$field} ?? 'N/A'; $statusInfo = getStatusInfo($data); @endphp
+                            @if(is_array($data)) <div class="item-value">
+                                <ul class="item-value-list">@foreach($data as $value)<li>{{ $value }}</li>@endforeach</ul>
+                            </div>
+                            @elseif($statusInfo['class'] !== 'item-value') <div class="status-pill {{ $statusInfo['class'] }}"><i class="{{ $statusInfo['icon'] }}"></i>{{ $data }}</div>
+                            @else <div class="item-value">{{ $data }}</div> @endif
+                        </td>
+                        @endforeach
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td> {{-- 4 empty cells --}}
+                    </tr>
+                </table>
+            </div>
+        </div>
 
 
+        {{-- ==================================================================== --}}
+        {{-- == 2. Damage Assessment Section                                   == --}}
+        {{-- ==================================================================== --}}
+        <div class="report-card">
             @if($reportInView->damage_file_path)
             <img src="{{ storage_path('app/public/' . $reportInView->damage_file_path) }}" alt="Damage Assessment" style="max-width: 100%; height: auto;">
             @else
@@ -776,103 +859,281 @@
                 <p style="font-size: 10px; color: #777; margin-top: 4px;">(Link valid until {{ now()->addDays(30)->format('F j, Y') }})</p>
             </div>
 
-            @else
-            <div class="card-header"><i class="{{ $sectionDetails['icon'] }}"></i>{{ $sectionName }}</div>
+
+        </div>
+
+
+        {{-- ==================================================================== --}}
+        {{-- == 3. Engine & Transmission Section                               == --}}
+        {{-- ==================================================================== --}}
+        <div class="report-card">
+            <div class="card-header"><i class="fa-solid fa-gears"></i>Engine & Transmission</div>
             <div class="card-body">
                 <table class="details-table">
-                    @php
-                    // Make a mutable copy of the fields to render for this section
-                    $fieldsToRender = $sectionDetails['fields'];
-                    @endphp
-
-                    {{-- ==================================================================== --}}
-                    {{-- == START: SPECIAL HANDLING FOR paintCondition                       == --}}
-                    {{-- ==================================================================== --}}
-                    @if($sectionName === 'Exterior')
-                    @php
-                    // Find the key for 'paintCondition'
-                    $fieldKey = array_search('paintCondition', $fieldsToRender);
-
-                    // If it exists in the array...
-                    if ($fieldKey !== false) {
-                    $field = 'paintCondition';
-
-                    // ...remove it from the array so it isn't rendered again later.
-                    unset($fieldsToRender[$fieldKey]);
-                    @endphp
-                    {{-- Render it in its own full-width row --}}
+                    {{-- Row 1 --}}
                     <tr>
-                        <td colspan="{{ $columnsPerRow }}">
-                            <div class="item-label">
-                                <i class="{{ $fieldIcons[$field] ?? 'fas fa-circle-notch' }}"></i>
-                                {{ Str::of($field)->kebab()->replace('-', ' ')->title() }}
-                            </div>
-                            @php
-                            $data = $reportInView->{$field} ?? 'N/A';
-                            $statusInfo = getStatusInfo($data);
-                            @endphp
-
-                            @if(is_array($data))
-                            <div class="item-value">
-                                <ul class="item-value-list">
-                                    @foreach($data as $value)
-                                    <li>{{ $value }}</li>
-                                    @endforeach
-                                </ul>
-                            </div>
-                            @elseif($statusInfo['class'] !== 'item-value')
-                            <div class="status-pill {{ $statusInfo['class'] }}">
-                                <i class="{{ $statusInfo['icon'] }}"></i>{{ $data }}
-                            </div>
-                            @else
-                            <div class="item-value">{{ $data }}</div>
-                            @endif
-                        </td>
-                    </tr>
-                    @php
-                    } // end if fieldKey exists
-                    @endphp
-                    @endif
-                    @foreach(array_chunk($fieldsToRender, $columnsPerRow) as $chunk)
-                    <tr>
-                        @foreach($chunk as $field)
+                        @foreach(['engineOil', 'gearOil', 'gearshifting', 'engineNoise', 'engineSmoke'] as $field)
                         <td>
-                            <div class="item-label">
-                                <i class="{{ $fieldIcons[$field] ?? 'fas fa-circle-notch' }}"></i>
-                                {{ Str::of($field)->kebab()->replace('-', ' ')->title() }}
+                            <div class="item-label"><i class="{{ $fieldIcons[$field] ?? 'fas fa-circle-notch' }}"></i> {{ Str::of($field)->kebab()->replace('-', ' ')->title() }}</div>
+                            @php $data = $reportInView->{$field} ?? 'N/A'; $statusInfo = getStatusInfo($data); @endphp
+                            @if(is_array($data)) <div class="item-value">
+                                <ul class="item-value-list">@foreach($data as $value)<li>{{ $value }}</li>@endforeach</ul>
                             </div>
-                            @php
-                            $data = $reportInView->{$field} ?? 'N/A';
-                            $statusInfo = getStatusInfo($data);
-                            @endphp
-
-                            @if(is_array($data))
-                            <div class="item-value">
-                                <ul class="item-value-list">
-                                    @foreach($data as $value)
-                                    <li>{{ $value }}</li>
-                                    @endforeach
-                                </ul>
-                            </div>
-                            @elseif($statusInfo['class'] !== 'item-value')
-                            <div class="status-pill {{ $statusInfo['class'] }}">
-                                <i class="{{ $statusInfo['icon'] }}"></i>{{ $data }}
-                            </div>
-                            @else
-                            <div class="item-value">{{ $data }}</div>
-                            @endif
+                            @elseif($statusInfo['class'] !== 'item-value') <div class="status-pill {{ $statusInfo['class'] }}"><i class="{{ $statusInfo['icon'] }}"></i>{{ $data }}</div>
+                            @else <div class="item-value">{{ $data }}</div> @endif
                         </td>
                         @endforeach
-                        {{-- Add empty cell if odd number of fields --}}
-                        @if(count($chunk) < 2) <td>
-                            </td> @endif
                     </tr>
-                    @endforeach
+                    {{-- Row 2 --}}
+                    <tr>
+                        @foreach(['fourWdSystemCondition', 'obdError'] as $field)
+                        <td>
+                            <div class="item-label"><i class="{{ $fieldIcons[$field] ?? 'fas fa-circle-notch' }}"></i> {{ Str::of($field)->kebab()->replace('-', ' ')->title() }}</div>
+                            @php $data = $reportInView->{$field} ?? 'N/A'; $statusInfo = getStatusInfo($data); @endphp
+                            @if(is_array($data)) <div class="item-value">
+                                <ul class="item-value-list">@foreach($data as $value)<li>{{ $value }}</li>@endforeach</ul>
+                            </div>
+                            @elseif($statusInfo['class'] !== 'item-value') <div class="status-pill {{ $statusInfo['class'] }}"><i class="{{ $statusInfo['icon'] }}"></i>{{ $data }}</div>
+                            @else <div class="item-value">{{ $data }}</div> @endif
+                        </td>
+                        @endforeach
+                        <td></td>
+                        <td></td>
+                        <td></td> {{-- 3 empty cells --}}
+                    </tr>
+                    {{-- Full-width row for Remarks --}}
+                    <tr>
+                        <td colspan="{{ $columnsPerRow }}">
+                            @php $field = 'remarks'; $data = $reportInView->{$field} ?? 'N/A'; $statusInfo = getStatusInfo($data); @endphp
+                            <div class="item-label"><i class="{{ $fieldIcons[$field] ?? 'fas fa-circle-notch' }}"></i> {{ Str::of($field)->kebab()->replace('-', ' ')->title() }}</div>
+                            @if(is_array($data)) <div class="item-value">
+                                <ul class="item-value-list">@foreach($data as $value)<li>{{ $value }}</li>@endforeach</ul>
+                            </div>
+                            @elseif($statusInfo['class'] !== 'item-value') <div class="status-pill {{ $statusInfo['class'] }}"><i class="{{ $statusInfo['icon'] }}"></i>{{ $data }}</div>
+                            @else <div class="item-value">{{ $data }}</div> @endif
+                        </td>
+                    </tr>
                 </table>
             </div>
-            @endif
         </div>
-        @endforeach
+
+
+        {{-- ==================================================================== --}}
+        {{-- == 4. Tires Section                                               == --}}
+        {{-- ==================================================================== --}}
+        <div class="report-card">
+            <div class="card-header"><i class="fa-solid fa-circle-dot"></i>Tires</div>
+            <div class="card-body">
+                <table class="details-table">
+                    {{-- Row 1 --}}
+                    <tr>
+                        @foreach(['frontLeftTire', 'frontRightTire', 'rearLeftTire', 'rearRightTire', 'tiresSize'] as $field)
+                        <td>
+                            <div class="item-label"><i class="{{ $fieldIcons[$field] ?? 'fas fa-circle-notch' }}"></i> {{ Str::of($field)->kebab()->replace('-', ' ')->title() }}</div>
+                            @php $data = $reportInView->{$field} ?? 'N/A'; $statusInfo = getStatusInfo($data); @endphp
+                            @if(is_array($data)) <div class="item-value">
+                                <ul class="item-value-list">@foreach($data as $value)<li>{{ $value }}</li>@endforeach</ul>
+                            </div>
+                            @elseif($statusInfo['class'] !== 'item-value') <div class="status-pill {{ $statusInfo['class'] }}"><i class="{{ $statusInfo['icon'] }}"></i>{{ $data }}</div>
+                            @else <div class="item-value">{{ $data }}</div> @endif
+                        </td>
+                        @endforeach
+                    </tr>
+                    {{-- Row 2 --}}
+                    <tr>
+                        @foreach(['spareTire'] as $field)
+                        <td>
+                            <div class="item-label"><i class="{{ $fieldIcons[$field] ?? 'fas fa-circle-notch' }}"></i> {{ Str::of($field)->kebab()->replace('-', ' ')->title() }}</div>
+                            @php $data = $reportInView->{$field} ?? 'N/A'; $statusInfo = getStatusInfo($data); @endphp
+                            @if(is_array($data)) <div class="item-value">
+                                <ul class="item-value-list">@foreach($data as $value)<li>{{ $value }}</li>@endforeach</ul>
+                            </div>
+                            @elseif($statusInfo['class'] !== 'item-value') <div class="status-pill {{ $statusInfo['class'] }}"><i class="{{ $statusInfo['icon'] }}"></i>{{ $data }}</div>
+                            @else <div class="item-value">{{ $data }}</div> @endif
+                        </td>
+                        @endforeach
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td> {{-- 4 empty cells --}}
+                    </tr>
+                    {{-- Full-width row for Tire Comments --}}
+                    <tr>
+                        <td colspan="{{ $columnsPerRow }}">
+                            @php $field = 'commentTire'; $data = $reportInView->{$field} ?? 'N/A'; $statusInfo = getStatusInfo($data); @endphp
+                            <div class="item-label"><i class="{{ $fieldIcons[$field] ?? 'fas fa-circle-notch' }}"></i> Comments</div>
+                            @if(is_array($data)) <div class="item-value">
+                                <ul class="item-value-list">@foreach($data as $value)<li>{{ $value }}</li>@endforeach</ul>
+                            </div>
+                            @elseif($statusInfo['class'] !== 'item-value') <div class="status-pill {{ $statusInfo['class'] }}"><i class="{{ $statusInfo['icon'] }}"></i>{{ $data }}</div>
+                            @else <div class="item-value">{{ $data }}</div> @endif
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+
+        {{-- ==================================================================== --}}
+        {{-- == 5. Car Specs Section                                           == --}}
+        {{-- ==================================================================== --}}
+        <div class="report-card">
+            <div class="card-header"><i class="fa-solid fa-sliders"></i>Car Specs</div>
+            <div class="card-body">
+                <table class="details-table">
+                    <tr>
+                        @foreach(['parkingSensors', 'keylessStart', 'seats', 'cooledSeats', 'heatedSeats'] as $field)
+                        <td>
+                            <div class="item-label"><i class="{{ $fieldIcons[$field] ?? 'fas fa-circle-notch' }}"></i> {{ Str::of($field)->kebab()->replace('-', ' ')->title() }}</div>
+                            @php $data = $reportInView->{$field} ?? 'N/A'; $statusInfo = getStatusInfo($data); @endphp
+                            @if(is_array($data)) <div class="item-value">
+                                <ul class="item-value-list">@foreach($data as $value)<li>{{ $value }}</li>@endforeach</ul>
+                            </div>
+                            @elseif($statusInfo['class'] !== 'item-value') <div class="status-pill {{ $statusInfo['class'] }}"><i class="{{ $statusInfo['icon'] }}"></i>{{ $data }}</div>
+                            @else <div class="item-value">{{ $data }}</div> @endif
+                        </td>
+                        @endforeach
+                    </tr>
+                    <tr>
+                        @foreach(['powerSeats', 'viveCamera', 'sunroofType', 'drive','blindSpot'] as $field)
+                        <td>
+                            <div class="item-label"><i class="{{ $fieldIcons[$field] ?? 'fas fa-circle-notch' }}"></i> {{ Str::of($field)->kebab()->replace('-', ' ')->title() }}</div>
+                            @php $data = $reportInView->{$field} ?? 'N/A'; $statusInfo = getStatusInfo($data); @endphp
+                            @if(is_array($data)) <div class="item-value">
+                                <ul class="item-value-list">@foreach($data as $value)<li>{{ $value }}</li>@endforeach</ul>
+                            </div>
+                            @elseif($statusInfo['class'] !== 'item-value') <div class="status-pill {{ $statusInfo['class'] }}"><i class="{{ $statusInfo['icon'] }}"></i>{{ $data }}</div>
+                            @else <div class="item-value">{{ $data }}</div> @endif
+                        </td>
+                        @endforeach
+                    </tr>
+                    <tr>
+                        @foreach(['headsDisplay','premiumSound','carbonFiber'] as $field)
+                        <td>
+                            <div class="item-label"><i class="{{ $fieldIcons[$field] ?? 'fas fa-circle-notch' }}"></i> {{ Str::of($field)->kebab()->replace('-', ' ')->title() }}</div>
+                            @php $data = $reportInView->{$field} ?? 'N/A'; $statusInfo = getStatusInfo($data); @endphp
+                            @if(is_array($data)) <div class="item-value">
+                                <ul class="item-value-list">@foreach($data as $value)<li>{{ $value }}</li>@endforeach</ul>
+                            </div>
+                            @elseif($statusInfo['class'] !== 'item-value') <div class="status-pill {{ $statusInfo['class'] }}"><i class="{{ $statusInfo['icon'] }}"></i>{{ $data }}</div>
+                            @else <div class="item-value">{{ $data }}</div> @endif
+                        </td>
+                        @endforeach
+                        <td></td>
+                        <td></td> {{-- 2 empty cells --}}
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+
+        {{-- ==================================================================== --}}
+        {{-- == 6. Interior, Electrical & Air Conditioner Section              == --}}
+        {{-- ==================================================================== --}}
+        <div class="report-card">
+            <div class="card-header"><i class="fa-solid fa-bolt"></i>Interior, Electrical & Air Conditioner</div>
+            <div class="card-body">
+                <table class="details-table">
+                    {{-- Row 1 --}}
+                    <tr>
+                        @foreach(['speedmeterCluster', 'headLining', 'seatControls', 'seatsCondition', 'centralLockOperation'] as $field)
+                        <td>
+                            <div class="item-label"><i class="{{ $fieldIcons[$field] ?? 'fas fa-circle-notch' }}"></i> {{ Str::of($field)->kebab()->replace('-', ' ')->title() }}</div>
+                            @php $data = $reportInView->{$field} ?? 'N/A'; $statusInfo = getStatusInfo($data); @endphp
+                            @if(is_array($data)) <div class="item-value">
+                                <ul class="item-value-list">@foreach($data as $value)<li>{{ $value }}</li>@endforeach</ul>
+                            </div>
+                            @elseif($statusInfo['class'] !== 'item-value') <div class="status-pill {{ $statusInfo['class'] }}"><i class="{{ $statusInfo['icon'] }}"></i>{{ $data }}</div>
+                            @else <div class="item-value">{{ $data }}</div> @endif
+                        </td>
+                        @endforeach
+                    </tr>
+                    {{-- Row 2 --}}
+                    <tr>
+                        @foreach(['sunroofCondition', 'windowsControl', 'cruiseControl', 'acCooling'] as $field)
+                        <td>
+                            <div class="item-label"><i class="{{ $fieldIcons[$field] ?? 'fas fa-circle-notch' }}"></i> {{ Str::of($field)->kebab()->replace('-', ' ')->title() }}</div>
+                            @php $data = $reportInView->{$field} ?? 'N/A'; $statusInfo = getStatusInfo($data); @endphp
+                            @if(is_array($data)) <div class="item-value">
+                                <ul class="item-value-list">@foreach($data as $value)<li>{{ $value }}</li>@endforeach</ul>
+                            </div>
+                            @elseif($statusInfo['class'] !== 'item-value') <div class="status-pill {{ $statusInfo['class'] }}"><i class="{{ $statusInfo['icon'] }}"></i>{{ $data }}</div>
+                            @else <div class="item-value">{{ $data }}</div> @endif
+                        </td>
+                        @endforeach
+                        <td></td> {{-- 1 empty cell --}}
+                    </tr>
+                    {{-- Full-width row for Comments --}}
+                    <tr>
+                        <td colspan="{{ $columnsPerRow }}">
+                            @php $field = 'comment_section2'; $data = $reportInView->{$field} ?? 'N/A'; $statusInfo = getStatusInfo($data); @endphp
+                            <div class="item-label"><i class="{{ $fieldIcons[$field] ?? 'fas fa-circle-notch' }}"></i> Comments</div>
+                            @if(is_array($data)) <div class="item-value">
+                                <ul class="item-value-list">@foreach($data as $value)<li>{{ $value }}</li>@endforeach</ul>
+                            </div>
+                            @elseif($statusInfo['class'] !== 'item-value') <div class="status-pill {{ $statusInfo['class'] }}"><i class="{{ $statusInfo['icon'] }}"></i>{{ $data }}</div>
+                            @else <div class="item-value">{{ $data }}</div> @endif
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+
+        {{-- ==================================================================== --}}
+        {{-- == 7. Steering, Suspension & Brakes Section                       == --}}
+        {{-- ==================================================================== --}}
+        <div class="report-card">
+            <div class="card-header"><i class="fa-solid fa-car-burst"></i>Steering, Suspension & Brakes</div>
+            <div class="card-body">
+                <table class="details-table">
+                    {{-- Row 1 --}}
+                    <tr>
+                        @foreach(['steeringOperation', 'wheelAlignment', 'brakePads', 'suspension', 'brakeDiscs'] as $field)
+                        <td>
+                            <div class="item-label"><i class="{{ $fieldIcons[$field] ?? 'fas fa-circle-notch' }}"></i> {{ Str::of($field)->kebab()->replace('-', ' ')->title() }}</div>
+                            @php $data = $reportInView->{$field} ?? 'N/A'; $statusInfo = getStatusInfo($data); @endphp
+                            @if(is_array($data)) <div class="item-value">
+                                <ul class="item-value-list">@foreach($data as $value)<li>{{ $value }}</li>@endforeach</ul>
+                            </div>
+                            @elseif($statusInfo['class'] !== 'item-value') <div class="status-pill {{ $statusInfo['class'] }}"><i class="{{ $statusInfo['icon'] }}"></i>{{ $data }}</div>
+                            @else <div class="item-value">{{ $data }}</div> @endif
+                        </td>
+                        @endforeach
+                    </tr>
+                    {{-- Row 2 --}}
+                    <tr>
+                        @foreach(['shockAbsorberOperation'] as $field)
+                        <td>
+                            <div class="item-label"><i class="{{ $fieldIcons[$field] ?? 'fas fa-circle-notch' }}"></i> {{ Str::of($field)->kebab()->replace('-', ' ')->title() }}</div>
+                            @php $data = $reportInView->{$field} ?? 'N/A'; $statusInfo = getStatusInfo($data); @endphp
+                            @if(is_array($data)) <div class="item-value">
+                                <ul class="item-value-list">@foreach($data as $value)<li>{{ $value }}</li>@endforeach</ul>
+                            </div>
+                            @elseif($statusInfo['class'] !== 'item-value') <div class="status-pill {{ $statusInfo['class'] }}"><i class="{{ $statusInfo['icon'] }}"></i>{{ $data }}</div>
+                            @else <div class="item-value">{{ $data }}</div> @endif
+                        </td>
+                        @endforeach
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td> {{-- 4 empty cells --}}
+                    </tr>
+                    {{-- Full-width row for Comments --}}
+                    <tr>
+                        <td colspan="{{ $columnsPerRow }}">
+                            @php $field = 'comment_section1'; $data = $reportInView->{$field} ?? 'N/A'; $statusInfo = getStatusInfo($data); @endphp
+                            <div class="item-label"><i class="{{ $fieldIcons[$field] ?? 'fas fa-circle-notch' }}"></i> Comments</div>
+                            @if(is_array($data)) <div class="item-value">
+                                <ul class="item-value-list">@foreach($data as $value)<li>{{ $value }}</li>@endforeach</ul>
+                            </div>
+                            @elseif($statusInfo['class'] !== 'item-value') <div class="status-pill {{ $statusInfo['class'] }}"><i class="{{ $statusInfo['icon'] }}"></i>{{ $data }}</div>
+                            @else <div class="item-value">{{ $data }}</div> @endif
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
 
         {{-- Premium Image Gallery Section (Table-based for DomPDF) --}}
         <div class="report-card">
@@ -942,25 +1203,6 @@
             <!-- <div class="card-header"><i class="fa-solid fa-car"></i>Basic Vehicle Information</div> -->
             <div class="card-body">
                 <table class="details-table">
-                    <tr>
-                        <td>
-                            <div class="item-label">Approval </div>
-
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <div class="item-label">Date and time of approval </div>
-
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <div class="item-label">Approver's signature </div>
-
-                        </td>
-                    </tr>
-
                     <tr>
                         <td>
                             <div class="item-label">Disclaimer </div>

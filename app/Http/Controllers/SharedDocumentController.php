@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\VehicleInspectionReport;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
@@ -47,5 +48,19 @@ class SharedDocumentController extends Controller
         return view('admin.inspection.damage-assessment-public-view', [
             'reportInView' => $report
         ]);
+    }
+    public function download(VehicleInspectionReport $report)
+    {
+
+
+        $filePath = $report->file_path;
+
+        if (!Storage::disk('public')->exists($filePath)) {
+            abort(404, 'File not found.');
+        }
+        $fullPath = storage_path('app/public/' . $filePath);
+
+        $downloadFilename = 'Inspection-Report-' . ($report->inspection->vin ?? 'UnknownVIN') . '.pdf';
+        return response()->download($fullPath, $downloadFilename);
     }
 }

@@ -17,44 +17,49 @@
                         <th>Model</th>
                         <th>Date</th>
                         <th>Action</th>
-
-
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach($inspections as $item)
+                    {{-- Use forelse to handle cases where there are no inspections --}}
+                    @forelse($inspections as $item)
                     <tr>
                         <td>
-                            {{$loop->iteration}}
+                            {{ $loop->iteration }}
                         </td>
                         <td>
-                            <div>{{($item->user?->name)}}</div>
+                            <div>{{ $item->user?->name }}</div>
                             <small class="text-muted">{{ $item->user?->phone }}</small>
                         </td>
                         <td>
-                            {{($item->email)}}
+                            {{ $item->email }}
                         </td>
                         <td>
-                            {{$item->brand?->name}}
-
+                            {{ $item->brand?->name }}
                         </td>
-
-                        <td>{{$item->vehicleModel?->name}}</td>
+                        <td>
+                            {{ $item->vehicleModel?->name }}
+                        </td>
                         <td class="text-center">{{ $item->created_at->format('Y-m-d') }}</td>
                         <td>
-                            @if($item->inspectionReport)
-                            @if($item->inspectionReport->shared_link)
-                            <a href="{{$item->inspectionReport->shared_link}}" target="_blank" class="btn btn-primary">
-                                <i class="las la-share-alt me-2"></i> Download Report
-                                <i class="las la-link text-success" title="Active link exists. Expires: {{ $item->inspectionReport->shared_link_expires_at }}"></i>
-                                 </a>
-                            @endif
-                            @endif
 
+                            @if($item->inspectionReport && $item->inspectionReport->shared_link)
+
+
+                            <a href="{{ route('inspection.report.download', $item->inspectionReport->id) }}" class="btn btn-primary">
+                                <i class="las la-download me-2"></i> Download Report
+                            </a>
+                            @else
+
+                            <span class="badge bg-warning text-dark">Pending Inspection</span>
+                            @endif
                         </td>
-
                     </tr>
-                    @endforeach
+                    @empty
+
+                    <tr>
+                        <td colspan="7" class="text-center text-muted">You have no inspection enquiries yet.</td>
+                    </tr>
+                    @endforelse
                 </tbody>
             </table>
         </div>

@@ -2,7 +2,7 @@
     <div class="container">
         <link rel="stylesheet" href="{{ asset('css/car-damage-assessment.css') }}">
         <div class="header">
-            <h1>Exterior Condition Report</h1>
+            <!-- <h1>Exterior Condition Report</h1> -->
         </div>
         <div class="main-content-view-only">
             <div class="car-section">

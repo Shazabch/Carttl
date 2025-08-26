@@ -105,4 +105,7 @@ Route::get('/inspection-report/download/signed/{report}', [SharedDocumentControl
 Route::get('/inspection/report/{report}/damage-assessment', [SharedDocumentController::class, 'showDamageAssessment'])
     ->name('inspection.report.damage-assessment.view')
     ->middleware('signed');
+Route::get('/inspection-reports/{report}/download', [SharedDocumentController::class, 'download'])
+    ->middleware('auth') // IMPORTANT: Protect this route
+    ->name('inspection.report.download');
 Route::view('/un-authenticated', 'un-auth')->name('un-auth');

@@ -40,7 +40,6 @@
                     <div class="col-12">
                         <div>
                             <label for="email" class="form-label fw-medium">Email Address</label>
-
                             <input value="{{ old('email') }}" type="text"
                                 class="form-control @error('email') is-invalid @enderror" name="email" id="email"
                                 placeholder="name@example.com">
@@ -50,11 +49,17 @@
                         </div>
                     </div>
                     <div class="col-12">
-                        <div>
+                        {{-- Added position-relative to this div to act as a container for the icon --}}
+                        <div class="position-relative">
                             <label for="password" class="form-label fw-medium">Password</label>
-
                             <input type="password" class="form-control @error('password') is-invalid @enderror"
                                 name="password" id="password" value="" placeholder="Password">
+
+                            {{-- Eye icon to toggle password visibility --}}
+                            <span id="togglePassword" class="position-absolute top-50 end-0 translate-middle-y me-3" style="cursor: pointer; margin-top: 12px;">
+                                <i class="fas fa-eye-slash"></i>
+                            </span>
+
                             @error('password')
                                 <p class="invalid-feedback">{{ $message }}</p>
                             @enderror
@@ -74,10 +79,31 @@
                                     class="text-warning fw-medium text-decoration-none">Create an
                                     account</a></p>
                         </div>
-
                     </div>
                 </div>
             </form>
         </div>
     </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const togglePassword = document.getElementById('togglePassword');
+        const passwordInput = document.getElementById('password');
+
+        if (togglePassword && passwordInput) {
+            togglePassword.addEventListener('click', function () {
+                // Check the current type of the input
+                const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+                passwordInput.setAttribute('type', type);
+
+                // Toggle the icon
+                const icon = this.querySelector('i');
+                icon.classList.toggle('fa-eye');
+                icon.classList.toggle('fa-eye-slash');
+            });
+        }
+    });
+</script>
+
 @endsection
+

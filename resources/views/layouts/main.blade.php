@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin | @yield('title')</title>
+    <link rel="shortcut icon" href="{{ asset('images/favicon@72x.ico') }}">
 
     <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -32,8 +33,7 @@
         }
 
         .car-bg {
-            background: linear-gradient(135deg, rgba(44, 62, 80, 0.9), rgba(231, 76, 60, 0.8)),
-                url('https://images.unsplash.com/photo-1634823005888-11796723fd70?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8ZHViYWklMjBjYXJ8ZW58MHx8MHx8fDA%3D') center/cover no-repeat;
+            background:url('{{asset("images/login.png")}}') center/cover no-repeat;
             color: white;
             padding: 3rem;
             display: flex;
@@ -130,7 +130,7 @@
                     <div class="row g-0">
                         <!-- Left side with car image and branding -->
                         <div class="col-lg-6 car-bg">
-                            <h1 class="display-4 fw-bold mb-4">GoldenX</h1>
+                            <!-- <h1 class="display-4 fw-bold mb-4">GoldenX</h1>
                             <p class="lead mb-5">Premium car selling and auction platform administration</p>
                             <div class="row mt-4">
                                 <div class="col-md-4 text-center mb-4">
@@ -145,16 +145,17 @@
                                     <i class="fas fa-chart-line fa-3x mb-3"></i>
                                     <h5>Market Analytics</h5>
                                 </div>
-                            </div>
+                            </div> -->
                         </div>
 
                         <!-- Right side with login form -->
                         <div class="col-lg-6">
                             <div class="login-form-container">
                                 <div class="text-center mb-4">
-                                    <div class="logo-container mx-auto">
-                                        <i class="fas fa-car fa-3x text-primary"></i>
-                                    </div>
+
+                                     <a href="{{ route('home') }}" class="brand">
+                                            <img src="{{ asset('images/golden-x.png') }}" class="obj_fit_contain mb-4" width="150px" alt="">
+                                        </a>
                                     <h2 class="fw-bold">Admin Login</h2>
                                     <p class="text-muted">Please sign in to continue</p>
                                 </div>
