@@ -80,7 +80,8 @@
                 <div class="banner-text">
                     <h5 class="fw-500 text-white mb-1">Sell Used Cars at Best Price</h5>
                     <ul class="theme_list white">
-                        <li>Free car inspection</li>
+                        <a style="text-decoration: none;" href="{{route('book-inspection')}}"> <li>Book car inspection</li></a>
+                       
                         <li>Instant payment</li>
                     </ul>
                 </div>

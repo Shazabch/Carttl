@@ -66,7 +66,7 @@
                                 <input class="form-check-input" type="checkbox" id="remember" name="remember">
                                 <label class="form-check-label" for="remember">Remember me</label>
                             </div>
-                            <a href="" class="text-warning fw-medium text-decoration-none">Forgot password?</a>
+                            <!-- <a href="" class="text-warning fw-medium text-decoration-none">Forgot password?</a> -->
                         </div>
                         <div class="text-center mt-4 text-secondary">
                             <button type="submit" class="btn btn-warning w-100 fw-bold py-3">Sign In</button>

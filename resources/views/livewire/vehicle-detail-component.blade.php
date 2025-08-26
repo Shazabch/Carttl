@@ -369,7 +369,7 @@
                     <h4>Buy It Now</h4>
                     <div class="buy-now-price">{{ format_currency($selected_vehicle->price) }}</div>
                     <p>Skip the auction and purchase immediately</p>
-                    @if (auth()->id())
+                 
                     <button type="button" class="btn btn-light" data-bs-toggle="modal"
                         data-bs-target="#buyNowModal">
                         <i class="fas fa-shopping-cart"></i> Buy It Now
@@ -377,18 +377,7 @@
                     <a href="#bidding" class="btn btn-light">
                         <i class="fas fa-gavel me-2"></i> Place Bid
                     </a>
-                    @else
-                    <a href="/login" class="btn btn-light text-primary ">
-
-                        <i class="fas fa-shopping-cart me-2"></i>Buy It Now <div class="spinner">
-                        </div>
-                    </a>
-                    <a href="#bidding" class="btn btn-light text-primary ">
-
-                        <i class="fas fa-gavel me-2"></i>Place Bid <div class="spinner"></div>
-                    </a>
-                    @endif
-
+                 
 
                 </div>
                 @else

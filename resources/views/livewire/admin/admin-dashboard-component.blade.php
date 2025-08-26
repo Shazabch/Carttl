@@ -104,6 +104,23 @@
                 </div>
             </div>
 
+            <!-- sale enquiry -->
+              <div class="col-md-4 mt-3">
+                <div class="card shadow-sm border-0 bg-white">
+                    <div class="card-body d-flex justify-content-between align-items-start">
+                        <div>
+                            <h5 class="card-title text-dark">Sale Enquiries</h5>
+                            <h3 class="fw-bold mb-2">{{ $sellenquiryCount }}</h3>
+                            <p class="card-text">Check seller requests and inquiries</p>
+                            <a href="{{ route('admin.sell.list') }}" class="btn btn-sm btn-primary">See Enquiries</a>
+                        </div>
+                        <div class="icon-container text-warning" style="font-size: 2.5rem;">
+                            <i class="fas fa-question-circle"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
         </div>
     </div>
 </div>
