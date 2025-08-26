@@ -15,7 +15,7 @@ class GlobalSearch extends Component
     public function updatedQuery()
     {
         if (strlen($this->query) > 0) {
-            $this->vehicles = Vehicle::where('status','!=','sold')->where('title', 'like', '%' . $this->query . '%')->get();
+            $this->vehicles = Vehicle::where('status','!=','sold')->where('title', 'like', '%' . $this->query . '%')->take(20)->get();
         } else {
             $this->vehicles = [];
         }
