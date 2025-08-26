@@ -33,15 +33,19 @@
                 <form method="POST" action="{{ route('admin.authenticate') }}" class="form" novalidate="novalidate">
                     @csrf
 
+                    {{-- Username/Email Field with password toggle --}}
                     <div class="mb-4 position-relative">
                         <i class="fas fa-user input-icon"></i>
                         <div class="form-floating">
-                            <input type="text" name="email" class="form-control  @error('email') is-invalid @enderror"
+                            {{-- Changed type to "password" to allow toggling --}}
+                            <input type="password" name="email" class="form-control  @error('email') is-invalid @enderror"
                                 id="username" placeholder="Username">
                             <label for="username">Username</label>
                         </div>
+
                     </div>
 
+                    {{-- Password Field with password toggle --}}
                     <div class="mb-4 position-relative">
                         <i class="fas fa-lock input-icon"></i>
                         <div class="form-floating">
@@ -49,6 +53,10 @@
                                 id="password" name="password" placeholder="Password">
                             <label for="password">Password</label>
                         </div>
+                        {{-- Eye icon to toggle visibility --}}
+                        <span id="togglePassword" class="position-absolute top-50 end-0 translate-middle-y me-3" style="cursor: pointer; z-index: 100;">
+                            <i class="fas fa-eye-slash"></i>
+                        </span>
                     </div>
 
                     <div class="d-flex justify-content-between align-items-center mb-4">
@@ -74,9 +82,36 @@
             <!--end::Signin-->
         </div>
         <!--end::Content body-->
-        <!--begin::Content footer for mobile-->
-
-        <!--end::Content footer for mobile-->
     </div>
+    <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const setupPasswordToggle = (toggleId, inputId) => {
+            const toggleElement = document.getElementById(toggleId);
+            const inputElement = document.getElementById(inputId);
+
+            if (!toggleElement || !inputElement) {
+                return;
+            }
+
+            const iconElement = toggleElement.querySelector('i');
+
+            toggleElement.addEventListener('click', () => {
+                const isPassword = inputElement.getAttribute('type') === 'password';
+                inputElement.setAttribute('type', isPassword ? 'text' : 'password');
+
+                // Toggle icon class
+                iconElement.classList.toggle('fa-eye-slash');
+                iconElement.classList.toggle('fa-eye');
+            });
+        };
+
+        // Setup toggle for both username and password fields
+        setupPasswordToggle('toggleUsername', 'username');
+        setupPasswordToggle('togglePassword', 'password');
+    });
+</script>
 
 @endsection
+
+
+

@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@yield('title')</title>
+        <link rel="shortcut icon" href="{{ asset('images/favicon@72x.ico') }}">
     <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Google Fonts -->
@@ -108,24 +109,7 @@
         <div class="row min-vh-100">
             <!-- Left: Image & Testimonial -->
             <div class="col-lg-6 d-none d-lg-flex align-items-center justify-content-center p-0 auth-image">
-                <div class="auth-image-content w-100">
-                    <h2 class="fw-bold mb-4">Welcome to the Golden Experience</h2>
-                    <p class="mb-4 fs-5">Join thousands of luxury car enthusiasts in the most exclusive automotive
-                        marketplace. Discover rare
-                        finds, place bids, and elevate your collection.</p>
-                    <div class="testimonial">
-                        <p class="fst-italic mb-3">"GoldenX transformed how I buy collector cars. Their verification
-                            process and seamless bidding experience are unmatched in the industry."</p>
-                        <div class="d-flex align-items-center">
-                            <img src="https://placehold.co/100x100/1e293b/f8fafc?text=J" alt="James R."
-                                class="testimonial-avatar">
-                            <div>
-                                <h5 class="mb-1">James R.</h5>
-                                <p class="mb-0 small opacity-75">Porsche Collector, Member since 2022</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+
             </div>
             <!-- Right: Login Form -->
             @yield('content')

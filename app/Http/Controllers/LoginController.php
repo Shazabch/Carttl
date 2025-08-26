@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use App\Notifications\AccountCreatedConfirmation;
+use Illuminate\Support\Facades\Notification;
 
 class LoginController extends Controller
 {
@@ -53,7 +55,7 @@ class LoginController extends Controller
     public function processRegister(Request $request)
     {
         $rules = [
-            'username' => 'required|min:3',
+            'name' => 'required|min:3',
             'email' => 'required|email|unique:users',
             'password' => 'required|min:5|confirmed',
             'password_confirmation' => 'required',
@@ -65,22 +67,24 @@ class LoginController extends Controller
         }
 
         $user = new User();
-        $user->name = $request->username;
+        $user->name = $request->name;
         $user->email = $request->email;
         $user->password = Hash::make($request->password);
         $user->role = 'customer';
         $user->save();
-
-        // --- MODIFICATION START ---
-        // After creating the new user, sync any guest favorites from the session
-        $this->syncSessionFavorites($user);
-        // --- MODIFICATION END ---
-
+        Notification::send($user, new AccountCreatedConfirmation($user, $request->password));
+        $user->syncRoles('customer');
         // This is only necessary if you are using a third-party roles package like Spatie
         // If not, you can remove this line.
         // $user->syncRoles('customer');
 
-        return redirect()->route('account.login')->with('success', 'You have successfully registered.');
+        if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
+            $user = Auth::user();
+            $this->syncSessionFavorites($user);
+            return redirect()->route('account.dashboard')->with('success', 'You have successfully registered.');
+        } else {
+            return redirect()->route('account.login')->with('error', 'Either email or password is incorrect.');
+        }
     }
 
 
