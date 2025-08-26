@@ -176,7 +176,7 @@
             <h3 class="font-weight-bold m-0">Notification
                 <small class="text-muted font-size-sm ml-2">.</small>
             </h3>
-            <a href="#" class="btn btn-xs btn-icon btn-light btn-hover-primary" id="kt_quick_user_close">
+            <a href="#" class="btn btn-xs btn-icon btn-light btn-hover-primary" id="kt_notification_close">
                 <i class="ki ki-close icon-xs text-muted"></i>
             </a>
         </div>
@@ -200,7 +200,7 @@
             <h3 class="font-weight-bold m-0">User Profile
                 <small class="text-muted font-size-sm ml-2">.</small>
             </h3>
-            <a href="#" class="btn btn-xs btn-icon btn-light btn-hover-primary" id="kt_quick_user_close">
+            <a href="#" class="btn btn-xs btn-icon btn-light btn-hover-primary" id="kt_user_close">
                 <i class="ki ki-close icon-xs text-muted"></i>
             </a>
         </div>
@@ -456,6 +456,7 @@
         </div>
         <!--end::Content-->
     </div>
+    
     <!-- end::User Panel-->
     <!--begin::Quick Cart-->
     <div id="kt_quick_cart" class="offcanvas offcanvas-right p-10">

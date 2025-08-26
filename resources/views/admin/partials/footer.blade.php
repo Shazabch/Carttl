@@ -159,30 +159,49 @@
 </script>
 <script>
     document.addEventListener("DOMContentLoaded", function() {
-        const toggleBtn = document.getElementById('kt_quick_notification_toggle');
-        const closeBtn = document.getElementById('kt_quick_user_close');
-        const offcanvas = document.getElementById('kt_modal_notification');
+        // Notifications
+        const notifToggle = document.getElementById('kt_quick_notification_toggle');
+        const notifClose = document.getElementById('kt_notification_close');
+        const notifOffcanvas = document.getElementById('kt_modal_notification');
 
-        // Open offcanvas
-        toggleBtn?.addEventListener('click', function() {
-            offcanvas?.classList.add('offcanvas-on');
+        notifToggle?.addEventListener('click', () => {
+            notifOffcanvas?.classList.add('offcanvas-on');
         });
 
-        // Close on X
-        closeBtn?.addEventListener('click', function(e) {
+        notifClose?.addEventListener('click', (e) => {
             e.preventDefault();
-            offcanvas?.classList.remove('offcanvas-on');
+            notifOffcanvas?.classList.remove('offcanvas-on');
         });
 
-        // Close on outside click
+        // User
+        const userToggle = document.getElementById('kt_quick_user_toggle');
+        const userClose = document.getElementById('kt_user_close');
+        const userOffcanvas = document.getElementById('kt_quick_user');
+
+        userToggle?.addEventListener('click', () => {
+            userOffcanvas?.classList.add('offcanvas-on');
+        });
+
+        userClose?.addEventListener('click', (e) => {
+            e.preventDefault();
+            userOffcanvas?.classList.remove('offcanvas-on');
+        });
+
+        // Global outside click handler (closes any open offcanvas)
         document.addEventListener('click', function(event) {
-            const isClickInside = offcanvas.contains(event.target) || toggleBtn.contains(event.target);
-            if (!isClickInside && offcanvas.classList.contains('offcanvas-on')) {
-                offcanvas.classList.remove('offcanvas-on');
-            }
+            [notifOffcanvas, userOffcanvas].forEach(offcanvas => {
+                if (offcanvas?.classList.contains('offcanvas-on')) {
+                    const toggleBtn = (offcanvas.id === 'kt_modal_notification') ? notifToggle : userToggle;
+                    const isClickInside = offcanvas.contains(event.target) || toggleBtn.contains(event.target);
+                    if (!isClickInside) {
+                        offcanvas.classList.remove('offcanvas-on');
+                    }
+                }
+            });
         });
     });
 </script>
+
 
 <script src="https://unpkg.com/filepond@^4/dist/filepond.js"></script>
 <script>
