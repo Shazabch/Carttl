@@ -9,7 +9,7 @@
                     <p class="text-secondary mb-0">Looking for your next ride? Check out our featured cars—great deals on the most popular models, all in one place..</p>
                 </div>
                 <div class="col-lg-4 text-end">
-                    <a href="" class="btn-main">View All</a>
+                    <a href="/buy-cars" class="btn-main">View All</a>
                 </div>
             </div>
             <div class="cars-card-slider owl-carousel owl-theme">
