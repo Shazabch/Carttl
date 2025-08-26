@@ -57,14 +57,9 @@
                 <div class="brand flex-column-auto" id="kt_brand">
                     <!--begin::Logo-->
                     <a href="{{ route('admin.dashboard') }}" class="brand-logo">
-                        <div class="d-flex flex-center">
-                            <h3 class="font-weight-boldest text-white">
-                                Golden<span class="text-warning">X</span>
-                            </h3>
-
-                        </div>
-                        {{-- <img alt="Logo" src="{{ asset('assets/media/logos/logo-light.png') }}" /> --}}
+                        <img src="{{ asset('images/golden-x.png') }}" alt="header-logo" style="height:60px; width: 160px;">
                     </a>
+
                     <!--end::Logo-->
                     <!--begin::Toggle-->
                     <button class="brand-toggle btn btn-sm px-0" id="kt_aside_toggle">
@@ -214,22 +209,22 @@
         <div class="offcanvas-content pr-5 mr-n5">
             <!--begin::Header-->
             <div class="d-flex align-items-center mt-5">
-                <div class="symbol symbol-100 mr-5">
-                    <div class="symbol-label" style="background-image:url('assets/media/users/300_21.jpg')"></div>
+                <div class="symbol symbol-100 mr-5 d-flex align-items-center justify-content-center">
+                    <i class="fas fa-user fa-3x text-muted"></i>
                     <i class="symbol-badge bg-success"></i>
                 </div>
                 <div class="d-flex flex-column">
                     <a href="#"
                         class="font-weight-bold font-size-h5 text-dark-75 text-hover-primary text-capitalize">{{ Auth::guard('admin')->user()->name }}</a></a>
                     <div class="navi mt-2">
-                        <a href="#" class="navi-item">
+                        <!-- <a href="#" class="navi-item">
                             <span class="navi-link p-0 pb-2">
                                 <span class="navi-icon mr-1">
-                                    <span class="svg-icon svg-icon-lg svg-icon-primary">
-                                        <!--begin::Svg Icon | path:assets/media/svg/icons/Communication/Mail-notification.svg-->
-                                        <i class="fas fa-user-tag text-primary"></i>
-                                        <!--end::Svg Icon-->
-                                    </span>
+                                    <span class="svg-icon svg-icon-lg svg-icon-primary"> -->
+                        <!--begin::Svg Icon | path:assets/media/svg/icons/Communication/Mail-notification.svg-->
+                        <!-- <i class="fas fa-user-tag text-primary"></i> -->
+                        <!--end::Svg Icon-->
+                        <!-- </span>
                                 </span>
                                 {{-- <span class="navi-text text-muted text-hover-primary">
                                     @foreach (auth()->user()->roles as $role)
@@ -237,8 +232,8 @@
                                 @endforeach
                             </span> --}}
                             </span>
-                        </a>
-                        <a href="#" class="navi-item">
+                        </a> -->
+                        <a class="navi-item">
                             <span class="navi-link p-0 pb-2">
                                 <span class="navi-icon mr-1">
                                     <span class="svg-icon svg-icon-lg svg-icon-primary">
@@ -247,8 +242,8 @@
                                         <!--end::Svg Icon-->
                                     </span>
                                 </span>
-                                {{-- <span
-                                    class="navi-text text-muted text-hover-primary">{{ auth()->user()->email }}</span> --}}
+                                <span
+                                    class="navi-text text-muted text-hover-primary">{{ Auth::guard('admin')->user()->email }}</span>
                             </span>
                         </a>
                         {{-- <a href="#" class="btn btn-sm btn-light-primary font-weight-bolder py-2 px-5 logout-button">Sign Out</a> --}}
@@ -262,15 +257,15 @@
             <!--begin::Nav-->
             <div class="navi navi-spacer-x-0 p-0">
                 <!--begin::Item-->
-                <a href="#" class="navi-item">
+                <!-- <a href="#" class="navi-item">
                     <div class="navi-link">
                         <div class="symbol symbol-40 bg-light mr-3">
                             <div class="symbol-label">
-                                <span class="svg-icon svg-icon-md svg-icon-success">
+                                <span class="svg-icon svg-icon-md svg-icon-success"> -->
                                     <!--begin::Svg Icon | path:assets/media/svg/icons/General/Notification2.svg-->
-                                    <i class="fas fa-user-alt text-success"></i>
+                                    <!-- <i class="fas fa-user-alt text-success"></i> -->
                                     <!--end::Svg Icon-->
-                                </span>
+                                <!-- </span>
                             </div>
                         </div>
                         <div class="navi-text">
@@ -279,17 +274,17 @@
                             </div>
                         </div>
                     </div>
-                </a>
+                </a> -->
                 <!--end:Item-->
                 <!--begin::Item-->
-                <a href="#" class="navi-item">
+                <!-- <a href="#" class="navi-item">
                     <div class="navi-link">
                         <div class="symbol symbol-40 bg-light mr-3">
                             <div class="symbol-label">
                                 <span class="svg-icon svg-icon-md svg-icon-warning">
-                                    <!--begin::Svg Icon | path:assets/media/svg/icons/Shopping/Chart-bar1.svg-->
+                                    begin::Svg Icon | path:assets/media/svg/icons/Shopping/Chart-bar1.svg
                                     <i class="fas fa-key text-warning"></i>
-                                    <!--end::Svg Icon-->
+                                  
                                 </span>
                             </div>
                         </div>
@@ -298,7 +293,7 @@
                             <div class="text-muted">You can change your password here.</div>
                         </div>
                     </div>
-                </a>
+                </a> -->
                 <!--end:Item-->
                 <!--begin::Item-->
                 <a href="{{ route('admin.logout') }}" class="navi-item logout-button">
