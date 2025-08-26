@@ -625,72 +625,74 @@
     <!-- Testimonail -->
     @livewire('testimonial-listing-component')
     <!-- FAQ -->
-    <section class="section-faq ox-hidden">
-        <div class="container">
-            <div class="row align-items-center">
-                <div class="col-lg-5 mb-4 mb-lg-0" data-aos="fade-up" data-aos-delay="0" data-aos-duration="1000" data-aos-anchor-placement="top-bottom">
-                    <div class="faq-img">
-                        <img src="{{ asset('images/faq.webp') }}" class="img-fluid rounded-4" alt="">
-                    </div>
+   <section class="section-faq ox-hidden">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-5 mb-4 mb-lg-0" data-aos="fade-up" data-aos-delay="0" data-aos-duration="1000" data-aos-anchor-placement="top-bottom">
+                <div class="faq-img">
+                    <img src="{{ asset('images/faq.webp') }}" class="img-fluid rounded-4" alt="">
                 </div>
-                <div class="col-lg-7 ps-lg-5" data-aos="fade-left" data-aos-delay="300" data-aos-duration="1000"
-                    data-aos-easing="ease-out-cubic">
-                    <h3 class="sec-h-top mx-0 mb-3">Frequently Asked Questions</h3>
-                    <h2 class="h-35 fw-700 mb-4">Everything you need to know about ourservices</h2>
-                    <div class="custom-accordion">
-                        <div class="accordion accordion-flush" id="accordionFlushExample">
-                            <div class="accordion-item">
-                                <h2 class="accordion-header" id="flush-headingOne">
-                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                        data-bs-target="#flush-collapseOne" aria-expanded="false"
-                                        aria-controls="flush-collapseOne">
-                                        What Do I Need To Rent A Car?
-                                    </button>
-                                </h2>
-                                <div id="flush-collapseOne" class="accordion-collapse collapse"
-                                    aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
-                                    <div class="accordion-body">
-                                        <p>
-                                            Explore our diverse selection of high-end vehicles, choose your preferred pickup
-                                            and return dates, and select a location that best fits your needs
-                                        </p>
-                                    </div>
+            </div>
+            <div class="col-lg-7 ps-lg-5" data-aos="fade-left" data-aos-delay="300" data-aos-duration="1000"
+                data-aos-easing="ease-out-cubic">
+                <h3 class="sec-h-top mx-0 mb-3">Frequently Asked Questions</h3>
+                <h2 class="h-35 fw-700 mb-4">Everything you need to know about selling and auctioning cars</h2>
+                <div class="custom-accordion">
+                    <div class="accordion accordion-flush" id="accordionFlushExample">
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="flush-headingOne">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                    data-bs-target="#flush-collapseOne" aria-expanded="false"
+                                    aria-controls="flush-collapseOne">
+                                    How do I sell my car through your platform?
+                                </button>
+                            </h2>
+                            <div id="flush-collapseOne" class="accordion-collapse collapse"
+                                aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
+                                <div class="accordion-body">
+                                    <p>
+                                        Simply fill out our car selling enquiry form with your vehicle details. 
+                                        Our team will review your information and get in touch to guide you through 
+                                        the process of listing your car for direct sale or auction.
+                                    </p>
                                 </div>
                             </div>
-                            <div class="accordion-item">
-                                <h2 class="accordion-header" id="flush-headingTwo">
-                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                        data-bs-target="#flush-collapseTwo" aria-expanded="false"
-                                        aria-controls="flush-collapseTwo">
-                                        How Old Do I Need To Be To Rent A Car
-                                    </button>
-                                </h2>
-                                <div id="flush-collapseTwo" class="accordion-collapse collapse"
-                                    aria-labelledby="flush-headingTwo" data-bs-parent="#accordionFlushExample">
-                                    <div class="accordion-body">
-                                        <p>
-                                            Explore our diverse selection of high-end vehicles, choose your preferred pickup
-                                            and return dates, and select a location that best fits your needs
-                                        </p>
-                                    </div>
+                        </div>
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="flush-headingTwo">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                    data-bs-target="#flush-collapseTwo" aria-expanded="false"
+                                    aria-controls="flush-collapseTwo">
+                                    What happens once my car is listed in an auction?
+                                </button>
+                            </h2>
+                            <div id="flush-collapseTwo" class="accordion-collapse collapse"
+                                aria-labelledby="flush-headingTwo" data-bs-parent="#accordionFlushExample">
+                                <div class="accordion-body">
+                                    <p>
+                                        Your car will be visible to all registered bidders during the auction period. 
+                                        Interested buyers can place bids, and you will be notified of the highest offer 
+                                        once the auction ends.
+                                    </p>
                                 </div>
                             </div>
-                            <div class="accordion-item">
-                                <h2 class="accordion-header" id="flush-headingThree">
-                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                        data-bs-target="#flush-collapseThree" aria-expanded="false"
-                                        aria-controls="flush-collapseThree">
-                                        Can I Rent A Car With A Debit Card?
-                                    </button>
-                                </h2>
-                                <div id="flush-collapseThree" class="accordion-collapse collapse"
-                                    aria-labelledby="flush-headingThree" data-bs-parent="#accordionFlushExample">
-                                    <div class="accordion-body">
-                                        <p>
-                                            Explore our diverse selection of high-end vehicles, choose your preferred pickup
-                                            and return dates, and select a location that best fits your needs
-                                        </p>
-                                    </div>
+                        </div>
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="flush-headingThree">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                    data-bs-target="#flush-collapseThree" aria-expanded="false"
+                                    aria-controls="flush-collapseThree">
+                                    Can I set a reserve price for my car?
+                                </button>
+                            </h2>
+                            <div id="flush-collapseThree" class="accordion-collapse collapse"
+                                aria-labelledby="flush-headingThree" data-bs-parent="#accordionFlushExample">
+                                <div class="accordion-body">
+                                    <p>
+                                        Yes, you can set a minimum reserve price for your car. 
+                                        If bidding does not reach your reserve, the car will not be sold, 
+                                        ensuring you have full control over the final selling price.
+                                    </p>
                                 </div>
                             </div>
                         </div>
@@ -698,7 +700,9 @@
                 </div>
             </div>
         </div>
-    </section>
+    </div>
+</section>
+
     <!-- Blogs -->
     @livewire('blog-listing-component')
     <!-- CTA 3 -->
