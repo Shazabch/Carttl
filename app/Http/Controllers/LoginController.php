@@ -13,11 +13,29 @@ use Illuminate\Support\Facades\Notification;
 class LoginController extends Controller
 {
     // This method will show login page for customer
-    public function index()
+    public function index(Request $request)
     {
+        // Save intended URL if provided via ?redirect= or fallback to previous page
+        if ($request->has('redirect')) {
+            session(['url.intended' => $request->redirect]);
+        } elseif (url()->previous() !== url()->current()) {
+            session(['url.intended' => url()->previous()]);
+        }
 
         return view('account.login');
     }
+
+    public function register(Request $request)
+    {
+        if ($request->has('redirect')) {
+            session(['url.intended' => $request->redirect]);
+        } elseif (url()->previous() !== url()->current()) {
+            session(['url.intended' => url()->previous()]);
+        }
+
+        return view('account.register');
+    }
+
 
     public function authenticate(Request $request)
     {
@@ -48,10 +66,6 @@ class LoginController extends Controller
     }
 
 
-    public function register()
-    {
-        return view('account.register');
-    }
 
     public function processRegister(Request $request)
     {
@@ -82,7 +96,7 @@ class LoginController extends Controller
         if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
             $user = Auth::user();
             $this->syncSessionFavorites($user);
-            return redirect()->intended(route('account.dashboard'));
+            return redirect()->intended();
         } else {
             return redirect()->route('account.login')->with('error', 'Either email or password is incorrect.');
         }
