@@ -341,6 +341,14 @@
             <div class="col-lg-4">
                 @if ($selected_vehicle->is_auction)
                 <!-- Contact Card -->
+
+
+                <div id="bidding" class="sticky-sidebar">
+                    @livewire('bidding-component', ['selected_vehicle' => $selected_vehicle])
+
+                    <!-- Buy It Now Card -->
+
+                </div>
                 <div class="contact-card my-2">
                     <h4><i class="fas fa-phone"></i> Need Help?</h4>
                     <p>Our specialists are here to assist you</p>
@@ -357,19 +365,11 @@
                         </a>
                     </div>
                 </div>
-                @endif
-                @if ($selected_vehicle->is_auction)
-                <div id="bidding" class="sticky-sidebar">
-                    @livewire('bidding-component', ['selected_vehicle' => $selected_vehicle])
-
-                    <!-- Buy It Now Card -->
-
-                </div>
                 <div class="buy-now-card my-2">
                     <h4>Buy It Now</h4>
                     <div class="buy-now-price">{{ format_currency($selected_vehicle->price) }}</div>
                     <p>Skip the auction and purchase immediately</p>
-                 
+
                     <button type="button" class="btn btn-light" data-bs-toggle="modal"
                         data-bs-target="#buyNowModal">
                         <i class="fas fa-shopping-cart"></i> Buy It Now
@@ -377,7 +377,7 @@
                     <a href="#bidding" class="btn btn-light">
                         <i class="fas fa-gavel me-2"></i> Place Bid
                     </a>
-                 
+
 
                 </div>
                 @else
@@ -417,12 +417,12 @@
                         <h4><i class="fas fa-phone"></i> Need Help?</h4>
                         <p>Our specialists are here to assist you</p>
                         <div class="contact-options">
-                           <a id="whatsapp-btn"
-                            href="https://wa.me/971545752757"
-                            target="_blank"
-                            class="btn btn-primary btn-bid">
-                            <i class="fab fa-whatsapp"></i> Whatsapp
-                        </a>
+                            <a id="whatsapp-btn"
+                                href="https://wa.me/971545752757"
+                                target="_blank"
+                                class="btn btn-primary btn-bid">
+                                <i class="fab fa-whatsapp"></i> Whatsapp
+                            </a>
                             <a href="mailto:info@thegoldenx.com" class="btn btn-outline-primary btn-auto-bid">
                                 <i class="fas fa-envelope"></i>
                                 Email
@@ -515,7 +515,7 @@
     const message = "Hello, I am interested. Here is the page link: " + currentUrl;
 
     // Update WhatsApp link
-    document.getElementById("whatsapp-btn").href = 
+    document.getElementById("whatsapp-btn").href =
         `https://wa.me/${phone}?text=${message}`;
 </script>
 <script>

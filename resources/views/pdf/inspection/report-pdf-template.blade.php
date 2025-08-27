@@ -780,7 +780,7 @@
         {{-- ==================================================================== --}}
         {{-- == 1. Exterior Section                                            == --}}
         {{-- ==================================================================== --}}
-        <div class="report-card">
+       <div class="report-card">
             <div class="card-header"><i class="fa-solid fa-brush"></i>Exterior</div>
             <div class="card-body">
                 <table class="details-table">
@@ -798,36 +798,10 @@
                     </tr>
                     {{-- Row 1 of other fields --}}
                     <tr>
-                        @foreach(['convertible', 'blindSpot', 'sideSteps', 'wheelsType', 'rimsSizeFront'] as $field)
-                        <td>
-                            <div class="item-label"><i class="{{ $fieldIcons[$field] ?? 'fas fa-circle-notch' }}"></i> {{ Str::of($field)->kebab()->replace('-', ' ')->title() }}</div>
-                            @php $data = $reportInView->{$field} ?? 'N/A'; $statusInfo = getStatusInfo($data); @endphp
-                            @if(is_array($data)) <div class="item-value">
-                                <ul class="item-value-list">@foreach($data as $value)<li>{{ $value }}</li>@endforeach</ul>
-                            </div>
-                            @elseif($statusInfo['class'] !== 'item-value') <div class="status-pill {{ $statusInfo['class'] }}"><i class="{{ $statusInfo['icon'] }}"></i>{{ $data }}</div>
-                            @else <div class="item-value">{{ $data }}</div> @endif
-                        </td>
-                        @endforeach
+                       
                     </tr>
                     {{-- Row 2 of other fields --}}
-                    <tr>
-                        @foreach(['rimsSizeRear'] as $field)
-                        <td>
-                            <div class="item-label"><i class="{{ $fieldIcons[$field] ?? 'fas fa-circle-notch' }}"></i> {{ Str::of($field)->kebab()->replace('-', ' ')->title() }}</div>
-                            @php $data = $reportInView->{$field} ?? 'N/A'; $statusInfo = getStatusInfo($data); @endphp
-                            @if(is_array($data)) <div class="item-value">
-                                <ul class="item-value-list">@foreach($data as $value)<li>{{ $value }}</li>@endforeach</ul>
-                            </div>
-                            @elseif($statusInfo['class'] !== 'item-value') <div class="status-pill {{ $statusInfo['class'] }}"><i class="{{ $statusInfo['icon'] }}"></i>{{ $data }}</div>
-                            @else <div class="item-value">{{ $data }}</div> @endif
-                        </td>
-                        @endforeach
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td> {{-- 4 empty cells --}}
-                    </tr>
+                   
                 </table>
             </div>
         </div>
@@ -921,7 +895,7 @@
         {{-- ==================================================================== --}}
         {{-- == 4. Tires Section                                               == --}}
         {{-- ==================================================================== --}}
-        <div class="report-card">
+         <div class="report-card">
             <div class="card-header"><i class="fa-solid fa-circle-dot"></i>Tires</div>
             <div class="card-body">
                 <table class="details-table">
@@ -941,7 +915,7 @@
                     </tr>
                     {{-- Row 2 --}}
                     <tr>
-                        @foreach(['spareTire'] as $field)
+                        @foreach(['spareTire','wheelsType', 'rimsSizeFront','rimsSizeRear'] as $field)
                         <td>
                             <div class="item-label"><i class="{{ $fieldIcons[$field] ?? 'fas fa-circle-notch' }}"></i> {{ Str::of($field)->kebab()->replace('-', ' ')->title() }}</div>
                             @php $data = $reportInView->{$field} ?? 'N/A'; $statusInfo = getStatusInfo($data); @endphp
@@ -953,9 +927,7 @@
                         </td>
                         @endforeach
                         <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td> {{-- 4 empty cells --}}
+                       
                     </tr>
                     {{-- Full-width row for Tire Comments --}}
                     <tr>
@@ -977,7 +949,7 @@
         {{-- ==================================================================== --}}
         {{-- == 5. Car Specs Section                                           == --}}
         {{-- ==================================================================== --}}
-        <div class="report-card">
+         <div class="report-card">
             <div class="card-header"><i class="fa-solid fa-sliders"></i>Car Specs</div>
             <div class="card-body">
                 <table class="details-table">
@@ -1008,7 +980,7 @@
                         @endforeach
                     </tr>
                     <tr>
-                        @foreach(['headsDisplay','premiumSound','carbonFiber'] as $field)
+                        @foreach(['headsDisplay','premiumSound','carbonFiber','convertible','sideSteps'] as $field)
                         <td>
                             <div class="item-label"><i class="{{ $fieldIcons[$field] ?? 'fas fa-circle-notch' }}"></i> {{ Str::of($field)->kebab()->replace('-', ' ')->title() }}</div>
                             @php $data = $reportInView->{$field} ?? 'N/A'; $statusInfo = getStatusInfo($data); @endphp
@@ -1019,8 +991,7 @@
                             @else <div class="item-value">{{ $data }}</div> @endif
                         </td>
                         @endforeach
-                        <td></td>
-                        <td></td> {{-- 2 empty cells --}}
+                       
                     </tr>
                 </table>
             </div>
