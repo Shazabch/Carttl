@@ -63,6 +63,9 @@
                                 {{ $mileageDisplay }}
                             </p>
                         </div>
+                         <div class="col-md-6">
+                            <p><strong>Color:</strong> {{ $vehicle->color ?? 'N/A' }}</p>
+                        </div>
                     </div>
                 </div>
             </div>

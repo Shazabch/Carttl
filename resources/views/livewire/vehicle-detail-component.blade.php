@@ -161,15 +161,15 @@
                                         </div>
                                         <div class="col-lg-6 mb-3">
                                             <div class="spec-item"><i class="fas fa-road"></i>
-                                                <div><span class="spec-label">Drivetrain</span><span
-                                                        class="spec-value">{{ $selected_vehicle->drive_type }}</span>
+                                                <div><span class="spec-label">Drive Type</span><span
+                                                        class="spec-value">{{ $selected_vehicle->drive_type ?? 'Fwd' }}</span>
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="col-lg-6 mb-3">
                                             <div class="spec-item"><i class="fas fa-palette"></i>
                                                 <div><span class="spec-label">Color</span><span
-                                                        class="spec-value">{{ $selected_vehicle->getColorLabelAttribute() }}</span>
+                                                        class="spec-value">{{ $selected_vehicle->color }}</span>
                                                 </div>
                                             </div>
                                         </div>
@@ -193,6 +193,27 @@
                                     <div class="row g-3">
                                         <div class="col-md-12 mx-2">
                                             {{ $selected_vehicle->description ?? 'No Description Available' }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- remarks -->
+                          <div class="detail-card accordion-item">
+                            <div class="detail-header accordion-header" id="headingSeven">
+                                <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                                    data-bs-target="#collapseSeven" aria-expanded="true"
+                                    aria-controls="collapseSeven">
+                                    <h3 class="detail-title mb-0"><i class="fas fa-file-alt me-2"></i>Car
+                                        Remarks</h3>
+                                </button>
+                            </div>
+                            <div id="collapseSeven" class="accordion-collapse collapse"
+                                aria-labelledby="headingSeven" data-bs-parent="#vehicleDetailsAccordion">
+                                <div class="detail-content">
+                                    <div class="row g-3">
+                                        <div class="col-md-12 mx-2">
+                                            {{ $selected_vehicle->remarks ?? 'No Remarks Available' }}
                                         </div>
                                     </div>
                                 </div>

@@ -61,7 +61,7 @@
                                 <td>
                                     @if($enquiry->vehicle)
                                     <div class="d-flex flex-wrap gap-1">
-                                        <img src="{{ asset('storage/' . $enquiry->vehicle->coverImage->path) }}" width="40" height="40" class="rounded shadow-sm" style="object-fit: cover;" alt="Vehicle Image">
+                                        <img src="{{ asset('storage/' . $enquiry->vehicle->coverImage?->path) }}" width="40" height="40" class="rounded shadow-sm" style="object-fit: cover;" alt="Vehicle Image">
                                     </div>
                                     @else
                                     <span class="badge bg-secondary">No Images</span>
@@ -185,7 +185,7 @@
                 <td>
                      @if($enquiry->vehicle)
                                     <div class="d-flex flex-wrap gap-1">
-                                        <img src="{{ asset('storage/' . $enquiry->vehicle->coverImage->path) }}" width="40" height="40" class="rounded shadow-sm" style="object-fit: cover;" alt="Vehicle Image">
+                                        <img src="{{ asset('storage/' . $enquiry->vehicle->coverImage?->path) }}" width="40" height="40" class="rounded shadow-sm" style="object-fit: cover;" alt="Vehicle Image">
                                     </div>
                                     @else
                                     <span class="badge bg-secondary">No Images</span>
