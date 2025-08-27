@@ -289,7 +289,28 @@
                     </div>
                 </div>
             </div>
-
+           {{-- soft door--}}
+            <div class="col-md-6">
+                <div class="form-item">
+                    <label class="form-item-label">Soft Door Closing</label>
+                    <div class="btn-group btn-group-toggle d-flex flex-wrap" data-toggle="buttons">
+                        @foreach(['Yes', 'No'] as $option)
+                            @php
+                                $property = 'soft_door_closing';
+                                $selected = ($reportData[$property] ?? null) === $option;
+                                $class = $selected ? ($optionClasses[$option] ?? 'active-primary') : 'btn-light';
+                            @endphp
+                            <button type="button" wire:click="setSingleSelection('{{ $property }}', '{{ $option }}')" class="btn {{ $class }}">
+                                {{ $option }}
+                            </button>
+                        @endforeach
+                    </div>
+                </div>
+            </div>
+           {{-- f-conclusion --}}
+           <div class="col-md-12">
+                @include('livewire.admin.inspection.sections.partials.input-text', ['label' => 'Final Conclusion', 'property' => 'final_conclusion'])
+            </div>
         </div>
     </div>
 </div>
