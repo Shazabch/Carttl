@@ -74,9 +74,9 @@
           <div class="copyright">
               <p class="mb-0">Copyright <i class="fas fa-copyright me-2"></i>{{ now()->year }}. All rights reserved
                   by <a href="/" class="text-primary text-decoration-none fw-normal">GoldenX</a> LLC.
-                  Designed and developed by
+                  <!-- Designed and developed by
                   <a href="https://logixcontact.com/" class="text-primary text-decoration-none fw-normal">Logix
-                      Contact Pvt Ltd</a>
+                      Contact Pvt Ltd</a> -->
               </p>
           </div>
 

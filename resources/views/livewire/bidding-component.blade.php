@@ -40,7 +40,7 @@
             </div>
             <div class="action-buttons mb-2">
 
-               {{-- <livewire:favorite-button-detail-component :vehicleId="$selected_vehicle->id" /> --}}
+            {{-- <livewire:favorite-button-detail-component :vehicleId="$selected_vehicle->id" /> --}} 
 
                 <!-- <button class="btn-icon" data-bs-toggle="tooltip" title="Share">
                     <i class="fas fa-share-alt"></i>
@@ -92,7 +92,7 @@
                 @endforeach
             </div>
             @endif
-            <div class="bid-actions">
+            <div class="bid-actions" id="bidAction">
                 @if(auth()->id())
                 <div class="bid-input-group">
                     <input type="number" wire:model.live="current_bid" class="form-control bid-input"
@@ -150,6 +150,7 @@
                 const startDate = new Date("{{ \Carbon\Carbon::parse($selected_vehicle->auction_start_date)->toIso8601String() }}").getTime();
                 const endDate = new Date("{{ \Carbon\Carbon::parse($selected_vehicle->auction_end_date)->toIso8601String() }}").getTime();
                 const heading = document.getElementById("auctionTimerHeading");
+                const bidAction = document.getElementById("bidAction");
                 const wrapper = document.getElementById("auctionTimerWrapper");
                 const hoursEl = document.getElementById("hours");
                 const minutesEl = document.getElementById("minutes");
@@ -162,6 +163,7 @@
                         // Before auction
                         heading.textContent = "";
                         wrapper.style.display = "none";
+                        bidAction.style.display = 'none';
                         clearInterval(timerInterval);
                         return;
                     }
@@ -186,6 +188,7 @@
                         // After auction
                         heading.textContent = "Auction Ended";
                         wrapper.style.display = "none";
+                        bidAction.style.display = 'none';
                         clearInterval(timerInterval);
                         return;
                     }
