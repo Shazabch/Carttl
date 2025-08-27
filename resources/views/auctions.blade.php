@@ -9,7 +9,7 @@
 
 
 <script>
-    // ===== VIEW SWITCHING FUNCTIONALITY ===== 
+    // ===== VIEW SWITCHING FUNCTIONALITY =====
     document.addEventListener('DOMContentLoaded', function() {
         const viewButtons = document.querySelectorAll('[data-view]');
         const gridView = document.getElementById('gridView');
