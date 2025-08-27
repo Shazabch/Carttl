@@ -4,6 +4,7 @@ Register - GoldenX
 @endsection
 @section('content')
 <div class="col-lg-6 d-flex align-items-center justify-content-center bg-white">
+
     <div class="w-100">
         <div class="d-flex align-items-center justify-content-center bg-white min-vh-100">
             <div class="w-100" style="max-width: 600px;">
@@ -93,9 +94,16 @@ Register - GoldenX
                     </div>
                     <button type="submit" class="btn btn-warning w-100 fw-bold py-3">Create Account</button>
                 </form>
+
                 <div class="text-center mt-4 text-secondary">
+
                     <p>Already have an account? <a href="{{ route('account.login') }}"
                             class="text-warning fw-medium text-decoration-none">Sign in</a></p>
+                             <div class="mb-3"> {{-- Added margin-bottom here --}}
+                        <button type="button" onclick="window.history.back()" class="btn btn-dark btn-sm">
+                            <i class="fas fa-arrow-left me-2"></i> Back
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>

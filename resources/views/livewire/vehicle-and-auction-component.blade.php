@@ -1,9 +1,15 @@
 <div>
     <div class="car-listing-section">
         <div class="container-fluid">
-            <div class="row">
-                <div class="col-lg-3">
 
+            <div class="row">
+
+                <div class="col-lg-3">
+                    <div class="mb-3"> {{-- Added margin-bottom here --}}
+                        <button type="button" onclick="window.history.back()" class="btn btn-primary btn-sm">
+                            <i class="fas fa-arrow-left me-2"></i> Back
+                        </button>
+                    </div>
                     <div class="filter-box">
                         <div class="bx-white mb-4">
                             <div class="filter-header d-flex justify-content-between align-items-center mb-3">
@@ -101,6 +107,7 @@
                 <div class="col-lg-9">
                     <div class="listing-toolbar">
                         <div class="row align-items-center">
+
                             <div class="col-md-6">
                                 <div class="view-options">
                                     <span class="me-3 text-muted">View:</span>
@@ -115,7 +122,9 @@
                                 </div>
                             </div>
                             <div class="col-md-6">
+
                                 <div class="d-flex align-items-center justify-content-md-end">
+
                                     <label class="me-2 text-muted">Sort by:</label>
                                     <select wire:model.live="sortBy" class="form-select form-select-sm" style="width: auto;">
                                         @if($section!='Vehicles')
