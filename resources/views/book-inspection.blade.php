@@ -112,295 +112,71 @@
         </div>
     </div>
 </section>
-<section class="inspection-success-story">
-    <div class="container">
-        <div class="row mb-4">
-            <div class="col-lg-12">
-                <h2 class="h-35 fw-700">Car Inspection Success Stories</h2>
-                <p class="">Hear from our satisfied customers who trusted us with their car inspections.</p>
-            </div>
-        </div>
-    </div>
-    <div class="testimonail_slider slider-testimonal owl-carousel owl-theme">
-        <div class="item" data-aos="fade-left" data-aos-duration="1000" data-aos-easing="ease-out-cubic">
-            <div class="item-wrap">
-                <div class="item-wrap-header">
-                    <ul class="item-wrap-stars">
-                        <li>
-                            <i class="fa-solid fa-star"></i>
-                            <i class="fa-solid fa-star"></i>
-                            <i class="fa-solid fa-star"></i>
-                            <i class="fa-solid fa-star"></i>
-                            <i class="fa-solid fa-star"></i>
-                        </li>
-                    </ul>
-                </div>
-                <div class="item-wrap-content">
-                    <p>
-                        Renting a car from nova ride was a great decision. Not only did I get a reliable and comfortable
-                        vehicle, but the prices were also very competitive.
-                    </p>
-                </div>
-                <div class="item-wrap-bio">
-                    <div class="item-wrap-details">
-                        <div class="item-avatar">
-                            <img loading="lazy" decoding="async" width="60" height="60" src="https://demo.awaikenthemes.com/novaride/wp-content/uploads/2024/08/author-1.jpg" class="attachment-full size-full" alt="">
-                        </div>
-                        <div class="item-wrap-info">
-                            <strong class="item-wrap-name">Floyd Miles</strong>
-                            <span class="item-wrap-title">Project Manager</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="item" data-aos="fade-left" data-aos-duration="1000" data-aos-easing="ease-out-cubic">
-            <div class="item-wrap">
-                <div class="item-wrap-header">
-                    <ul class="item-wrap-stars">
-                        <li>
-                            <i class="fa-solid fa-star"></i>
-                            <i class="fa-solid fa-star"></i>
-                            <i class="fa-solid fa-star"></i>
-                            <i class="fa-solid fa-star"></i>
-                            <i class="fa-solid fa-star"></i>
-                        </li>
-                    </ul>
-                </div>
-                <div class="item-wrap-content">
-                    <p>
-                        Renting a car from nova ride was a great decision. Not only did I get a reliable and comfortable
-                        vehicle, but the prices were also very competitive.
-                    </p>
-                </div>
-                <div class="item-wrap-bio">
-                    <div class="item-wrap-details">
-                        <div class="item-avatar">
-                            <img loading="lazy" decoding="async" width="60" height="60" src="https://demo.awaikenthemes.com/novaride/wp-content/uploads/2024/08/author-1.jpg" class="attachment-full size-full" alt="">
-                        </div>
-                        <div class="item-wrap-info">
-                            <strong class="item-wrap-name">Floyd Miles</strong>
-                            <span class="item-wrap-title">Project Manager</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="item" data-aos="fade-left" data-aos-duration="1000" data-aos-easing="ease-out-cubic">
-            <div class="item-wrap">
-                <div class="item-wrap-header">
-                    <ul class="item-wrap-stars">
-                        <li>
-                            <i class="fa-solid fa-star"></i>
-                            <i class="fa-solid fa-star"></i>
-                            <i class="fa-solid fa-star"></i>
-                            <i class="fa-solid fa-star"></i>
-                            <i class="fa-solid fa-star"></i>
-                        </li>
-                    </ul>
-                </div>
-                <div class="item-wrap-content">
-                    <p>
-                        Renting a car from nova ride was a great decision. Not only did I get a reliable and comfortable
-                        vehicle, but the prices were also very competitive.
-                    </p>
-                </div>
-                <div class="item-wrap-bio">
-                    <div class="item-wrap-details">
-                        <div class="item-avatar">
-                            <img loading="lazy" decoding="async" width="60" height="60" src="https://demo.awaikenthemes.com/novaride/wp-content/uploads/2024/08/author-1.jpg" class="attachment-full size-full" alt="">
-                        </div>
-                        <div class="item-wrap-info">
-                            <strong class="item-wrap-name">Floyd Miles</strong>
-                            <span class="item-wrap-title">Project Manager</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="item" data-aos="fade-left" data-aos-duration="1000" data-aos-easing="ease-out-cubic">
-            <div class="item-wrap">
-                <div class="item-wrap-header">
-                    <ul class="item-wrap-stars">
-                        <li>
-                            <i class="fa-solid fa-star"></i>
-                            <i class="fa-solid fa-star"></i>
-                            <i class="fa-solid fa-star"></i>
-                            <i class="fa-solid fa-star"></i>
-                            <i class="fa-solid fa-star"></i>
-                        </li>
-                    </ul>
-                </div>
-                <div class="item-wrap-content">
-                    <p>
-                        Renting a car from nova ride was a great decision. Not only did I get a reliable and comfortable
-                        vehicle, but the prices were also very competitive.
-                    </p>
-                </div>
-                <div class="item-wrap-bio">
-                    <div class="item-wrap-details">
-                        <div class="item-avatar">
-                            <img loading="lazy" decoding="async" width="60" height="60" src="https://demo.awaikenthemes.com/novaride/wp-content/uploads/2024/08/author-1.jpg" class="attachment-full size-full" alt="">
-                        </div>
-                        <div class="item-wrap-info">
-                            <strong class="item-wrap-name">Floyd Miles</strong>
-                            <span class="item-wrap-title">Project Manager</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="item" data-aos="fade-left" data-aos-duration="1000" data-aos-easing="ease-out-cubic">
-            <div class="item-wrap">
-                <div class="item-wrap-header">
-                    <ul class="item-wrap-stars">
-                        <li>
-                            <i class="fa-solid fa-star"></i>
-                            <i class="fa-solid fa-star"></i>
-                            <i class="fa-solid fa-star"></i>
-                            <i class="fa-solid fa-star"></i>
-                            <i class="fa-solid fa-star"></i>
-                        </li>
-                    </ul>
-                </div>
-                <div class="item-wrap-content">
-                    <p>
-                        Renting a car from nova ride was a great decision. Not only did I get a reliable and comfortable
-                        vehicle, but the prices were also very competitive.
-                    </p>
-                </div>
-                <div class="item-wrap-bio">
-                    <div class="item-wrap-details">
-                        <div class="item-avatar">
-                            <img loading="lazy" decoding="async" width="60" height="60" src="https://demo.awaikenthemes.com/novaride/wp-content/uploads/2024/08/author-1.jpg" class="attachment-full size-full" alt="">
-                        </div>
-                        <div class="item-wrap-info">
-                            <strong class="item-wrap-name">Floyd Miles</strong>
-                            <span class="item-wrap-title">Project Manager</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
+ <!-- Testimonail -->
+    @livewire('testimonial-listing-component')
 <section class="section-faq ox-hidden">
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-lg-10">
-                <h2 class="h-35 fw-700 mb-4 text-center" data-aos="fade-up" data-aos-delay="300" data-aos-duration="1000" data-aos-easing="ease-out-cubic">Car Inspection FAQs</h2>
-                <div class="custom-accordion white" data-aos="fade-up" data-aos-delay="400" data-aos-duration="1000" data-aos-easing="ease-out-cubic">
+   <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-5 mb-4 mb-lg-0" data-aos="fade-up" data-aos-delay="0" data-aos-duration="1000" data-aos-anchor-placement="top-bottom">
+                <div class="faq-img">
+                    <img src="{{ asset('images/faq.webp') }}" class="img-fluid rounded-4" alt="">
+                </div>
+            </div>
+            <div class="col-lg-7 ps-lg-5" data-aos="fade-left" data-aos-delay="300" data-aos-duration="1000"
+                data-aos-easing="ease-out-cubic">
+                <h3 class="sec-h-top mx-0 mb-3">Frequently Asked Questions</h3>
+                <h2 class="h-35 fw-700 mb-4">Everything you need to know about selling and auctioning cars</h2>
+                <div class="custom-accordion">
                     <div class="accordion accordion-flush" id="accordionFlushExample">
                         <div class="accordion-item">
                             <h2 class="accordion-header" id="flush-headingOne">
-                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
-                                What is included in your car inspection?
-                            </button>
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                    data-bs-target="#flush-collapseOne" aria-expanded="false"
+                                    aria-controls="flush-collapseOne">
+                                    I have outstanding finance against my car. Can you buy it?
+                                </button>
                             </h2>
-                            <div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne"
-                            data-bs-parent="#accordionFlushExample">
-                            <div class="accordion-body">
-                                <p>Our inspection covers engine, brakes, suspension, lights, tyres, bodywork, interior components, and road test evaluation.</p>
-                            </div>
+                            <div id="flush-collapseOne" class="accordion-collapse collapse"
+                                aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
+                                <div class="accordion-body">
+                                    <p>
+                                        We can arrange settlement of any outstanding finance on your car. Please note that you will need to provide an in date letter detailing a current settlement figure from your finance company (e.g. bank). The settlement amount will be deducted from the amount paid to you, for your car. We will settle your outstanding amount.
+                                    </p>
+                                </div>
                             </div>
                         </div>
                         <div class="accordion-item">
                             <h2 class="accordion-header" id="flush-headingTwo">
-                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseTwo">
-                                How long does a vehicle inspection take?
-                            </button>
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                    data-bs-target="#flush-collapseTwo" aria-expanded="false"
+                                    aria-controls="flush-collapseTwo">
+                                    Is it possible to sell a car on behalf of a company?
+                                </button>
                             </h2>
-                            <div id="flush-collapseTwo" class="accordion-collapse collapse" aria-labelledby="flush-headingTwo"
-                            data-bs-parent="#accordionFlushExample">
-                            <div class="accordion-body">
-                                <p>The inspection usually takes 1.5 to 2 hours depending on the vehicle type and the level of service selected.</p>
-                            </div>
+                            <div id="flush-collapseTwo" class="accordion-collapse collapse"
+                                aria-labelledby="flush-headingTwo" data-bs-parent="#accordionFlushExample">
+                                <div class="accordion-body">
+                                    <p>
+                                        Yes. It is possible to sell a company car. Just bring along the following documents, and we will manage the process:
+                                    </p>
+                                </div>
                             </div>
                         </div>
                         <div class="accordion-item">
                             <h2 class="accordion-header" id="flush-headingThree">
-                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                data-bs-target="#flush-collapseThree" aria-expanded="false" aria-controls="flush-collapseThree">
-                                Can I book an inspection at my home or office?
-                            </button>
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                    data-bs-target="#flush-collapseThree" aria-expanded="false"
+                                    aria-controls="flush-collapseThree">
+                                    How can I be sure that I will receive payment?
+                                </button>
                             </h2>
-                            <div id="flush-collapseThree" class="accordion-collapse collapse" aria-labelledby="flush-headingThree"
-                            data-bs-parent="#accordionFlushExample">
-                            <div class="accordion-body">
-                                <p>Yes, we offer mobile inspection services where our certified inspector comes to your location for maximum convenience.</p>
-                            </div>
-                            </div>
-                        </div>
-                        <div class="accordion-item">
-                            <h2 class="accordion-header" id="flush-headingFour">
-                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                data-bs-target="#flush-collapseFour" aria-expanded="false" aria-controls="flush-collapseFour">
-                                Do I get a report after the inspection?
-                            </button>
-                            </h2>
-                            <div id="flush-collapseFour" class="accordion-collapse collapse" aria-labelledby="flush-headingFour"
-                            data-bs-parent="#accordionFlushExample">
-                            <div class="accordion-body">
-                                <p>Yes, a detailed digital inspection report is provided via email with findings, images, and recommendations.</p>
-                            </div>
-                            </div>
-                        </div>
-                        <div class="accordion-item">
-                            <h2 class="accordion-header" id="flush-headingFive">
-                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                data-bs-target="#flush-collapseFive" aria-expanded="false" aria-controls="flush-collapseFive">
-                                Is your inspection report valid for resale or insurance?
-                            </button>
-                            </h2>
-                            <div id="flush-collapseFive" class="accordion-collapse collapse" aria-labelledby="flush-headingFive"
-                            data-bs-parent="#accordionFlushExample">
-                            <div class="accordion-body">
-                                <p>Our reports are professionally formatted and accepted by most buyers, sellers, and insurance providers for documentation purposes.</p>
-                            </div>
-                            </div>
-                        </div>
-                        <div class="accordion-item">
-                            <h2 class="accordion-header" id="flush-headingSix">
-                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                data-bs-target="#flush-collapseSix" aria-expanded="false" aria-controls="flush-collapseSix">
-                                What happens if issues are found during inspection?
-                            </button>
-                            </h2>
-                            <div id="flush-collapseSix" class="accordion-collapse collapse" aria-labelledby="flush-headingSix"
-                            data-bs-parent="#accordionFlushExample">
-                            <div class="accordion-body">
-                                <p>You’ll receive a list of issues found, along with photos and recommendations for repairs or maintenance actions.</p>
-                            </div>
-                            </div>
-                        </div>
-                        <div class="accordion-item">
-                            <h2 class="accordion-header" id="flush-headingSeven">
-                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                data-bs-target="#flush-collapseSeven" aria-expanded="false" aria-controls="flush-collapseSeven">
-                                How much does a car inspection cost?
-                            </button>
-                            </h2>
-                            <div id="flush-collapseSeven" class="accordion-collapse collapse" aria-labelledby="flush-headingSeven"
-                            data-bs-parent="#accordionFlushExample">
-                            <div class="accordion-body">
-                                <p>Our inspection packages start from £59. The price depends on the vehicle type and the level of inspection you choose.</p>
-                            </div>
-                            </div>
-                        </div>
-                        <div class="accordion-item">
-                            <h2 class="accordion-header" id="flush-headingEight">
-                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                data-bs-target="#flush-collapseEight" aria-expanded="false" aria-controls="flush-collapseEight">
-                                Can I inspect a car before purchasing it?
-                            </button>
-                            </h2>
-                            <div id="flush-collapseEight" class="accordion-collapse collapse" aria-labelledby="flush-headingEight"
-                            data-bs-parent="#accordionFlushExample">
-                            <div class="accordion-body">
-                                <p>Absolutely. Pre-purchase inspections are one of our most requested services to ensure you're making a safe and informed decision.</p>
-                            </div>
+                            <div id="flush-collapseThree" class="accordion-collapse collapse"
+                                aria-labelledby="flush-headingThree" data-bs-parent="#accordionFlushExample">
+                                <div class="accordion-body">
+                                    <p>
+                                        we will sign a legally binding purchase agreement, which will have the details of the transaction and clearly marked terms and conditions. Our service includes payment directly to your bank account.
+                                    </p>
+                                </div>
                             </div>
                         </div>
                     </div>

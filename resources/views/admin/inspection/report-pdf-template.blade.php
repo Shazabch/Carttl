@@ -804,10 +804,10 @@
                     </tr>
                     {{-- Row 1 of other fields --}}
                     <tr>
-                       
+
                     </tr>
                     {{-- Row 2 of other fields --}}
-                   
+
                 </table>
             </div>
         </div>
@@ -911,7 +911,7 @@
                         </td>
                         @endforeach
                         <td></td>
-                       
+
                     </tr>
                     {{-- Full-width row for Tire Comments --}}
                     <tr>
@@ -975,7 +975,7 @@
                             @else <div class="item-value">{{ $data }}</div> @endif
                         </td>
                         @endforeach
-                       
+
                     </tr>
                 </table>
             </div>
@@ -1189,6 +1189,11 @@
                                     regarding the accuracy or completeness of any information contained in this Inspection
                                     Report, or the fitness of the information contained in this Inspection Report for any purpose
                                     intended. 9. If this Inspection Report is provided to you directly by Golden X, only you may
+                                    rely on the content of this Inspection Report, and Golden X does not accept any liability
+                                    whatsoever to any third-party you may choose to share this Inspection Report with. 10. If
+                                    this Inspection Report is provided to you by someone else than Golden X, you may not rely
+                                    on the content of this Inspection Report, and Golden X does not accept any liability
+                                    whatsoever to you in connection with this Inspection Report.
                                 </p>
                             </div>
                         </td>

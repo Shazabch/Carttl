@@ -1,10 +1,10 @@
 @extends('layouts.guest')
 @section('title')
-    Home - GoldenX
+Home - GoldenX
 @endsection
 @section('content')
-    <!-- Hero Section -->
-    {{-- <section class="hero-section d-flex align-items-center justify-content-center">
+<!-- Hero Section -->
+{{-- <section class="hero-section d-flex align-items-center justify-content-center">
         <div class="hero-bg"></div>
         <div class="container hero-content">
             <h1 class="hero-title">Discover Exceptional Automobiles</h1>
@@ -215,374 +215,374 @@
             </div>
         </div>
     </section> --}}
-    <section class="home-banner">
-        <video class="bg-video" autoplay muted loop playsinline>
-            <source src="{{asset('images/h-banner-2.mp4')}}" type="video/mp4">
-            Your browser does not support the video tag.
-        </video>
-        <div class="overlay"></div>
-        <div class="container">
-            <div class="row align-items-center">
-                <div class="col-xl-7">
-                    <div class="banner-content" data-aos="fade-up" data-aos-delay="400" data-aos-duration="1000"
-                        data-aos-easing="ease-out-cubic">
-                        <h5 class="banner-text-sm">Buy. Sell. Auction</h5>
-                        <h1 class="banner-heading mt-4 mb-3">Sell Your Car in 60 Minutes Get Your Free Car Evaluation</h1>
-                        <p class="p-text">From finding your dream ride to getting the best deal for your car,<br> we're here to make it easy and hassle-free.</p>
-                    </div>
-                </div>
-                <div class="col-xl-5">
-                    <div class="form-widget">
-                         <livewire:sell-car-home-component />
-                    </div>
+<section class="home-banner">
+    <video class="bg-video" autoplay muted loop playsinline>
+        <source src="{{asset('images/h-banner-2.mp4')}}" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+    <div class="overlay"></div>
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-xl-7">
+                <div class="banner-content" data-aos="fade-up" data-aos-delay="400" data-aos-duration="1000"
+                    data-aos-easing="ease-out-cubic">
+                    <h5 class="banner-text-sm">Buy. Sell. Auction</h5>
+                    <h1 class="banner-heading mt-4 mb-3">Sell Your Car in 60 Minutes Get Your Free Car Evaluation</h1>
+                    <p class="p-text">From finding your dream ride to getting the best deal for your car,<br> we're here to make it easy and hassle-free.</p>
                 </div>
             </div>
-            <div class="row d-none">
-                <div class="col-lg-12">
-                    <div class="filter-bar mt-4">
-                        <form class="">
-                            <div class="row align-items-center g-2">
-                                <div class="col-lg-12">
-                                    <ul class="nav filter-tabs" id="auctionTabs" role="tablist">
-                                        <li class="nav-item" role="presentation">
-                                            <button class="nav-link active" id="buy-tab" data-bs-toggle="tab"
-                                                data-bs-target="#buy" type="button" role="tab">Buy</button>
-                                        </li>
-                                        <li class="nav-item" role="presentation">
-                                            <button class="nav-link" id="bid-tab" data-bs-toggle="tab"
-                                                data-bs-target="#bid" type="button" role="tab">Bid</button>
-                                        </li>
-                                    </ul>
-                                </div>
-                                <div class="col-xl-3 col-lg-6">
-                                    {{-- <label for="make" class="form-label">Make</label> --}}
-                                    <select id="make" class="form-select">
-                                        <option value="">All Makes</option>
-                                        <option>Porsche</option>
-                                        <option>Ferrari</option>
-                                        <option>Lamborghini</option>
-                                        <option>Aston Martin</option>
-                                        <option>Bentley</option>
-                                        <option>McLaren</option>
-                                        <option>Mercedes-Benz</option>
-                                        <option>BMW</option>
-                                        <option>Audi</option>
+            <div class="col-xl-5">
+                <div class="form-widget">
+                    <livewire:sell-car-home-component />
+                </div>
+            </div>
+        </div>
+        <div class="row d-none">
+            <div class="col-lg-12">
+                <div class="filter-bar mt-4">
+                    <form class="">
+                        <div class="row align-items-center g-2">
+                            <div class="col-lg-12">
+                                <ul class="nav filter-tabs" id="auctionTabs" role="tablist">
+                                    <li class="nav-item" role="presentation">
+                                        <button class="nav-link active" id="buy-tab" data-bs-toggle="tab"
+                                            data-bs-target="#buy" type="button" role="tab">Buy</button>
+                                    </li>
+                                    <li class="nav-item" role="presentation">
+                                        <button class="nav-link" id="bid-tab" data-bs-toggle="tab"
+                                            data-bs-target="#bid" type="button" role="tab">Bid</button>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="col-xl-3 col-lg-6">
+                                {{-- <label for="make" class="form-label">Make</label> --}}
+                                <select id="make" class="form-select">
+                                    <option value="">All Makes</option>
+                                    <option>Porsche</option>
+                                    <option>Ferrari</option>
+                                    <option>Lamborghini</option>
+                                    <option>Aston Martin</option>
+                                    <option>Bentley</option>
+                                    <option>McLaren</option>
+                                    <option>Mercedes-Benz</option>
+                                    <option>BMW</option>
+                                    <option>Audi</option>
+                                </select>
+                            </div>
+                            <div class="col-xl-3 col-lg-6">
+                                {{-- <label for="model" class="form-label">Model</label> --}}
+                                <select id="model" class="form-select">
+                                    <option value="">All Models</option>
+                                    <option>911</option>
+                                    <option>Cayman</option>
+                                    <option>Boxster</option>
+                                </select>
+                            </div>
+                            <div class="col-xl-2 col-lg-6">
+                                {{-- <label class="form-label">Year</label> --}}
+                                <div class="input-group">
+                                    <select class="form-select" id="year-min">
+                                        <option value="">From</option>
+                                        <option>2023</option>
+                                        <option>2020</option>
+                                        <option>2015</option>
+                                        <option>2010</option>
+                                        <option>2000</option>
+                                        <option>1990</option>
+                                        <option>1980</option>
+                                        <option>1970</option>
+                                        <option>1960</option>
+                                    </select>
+                                    <select class="form-select" id="year-max">
+                                        <option value="">To</option>
+                                        <option>2025</option>
+                                        <option>2023</option>
+                                        <option>2020</option>
+                                        <option>2015</option>
+                                        <option>2010</option>
+                                        <option>2000</option>
+                                        <option>1990</option>
+                                        <option>1980</option>
                                     </select>
                                 </div>
-                                <div class="col-xl-3 col-lg-6">
-                                    {{-- <label for="model" class="form-label">Model</label> --}}
-                                    <select id="model" class="form-select">
-                                        <option value="">All Models</option>
-                                        <option>911</option>
-                                        <option>Cayman</option>
-                                        <option>Boxster</option>
+                            </div>
+                            <div class="col-xl-3 col-lg-6">
+                                {{-- <label class="form-label">Price Range</label> --}}
+                                <div class="input-group">
+                                    <select class="form-select" id="price-min">
+                                        <option value="">Min Price</option>
+                                        <option>$10,000</option>
+                                        <option>$25,000</option>
+                                        <option>$50,000</option>
+                                        <option>$100,000</option>
+                                        <option>$250,000</option>
+                                    </select>
+                                    <select class="form-select" id="price-max">
+                                        <option value="">Max Price</option>
+                                        <option>$50,000</option>
+                                        <option>$100,000</option>
+                                        <option>$250,000</option>
+                                        <option>$500,000</option>
+                                        <option>$1,000,000+</option>
                                     </select>
                                 </div>
-                                <div class="col-xl-2 col-lg-6">
-                                    {{-- <label class="form-label">Year</label> --}}
-                                    <div class="input-group">
-                                        <select class="form-select" id="year-min">
-                                            <option value="">From</option>
-                                            <option>2023</option>
-                                            <option>2020</option>
-                                            <option>2015</option>
-                                            <option>2010</option>
-                                            <option>2000</option>
-                                            <option>1990</option>
-                                            <option>1980</option>
-                                            <option>1970</option>
-                                            <option>1960</option>
-                                        </select>
-                                        <select class="form-select" id="year-max">
-                                            <option value="">To</option>
-                                            <option>2025</option>
-                                            <option>2023</option>
-                                            <option>2020</option>
-                                            <option>2015</option>
-                                            <option>2010</option>
-                                            <option>2000</option>
-                                            <option>1990</option>
-                                            <option>1980</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="col-xl-3 col-lg-6">
-                                    {{-- <label class="form-label">Price Range</label> --}}
-                                    <div class="input-group">
-                                        <select class="form-select" id="price-min">
-                                            <option value="">Min Price</option>
-                                            <option>$10,000</option>
-                                            <option>$25,000</option>
-                                            <option>$50,000</option>
-                                            <option>$100,000</option>
-                                            <option>$250,000</option>
-                                        </select>
-                                        <select class="form-select" id="price-max">
-                                            <option value="">Max Price</option>
-                                            <option>$50,000</option>
-                                            <option>$100,000</option>
-                                            <option>$250,000</option>
-                                            <option>$500,000</option>
-                                            <option>$1,000,000+</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="col-xl-1 col-lg-12 filter-actions">
-                                    {{-- <a href="#" class="filter-reset d-flex align-items-center">
+                            </div>
+                            <div class="col-xl-1 col-lg-12 filter-actions">
+                                {{-- <a href="#" class="filter-reset d-flex align-items-center">
                                         <i class="fas fa-undo me-2"></i>
                                     </a> --}}
-                                    <button type="submit" class="btn-main ms-auto p-0">
-                                        <i class="fa-solid fa-magnifying-glass mx-auto"></i>
-                                    </button>
-                                </div>
+                                <button type="submit" class="btn-main ms-auto p-0">
+                                    <i class="fa-solid fa-magnifying-glass mx-auto"></i>
+                                </button>
                             </div>
-                            <div>
-                                <div class="advanced-filters-toggle d-flex align-items-center mt-3 ms-auto"
-                                    data-bs-toggle="collapse" data-bs-target="#advancedFilters" aria-expanded="false"
-                                    aria-controls="advancedFilters">
-                                    <span>Advanced Filters</span>
-                                    <i class="fas fa-chevron-down ms-2"></i>
-                                </div>
+                        </div>
+                        <div>
+                            <div class="advanced-filters-toggle d-flex align-items-center mt-3 ms-auto"
+                                data-bs-toggle="collapse" data-bs-target="#advancedFilters" aria-expanded="false"
+                                aria-controls="advancedFilters">
+                                <span>Advanced Filters</span>
+                                <i class="fas fa-chevron-down ms-2"></i>
                             </div>
-                            <div class="collapse advanced-filters mt-3" id="advancedFilters">
-                                <div class="row g-3">
-                                    <div class="col-md-3 col-6">
-                                        <label class="form-label">Body Style</label>
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" id="coupe">
-                                            <label class="form-check-label" for="coupe">Coupe</label>
-                                        </div>
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" id="convertible">
-                                            <label class="form-check-label" for="convertible">Convertible</label>
-                                        </div>
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" id="sedan">
-                                            <label class="form-check-label" for="sedan">Sedan</label>
-                                        </div>
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" id="suv">
-                                            <label class="form-check-label" for="suv">SUV</label>
-                                        </div>
+                        </div>
+                        <div class="collapse advanced-filters mt-3" id="advancedFilters">
+                            <div class="row g-3">
+                                <div class="col-md-3 col-6">
+                                    <label class="form-label">Body Style</label>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="coupe">
+                                        <label class="form-check-label" for="coupe">Coupe</label>
                                     </div>
-                                    <div class="col-md-3 col-6">
-                                        <label class="form-label">Transmission</label>
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" id="automatic">
-                                            <label class="form-check-label" for="automatic">Automatic</label>
-                                        </div>
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" id="manual">
-                                            <label class="form-check-label" for="manual">Manual</label>
-                                        </div>
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" id="semiauto">
-                                            <label class="form-check-label" for="semiauto">Semi-Auto</label>
-                                        </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="convertible">
+                                        <label class="form-check-label" for="convertible">Convertible</label>
                                     </div>
-                                    <div class="col-md-3 col-6">
-                                        <label class="form-label">Drivetrain</label>
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" id="rwd">
-                                            <label class="form-check-label" for="rwd">RWD</label>
-                                        </div>
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" id="awd">
-                                            <label class="form-check-label" for="awd">AWD</label>
-                                        </div>
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" id="fwd">
-                                            <label class="form-check-label" for="fwd">FWD</label>
-                                        </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="sedan">
+                                        <label class="form-check-label" for="sedan">Sedan</label>
                                     </div>
-                                    <div class="col-md-3 col-6">
-                                        <label class="form-label">Features</label>
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" id="oneowner">
-                                            <label class="form-check-label" for="oneowner">One Owner</label>
-                                        </div>
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" id="noaccidents">
-                                            <label class="form-check-label" for="noaccidents">No Accidents</label>
-                                        </div>
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" id="servicehistory">
-                                            <label class="form-check-label" for="servicehistory">Service History</label>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label for="color" class="form-label">Exterior Color</label>
-                                        <select id="color" class="form-select">
-                                            <option value="">Any Color</option>
-                                            <option>Black</option>
-                                            <option>White</option>
-                                            <option>Silver</option>
-                                            <option>Gray</option>
-                                            <option>Red</option>
-                                            <option>Blue</option>
-                                            <option>Green</option>
-                                            <option>Yellow</option>
-                                            <option>Orange</option>
-                                            <option>Brown</option>
-                                            <option>Purple</option>
-                                            <option>Gold</option>
-                                        </select>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label for="mileage" class="form-label">Maximum Mileage</label>
-                                        <select id="mileage" class="form-select">
-                                            <option value="">Any Mileage</option>
-                                            <option>Under 5,000 miles</option>
-                                            <option>Under 10,000 miles</option>
-                                            <option>Under 25,000 miles</option>
-                                            <option>Under 50,000 miles</option>
-                                            <option>Under 100,000 miles</option>
-                                        </select>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="suv">
+                                        <label class="form-check-label" for="suv">SUV</label>
                                     </div>
                                 </div>
+                                <div class="col-md-3 col-6">
+                                    <label class="form-label">Transmission</label>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="automatic">
+                                        <label class="form-check-label" for="automatic">Automatic</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="manual">
+                                        <label class="form-check-label" for="manual">Manual</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="semiauto">
+                                        <label class="form-check-label" for="semiauto">Semi-Auto</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 col-6">
+                                    <label class="form-label">Drivetrain</label>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="rwd">
+                                        <label class="form-check-label" for="rwd">RWD</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="awd">
+                                        <label class="form-check-label" for="awd">AWD</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="fwd">
+                                        <label class="form-check-label" for="fwd">FWD</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 col-6">
+                                    <label class="form-label">Features</label>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="oneowner">
+                                        <label class="form-check-label" for="oneowner">One Owner</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="noaccidents">
+                                        <label class="form-check-label" for="noaccidents">No Accidents</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="servicehistory">
+                                        <label class="form-check-label" for="servicehistory">Service History</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="color" class="form-label">Exterior Color</label>
+                                    <select id="color" class="form-select">
+                                        <option value="">Any Color</option>
+                                        <option>Black</option>
+                                        <option>White</option>
+                                        <option>Silver</option>
+                                        <option>Gray</option>
+                                        <option>Red</option>
+                                        <option>Blue</option>
+                                        <option>Green</option>
+                                        <option>Yellow</option>
+                                        <option>Orange</option>
+                                        <option>Brown</option>
+                                        <option>Purple</option>
+                                        <option>Gold</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="mileage" class="form-label">Maximum Mileage</label>
+                                    <select id="mileage" class="form-select">
+                                        <option value="">Any Mileage</option>
+                                        <option>Under 5,000 miles</option>
+                                        <option>Under 10,000 miles</option>
+                                        <option>Under 25,000 miles</option>
+                                        <option>Under 50,000 miles</option>
+                                        <option>Under 100,000 miles</option>
+                                    </select>
+                                </div>
                             </div>
-                        </form>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<!-- Featured Section -->
+@livewire('vehicle-listing-component', ['section' => 'Vehicles','type' => 'featured'])
+<!-- CTA 2 -->
+<section class="main-section ox-hidden">
+    <div class="container">
+        <div class="row justify-content-center mb-5">
+            <div class="col-lg-8 text-center">
+                <h2 class="h-35 fw-700">Search for your favorite car or sell your car on GoldenX</h2>
+            </div>
+        </div>
+        <div class="row align-items-center g-4">
+            <div class="col-lg-4" data-aos="fade-left" data-aos-delay="300" data-aos-duration="1000"
+                data-aos-easing="ease-out-cubic">
+                <div class="card-box">
+                    <img src="{{ asset('images/icons/search-car.svg') }}" alt="Search Icon" class="icon">
+                    <h5>Are you looking for a car?</h5>
+                    <p>Save time and effort as you no longer need to visit multiple stores to find the right car.</p>
+                    <a href="/buy-cars" class="btn-main">
+                        Buy cars
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="col-lg-4 text-center">
+                <img src="{{ asset('images/Untitled design (27).png') }}" alt="Car" class="car-image">
+            </div>
+            <div class="col-lg-4" data-aos="fade-right" data-aos-delay="300" data-aos-duration="1000"
+                data-aos-easing="ease-out-cubic">
+                <div class="card-box">
+                    <img src="{{ asset('images/icons/sell-car.svg') }}" alt="Sell Icon" class="icon">
+                    <h5>Do you want to sell a car?</h5>
+                    <p>Find your perfect car match and sell your car quickly with our user-friendly online service.</p>
+                    <a href="{{ route('sell-car') }}" class="btn-main">
+                        Sell a car
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- SERVICES -->
+
+@livewire('vehicle-listing-component', ['section' => 'Vehicles','type' => 'sold'])
+<section class="our-services ox-hidden">
+    <div class="container">
+        <div class="row justify-content-center mb-5">
+            <div class="col-lg-6 text-center">
+                <h3 class="sec-h-top">Our Services</h3>
+                <h2 class="h-35 fw-700">Explore our wide range of cars services</h2>
+            </div>
+        </div>
+        <div class="row g-4 text-start">
+            <div class="col-lg-3 col-md-6" data-aos="fade-left" data-aos-delay="0" data-aos-duration="1000"
+                data-aos-easing="ease-out-cubic">
+                <div class="service-card h-100">
+                    <div class="service-card-inner">
+                        <div class="icon-wrapper">
+                            <img src="{{ asset('images/icons/s1.svg') }}" alt="Car with Driver" width="24">
+                        </div>
+                        <h5 class="p-20 fw-600">Sell Your Car</h5>
+                        <p class="text-muted">Get the best value—list your car and connect with serious buyers in
+                            minutes.</p>
+                        <a href="" class="arrow-btn">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="#f59e0b"
+                                viewBox="0 0 14 14">
+                                <path
+                                    d="M11.6654 3.97592L1.64141 13.9999L-0.00537109 12.3531L10.0174 2.32914H1.18372V-0.00012207H13.9946V12.8108H11.6654V3.97592Z" />
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6" data-aos="fade-left" data-aos-delay="100" data-aos-duration="1000"
+                data-aos-easing="ease-out-cubic">
+                <div class="service-card h-100">
+                    <div class="service-card-inner">
+                        <div class="icon-wrapper">
+                            <img src="{{ asset('images/icons/s2.svg') }}" alt="Business Car" width="24">
+                        </div>
+                        <h5 class="p-20 fw-600">Buy Your Next Car</h5>
+                        <p class="text-muted mb-4">Browse a wide selection and bid on your dream car with confidence.
+                        </p>
+                        <a href="" class="arrow-btn">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="#f59e0b"
+                                viewBox="0 0 14 14">
+                                <path
+                                    d="M11.6654 3.97592L1.64141 13.9999L-0.00537109 12.3531L10.0174 2.32914H1.18372V-0.00012207H13.9946V12.8108H11.6654V3.97592Z" />
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6" data-aos="fade-left" data-aos-delay="200" data-aos-duration="1000"
+                data-aos-easing="ease-out-cubic">
+                <div class="service-card h-100">
+                    <div class="service-card-inner">
+                        <div class="icon-wrapper">
+                            <img src="{{ asset('images/icons/car-inspection.svg') }}" alt="Airport Transfer" width="24">
+                        </div>
+                        <h5 class="p-20 fw-600">Car Inspections</h5>
+                        <p class="text-muted mb-4">Book a professional inspection for peace of mind before you buy or
+                            sell.</p>
+                        <a href="" class="arrow-btn">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="#f59e0b"
+                                viewBox="0 0 14 14">
+                                <path
+                                    d="M11.6654 3.97592L1.64141 13.9999L-0.00537109 12.3531L10.0174 2.32914H1.18372V-0.00012207H13.9946V12.8108H11.6654V3.97592Z" />
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6" data-aos="fade-left" data-aos-delay="300" data-aos-duration="1000"
+                data-aos-easing="ease-out-cubic">
+                <div class="service-card h-100">
+                    <div class="service-card-inner">
+                        <div class="icon-wrapper">
+                            <img src="{{ asset('images/icons/auction.svg') }}" alt="Chauffeur" width="24">
+                        </div>
+                        <h5 class="p-20 fw-600">Live Auctions</h5>
+                        <p class="text-muted mb-4">Join real-time auctions and experience the thrill of competitive
+                            bidding.</p>
+                        <a href="" class="arrow-btn">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="#f59e0b"
+                                viewBox="0 0 14 14">
+                                <path
+                                    d="M11.6654 3.97592L1.64141 13.9999L-0.00537109 12.3531L10.0174 2.32914H1.18372V-0.00012207H13.9946V12.8108H11.6654V3.97592Z" />
+                            </svg>
+                        </a>
                     </div>
                 </div>
             </div>
         </div>
-    </section>
-
-
-    <!-- Featured Section -->
-    @livewire('vehicle-listing-component', ['section' => 'Vehicles','type' => 'featured'])
-    <!-- CTA 2 -->
-    <section class="main-section ox-hidden">
-        <div class="container">
-            <div class="row justify-content-center mb-5">
-                <div class="col-lg-8 text-center">
-                    <h2 class="h-35 fw-700">Search for your favorite car or sell your car on GoldenX</h2>
-                </div>
-            </div>
-            <div class="row align-items-center g-4">
-                <div class="col-lg-4" data-aos="fade-left" data-aos-delay="300" data-aos-duration="1000"
-                    data-aos-easing="ease-out-cubic">
-                    <div class="card-box">
-                        <img src="{{ asset('images/icons/search-car.svg') }}" alt="Search Icon" class="icon">
-                        <h5>Are you looking for a car?</h5>
-                        <p>Save time and effort as you no longer need to visit multiple stores to find the right car.</p>
-                        <a href="/buy-cars" class="btn-main">
-                            Buy cars
-                            <i class="fa-solid fa-magnifying-glass"></i>
-                        </a>
-                    </div>
-                </div>
-                <div class="col-lg-4 text-center">
-                    <img src="{{ asset('images/Untitled design (27).png') }}" alt="Car" class="car-image">
-                </div>
-                <div class="col-lg-4" data-aos="fade-right" data-aos-delay="300" data-aos-duration="1000"
-                    data-aos-easing="ease-out-cubic">
-                    <div class="card-box">
-                        <img src="{{ asset('images/icons/sell-car.svg') }}" alt="Sell Icon" class="icon">
-                        <h5>Do you want to sell a car?</h5>
-                        <p>Find your perfect car match and sell your car quickly with our user-friendly online service.</p>
-                        <a href="{{ route('sell-car') }}" class="btn-main">
-                            Sell a car
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-    <!-- SERVICES -->
-
-    @livewire('vehicle-listing-component', ['section' => 'Vehicles','type' => 'sold'])
-    <section class="our-services ox-hidden">
-        <div class="container">
-            <div class="row justify-content-center mb-5">
-                <div class="col-lg-6 text-center">
-                    <h3 class="sec-h-top">Our Services</h3>
-                    <h2 class="h-35 fw-700">Explore our wide range of cars services</h2>
-                </div>
-            </div>
-            <div class="row g-4 text-start">
-                <div class="col-lg-3 col-md-6" data-aos="fade-left" data-aos-delay="0" data-aos-duration="1000"
-                    data-aos-easing="ease-out-cubic">
-                    <div class="service-card h-100">
-                        <div class="service-card-inner">
-                            <div class="icon-wrapper">
-                                <img src="{{ asset('images/icons/s1.svg') }}" alt="Car with Driver" width="24">
-                            </div>
-                            <h5 class="p-20 fw-600">Sell Your Car</h5>
-                            <p class="text-muted">Get the best value—list your car and connect with serious buyers in
-                                minutes.</p>
-                            <a href="" class="arrow-btn">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="#f59e0b"
-                                    viewBox="0 0 14 14">
-                                    <path
-                                        d="M11.6654 3.97592L1.64141 13.9999L-0.00537109 12.3531L10.0174 2.32914H1.18372V-0.00012207H13.9946V12.8108H11.6654V3.97592Z" />
-                                </svg>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-6" data-aos="fade-left" data-aos-delay="100" data-aos-duration="1000"
-                    data-aos-easing="ease-out-cubic">
-                    <div class="service-card h-100">
-                        <div class="service-card-inner">
-                            <div class="icon-wrapper">
-                                <img src="{{ asset('images/icons/s2.svg') }}" alt="Business Car" width="24">
-                            </div>
-                            <h5 class="p-20 fw-600">Buy Your Next Car</h5>
-                            <p class="text-muted mb-4">Browse a wide selection and bid on your dream car with confidence.
-                            </p>
-                            <a href="" class="arrow-btn">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="#f59e0b"
-                                    viewBox="0 0 14 14">
-                                    <path
-                                        d="M11.6654 3.97592L1.64141 13.9999L-0.00537109 12.3531L10.0174 2.32914H1.18372V-0.00012207H13.9946V12.8108H11.6654V3.97592Z" />
-                                </svg>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-6" data-aos="fade-left" data-aos-delay="200" data-aos-duration="1000"
-                    data-aos-easing="ease-out-cubic">
-                    <div class="service-card h-100">
-                        <div class="service-card-inner">
-                            <div class="icon-wrapper">
-                                <img src="{{ asset('images/icons/car-inspection.svg') }}" alt="Airport Transfer" width="24">
-                            </div>
-                            <h5 class="p-20 fw-600">Car Inspections</h5>
-                            <p class="text-muted mb-4">Book a professional inspection for peace of mind before you buy or
-                                sell.</p>
-                            <a href="" class="arrow-btn">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="#f59e0b"
-                                    viewBox="0 0 14 14">
-                                    <path
-                                        d="M11.6654 3.97592L1.64141 13.9999L-0.00537109 12.3531L10.0174 2.32914H1.18372V-0.00012207H13.9946V12.8108H11.6654V3.97592Z" />
-                                </svg>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-6" data-aos="fade-left" data-aos-delay="300" data-aos-duration="1000"
-                    data-aos-easing="ease-out-cubic">
-                    <div class="service-card h-100">
-                        <div class="service-card-inner">
-                            <div class="icon-wrapper">
-                                <img src="{{ asset('images/icons/auction.svg') }}" alt="Chauffeur" width="24">
-                            </div>
-                            <h5 class="p-20 fw-600">Live Auctions</h5>
-                            <p class="text-muted mb-4">Join real-time auctions and experience the thrill of competitive
-                                bidding.</p>
-                            <a href="" class="arrow-btn">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="#f59e0b"
-                                    viewBox="0 0 14 14">
-                                    <path
-                                        d="M11.6654 3.97592L1.64141 13.9999L-0.00537109 12.3531L10.0174 2.32914H1.18372V-0.00012207H13.9946V12.8108H11.6654V3.97592Z" />
-                                </svg>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            {{-- <div class="section-text mt-5">
+        {{-- <div class="section-text mt-5">
                 <p>Discover our range of car rental services designed to meet all your travel needs.<br>From a diverse fleet
                     of vehicles to flexible rental plans.</p>
                 <a href="" class="btn-main">
@@ -594,38 +594,38 @@
                     </svg>
                 </a>
             </div> --}}
-        </div>
-    </section>
-    <!-- CTA -->
-    <section class="cta-section mt-5 ox-hidden">
-        <div class="container">
-            <div class="row align-items-center">
-                <div class="col-lg-7 text-center text-lg-start" data-aos="fade-up" data-aos-delay="0"
-                    data-aos-duration="1000" data-aos-easing="ease-out-cubic">
-                    <h2 class="h-35 fw-700">Ready to get your car inspected? Schedule your inspection today!</h2>
-                    <p class="cta-text p-20">
-                        Our friendly customer service team is here to help. Contact us anytime for support and inquiries.
-                    </p>
-                    <a href="{{ route('book-inspection') }}" class="btn-main white">
-                        Book Now
-                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="#f59e0b"
-                            viewBox="0 0 14 14">
-                            <path
-                                d="M11.6654 3.97592L1.64141 13.9999L-0.00537109 12.3531L10.0174 2.32914H1.18372V-0.00012207H13.9946V12.8108H11.6654V3.97592Z" />
-                        </svg>
-                    </a>
-                </div>
-                <div class="col-lg-5 text-center mt-4 mt-lg-0">
-                    <!-- <img src="{{ asset('images/ready-to-get-r.png') }}" alt="Car Image" class="cta-img" /> -->
-                    <img src="{{ asset('images/ready-to-get-l.png') }}" alt="Car Image" class="cta-img" />
-                </div>
+    </div>
+</section>
+<!-- CTA -->
+<section class="cta-section mt-5 ox-hidden">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-7 text-center text-lg-start" data-aos="fade-up" data-aos-delay="0"
+                data-aos-duration="1000" data-aos-easing="ease-out-cubic">
+                <h2 class="h-35 fw-700">Ready to get your car inspected? Schedule your inspection today!</h2>
+                <p class="cta-text p-20">
+                    Our friendly customer service team is here to help. Contact us anytime for support and inquiries.
+                </p>
+                <a href="{{ route('book-inspection') }}" class="btn-main white">
+                    Book Now
+                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="#f59e0b"
+                        viewBox="0 0 14 14">
+                        <path
+                            d="M11.6654 3.97592L1.64141 13.9999L-0.00537109 12.3531L10.0174 2.32914H1.18372V-0.00012207H13.9946V12.8108H11.6654V3.97592Z" />
+                    </svg>
+                </a>
+            </div>
+            <div class="col-lg-5 text-center mt-4 mt-lg-0">
+                <!-- <img src="{{ asset('images/ready-to-get-r.png') }}" alt="Car Image" class="cta-img" /> -->
+                <img src="{{ asset('images/ready-to-get-l.png') }}" alt="Car Image" class="cta-img" />
             </div>
         </div>
-    </section>
-    <!-- Testimonail -->
-    @livewire('testimonial-listing-component')
-    <!-- FAQ -->
-   <section class="section-faq ox-hidden">
+    </div>
+</section>
+<!-- Testimonail -->
+@livewire('testimonial-listing-component')
+<!-- FAQ -->
+<section class="section-faq ox-hidden">
     <div class="container">
         <div class="row align-items-center">
             <div class="col-lg-5 mb-4 mb-lg-0" data-aos="fade-up" data-aos-delay="0" data-aos-duration="1000" data-aos-anchor-placement="top-bottom">
@@ -644,16 +644,14 @@
                                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                                     data-bs-target="#flush-collapseOne" aria-expanded="false"
                                     aria-controls="flush-collapseOne">
-                                    How do I sell my car through your platform?
+                                    I have outstanding finance against my car. Can you buy it?
                                 </button>
                             </h2>
                             <div id="flush-collapseOne" class="accordion-collapse collapse"
                                 aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
                                 <div class="accordion-body">
                                     <p>
-                                        Simply fill out our car selling enquiry form with your vehicle details. 
-                                        Our team will review your information and get in touch to guide you through 
-                                        the process of listing your car for direct sale or auction.
+                                        We can arrange settlement of any outstanding finance on your car. Please note that you will need to provide an in date letter detailing a current settlement figure from your finance company (e.g. bank). The settlement amount will be deducted from the amount paid to you, for your car. We will settle your outstanding amount.
                                     </p>
                                 </div>
                             </div>
@@ -663,16 +661,14 @@
                                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                                     data-bs-target="#flush-collapseTwo" aria-expanded="false"
                                     aria-controls="flush-collapseTwo">
-                                    What happens once my car is listed in an auction?
+                                    Is it possible to sell a car on behalf of a company?
                                 </button>
                             </h2>
                             <div id="flush-collapseTwo" class="accordion-collapse collapse"
                                 aria-labelledby="flush-headingTwo" data-bs-parent="#accordionFlushExample">
                                 <div class="accordion-body">
                                     <p>
-                                        Your car will be visible to all registered bidders during the auction period. 
-                                        Interested buyers can place bids, and you will be notified of the highest offer 
-                                        once the auction ends.
+                                        Yes. It is possible to sell a company car. Just bring along the following documents, and we will manage the process:
                                     </p>
                                 </div>
                             </div>
@@ -682,16 +678,14 @@
                                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                                     data-bs-target="#flush-collapseThree" aria-expanded="false"
                                     aria-controls="flush-collapseThree">
-                                    Can I set a reserve price for my car?
+                                    How can I be sure that I will receive payment?
                                 </button>
                             </h2>
                             <div id="flush-collapseThree" class="accordion-collapse collapse"
                                 aria-labelledby="flush-headingThree" data-bs-parent="#accordionFlushExample">
                                 <div class="accordion-body">
                                     <p>
-                                        Yes, you can set a minimum reserve price for your car. 
-                                        If bidding does not reach your reserve, the car will not be sold, 
-                                        ensuring you have full control over the final selling price.
+                                        we will sign a legally binding purchase agreement, which will have the details of the transaction and clearly marked terms and conditions. Our service includes payment directly to your bank account.
                                     </p>
                                 </div>
                             </div>
@@ -703,28 +697,28 @@
     </div>
 </section>
 
-    <!-- Blogs -->
-    @livewire('blog-listing-component')
-    <!-- CTA 3 -->
-    <section class="ft-cta py-5">
-        <div class="container">
-            <div class="row align-items-center pb-4">
-                <div class="col-lg-9">
-                    <h2 class="h-40 fw-600">Ready to Sell Your Car?</h2>
-                    <p class="mb-0">Get the best value fast — simple, secure, and hassle-free.</p>
-                </div>
-                <div class="col-lg-3 text-end">
-                    <a href="{{ route('sell-car') }}" class="btn-main">
-                        Let's Go
-                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="#f59e0b"
-                            viewBox="0 0 14 14">
-                            <path
-                                d="M11.6654 3.97592L1.64141 13.9999L-0.00537109 12.3531L10.0174 2.32914H1.18372V-0.00012207H13.9946V12.8108H11.6654V3.97592Z">
-                            </path>
-                        </svg>
-                    </a>
-                </div>
+<!-- Blogs -->
+@livewire('blog-listing-component')
+<!-- CTA 3 -->
+<section class="ft-cta py-5">
+    <div class="container">
+        <div class="row align-items-center pb-4">
+            <div class="col-lg-9">
+                <h2 class="h-40 fw-600">Ready to Sell Your Car?</h2>
+                <p class="mb-0">Get the best value fast — simple, secure, and hassle-free.</p>
+            </div>
+            <div class="col-lg-3 text-end">
+                <a href="{{ route('sell-car') }}" class="btn-main">
+                    Let's Go
+                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="#f59e0b"
+                        viewBox="0 0 14 14">
+                        <path
+                            d="M11.6654 3.97592L1.64141 13.9999L-0.00537109 12.3531L10.0174 2.32914H1.18372V-0.00012207H13.9946V12.8108H11.6654V3.97592Z">
+                        </path>
+                    </svg>
+                </a>
             </div>
         </div>
-    </section>
+    </div>
+</section>
 @endsection

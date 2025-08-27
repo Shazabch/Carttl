@@ -289,7 +289,7 @@ class GenerationComponent extends Component
                 VehicleDocument::where('file_path', $path)->delete();
             }
         }
-        $is_image = true;
+        $is_image = false;
         if ($is_image) {
             $html = view('pdf.inspection.damage-assessment-image', compact('reportInView'))->render();
             $snappyImage = app('snappy.image');

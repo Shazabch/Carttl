@@ -1178,7 +1178,7 @@
                         <td>
                             <div class="item-label">Disclaimer </div>
                             <div class="item-value">
-                                <p style="justify-content: center;">
+                                <p>
                                     The inspection is strictly limited to the items listed in this Inspection Report and does not
                                     cover any other items. 2. The inspection is visual and non-mechanical only. If you wish to
                                     complete a mechanical inspection or an inspection of the internal parts of the vehicle,
@@ -1203,6 +1203,11 @@
                                     regarding the accuracy or completeness of any information contained in this Inspection
                                     Report, or the fitness of the information contained in this Inspection Report for any purpose
                                     intended. 9. If this Inspection Report is provided to you directly by Golden X, only you may
+                                    rely on the content of this Inspection Report, and Golden X does not accept any liability
+                                    whatsoever to any third-party you may choose to share this Inspection Report with. 10. If
+                                    this Inspection Report is provided to you by someone else than Golden X, you may not rely
+                                    on the content of this Inspection Report, and Golden X does not accept any liability
+                                    whatsoever to you in connection with this Inspection Report.
                                 </p>
                             </div>
                         </td>

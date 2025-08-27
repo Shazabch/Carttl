@@ -354,7 +354,7 @@
                     <p>Our specialists are here to assist you</p>
                     <div class="contact-options">
                         <a id="whatsapp-btn"
-                            href="https://wa.me/971545752757"
+                            href="https://wa.me/971 54 353 3583"
                             target="_blank"
                             class="btn btn-primary btn-bid">
                             <i class="fab fa-whatsapp"></i> Whatsapp
@@ -418,7 +418,7 @@
                         <p>Our specialists are here to assist you</p>
                         <div class="contact-options">
                             <a id="whatsapp-btn"
-                                href="https://wa.me/971545752757"
+                                href="https://wa.me/971 54 353 3583"
                                 target="_blank"
                                 class="btn btn-primary btn-bid">
                                 <i class="fab fa-whatsapp"></i> Whatsapp
