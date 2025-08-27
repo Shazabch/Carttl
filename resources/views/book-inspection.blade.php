@@ -112,10 +112,10 @@
         </div>
     </div>
 </section>
- <!-- Testimonail -->
-    @livewire('testimonial-listing-component')
+<!-- Testimonail -->
+@livewire('testimonial-listing-component')
 <section class="section-faq ox-hidden">
-   <div class="container">
+    <div class="container">
         <div class="row align-items-center">
             <div class="col-lg-5 mb-4 mb-lg-0" data-aos="fade-up" data-aos-delay="0" data-aos-duration="1000" data-aos-anchor-placement="top-bottom">
                 <div class="faq-img">
@@ -158,6 +158,11 @@
                                 <div class="accordion-body">
                                     <p>
                                         Yes. It is possible to sell a company car. Just bring along the following documents, and we will manage the process:
+                                        <br>
+                                        A government-issued ID for the assigned person
+                                        <br>
+                                        An authorization letter signed and stamped by the company's authorized signatory on the corporate letterhead.
+
                                     </p>
                                 </div>
                             </div>
