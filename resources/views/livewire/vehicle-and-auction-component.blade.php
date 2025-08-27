@@ -92,7 +92,7 @@
                                     <input class="form-check-input" wire:model.live="reserve_status" value="reserve_status" type="checkbox" id="a3">
                                     <label class="form-check-label" for="a3">Reserve Met</label>
                                 </div>
-                               
+
                             </div>
                             @endif
                         </div>
@@ -118,7 +118,9 @@
                                 <div class="d-flex align-items-center justify-content-md-end">
                                     <label class="me-2 text-muted">Sort by:</label>
                                     <select wire:model.live="sortBy" class="form-select form-select-sm" style="width: auto;">
+                                        @if($section!='Vehicles')
                                         <option value="ending_soon">Ending Soon</option>
+                                        @endif
                                         <option value="price_low_high">Price: Low to High</option>
                                         <option value="price_high_low">Price: High to Low</option>
                                         <option value="year_newest">Year: Newest First</option>
@@ -158,7 +160,7 @@
                             @else
                             @include('components.guest.listing-card-auction-list-view')
                             @endif
-                              @empty
+                            @empty
                             <div class="col-12">
                                 <div class="alert alert-light text-center py-5 shadow-sm rounded">
                                     <h4 class="mb-2">🚗 No Results Found</h4>
@@ -166,7 +168,7 @@
                                 </div>
                             </div>
                             @endforelse
-                          
+
                         </div>
                     </div>
                     <div class="mt-3">
