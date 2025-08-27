@@ -506,6 +506,16 @@
             /* No top/bottom padding needed here because the @page margin handles it */
         }
 
+        .disclaimer-text {
+            text-align: justify;
+            line-height: 1.5;
+            /* Better readability */
+            font-size: 14px;
+            /* Adjust for print */
+            margin: 0;
+        }
+
+
         /* ==================================================================== */
         /* == END: PDF Page Layout Fix == */
         /* ==================================================================== */
@@ -1164,7 +1174,7 @@
                         <td>
                             <div class="item-label">Disclaimer </div>
                             <div class="item-value">
-                                <p>
+                                <p class="disclaimer-text">
                                     The inspection is strictly limited to the items listed in this Inspection Report and does not
                                     cover any other items. 2. The inspection is visual and non-mechanical only. If you wish to
                                     complete a mechanical inspection or an inspection of the internal parts of the vehicle,
