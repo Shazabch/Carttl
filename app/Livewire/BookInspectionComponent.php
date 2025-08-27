@@ -49,7 +49,7 @@ class BookInspectionComponent extends Component
     public $brands = [], $models = [];
     public function mount()
     {
-         $this->brands = Brand::orderBy('name')->whereHas('models')->get(['id', 'name'])->toArray();
+        $this->brands = Brand::orderBy('name')->whereHas('models')->get(['id', 'name'])->toArray();
     }
     public function updatedMake($value)
     {
@@ -79,20 +79,25 @@ class BookInspectionComponent extends Component
         $validatedData = $this->validate();
 
         $user = null;
+        // Create the main enquiry record
+        if (auth()->check()) {
+            $user = auth()->user();
+        } else {
 
-        if ($validatedData['email']) {
-            $user = User::where('email', $validatedData['email'])->first();
+            if ($validatedData['email']) {
+                $user = User::where('email', $validatedData['email'])->first();
 
-            if (!$user) {
-                $tempPassword = Str::random(10);
-                $user = User::create([
-                    'name' => $validatedData['name'] ?: 'Customer',
-                    'email' => $validatedData['email'],
-                    'role' => 'customer',
-                    'password' => Hash::make($tempPassword),
-                ]);
-                Notification::send($user, new AccountCreatedConfirmation($user, $tempPassword));
-                $user->syncRoles('customer');
+                if (!$user) {
+                    $tempPassword = Str::random(10);
+                    $user = User::create([
+                        'name' => $validatedData['name'] ?: 'Customer',
+                        'email' => $validatedData['email'],
+                        'role' => 'customer',
+                        'password' => Hash::make($tempPassword),
+                    ]);
+                    Notification::send($user, new AccountCreatedConfirmation($user, $tempPassword));
+                    $user->syncRoles('customer');
+                }
             }
         }
 

@@ -48,15 +48,19 @@ class BuyCarComponent extends Component
     {
         $this->selected_vehicle = $selected_vehicle;
         $this->is_auction = $is_auction;
-         if (Auth::check()) {
+        if (Auth::check()) {
             $this->is_not_login = false;
         }
     }
     public function saveBuyEnquiry()
     {
-         
+
         $this->validate();
-         $user = null;
+        $user = null;
+        // Create the main enquiry record
+        if (auth()->check()) {
+            $user = auth()->user();
+        } else {
             $email = $this->email ?? null;
 
             if ($email) {
@@ -74,10 +78,11 @@ class BuyCarComponent extends Component
                     $user->syncRoles('customer');
                 }
             }
+        }
 
-            if ($user) {
-                $this->user_id = $user->id;
-            }
+        if ($user) {
+            $this->user_id = $user->id;
+        }
 
         $enquiry = VehicleEnquiry::create([
             'name'       => $this->name,
@@ -91,7 +96,7 @@ class BuyCarComponent extends Component
         ]);
         $recipients = User::role(['admin', 'super-admin'])->get();
         Notification::send($recipients, new VehicleEnquiryNotification($enquiry));
-        
+
         if ($user) {
             Notification::send($user, new VehicleEnquiryReceivedConfirmation($enquiry));
         }

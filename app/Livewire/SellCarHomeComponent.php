@@ -220,24 +220,28 @@ class SellCarHomeComponent extends Component
             $this->formData['type'] = 'sale';
 
             $user = null;
-            $email = $this->formData['email'] ?? null;
+            // Create the main enquiry record
+            if (auth()->check()) {
+                $user = auth()->user();
+            } else {
+                $email = $this->formData['email'] ?? null;
 
-            if ($email) {
-                $user = User::where('email', $email)->first();
+                if ($email) {
+                    $user = User::where('email', $email)->first();
 
-                if (!$user) {
-                    $tempPassword = Str::random(10);
-                    $user = User::create([
-                        'name' => $this->formData['name'] ?: 'Customer',
-                        'email' => $email,
-                        'role' => 'customer',
-                        'password' => Hash::make($tempPassword),
-                    ]);
-                    Notification::send($user, new AccountCreatedConfirmation($user, $tempPassword));
-                    $user->syncRoles('customer');
+                    if (!$user) {
+                        $tempPassword = Str::random(10);
+                        $user = User::create([
+                            'name' => $this->formData['name'] ?: 'Customer',
+                            'email' => $email,
+                            'role' => 'customer',
+                            'password' => Hash::make($tempPassword),
+                        ]);
+                        Notification::send($user, new AccountCreatedConfirmation($user, $tempPassword));
+                        $user->syncRoles('customer');
+                    }
                 }
             }
-
             if ($user) {
                 $this->formData['user_id'] = $user->id;
             }
@@ -260,8 +264,8 @@ class SellCarHomeComponent extends Component
 
     public function render()
     {
-        $this->brands = Brand::whereHas('models') 
-            ->where('name', 'like', '%' . $this->brandSearch . '%') 
+        $this->brands = Brand::whereHas('models')
+            ->where('name', 'like', '%' . $this->brandSearch . '%')
             ->get();
         return view('livewire.sell-car-home-component');
     }
