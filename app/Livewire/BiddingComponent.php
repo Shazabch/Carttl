@@ -100,7 +100,7 @@ class BiddingComponent extends Component
 
         $this->minimumNextBid = $this->highestBid > 0
             ? $this->highestBid + self::BID_INCREMENT
-            : $this->selected_vehicle->starting_bid_amount;
+            : $this->selected_vehicle->starting_bid_amount ?? 0;
 
 
         $this->current_bid = $this->minimumNextBid;
