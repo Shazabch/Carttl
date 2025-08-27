@@ -77,7 +77,7 @@ Register - GoldenX
                                 <label for="password_confirmation" class="form-label fw-medium">Confirm Password</label>
                                 <input type="password" id="password_confirmation" name="password_confirmation"
                                     class="form-control form-control-lg pe-5" placeholder="••••••••" required>
-                                <span id="togglePassword" class="position-absolute top-50 end-0 translate-middle-y me-3" style="cursor: pointer; margin-top: 12px;">
+                                <span id="togglePassword2" class="position-absolute top-50 end-0 translate-middle-y me-3" style="cursor: pointer; margin-top: 12px;">
                                     <i class="fas fa-eye-slash"></i>
                                 </span>
                             </div>
@@ -121,6 +121,21 @@ Register - GoldenX
                 // Check the current type of the input
                 const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
                 passwordInput.setAttribute('type', type);
+
+                // Toggle the icon
+                const icon = this.querySelector('i');
+                icon.classList.toggle('fa-eye');
+                icon.classList.toggle('fa-eye-slash');
+            });
+        }
+         const togglePassword2 = document.getElementById('togglePassword2');
+        const passwordInput2 = document.getElementById('password_confirmation');
+
+        if (togglePassword2 && passwordInput2) {
+            togglePassword2.addEventListener('click', function() {
+                // Check the current type of the input
+                const type = passwordInput2.getAttribute('type') === 'password' ? 'text' : 'password';
+                passwordInput2.setAttribute('type', type);
 
                 // Toggle the icon
                 const icon = this.querySelector('i');
