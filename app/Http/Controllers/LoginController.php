@@ -15,6 +15,7 @@ class LoginController extends Controller
     // This method will show login page for customer
     public function index()
     {
+
         return view('account.login');
     }
 
@@ -81,7 +82,7 @@ class LoginController extends Controller
         if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
             $user = Auth::user();
             $this->syncSessionFavorites($user);
-            return redirect()->route('account.dashboard')->with('success', 'You have successfully registered.');
+            return redirect()->intended(route('account.dashboard'));
         } else {
             return redirect()->route('account.login')->with('error', 'Either email or password is incorrect.');
         }
