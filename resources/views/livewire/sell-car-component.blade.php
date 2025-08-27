@@ -110,6 +110,7 @@
                         <div class="form-group mb-3">
                             <label class="form-label">Mileage (in km)</label>
                             <select name="mileage" class="form-control" wire:model="mileage">
+                                <option value="">Select</option>
                                 @foreach(\App\Enums\MileageRange::options() as $value => $label)
                                 <option value="{{ $value }}">{{ $label }}</option>
                                 @endforeach
