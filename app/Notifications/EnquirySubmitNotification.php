@@ -26,24 +26,24 @@ class EnquirySubmitNotification extends Notification
     public function toMail($notifiable)
     {
         return (new MailMessage)
-            ->subject('New Enquiry Submitted')
+            ->subject('New Contact Us Enquiry Submitted')
             ->greeting('Hello Admin,')
             ->line('A new enquiry has been submitted.')
             ->line('Name: ' . $this->enquiry->first_name . ' ' . $this->enquiry->last_name)
             ->line('Email: ' . $this->enquiry->email)
             ->line('Message: ' . $this->enquiry->message)
-            ->action('View Enquiries', url('admin.submissions'))
+            ->action('View Enquiries', url('admin/submissions'))
             ->line('Thank you!');
     }
 
     public function toDatabase($notifiable)
     {
         return [
-            'title' => 'New enquiry submitted',
+            'title' => 'New Contact Us enquiry submitted',
             'name' => $this->enquiry->first_name . ' ' . $this->enquiry->last_name,
             'email' => $this->enquiry->email,
             'message' => $this->enquiry->message,
-            'link' => url('admin.submissions'),
+            'link' => url('admin/submissions'),
             'created_at' => now(),
 
         ];
