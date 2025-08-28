@@ -16,11 +16,11 @@ class VehicleEnquiryNotification extends Notification
     public function __construct($enquiry)
     {
         $this->enquiry = $enquiry;
-        
+
         if($this->enquiry->type =='sale'){
-           $url= url('sell-car-lsiting');
+           $this->url= url('sell-car-lsiting');
         }else{
-             $url= url('purchase-car-lsiting');
+             $this->url= url('purchase-car-lsiting');
         }
     }
 
@@ -33,13 +33,13 @@ class VehicleEnquiryNotification extends Notification
     public function toMail($notifiable)
     {
         return (new MailMessage)
-            ->subject('New Enquiry Submitted')
+            ->subject('New '.$this->enquiry->type.' Enquiry Submitted')
             ->greeting('Hello Admin,')
             ->line('A new enquiry has been submitted.')
             ->line('Name: ' . $this->enquiry->name)
             ->line('Email: ' . $this->enquiry->email)
             ->line('Message: ' . $this->enquiry->notes)
-            ->action('View Enquiries', $this->url)
+            ->action('View '.$this->enquiry->type.' Enquiry', $this->url)
             ->line('Thank you!');
     }
 

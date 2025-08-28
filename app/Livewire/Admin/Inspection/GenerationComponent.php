@@ -7,10 +7,13 @@ use App\Models\Brand;
 use App\Models\FuelType;
 use App\Models\InspectionEnquiry;
 use App\Models\Transmission;
+use App\Models\User;
 use App\Models\VehicleInspectionReport;
 use App\Models\VehicleModel;
 use App\Models\Vehicle;
 use App\Models\VehicleDocument;
+use App\Notifications\VehicleInspectionConfirmation;
+use App\Notifications\VehicleInspectionReportConfirmation;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Knp\Snappy\Image as SnappyImage;
 use Illuminate\Support\Facades\Storage;
@@ -23,7 +26,7 @@ use Spatie\Browsershot\Browsershot;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Carbon\Carbon;
-
+use Illuminate\Support\Facades\Notification;
 
 class GenerationComponent extends Component
 {
@@ -423,6 +426,16 @@ class GenerationComponent extends Component
                 'shared_link' => $this->generatedShareLink,
                 'shared_link_expires_at' => $expiry,
             ]);
+            if ($report &&  $report->inspection_enquiry_id) {
+                $enquiry = InspectionEnquiry::find($report->inspection_enquiry_id);
+                if ($enquiry) {
+                    $userEmail = $enquiry->email;
+                    $user = User::where('email', $userEmail)->first();
+                    if ($user) {
+                        Notification::send($user, new VehicleInspectionConfirmation($enquiry));
+                    }
+                }
+            }
             $this->dispatch('success-notification', message: 'Sharable link generated successfully!');
         } catch (\Exception $e) {
             $this->dispatch('error-notification', message: 'Failed to generate link. ' . $e->getMessage());

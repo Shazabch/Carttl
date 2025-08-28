@@ -9,17 +9,21 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class VehicleEnquiryReceivedConfirmation extends Notification
+class VehicleInspectionConfirmation extends Notification
 {
     use Queueable;
     public $enquiry;
+
     public $url;
+    public $report_id;
     /**
      * Create a new notification instance.
      */
     public function __construct($enquiry)
     {
         $this->enquiry = $enquiry;
+        $this->report_id = $enquiry->id;
+        $this->url= url('car-appointments');
 
     }
 
@@ -39,19 +43,21 @@ class VehicleEnquiryReceivedConfirmation extends Notification
     public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage)
-            ->subject('We Have Received '.$this->enquiry->type.' Your Enquiry')
+             ->subject('Your Vehicle Inspection Report Has Been Generated')
             ->greeting('Hello ' . $this->enquiry->name)
-            ->line('Thank you for contacting us! We have successfully received your message and will get back to you as soon as possible.')
-            ->line('Vehicle : ' . $this->enquiry->vehicle?->title)
-            ->line('Thank you for your patience.');
+            ->line('We are pleased to inform you that your Vehicle Inspection Report has been successfully generated.')
+            ->line('Report ID: #' . $this->report_id)
+            ->line('You can now view the details of your inspection report.')
+             ->action('View ', $this->url)
+            ->line('Thank you for choosing our service!');
     }
     public function toDatabase($notifiable)
     {
         return [
-            'title' => 'New ' . $this->enquiry->type . ' enquiry submitted',
+            'title' => 'Your Vehicle Inspection Report Has Been Generated',
             'name' => $this->enquiry->name,
             'email' => $this->enquiry->email,
-            'message' => $this->enquiry->notes,
+            'message' =>'Your Vehicle Inspection Report Has Been Generated',
             'created_at' => now(),
 
         ];
