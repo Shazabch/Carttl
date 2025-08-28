@@ -18,8 +18,8 @@ return Application::configure(basePath: dirname(__DIR__))
         ]);
 
         $middleware->redirectTo(
-            guests: '/account/login',
-            users: '/account/dashboard',
+            guests: '/login',
+            users: '/dashboard',
         );
     })
     ->withExceptions(function (Exceptions $exceptions) {
