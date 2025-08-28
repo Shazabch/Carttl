@@ -88,6 +88,27 @@
                     </ul>
                 </div>
             </li>
+             <!-- Vehicle Inspection -->
+            <li class="menu-item menu-item-submenu {{ request()->routeIs('admin.manage.bids') ? 'menu-item-open menu-item-active' : '' }}" aria-haspopup="true" data-menu-toggle="hover">
+                <a href="javascript:;" class="menu-link menu-toggle">
+                    <span class="svg-icon menu-icon">
+                        <i class="fas fa-hammer"></i>
+                    </span>
+                    <span class="menu-text">Vehicle Biddings</span>
+                    <i class="menu-arrow"></i>
+                </a>
+                <div class="menu-submenu">
+                    <i class="menu-arrow"></i>
+                    <ul class="menu-subnav">
+                        <li class="menu-item {{ request()->routeIs('admin.manage.bids') ? 'menu-item-active' : '' }}" aria-haspopup="true">
+                            <a href="{{ route('admin.manage.bids') }}" class="menu-link">
+                                <i class="menu-bullet menu-bullet-dot"><span></span></i>
+                                <span class="menu-text">All Bids</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </li>
 
             <!-- Vehicle Management -->
             <li class="menu-item menu-item-submenu {{ request()->is('admin/vehicles/add') || request()->is('admin/vehicles/all') || request()->is('admin/vehicles/listed') || request()->is('admin/vehicles/pending') || request()->is('admin/vehicles/sold') ? 'menu-item-open menu-item-active' : '' }}" aria-haspopup="true" data-menu-toggle="hover">

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\admin\AdminBidController;
 use App\Http\Controllers\admin\ContactSubmissionController;
 use App\Http\Controllers\admin\DashboardController as AdminDashboardController;
 use App\Http\Controllers\admin\LoginController as AdminLoginController;
@@ -83,6 +84,7 @@ Route::group(['prefix' => 'admin'], function () {
         Route::view('/car-damage-test', 'carDamgeTest')->name('car.damage.test');
 
         Route::get('/submissions', [ContactSubmissionController::class, 'index'])->name('admin.submissions');
+        Route::get('/manage-bids', [AdminBidController::class, 'index'])->name('admin.manage.bids');
         Route::get('/vehicles', [VehicleManagerController::class, 'index'])->name('admin.vehicles.all');
         Route::get('/vehicles/{type}', [VehicleManagerController::class, 'index'])->name('admin.vehicles');
         Route::get('/vehicles/{id}/details', [VehicleManagerController::class, 'details'])->name('admin.vehicles.details');
