@@ -20,7 +20,11 @@ class VehicleEnquiryReceivedConfirmation extends Notification
     public function __construct($enquiry)
     {
         $this->enquiry = $enquiry;
-
+        if ($this->enquiry->type == 'sale') {
+            $this->url = url('car-enquiries');
+        } else {
+            $this->url = url('car-enquiries');
+        }
     }
 
     /**
@@ -39,10 +43,11 @@ class VehicleEnquiryReceivedConfirmation extends Notification
     public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage)
-            ->subject('We Have Received '.$this->enquiry->type.' Your Enquiry')
+            ->subject('We Have Received ' . $this->enquiry->type . ' Your Enquiry')
             ->greeting('Hello ' . $this->enquiry->name)
             ->line('Thank you for contacting us! We have successfully received your message and will get back to you as soon as possible.')
             ->line('Vehicle : ' . $this->enquiry->vehicle?->title)
+             ->action('View '.$this->enquiry->type.' Enquiry', $this->url)
             ->line('Thank you for your patience.');
     }
     public function toDatabase($notifiable)

@@ -7,7 +7,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class VehicleEnquiryNotification extends Notification
+class VehicleInspectionRecievedConfirmation extends Notification
 {
     use Queueable;
     protected $enquiry;
@@ -16,16 +16,7 @@ class VehicleEnquiryNotification extends Notification
     public function __construct($enquiry)
     {
         $this->enquiry = $enquiry;
-
-        if ($this->enquiry->type == 'sale') {
-            $this->url = url('admin/sell-car-lsiting');
-        }
-        if ($this->enquiry->type == 'inspection') {
-            $this->url = url('admin/inspection-enquiries');
-        }
-        if ($this->enquiry->type == 'purchase') {
-            $this->url = url('admin/purchase-car-lsiting');
-        }
+        $this->url = url('car-appointments');
     }
 
     public function via($notifiable): array
@@ -37,13 +28,12 @@ class VehicleEnquiryNotification extends Notification
     public function toMail($notifiable)
     {
         return (new MailMessage)
-            ->subject('New ' . $this->enquiry->type . ' Enquiry Submitted')
-            ->greeting('Hello Admin,')
+            ->subject('New Inspection Enquiry Submitted')
+            ->greeting('Hello ' . $this->enquiry->name)
             ->line('A new enquiry has been submitted.')
             ->line('Name: ' . $this->enquiry->name)
             ->line('Email: ' . $this->enquiry->email)
-            ->line('Message: ' . 'New ' . $this->enquiry->type . ' Submitted')
-            ->action('View ' . $this->enquiry->type . ' Enquiry', $this->url)
+            ->action('View Inspection Enquiry', $this->url)
             ->line('Thank you!');
     }
 
@@ -53,7 +43,7 @@ class VehicleEnquiryNotification extends Notification
             'title' => 'New enquiry submitted',
             'name' => $this->enquiry->name,
             'email' => $this->enquiry->email,
-            'message' => 'New ' . $this->enquiry->type . ' Submitted',
+            'message' =>'New Inspection Enquiry Submitted',
             'link' => $this->url,
             'created_at' => now(),
 

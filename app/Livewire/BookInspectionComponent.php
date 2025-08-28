@@ -7,6 +7,8 @@ use App\Models\InspectionEnquiry;
 use App\Models\User;
 use App\Models\VehicleModel;
 use App\Notifications\AccountCreatedConfirmation;
+use App\Notifications\VehicleEnquiryNotification;
+use App\Notifications\VehicleInspectionRecievedConfirmation;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Notification;
 use Livewire\Component;
@@ -104,7 +106,13 @@ class BookInspectionComponent extends Component
         if ($user) {
             $validatedData['user_id'] = $user->id;
         }
-        InspectionEnquiry::create($validatedData);
+        $enquiry=InspectionEnquiry::create($validatedData);
+        $enquiry->type='inspection';
+        $recipients = User::role(['admin', 'super-admin'])->get();
+        Notification::send($recipients, new VehicleEnquiryNotification($enquiry));
+        if ($user) {
+            Notification::send($user, new VehicleInspectionRecievedConfirmation($enquiry));
+        }
         $this->dispatch('success-notification', message: 'Record Saved Successfully');
         $this->formSubmitted = true;
     }
