@@ -113,3 +113,13 @@ Route::get('/inspection-reports/{report}/download', [SharedDocumentController::c
     ->middleware('auth') // IMPORTANT: Protect this route
     ->name('inspection.report.download');
 Route::view('/un-authenticated', 'un-auth')->name('un-auth');
+
+
+Route::get('/forgot-password', [App\Http\Controllers\Auth\ForgotPasswordController::class, 'showLinkRequestForm'])->name('password.request');
+Route::post('/forgot-password', [App\Http\Controllers\Auth\ForgotPasswordController::class, 'sendResetLink'])->name('password.email');
+Route::post('/reset-password', [App\Http\Controllers\Auth\ResetPasswordController::class, 'reset'])->name('password.update');
+Route::middleware('guest')->group(function () {
+    Route::get('/reset-password/{token}', [App\Http\Controllers\Auth\ResetPasswordController::class, 'showResetForm'])
+        ->name('password.reset')
+        ->middleware('signed'); // ✅ Enforces signature & expiration
+});
