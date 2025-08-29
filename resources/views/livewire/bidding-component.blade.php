@@ -16,7 +16,7 @@
             </div>
 
             <div class="current-bid d-flex justify-content-between align-items-center mb-3">
-                @if(auth()->id())
+                  @if(auth()->id())
                 <div class="div">
                     <span class="bid-label mb-0">Current Bid</span>
                     <span class="bid-amount">{{format_currency($highestBid)}}</span>
@@ -42,7 +42,7 @@
             </div>
             <div class="action-buttons mb-2">
 
-                {{-- <livewire:favorite-button-detail-component :vehicleId="$selected_vehicle->id" /> --}}
+            {{-- <livewire:favorite-button-detail-component :vehicleId="$selected_vehicle->id" /> --}} 
 
                 <!-- <button class="btn-icon" data-bs-toggle="tooltip" title="Share">
                     <i class="fas fa-share-alt"></i>
@@ -80,6 +80,7 @@
 
 
             <!-- === END: IMPROVED TIMER UI === -->
+           @if(auth()->id())
             @if($bids->count() > 0)
             <div class="bid-history">
                 <h3 class="p-22 fw-600 text-detail-primary">Bid History</h3>
@@ -93,6 +94,7 @@
                 </div>
                 @endforeach
             </div>
+            @endif
             @endif
             <div class="bid-actions" id="bidAction">
                 @if(auth()->id())
@@ -137,7 +139,7 @@
             <div class="auction-details">
                 <div class="detail-row">
                     <span>Reserve:</span>
-                    <span class="text-success">{{$selected_vehicle->reserve_status}}</span>
+                <span class="text-success">{{$selected_vehicle->reserve_status}}</span>
                 </div>
                 <div class="detail-row">
                     <span>Ends:</span>
@@ -157,7 +159,7 @@
                 const hoursEl = document.getElementById("hours");
                 const minutesEl = document.getElementById("minutes");
                 const secondsEl = document.getElementById("seconds");
-
+                
                 function updateTimer() {
                     const now = new Date().getTime();
 
