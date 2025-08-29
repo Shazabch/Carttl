@@ -16,13 +16,12 @@
             </div>
 
             <div class="current-bid d-flex justify-content-between align-items-center mb-3">
-                  @if(auth()->id())
+                
                 <div class="div">
                     <span class="bid-label mb-0">Current Bid</span>
-                    <span class="bid-amount">{{format_currency($highestBid)}}</span>
+                    <span  @if(auth()->id()) class="bid-amount" @else class="bidder" @endif >{{format_currency($highestBid)}}</span>
 
                 </div>
-                @endif
                 <div class="div">
                     <span class="bid-label mb-0">Starting Bid</span>
                     <span class="bid-amount">{{format_currency($selected_vehicle->starting_bid_amount)}}</span>
@@ -80,7 +79,6 @@
 
 
             <!-- === END: IMPROVED TIMER UI === -->
-           @if(auth()->id())
             @if($bids->count() > 0)
             <div class="bid-history">
                 <h3 class="p-22 fw-600 text-detail-primary">Bid History</h3>
@@ -94,7 +92,6 @@
                 </div>
                 @endforeach
             </div>
-            @endif
             @endif
             <div class="bid-actions" id="bidAction">
                 @if(auth()->id())
