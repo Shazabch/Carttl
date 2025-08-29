@@ -135,7 +135,7 @@
             <div class="auction-details">
                 <div class="detail-row">
                     <span>Reserve:</span>
-                    <span class="text-success">Met</span>
+                <span class="text-success">{{$selected_vehicle->reserve_status}}</span>
                 </div>
                 <div class="detail-row">
                     <span>Ends:</span>

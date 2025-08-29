@@ -1004,7 +1004,7 @@
                     <tr>
                         @foreach(['soft_door_closing'] as $field)
                         <td>
-                            <div class="item-label"><i class="{{ $fieldIcons[$field] ?? 'fas fa-circle-notch' }}"></i> Soft Door Closing</div>
+                            <div class="item-label"><i class="{{ $fieldIcons[$field] ?? 'fas fa-door-closed' }} text-primary"></i> Soft Door Closing</div>
                             @php $data = $reportInView->{$field} ?? 'N/A'; $statusInfo = getStatusInfo($data); @endphp
                             @if(is_array($data)) <div class="item-value">
                                 <ul class="item-value-list">@foreach($data as $value)<li>{{ $value }}</li>@endforeach</ul>
@@ -1013,23 +1013,13 @@
                             @else <div class="item-value">{{ $data }}</div> @endif
                         </td>
                         @endforeach
-                         <td></td>
-                         <td></td>
-                         <td></td>
-                         <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
                     </tr>
-                    
-                     <tr>
-                        <td colspan="{{ $columnsPerRow }}">
-                            @php $field = 'final_conclusion'; $data = $reportInView->{$field} ?? 'N/A'; $statusInfo = getStatusInfo($data); @endphp
-                            <div class="item-label"><i class="{{ $fieldIcons[$field] ?? 'fas fa-circle-notch' }}"></i> Final Conclusion</div>
-                            @if(is_array($data)) <div class="item-value">
-                                <ul class="item-value-list">@foreach($data as $value)<li>{{ $value }}</li>@endforeach</ul>
-                            </div>
-                            @elseif($statusInfo['class'] !== 'item-value') <div class="status-pill {{ $statusInfo['class'] }}"><i class="{{ $statusInfo['icon'] }}"></i>{{ $data }}</div>
-                            @else <div class="item-value">{{ $data }}</div> @endif
-                        </td>
-                    </tr>
+
+                   
                 </table>
             </div>
         </div>
@@ -1132,6 +1122,27 @@
                         <td colspan="{{ $columnsPerRow }}">
                             @php $field = 'comment_section1'; $data = $reportInView->{$field} ?? 'N/A'; $statusInfo = getStatusInfo($data); @endphp
                             <div class="item-label"><i class="{{ $fieldIcons[$field] ?? 'fas fa-circle-notch' }}"></i> Comments</div>
+                            @if(is_array($data)) <div class="item-value">
+                                <ul class="item-value-list">@foreach($data as $value)<li>{{ $value }}</li>@endforeach</ul>
+                            </div>
+                            @elseif($statusInfo['class'] !== 'item-value') <div class="status-pill {{ $statusInfo['class'] }}"><i class="{{ $statusInfo['icon'] }}"></i>{{ $data }}</div>
+                            @else <div class="item-value">{{ $data }}</div> @endif
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+         {{-- ==================================================================== --}}
+        {{-- == 5. Final Conclusion Section                                           == --}}
+        {{-- ==================================================================== --}}
+        <div class="report-card">
+            <div class="card-header"><i class="fa-solid fa-clipboard"></i>Final Conclusion</div>
+            <div class="card-body">
+                <table class="details-table">
+                    <tr>
+                        <td colspan="{{ $columnsPerRow }}">
+                            @php $field = 'final_conclusion'; $data = $reportInView->{$field} ?? 'N/A'; $statusInfo = getStatusInfo($data); @endphp
+                            <div class="item-label"><i class="{{ $fieldIcons[$field] ?? 'fas fa-flag'  }} text-primary"></i> Final Conclusion</div>
                             @if(is_array($data)) <div class="item-value">
                                 <ul class="item-value-list">@foreach($data as $value)<li>{{ $value }}</li>@endforeach</ul>
                             </div>
