@@ -3,31 +3,32 @@
     <div class="row align-items-center">
         <div class="col-md-6">
             <div class="listing-product-img">
-                <img src="{{ $item->coverImage ?  asset('storage/' . $item->coverImage?->path) : asset('images/default-car.webp') }}" class="img-fluid rounded" alt="{{$item->title}}">
+                <img src="{{ $item->coverImage ? asset('storage/' . $item->coverImage?->path) : asset('images/default-car.webp') }}"
+                    class="img-fluid rounded" alt="{{ $item->title }}">
                 <div class="overlap-car-box-card">
                     <div class="car-box-type p-left d-flex flex-wrap gap-2">
-                        @if($item->is_hot)
-                        <span class="car-box-badge hot">
-                            Hot Bid
-                        </span>
+                        @if ($item->is_hot)
+                            <span class="car-box-badge hot">
+                                Hot Bid
+                            </span>
                         @endif
 
-                        @if($item->inspected_by)
-                        <span class="car-box-badge inspected">
-                            Inspected
-                        </span>
+                        @if ($item->inspected_by)
+                            <span class="car-box-badge inspected">
+                                Inspected
+                            </span>
                         @endif
 
-                        @if(!$item->is_auction && $item->status == 'sold')
-                        <span class="car-box-badge sold">
-                            Sold
-                        </span>
+                        @if (!$item->is_auction && $item->status == 'sold')
+                            <span class="car-box-badge sold">
+                                Sold
+                            </span>
                         @endif
 
-                        @if($item->condition)
-                        <span class="car-box-badge condition">
-                            {{ucfirst($item->condition)}}
-                        </span>
+                        @if ($item->condition)
+                            <span class="car-box-badge condition">
+                                {{ ucfirst($item->condition) }}
+                            </span>
                         @endif
                     </div>
                     <livewire:favorite-button-component :vehicleId="$item->id" />
@@ -35,38 +36,39 @@
             </div>
         </div>
         <div class="col-md-6 pt-md-0 pt-4">
-            <h5 class="list-car-title">{{$item->title}}</h5>
+            <h5 class="list-car-title">{{ $item->title }}</h5>
             <div class="car-box-price mb-4">
                 <h4 class="mb-0">Current Bid:</h4>
-                <h4 class="mb-0 car-box-price-text">{{ $item->latestBid ? format_currency($item->latestBid->bid_amount) : 'No bids yet' }}</h4>
+                <h4 class="mb-0 car-box-price-text">
+                    {{ $item->latestBid ? format_currency($item->latestBid->bid_amount) : 'No bids yet' }}</h4>
             </div>
             <div class="car-box-specs">
                 <div class="spec_item">
                     <i class="fas fa-tachometer-alt"></i>
-                    <span>{{$item->mileage}} m</span>
+                    <span>{{ $item->mileage }} m</span>
                 </div>
-               <div class="spec_item">
-                        <i class="fas fa-calendar-alt"></i>
-                        @php
+                <div class="spec_item">
+                    <i class="fas fa-calendar-alt"></i>
+                    @php
                         $start = \Carbon\Carbon::parse($item->auction_start_date);
                         $end = \Carbon\Carbon::parse($item->auction_end_date);
                         $now = now();
-                        @endphp
+                    @endphp
 
-                        @if($now->lt($start))
+                    @if ($now->lt($start))
                         <span>Starts In {{ $start->shortAbsoluteDiffForHumans() }}</span>
-                        @elseif($now->between($start, $end))
+                    @elseif($now->between($start, $end))
                         <span>Ends In {{ $end->shortAbsoluteDiffForHumans() }}</span>
-                        @else
+                    @else
                         <span>Auction Ended</span>
-                        @endif
-                    </div>
+                    @endif
+                </div>
                 <div class="spec_item">
                     <i class="fas fa-gavel"></i>
                     <span>{{ $item->bids->count() ?? 0 }} Bids</span>
                 </div>
             </div>
-            <a href="{{ route('car-detail-page',$item->id) }}" class="view-detail-btn mt-3">View Details</a>
+            <a href="{{ route('car-detail-page', $item->id) }}" class="view-detail-btn mt-3">View Details</a>
         </div>
     </div>
 </div>

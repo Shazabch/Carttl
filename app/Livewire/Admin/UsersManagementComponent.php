@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\Hash;
 use Livewire\Attributes\On;
 use Livewire\WithPagination;
 use Livewire\Component;
+use Spatie\Permission\Models\Role;
+
 
 class UsersManagementComponent extends Component
 {
@@ -25,16 +27,23 @@ class UsersManagementComponent extends Component
     public string $role = '';
     public string $password = '';
 
+    public $allRoles = [];
+
     protected function rules()
     {
         return [
             'name' => 'required|string|max:255',
             'email' => 'required|email|max:255|unique:users,email,' . $this->editingUserId,
-            'role' => 'required|in:admin,customer',
+            'role' => 'required',
 
             // The password is required only when creating a new user (editingUserId is null).
             'password' => ($this->editingUserId ? 'nullable' : 'required') . '|min:8',
         ];
+    }
+
+    public function mount()
+    {
+        $this->allRoles = Role::pluck('name')->toArray();
     }
 
     // No mount method is needed as properties are initialized above.
@@ -81,6 +90,17 @@ class UsersManagementComponent extends Component
         $this->resetForm();
     }
 
+    //toggle approval functtion 
+    public function toggleApproval(int $id)
+    {
+        $user = User::findOrFail($id);
+        $user->is_approved = !$user->is_approved;
+        $user->save();
+
+        $status = $user->is_approved ? 'approved' : 'set to pending';
+        $this->dispatch('success-notification', message: "User has been {$status}.");
+    }
+
     public function saveUser()
     {
         $validatedData = $this->validate();
@@ -92,6 +112,7 @@ class UsersManagementComponent extends Component
             'role' => $this->role,
         ];
 
+
         // If a new password was provided, hash and add it to the data array.
         if (!empty($this->password)) {
             $data['password'] = Hash::make($this->password);
@@ -99,7 +120,8 @@ class UsersManagementComponent extends Component
 
         // Use updateOrCreate to handle both creating and updating in one line.
         User::updateOrCreate(['id' => $this->editingUserId], $data);
-
+        $user = User::find($this->editingUserId);
+        $user->syncRoles($this->role);
         // Determine the success message
         $message = $this->editingUserId ? 'User updated successfully.' : 'User created successfully.';
         $this->dispatch('success-notification', message: $message);

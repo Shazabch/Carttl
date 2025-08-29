@@ -42,9 +42,14 @@
                         <div class="col-md-6 mb-3">
                             <label>Role <span class="text-danger">*</span></label>
                             <select class="form-control" wire:model="role">
-                                <option value="">Select Role</option>
-                                <option value="admin">Admin</option>
-                                <option value="customer">Customer</option>
+                                <option value="">Select ROle</option>
+                                @foreach ($allRoles as $role)
+                                    {{-- Exclude 'super-admin' from the dropdown --}}
+                                    @if ($role == 'super-admin')
+                                        @continue
+                                    @endif
+                                    <option value="{{ $role }}">{{ ucfirst($role) }}</option>
+                                @endforeach
                             </select>
                             @error('role')
                                 <small class="text-danger">{{ $message }}</small>
@@ -76,8 +81,23 @@
             </div>
 
             <div class="card-body">
-                <table class="table table-bordered">
-                    {{-- ... table structure is the same ... --}}
+
+                <div class="alert alert-dismissible fade show"
+                    style="background-color: #ffe5e5; color: #a94442; border: 1px solid #f5c6cb;">
+                    <strong>Note:</strong> The customer must be approved by admin to access the bidding.
+                </div>
+                <table class="table table-hover text-center align-middle mb-0 table-striped">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Role</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+
+                    </thead>
                     <tbody>
                         @forelse ($users as $index => $user)
                             <tr wire:key="{{ $user->id }}">
@@ -86,11 +106,33 @@
                                 <td>{{ $user->email }}</td>
                                 <td>{{ ucfirst($user->role) }}</td>
                                 <td>
+                                    @if ($user->is_approved)
+                                        <span class="badge text-white bg-success">Approved</span>
+                                    @else
+                                        <span class="badge text-white bg-warning">Pending</span>
+                                    @endif
+                                </td>
+                                <td>
                                     <i class="fas fa-edit text-info me-2" style="cursor: pointer;"
                                         wire:click="editItem({{ $user->id }})" title="Edit"></i>
 
                                     <i class="fas fa-trash text-danger" style="cursor: pointer;"
                                         wire:click="deleteItem({{ $user->id }})" wire:confirm title="Delete"></i>
+
+
+                                    @if ($user->is_approved)
+                                        <i class="fas fa-times-circle text-danger ms-2"
+                                            style="cursor:
+                                        pointer;"
+                                            wire:confirm wire:click="toggleApproval({{ $user->id }})"
+                                            title="Disapprove"></i>
+                                    @else
+                                        <i class="fas fa-check-circle text-success ms-2"
+                                            style="cursor:
+                                        pointer;"
+                                            wire:confirm wire:click="toggleApproval({{ $user->id }})"
+                                            title="Approve"></i>
+                                    @endif
                                 </td>
                             </tr>
                         @empty

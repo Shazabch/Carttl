@@ -412,13 +412,13 @@
                                             <span class="badge-custom">{{ $feature->name }}</span>
                                         @endforeach
                                     </div>
-                                  
+
                                     <div class="current-bid">
                                         <span class="bid-label mb-0">Price</span>
                                         <span
                                             class="bid-amount">{{ format_currency($selected_vehicle->price) }}</span>
                                     </div>
-                                    
+
                                     <div class="action-buttons mb-2">
                                         <livewire:favorite-button-detail-component :vehicleId="$selected_vehicle->id" />
                                         <!-- <button class="btn-icon" data-bs-toggle="tooltip" title="Share">
