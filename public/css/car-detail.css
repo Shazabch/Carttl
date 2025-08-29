@@ -702,7 +702,7 @@
 
 .bidder {
     font-weight: 600;
-    filter: blur(2px);
+    filter: blur(3px);
     color: #666;
     font-size: 0.9rem;
 }
