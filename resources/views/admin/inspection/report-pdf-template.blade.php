@@ -612,7 +612,7 @@
         'viveCamera' => 'fas fa-camera',
         'sunroofType' => 'fas fa-sun',
         'drive' => 'fas fa-road',
-        
+
         // Brakes
         'steeringOperation' => 'fas fa-steering-wheel',
         'wheelAlignment' => 'fas fa-crosshairs',
@@ -1008,7 +1008,7 @@
                         <td></td>
                     </tr>
 
-                   
+
                 </table>
             </div>
         </div>
@@ -1165,6 +1165,8 @@
                         <td width="33.33%" valign="top" style="border: 1px solid #e0e0e0; border-radius: 8px;">
                             <div style="margin: 4px;">
                                 <img
+
+                                    onclick="openImagesModal()"
                                     src="{{ asset('storage/' . $image->path) }}"
                                     alt="{{ $image['title'] ?? 'Vehicle Image' }}"
                                     style="display: block; width: 100%; height: 180px; object-fit: cover; border-radius: 6px;">
@@ -1260,6 +1262,89 @@
             <span class="footer-brand">Golden X</span> &copy; {{ date('Y') }} | Vehicle Inspection Report
         </div>
     </div>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Bootstrap 5 Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    {{-- Fullscreen Modal with Carousel --}}
+    <div class="modal fade" id="imageSliderModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-fullscreen">
+            <div class="modal-content bg-black">
+                <div class="modal-header border-0">
+                    <button type="button" class="btn-close btn-close-white ms-auto" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body d-flex flex-column justify-content-center align-items-center p-4">
+
+                    {{-- Main Carousel --}}
+                    <div id="vehicleImagesCarousel" class="carousel slide w-100 mb-4" data-bs-ride="false">
+                        <div class="carousel-inner text-center">
+                            @foreach($vehicleImages as $i => $image)
+                            <div class="carousel-item {{ $i == 0 ? 'active' : '' }}">
+                                <img src="{{ asset('storage/' . $image->path) }}"
+                                    class="d-block mx-auto img-fluid"
+                                    style="max-height: 75vh; object-fit: contain; padding:20px; border-radius:12px;">
+                            </div>
+                            @endforeach
+                        </div>
+
+                        {{-- Navigation arrows --}}
+                        <button class="carousel-control-prev" type="button" data-bs-target="#vehicleImagesCarousel" data-bs-slide="prev">
+                            <span class="carousel-control-prev-icon"></span>
+                        </button>
+                        <button class="carousel-control-next" type="button" data-bs-target="#vehicleImagesCarousel" data-bs-slide="next">
+                            <span class="carousel-control-next-icon"></span>
+                        </button>
+                    </div>
+
+                    {{-- Thumbnails Row --}}
+                    <div class="d-flex flex-wrap justify-content-center gap-2 w-100">
+                        @foreach($vehicleImages as $i => $image)
+                        <img src="{{ asset('storage/' . $image->path) }}"
+                            onclick="jumpToImage({{ $i }})"
+                            class="img-thumbnail"
+                            style="width:100px; height:70px; object-fit:cover; cursor:pointer; border:2px solid #444; border-radius:6px;">
+                        @endforeach
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        /* White arrows for dark background */
+        .carousel-control-prev-icon,
+        .carousel-control-next-icon {
+            background-size: 100% 100%;
+            width: 3rem;
+            height: 3rem;
+        }
+
+        .carousel-control-prev-icon {
+            background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23ffffff' viewBox='0 0 16 16'%3E%3Cpath d='M11 1 3 8l8 7V1z'/%3E%3C/svg%3E");
+        }
+
+        .carousel-control-next-icon {
+            background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23ffffff' viewBox='0 0 16 16'%3E%3Cpath d='M5 1l8 7-8 7V1z'/%3E%3C/svg%3E");
+        }
+    </style>
+
+    <script>
+        function openImagesModal(startIndex = 0) {
+            var myModal = new bootstrap.Modal(document.getElementById('imageSliderModal'));
+            myModal.show();
+
+            var carousel = bootstrap.Carousel.getOrCreateInstance(document.getElementById('vehicleImagesCarousel'));
+            carousel.to(startIndex);
+        }
+
+        function jumpToImage(index) {
+            var carousel = bootstrap.Carousel.getOrCreateInstance(document.getElementById('vehicleImagesCarousel'));
+            carousel.to(index);
+        }
+    </script>
+
 </body>
 
 </html>
