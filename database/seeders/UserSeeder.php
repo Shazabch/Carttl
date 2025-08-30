@@ -18,7 +18,7 @@ class UserSeeder extends Seeder
         // Create or update a Super-Admin User
         $superAdmin = User::updateOrCreate(
             // Attributes to find the user by
-            ['email' => 'superadmin@example.com'],
+            ['email' => 'shahzaib@majesticsofts.com'],
             // Attributes to create or update the user with
             [
                 'name' => 'Super Admin',

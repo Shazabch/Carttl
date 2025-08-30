@@ -122,7 +122,7 @@
                         <button wire:click="saveBid" class="btn btn-primary btn-bid">
                             <i class="fas fa-gavel me-2"></i>
                             Place Bid <span wire:loading wire:target="saveBid">
-                                <div class="spinner-border" role="status">
+                                <div class="spinner-border spinner-border-sm" role="status">
                                     <span class="sr-only">Loading...</span>
                                 </div>
                             </span>
