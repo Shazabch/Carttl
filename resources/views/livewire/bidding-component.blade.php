@@ -20,7 +20,7 @@
                 <div class="div">
                     <span class="bid-label mb-0">Current Bid</span>
                     <span
-                        @if (auth()->id() && auth()->user()->is_verified) class="bid-amount" @else class="bidder" @endif>{{ format_currency($highestBid) }}</span>
+                        @if (auth()->id() && auth()->user()->is_approved) class="bid-amount" @else class="bidder" @endif>{{ format_currency($highestBid) }}</span>
 
                 </div>
                 <div class="div">
@@ -89,7 +89,7 @@
                             <div class="bid-top">
                                 <span class="bidder">********</span>
                                 <span
-                                    @if (auth()->id() && auth()->user()->is_verified) class="bid-amount" @else class="bidder" @endif>{{ format_currency($bid->bid_amount) }}</span>
+                                    @if (auth()->id() && auth()->user()->is_approved) class="bid-amount" @else class="bidder" @endif>{{ format_currency($bid->bid_amount) }}</span>
                             </div>
                             <span class="bid-time">{{ \Carbon\Carbon::parse($bid->created_at)->diffForHumans() }}</span>
                         </div>
@@ -97,7 +97,7 @@
                 </div>
             @endif
             <div class="bid-actions" id="bidAction">
-                @if (auth()->id() && auth()->user()->is_verified)
+                @if (auth()->id() && auth()->user()->is_approved)
                     <div class="bid-input-group">
                         <input type="number" wire:model.live="current_bid" class="form-control bid-input"
                             placeholder="Enter bid " step="500" @if ($is_not_login) disabled @endif
@@ -118,7 +118,7 @@
                     </div>
                 @endif
                 @if (auth()->id())
-                    @if (auth()->user()->is_verified)
+                    @if (auth()->user()->is_approved)
                         <button wire:click="saveBid" class="btn btn-primary btn-bid">
                             <i class="fas fa-gavel me-2"></i>
                             Place Bid <span wire:loading wire:target="saveBid">
