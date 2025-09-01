@@ -133,20 +133,14 @@ $(function () {
     max: 2000000,
     values: [1000, 2000000],
     slide: function (event, ui) {
-      $("#min_price").val(ui.values[0]);
-      $("#max_price").val(ui.values[1]);
+      Livewire.dispatch('priceRangeUpdated', {
+        min: ui.values[0],
+        max: ui.values[1]
+      });
     }
   });
-
-  $("#min_price").val($("#slider-range").slider("values", 0));
-  $("#max_price").val($("#slider-range").slider("values", 1));
-
-  $("#price-range-submit").click(function () {
-    const minPrice = $("#min_price").val();
-    const maxPrice = $("#max_price").val();
-    $("#searchResults").html(`<p>Showing results from <strong>$${minPrice}</strong> to <strong>$${maxPrice}</strong></p>`);
-  });
 });
+
 
 
 $(function () {

@@ -5,6 +5,7 @@ namespace App\Livewire;
 use App\Models\Brand;
 use App\Models\Vehicle;
 use App\Models\VehicleModel;
+use Livewire\Attributes\On;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -13,8 +14,8 @@ class VehicleAndAuctionComponent extends Component
     use WithPagination;
 
     public $sortBy = 'ending_soon';
-    public $minPrice;
-    public $maxPrice;
+    public $minPrice = 1000;
+    public $maxPrice = 2000000;
     public $make;
     public $model;
     public $year;
@@ -25,6 +26,9 @@ class VehicleAndAuctionComponent extends Component
     public $auctionStatus = [];
     public $brands = [], $models = [];
     public $section = 'Vehicles';
+
+
+
 
     protected string $paginationTheme = 'bootstrap';
 
@@ -54,7 +58,13 @@ class VehicleAndAuctionComponent extends Component
         $this->brands = Brand::orderBy('name')->whereHas('models')->get();
         $this->section = $section;
     }
+    #[On('priceRangeUpdated')]
+    public function updatePriceRange($min, $max)
+    {
 
+        $this->minPrice = $min;
+        $this->maxPrice = $max;
+    }
     public function updatedMake($value)
     {
         $this->model = null;
@@ -62,9 +72,9 @@ class VehicleAndAuctionComponent extends Component
             $this->models = $value
                 ? VehicleModel::where('brand_id', $value)->get()
                 : [];
-        }else{
+        } else {
 
-            $this->make=null;
+            $this->make = null;
         }
     }
 
