@@ -80,14 +80,13 @@ class VehicleAndAuctionComponent extends Component
     public function render()
     {
         $vehiclesQuery = Vehicle::query();
-        $vehiclesQuery->orderBy('created_at', 'desc');
 
         // Section filter
         if ($this->section === 'Auctions') {
-            $vehiclesQuery->where('is_auction', 1)->where('status', '!=', 'sold');
+            $vehiclesQuery->where('is_auction', 1)->where('status', 'published');
         } else {
             $vehiclesQuery->where(function ($q) {
-                $q->where('is_auction', 0)->where('status', '!=', 'sold')
+                $q->where('is_auction', 0)->where('status', 'published')
                     ->orWhereNull('is_auction');
             });
         }
@@ -108,7 +107,7 @@ class VehicleAndAuctionComponent extends Component
                 break;
             case 'ending_soon':
             default:
-                $vehiclesQuery->orderBy('auction_end_date', 'asc');
+                $vehiclesQuery->orderBy('created_at', 'desc');
                 break;
         }
 
