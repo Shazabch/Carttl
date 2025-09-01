@@ -57,9 +57,15 @@ class VehicleAndAuctionComponent extends Component
 
     public function updatedMake($value)
     {
-        $this->models = $value
-            ? VehicleModel::where('brand_id', $value)->get()
-            : [];
+        $this->model = null;
+        if ($value) {
+            $this->models = $value
+                ? VehicleModel::where('brand_id', $value)->get()
+                : [];
+        }else{
+
+            $this->make=null;
+        }
     }
 
     public function resetAll()
