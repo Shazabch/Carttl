@@ -59,7 +59,7 @@
                                                 placeholder="Max" class="form-control price-range-field" />
                                         </div>
                                     </div>
-                                    <div id="slider-range" class="price-filter-range" name="rangeInput"></div>
+                                    <div id="slider-range" class="price-filter-range" name="rangeInput" wire:ignore></div>
                                 </div>
                             </div>
                             <!-- Mileage Filter -->
