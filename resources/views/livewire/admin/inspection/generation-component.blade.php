@@ -38,6 +38,7 @@
         <div class="card-body">
             {{-- Reuse the same PDF template for the view content --}}
             @include('admin.inspection.report-pdf-template', ['report' => $reportInView])
+
         </div>
     </div>
 
@@ -287,6 +288,7 @@
     </script>
 
     @push('scripts')
+      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         // Listen for the 'livewire:initialized' event to ensure Livewire is ready
         document.addEventListener('livewire:initialized', () => {
@@ -313,5 +315,26 @@
             });
         });
     </script>
+    <script>
+        function openImagesModal(startIndex = 0) {
+            var myModal = new bootstrap.Modal(document.getElementById('imageSliderModal'));
+            myModal.show();
+
+            var carousel = bootstrap.Carousel.getOrCreateInstance(document.getElementById('vehicleImagesCarousel'));
+            carousel.to(startIndex);
+        }
+         function closeImagesModal() {
+            var myModal2 = new bootstrap.Modal(document.getElementById('imageSliderModal'));
+            myModal2.hide();
+
+
+        }
+
+        function jumpToImage(index) {
+            var carousel = bootstrap.Carousel.getOrCreateInstance(document.getElementById('vehicleImagesCarousel'));
+            carousel.to(index);
+        }
+    </script>
+
     @endpush
 </div>
