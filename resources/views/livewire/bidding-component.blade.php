@@ -11,7 +11,7 @@
 
             <div class="car-subtitle">
                 @foreach ($tags as $feature)
-                    <span class="badge-custom">{{ $feature->name }}</span>
+                <span class="badge-custom">{{ $feature->name }}</span>
                 @endforeach
             </div>
 
@@ -33,11 +33,11 @@
                     <span class="bid-count">{{ $totalBids }} bids</span>
                 </div>
                 @if ($selected_vehicle->auction_start_date)
-                    <div class="col-6 text-end">
-                        <span class="bid-label mb-0">Starting Date</span>
-                        <span
-                            class="bid-amount">{{ \Carbon\Carbon::parse($selected_vehicle->auction_start_date)->format('Y-m-d H:i:s') }}</span>
-                    </div>
+                <div class="col-6 text-end">
+                    <span class="bid-label mb-0">Starting Date</span>
+                    <span
+                        class="bid-amount">{{ \Carbon\Carbon::parse($selected_vehicle->auction_start_date)->format('Y-m-d H:i:s') }}</span>
+                </div>
                 @endif
 
             </div>
@@ -82,66 +82,70 @@
 
             <!-- === END: IMPROVED TIMER UI === -->
             @if ($bids->count() > 0)
-                <div class="bid-history">
-                    <h3 class="p-22 fw-600 text-detail-primary">Bid History</h3>
-                    @foreach ($bids as $bid)
-                        <div class="bid-item">
-                            <div class="bid-top">
-                                <span class="bidder">********</span>
-                                <span
-                                    @if (auth()->id() && auth()->user()->is_approved) class="bid-amount" @else class="bidder" @endif>{{ format_currency($bid->bid_amount) }}</span>
-                            </div>
-                            <span class="bid-time">{{ \Carbon\Carbon::parse($bid->created_at)->diffForHumans() }}</span>
-                        </div>
-                    @endforeach
+            <div class="bid-history">
+                <h3 class="p-22 fw-600 text-detail-primary">Bid History</h3>
+                @foreach ($bids as $bid)
+                <div class="bid-item">
+                    <div class="bid-top">
+                        @if (auth()->id() && auth()->user()->id==$bid->user_id)
+                        <span class="">{{$bid->user?->name}}</span>
+                        @else
+                        <span class="bidder">********</span>
+                        @endif
+                        <span
+                            @if (auth()->id() && auth()->user()->is_approved) class="bid-amount" @else class="bidder" @endif>{{ format_currency($bid->bid_amount) }}</span>
+                    </div>
+                    <span class="bid-time">{{ \Carbon\Carbon::parse($bid->created_at)->diffForHumans() }}</span>
                 </div>
+                @endforeach
+            </div>
             @endif
             <div class="bid-actions" id="bidAction">
                 @if (auth()->id() && auth()->user()->is_approved)
-                    <div class="bid-input-group">
-                        <input type="number" wire:model.live="current_bid" class="form-control bid-input"
-                            placeholder="Enter bid " step="500" @if ($is_not_login) disabled @endif
-                            min="{{ $current_bid }}">
-                        @error('current_bid')
-                            <div class="text-danger small mt-1">{{ $message }}</div>
-                        @enderror
-                        <span class="input-addon">AED</span>
-                    </div>
-                    <div class="bid-input-group">
-                        <input type="number" wire:model.live="max_bid" class="form-control bid-input"
-                            placeholder="Enter Max Bid" min="{{ $max_bid }}" step="500"
-                            @if ($is_not_login) disabled @endif>
-                        @error('max_bid')
-                            <div class="text-danger small mt-1">{{ $message }}</div>
-                        @enderror
-                        <span class="input-addon">AED</span>
-                    </div>
+                <div class="bid-input-group">
+                    <input type="number" wire:model.live="current_bid" class="form-control bid-input"
+                        placeholder="Enter bid " step="500" @if ($is_not_login) disabled @endif
+                        min="{{ $current_bid }}">
+                    @error('current_bid')
+                    <div class="text-danger small mt-1">{{ $message }}</div>
+                    @enderror
+                    <span class="input-addon">AED</span>
+                </div>
+                <div class="bid-input-group">
+                    <input type="number" wire:model.live="max_bid" class="form-control bid-input"
+                        placeholder="Enter Max Bid" min="{{ $max_bid }}" step="500"
+                        @if ($is_not_login) disabled @endif>
+                    @error('max_bid')
+                    <div class="text-danger small mt-1">{{ $message }}</div>
+                    @enderror
+                    <span class="input-addon">AED</span>
+                </div>
                 @endif
                 @if (auth()->id())
-                    @if (auth()->user()->is_approved)
-                        <button wire:click="saveBid" class="btn btn-primary btn-bid">
-                            <i class="fas fa-gavel me-2"></i>
-                            Place Bid <span wire:loading wire:target="saveBid">
-                                <div class="spinner-border spinner-border-sm" role="status">
-                                    <span class="sr-only">Loading...</span>
-                                </div>
-                            </span>
-                        </button>
-                    @else
-                        <button class="btn btn-primary btn-bid" disabled>
-                            <i class="fas fa-gavel me-2"></i>
-                            Pending approval from admin
-                        </button>
-                    @endif
+                @if (auth()->user()->is_approved)
+                <button wire:click="saveBid" class="btn btn-primary btn-bid">
+                    <i class="fas fa-gavel me-2"></i>
+                    Place Bid <span wire:loading wire:target="saveBid">
+                        <div class="spinner-border spinner-border-sm" role="status">
+                            <span class="sr-only">Loading...</span>
+                        </div>
+                    </span>
+                </button>
                 @else
-                    <button wire:click="saveBid" class="btn btn-primary btn-bid">
-                        <i class="fas fa-gavel me-2"></i>
-                        Signin & Place Bid <span wire:loading wire:target="saveBid">
-                            <div class="spinner-border" role="status">
-                                <span class="sr-only">Loading...</span>
-                            </div>
-                        </span>
-                    </button>
+                <button class="btn btn-primary btn-bid" disabled>
+                    <i class="fas fa-gavel me-2"></i>
+                    Pending approval from admin
+                </button>
+                @endif
+                @else
+                <button wire:click="saveBid" class="btn btn-primary btn-bid">
+                    <i class="fas fa-gavel me-2"></i>
+                    Signin & Place Bid <span wire:loading wire:target="saveBid">
+                        <div class="spinner-border" role="status">
+                            <span class="sr-only">Loading...</span>
+                        </div>
+                    </span>
+                </button>
                 @endif
                 <!-- <button class="btn btn-outline-primary btn-auto-bid">
                                         <i class="fas fa-robot"></i>
