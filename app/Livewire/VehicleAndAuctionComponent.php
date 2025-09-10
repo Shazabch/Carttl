@@ -15,7 +15,7 @@ class VehicleAndAuctionComponent extends Component
 
     public $sortBy = 'ending_soon';
     public $minPrice =10000;
-    public $maxPrice=200000000;
+    public $maxPrice=10000000;
     public $make;
     public $model;
     public $year;
