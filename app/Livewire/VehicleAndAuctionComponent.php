@@ -14,8 +14,8 @@ class VehicleAndAuctionComponent extends Component
     use WithPagination;
 
     public $sortBy = 'ending_soon';
-    public $minPrice = 1000;
-    public $maxPrice = 2000000;
+    public $minPrice ;
+    public $maxPrice ;
     public $make;
     public $model;
     public $year;
@@ -107,6 +107,7 @@ class VehicleAndAuctionComponent extends Component
             });
         }
 
+
         // Sorting
         switch ($this->sortBy) {
             case 'price_low_high':
@@ -131,6 +132,7 @@ class VehicleAndAuctionComponent extends Component
         if ($this->minPrice) {
             $vehiclesQuery->where('price', '>=', $this->minPrice);
         }
+
         if ($this->maxPrice) {
             $vehiclesQuery->where('price', '<=', $this->maxPrice);
         }
@@ -139,6 +141,7 @@ class VehicleAndAuctionComponent extends Component
         if ($this->make) {
             $vehiclesQuery->where('brand_id', $this->make);
         }
+
         if ($this->model) {
             $vehiclesQuery->where('vehicle_model_id', $this->model);
         }

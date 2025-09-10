@@ -42,6 +42,7 @@ class LoginController extends Controller
         $rules = [
             'email' => 'required|email',
             'password' => 'required|min:5',
+            'g-recaptcha-response' => ['accepted'],
         ];
 
         $validator = Validator::make($request->all(), $rules);
@@ -74,6 +75,7 @@ class LoginController extends Controller
             'email' => 'required|email|unique:users',
             'password' => 'required|min:5|confirmed',
             'password_confirmation' => 'required',
+            'g-recaptcha-response' => ['accepted'],
         ];
 
         $validator = Validator::make($request->all(), $rules);

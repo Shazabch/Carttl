@@ -92,6 +92,7 @@ Register - GoldenX
                             <a href="{{route('privacy-policy')}}" class="text-warning fw-medium text-decoration-none">Privacy Policy</a>
                         </label>
                     </div>
+                    <livewire:captcha />
                     <button type="submit" class="btn btn-warning w-100 fw-bold py-3">Create Account</button>
                 </form>
 

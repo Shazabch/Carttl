@@ -76,6 +76,7 @@
                             <a href="{{ route('password.request') }}"
                                 class="text-warning fw-medium text-decoration-none">Forgot password?</a>
                         </div>
+                        <livewire:captcha />
                         <div class="text-center mt-4 text-secondary">
                             <button type="submit" class="btn btn-warning w-100 fw-bold py-3">Sign In</button>
                             <p>Don't have an account? <a href="{{ route('account.register') }}"
