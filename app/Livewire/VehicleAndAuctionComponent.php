@@ -14,8 +14,8 @@ class VehicleAndAuctionComponent extends Component
     use WithPagination;
 
     public $sortBy = 'ending_soon';
-    public $minPrice ;
-    public $maxPrice ;
+    public $minPrice =10000;
+    public $maxPrice=200000000;
     public $make;
     public $model;
     public $year;
@@ -186,7 +186,7 @@ class VehicleAndAuctionComponent extends Component
             }
         }
 
-        $vehicles = $vehiclesQuery->paginate(20)->withQueryString();
+        $vehicles = $vehiclesQuery->paginate(12)->withQueryString();
 
         return view('livewire.vehicle-and-auction-component', [
             'vehicles' => $vehicles,

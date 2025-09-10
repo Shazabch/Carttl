@@ -130,8 +130,8 @@ $(function () {
   $("#slider-range").slider({
     range: true,
     min: 0,
-    max: 2000000,
-    values: [1000, 2000000],
+    max: 200000000,
+    values: [1000, 200000000],
     slide: function (event, ui) {
       Livewire.dispatch('priceRangeUpdated', {
         min: ui.values[0],
