@@ -14,7 +14,7 @@
                             <th>VIN</th>
                             <th>Bid Time</th>
                             <th>Status</th>
-                            
+
                         </tr>
                     </thead>
                     <tbody>
@@ -30,9 +30,13 @@
                                 {{format_currency($item->max_bid)}}
                             </td>
                             <td>
-                                <a href="{{route('car-detail-page' , $item->vehicle->id)}}">
-                                    {{$item->vehicle->vin}}
+                                @if($item->vehicle )
+                                <a href="{{route('car-detail-page' , $item->vehicle_id)}}">
+                                    {{$item->vehicle?->vin}}
                                 </a>
+                                @else
+                                  N/A
+                                @endif
                             </td>
                             <td>{{ \Carbon\Carbon::parse($item->bid_time)->format('Y-m-d') }}</td>
                             <td>{{$item->status}}</td>
