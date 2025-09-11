@@ -8,27 +8,27 @@
                 <div class="overlap-car-box-card">
                     <div class="car-box-type p-left d-flex flex-wrap gap-2">
                         @if ($item->is_hot)
-                            <span class="car-box-badge hot">
-                                Hot Bid
-                            </span>
+                        <span class="car-box-badge hot">
+                            Hot Bid
+                        </span>
                         @endif
 
                         @if ($item->inspected_by)
-                            <span class="car-box-badge inspected">
-                                Inspected
-                            </span>
+                        <span class="car-box-badge inspected">
+                            Inspected
+                        </span>
                         @endif
 
                         @if (!$item->is_auction && $item->status == 'sold')
-                            <span class="car-box-badge sold">
-                                Sold
-                            </span>
+                        <span class="car-box-badge sold">
+                            Sold
+                        </span>
                         @endif
 
                         @if ($item->condition)
-                            <span class="car-box-badge condition">
-                                {{ ucfirst($item->condition) }}
-                            </span>
+                        <span class="car-box-badge condition">
+                            {{ ucfirst($item->condition) }}
+                        </span>
                         @endif
                     </div>
                     <livewire:favorite-button-component :vehicleId="$item->id" />
@@ -40,7 +40,8 @@
             <div class="car-box-price mb-4">
                 <h4 class="mb-0">Current Bid:</h4>
                 <h4 class="mb-0 car-box-price-text">
-                    {{ $item->latestBid ? format_currency($item->latestBid->bid_amount) : 'No bids yet' }}</h4>
+                    {{ $item->latestBid ? format_currency($item->latestBid->bid_amount) : 'No bids yet' }}
+                </h4>
             </div>
             <div class="car-box-specs">
                 <div class="spec_item">
@@ -49,20 +50,50 @@
                 </div>
                 <div class="spec_item">
                     <i class="fas fa-calendar-alt"></i>
-                    @php
-                        $start = \Carbon\Carbon::parse($item->auction_start_date);
-                        $end = \Carbon\Carbon::parse($item->auction_end_date);
-                        $now = now();
-                    @endphp
-
-                    @if ($now->lt($start))
-                        <span>Starts In {{ $start->shortAbsoluteDiffForHumans() }}</span>
-                    @elseif($now->between($start, $end))
-                        <span>Ends In {{ $end->shortAbsoluteDiffForHumans() }}</span>
-                    @else
-                        <span>Auction Ended</span>
-                    @endif
+                    <span id="auctionStatuslist{{ $item->id }}">Loading...</span>
                 </div>
+
+                <script>
+                    document.addEventListener("DOMContentLoaded", function() {
+                        const startDate = new Date("{{ \Carbon\Carbon::parse($item->auction_start_date)->format('Y-m-d H:i:s') }}").getTime();
+                        const endDate = new Date("{{ \Carbon\Carbon::parse($item->auction_end_date)->format('Y-m-d H:i:s') }}").getTime();
+                        const nowDate = new Date("{{ now()->format('Y-m-d H:i:s') }}").getTime();
+
+                        const statusEl = document.getElementById("auctionStatuslist{{ $item->id }}");
+
+                        function updateStatus() {
+                            const now = new Date().getTime(); // client time tick
+
+                            if (now < startDate) {
+                                statusEl.textContent = "Starts In " + timeDiff(startDate - now);
+                            } else if (now >= startDate && now <= endDate) {
+                                statusEl.textContent = "Ends In " + timeDiff(endDate - now);
+                            } else {
+                                statusEl.textContent = "Auction Ended";
+                                clearInterval(timerInterval);
+                            }
+                        }
+
+                        function timeDiff(ms) {
+                            const totalMinutes = Math.floor(ms / (1000 * 60));
+                            const totalHours = Math.floor(totalMinutes / 60);
+                            const totalDays = Math.floor(totalHours / 24);
+
+                            if (totalDays >= 1) {
+                                return totalDays + " " + (totalDays === 1 ? "day" : "days");
+                            } else if (totalHours >= 1) {
+                                return totalHours + " " + (totalHours === 1 ? "hour" : "hours");
+                            } else if (totalMinutes > 0) {
+                                return totalMinutes + " " + (totalMinutes === 1 ? "min" : "min");
+                            } else {
+                                return "Few Sec";
+                            }
+                        }
+
+                        updateStatus();
+                        const timerInterval = setInterval(updateStatus, 60000); // update every minute
+                    });
+                </script>
                 <div class="spec_item">
                     <i class="fas fa-gavel"></i>
                     <span>{{ $item->bids->count() ?? 0 }} Bids</span>

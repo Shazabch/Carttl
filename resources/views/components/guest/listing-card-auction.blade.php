@@ -84,7 +84,7 @@
                                 } else if (totalMinutes > 0) {
                                     return totalMinutes + " " + (totalMinutes === 1 ? "min" : "min");
                                 } else {
-                                    return "less than a minute";
+                                    return "Few Sec";
                                 }
                             }
 
