@@ -40,7 +40,7 @@ class Vehicle extends Model
         'is_auction' => 'boolean',
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
-        'auction_end_date' => 'datetime',
+      
 
     ];
 

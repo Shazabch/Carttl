@@ -169,10 +169,10 @@
             document.addEventListener("DOMContentLoaded", function() {
 
                 const startDate = new Date(
-                        "{{ \Carbon\Carbon::parse($selected_vehicle->auction_start_date)->toIso8601String() }}")
+                        "{{ \Carbon\Carbon::parse($selected_vehicle->auction_start_date) }}")
                     .getTime();
                 const endDate = new Date(
-                        "{{ \Carbon\Carbon::parse($selected_vehicle->auction_end_date)->toIso8601String() }}")
+                        "{{ \Carbon\Carbon::parse($selected_vehicle->auction_end_date) }}")
                     .getTime();
                 const heading = document.getElementById("auctionTimerHeading");
                 const bidAction = document.getElementById("bidAction");
