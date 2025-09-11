@@ -3,7 +3,7 @@
         <div class="auction-card">
             <div class="auction-header d-flex justify-content-between align-items-center mb-3">
                 <div class="div">
-                    <p class="auction-id mb-1">#AU-2024-0156</p>
+                    <p class="auction-id mb-1">{{ $selected_vehicle->brand?->name }}-{{ $selected_vehicle->year }}-{{ $selected_vehicle->vehicleModel?->name }}</p>
                     <h3 class="title-line-clamp-2">{{ $selected_vehicle->title }}</h3>
                 </div>
 
