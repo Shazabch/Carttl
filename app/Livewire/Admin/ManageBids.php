@@ -13,6 +13,9 @@ class ManageBids extends Component
     use WithPagination;
 
     public $search = '';
+    public $allbids = [];
+    public $selected = []; // for bulk delete
+    public $selectAll = false; // checkbox toggle
     public $filterStatus = 'all'; // 'all', 'pending', 'accepted', 'rejected'
     protected string $paginationTheme = 'bootstrap';
 
@@ -45,12 +48,48 @@ class ManageBids extends Component
             }
             $bid->save();
 
-             $this->dispatch('success-notification', message: 'Bid status updated successfully.');
+            $this->dispatch('success-notification', message: 'Bid status updated successfully.');
         } else {
             session()->flash('error', 'Bid not found.');
-
         }
     }
+    public function deleteBid($bidId)
+    {
+        $bid = VehicleBid::find($bidId);
+        if ($bid) {
+            $bid->delete();
+            session()->flash('message', 'Bid deleted successfully.');
+        } else {
+            session()->flash('error', 'Bid not found.');
+        }
+    }
+
+    // ✅ Bulk delete selected bids
+    public function deleteSelected()
+    {
+        if (!empty($this->selected)) {
+
+            VehicleBid::whereIn('id', $this->selected)->delete();
+            $this->selected = [];
+            $this->selectAll = false;
+            session()->flash('message', 'Selected bids deleted successfully.');
+        } else {
+            session()->flash('error', 'No bids selected.');
+        }
+         $this->selected = [];
+    }
+
+    public function updatedSelectAll($value)
+    {
+        if ($value) {
+            $this->selected = collect($this->allbids)
+                ->map(fn($id) => (string) $id)
+                ->toArray();
+        } else {
+            $this->selected = [];
+        }
+    }
+
 
     // You could add a separate method for explicit rejection if needed
     public function rejectBid($bidId)
@@ -90,6 +129,7 @@ class ManageBids extends Component
         }
 
         $bids = $query->paginate(10);
+        $this->allbids = $bids->pluck('id')->toArray();
 
         return view('livewire.admin.manage-bids', [
             'bids' => $bids,
