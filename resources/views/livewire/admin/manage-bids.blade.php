@@ -14,7 +14,8 @@
             <thead>
                 <tr>
                     <th>
-                       
+                        <!-- Master Select All -->
+                        <input type="checkbox" onclick="toggleAllSelect(this)">
                     </th>
                     <th>#</th>
                     <th>Vehicle</th>
@@ -32,7 +33,7 @@
                         <input type="checkbox"
                             wire:model="selected"
                             value="{{ $bid->id }}"
-                            @if(in_array($bid->id, $selected)) checked @endif>
+                            onclick="toggleSingleSelect(this)">
                     </td>
                     <td>{{ $loop->iteration }}</td>
                     <td>
@@ -90,4 +91,37 @@
     <div class="mt-4">
         {{ $bids->links() }}
     </div>
+
+    <script>
+        // ✅ Bulk select toggle
+        function toggleAllSelect(source) {
+            const checkboxes = document.querySelectorAll('input[type="checkbox"][wire\\:model="selected"]');
+            const selectedIds = [];
+
+            checkboxes.forEach(checkbox => {
+                checkbox.checked = source.checked;
+                if (checkbox.checked) {
+                    selectedIds.push(checkbox.value);
+                }
+            });
+
+            // Update Livewire backend
+            @this.call('updateSelectedFromJs', selectedIds);
+        }
+
+        // ✅ Single select toggle
+        function toggleSingleSelect(checkbox) {
+            const checkboxes = document.querySelectorAll('input[type="checkbox"][wire\\:model="selected"]');
+            const selectedIds = [];
+
+            checkboxes.forEach(cb => {
+                if (cb.checked) {
+                    selectedIds.push(cb.value);
+                }
+            });
+
+            // Update Livewire backend
+            @this.call('updateSelectedFromJs', selectedIds);
+        }
+    </script>
 </div>

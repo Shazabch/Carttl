@@ -36,8 +36,6 @@ class ManageBids extends Component
         $bid = VehicleBid::find($bidId);
 
         if ($bid) {
-            // Toggle between 'pending' and 'accepted' for simplicity here.
-            // You might want a more elaborate status flow (e.g., 'pending' -> 'accepted' or 'rejected').
             if ($bid->status === 'accepted') {
                 $bid->status = 'pending';
             } else {
@@ -53,6 +51,7 @@ class ManageBids extends Component
             session()->flash('error', 'Bid not found.');
         }
     }
+
     public function deleteBid($bidId)
     {
         $bid = VehicleBid::find($bidId);
@@ -68,7 +67,6 @@ class ManageBids extends Component
     public function deleteSelected()
     {
         if (!empty($this->selected)) {
-
             VehicleBid::whereIn('id', $this->selected)->delete();
             $this->selected = [];
             $this->selectAll = false;
@@ -76,20 +74,31 @@ class ManageBids extends Component
         } else {
             session()->flash('error', 'No bids selected.');
         }
-         $this->selected = [];
+        $this->selected = [];
     }
 
+    // ✅ Toggle select all checkbox
     public function updatedSelectAll($value)
     {
         if ($value) {
-            $this->selected = collect($this->allbids)
-                ->map(fn($id) => (string) $id)
-                ->toArray();
+            $this->selected = $this->allbids;
         } else {
             $this->selected = [];
         }
+        dd($this->selected);
     }
 
+    // ✅ Update selectAll when selected items change
+    public function updatedSelected()
+    {
+        $this->selectAll = count($this->selected) === count($this->allbids);
+    }
+    // ✅ Add this in your ManageBids class
+    public function updateSelectedFromJs($ids)
+    {
+        $this->selected = $ids;
+        $this->selectAll = count($this->selected) === count($this->allbids);
+    }
 
     // You could add a separate method for explicit rejection if needed
     public function rejectBid($bidId)
@@ -104,7 +113,6 @@ class ManageBids extends Component
         }
     }
 
-
     public function render()
     {
         $query = VehicleBid::with(['user', 'vehicle'])
@@ -116,10 +124,6 @@ class ManageBids extends Component
                     $sq->where('name', 'like', '%' . $this->search . '%')
                         ->orWhere('email', 'like', '%' . $this->search . '%');
                 })
-                    // ->orWhereHas('vehicle', function ($sq) {
-                    //     $sq->where('make', 'like', '%' . $this->search . '%')
-                    //         ->orWhere('model', 'like', '%' . $this->search . '%');
-                    // })
                     ->orWhere('bid_amount', 'like', '%' . $this->search . '%');
             });
         }
@@ -129,7 +133,12 @@ class ManageBids extends Component
         }
 
         $bids = $query->paginate(10);
-        $this->allbids = $bids->pluck('id')->toArray();
+        $this->allbids = $bids->pluck('id')->map(function ($id) {
+            return (string) $id;
+        })->toArray();
+
+        // Update selectAll based on current selection
+        $this->selectAll = !empty($this->allbids) && count($this->selected) === count($this->allbids);
 
         return view('livewire.admin.manage-bids', [
             'bids' => $bids,
