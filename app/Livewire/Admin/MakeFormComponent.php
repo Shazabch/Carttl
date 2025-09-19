@@ -55,35 +55,59 @@ class MakeFormComponent extends Component
     public function removeModelField($index)
     {
         unset($this->models[$index]);
-        $this->models = array_values($this->models); // reindex
+        $this->models = array_values($this->models); 
     }
 
     public function save()
     {
         $this->validate();
-
+    
+        // check if brand already exists (case insensitive)
+        $existingBrand = Brand::whereRaw('LOWER(name) = ?', [strtolower($this->name)])
+            ->when($this->makeId, fn($q) => $q->where('id', '!=', $this->makeId))
+            ->first();
+    
+        if ($existingBrand) {
+            $this->addError('name', 'This brand already exists.');
+            return;
+        }
+    
         $brand = Brand::updateOrCreate(
             ['id' => $this->makeId],
             ['name' => $this->name, 'slug' => Str::slug($this->name)]
         );
-
-        // save models only when creating or editing
+    
+        // save models only when provided
         if (!empty($this->models)) {
             foreach ($this->models as $modelName) {
+                $modelName = trim($modelName);
+    
                 if (!empty($modelName)) {
-                    VehicleModel::updateOrCreate(
-                        ['brand_id' => $brand->id, 'name' => $modelName]
-                       
-                    );
+                    // check if this model already exists for the brand
+                    $existingModel = VehicleModel::where('brand_id', $brand->id)
+                        ->whereRaw('LOWER(name) = ?', [strtolower($modelName)])
+                        ->first();
+    
+                    if ($existingModel) {
+                        continue; // skip duplicate
+                    }
+    
+                    VehicleModel::create([
+                        'brand_id' => $brand->id,
+                        'name' => $modelName,
+                    ]);
                 }
             }
         }
-
+    
         $this->dispatch('success-notification', message: $this->isEditing ? 'Make & Models updated successfully.' : 'Make & Models created successfully.');
         $this->dispatch('makeSaved'); // refresh listing
-
+    
         $this->cancel();
     }
+    
+
+    
 
     public function cancel()
     {
@@ -93,9 +117,19 @@ class MakeFormComponent extends Component
     }
 
     protected function resetForm()
-    {
-        $this->reset(['makeId', 'name', 'isEditing', 'models']);
-    }
+{
+    $this->reset([
+        'makeId',
+        'name',
+        'isEditing',
+        'models',
+    ]);
+
+    $this->models = [];
+    $this->resetErrorBag(); 
+    $this->resetValidation(); 
+}
+
 
     public function render()
     {
