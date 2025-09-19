@@ -86,6 +86,8 @@ Route::group(['prefix' => 'admin'], function () {
         Route::get('/submissions', [ContactSubmissionController::class, 'index'])->name('admin.submissions');
         Route::get('/manage-bids', [AdminBidController::class, 'index'])->name('admin.manage.bids');
         Route::get('/vehicles', [VehicleManagerController::class, 'index'])->name('admin.vehicles.all');
+        Route::get('/makes/all', [VehicleManagerController::class, 'allMakes'])->name('admin.makes.all');
+
         Route::get('/vehicles/{type}', [VehicleManagerController::class, 'index'])->name('admin.vehicles');
         Route::get('/vehicles/{id}/details', [VehicleManagerController::class, 'details'])->name('admin.vehicles.details');
         Route::get('/vehicles-enquiries/{type}', [VehicleManagerController::class, 'vehicleEnquiries'])->name('admin.vehicles.enquiries');

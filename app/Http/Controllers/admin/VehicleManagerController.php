@@ -13,6 +13,11 @@ class VehicleManagerController extends Controller
     {
         return view('admin.vehicles.index',compact('type'));
     }
+    public function allMakes()
+    {
+        return view('admin.vehicles.makes');
+    }
+    
     public function details($id)
     {
         return view('admin.vehicles.details', ['id' => $id]);
