@@ -45,7 +45,7 @@
 
 
     </div>
-   
+
     @if($is_auction)
     <button wire:click="saveBuyEnquiry" class="btn btn-warning btn-buy-now">
         <i class="fas fa-shopping-cart"></i>
@@ -60,7 +60,7 @@
     <!-- Buy It Now Card -->
     <div class="buy-now-card">
         <h4>Buy It Now</h4>
-        <div class="buy-now-price">${{$selected_vehicle->price}}</div>
+        <div class="buy-now-price">{{format_currency($selected_vehicle->price)}}</div>
         <!-- <p>Skip the auction and purchase immediately</p> -->
         <button wire:click="saveBuyEnquiry" class="btn btn-warning btn-buy-now">
             <i class="fas fa-shopping-cart"></i>
