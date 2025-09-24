@@ -93,9 +93,9 @@
 
                             <select class="form-select" wire:model.defer="year">
                                 <option value="">Select Year</option>
-                                @for ($i = date('Y'); $i >= 1980; $i--)
-                                <option value="{{ $i }}">{{ $i }}</option>
-                                @endfor
+                                @foreach ($years as $year)
+                                <option value="{{ $year }}">{{ $year }}</option>
+                                @endforeach
                             </select>
                             @error('year')
                             <small class="text-danger">{{ $message }}</small>

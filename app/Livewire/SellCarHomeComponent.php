@@ -146,7 +146,7 @@ class SellCarHomeComponent extends Component
     public function mount()
     {
         $this->featuredBrands = Brand::where('is_active', true)->take(12)->get();
-        $this->years = range(now()->year, 1980);
+        $this->years = getYears();
         $this->formData['mileage'] = array_key_first(MileageRange::options());
     }
 

@@ -48,6 +48,7 @@ class SellCarComponent extends Component
 
     // Step 3: Images
     public $images = [];
+    public $years = [];
 
     // Helpers
     public $brands = [], $models = [];
@@ -57,6 +58,7 @@ class SellCarComponent extends Component
     public function mount()
     {
         $this->brands = Brand::orderBy('name')->whereHas('models')->get();
+        $this->years = getYears();
         $this->models = collect();
     }
 

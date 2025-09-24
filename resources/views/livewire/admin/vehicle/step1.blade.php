@@ -49,11 +49,11 @@
                     <label class="form-label">Year</label>
                     <select class="form-control @error('vehicleData.year') is-invalid @enderror" wire:model.defer="vehicleData.year">
                         <option value="">Select Year</option>
-                        @for ($year = date('Y'); $year >= 1900; $year--)
+                       @foreach ($years as $year)
                         <option value="{{ $year }}" {{ (isset($vehicleData['year']) && $vehicleData['year'] == $year) ? 'selected' : '' }}>
                             {{ $year }}
                         </option>
-                        @endfor
+                        @endforeach
                     </select>
                     @error('vehicleData.year') <div class="invalid-feedback">{{ $message }}</div> @enderror
                 </div>
@@ -105,8 +105,8 @@
                 </div>
                 <div class="col-md-12 mb-3">
                     <label class="form-label">Remarks</label>
-                    
-                    <textarea  class="form-control" wire:model="vehicleData.remarks"></textarea>
+
+                    <textarea class="form-control" wire:model="vehicleData.remarks"></textarea>
                     @error('vehicleData.remarks') <div class="invalid-feedback">{{ $message }}</div> @enderror
                 </div>
             </div>
@@ -147,7 +147,7 @@
                     <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
                 </div>
-                 
+
                 @endif
             </div>
         </fieldset>

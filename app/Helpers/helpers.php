@@ -6,6 +6,13 @@ if (!function_exists('format_currency')) {
         return $currency . ' ' . number_format($amount, 2);
     }
 }
+if (!function_exists('getYears')) {
+    function getYears()
+    {
+        $years = range(now()->year+5, 1980);
+        return $years;
+    }
+}
 
 
 if (!function_exists('set_active_route')) {

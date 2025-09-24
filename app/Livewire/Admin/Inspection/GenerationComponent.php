@@ -36,6 +36,7 @@ class GenerationComponent extends Component
     public $currentStep = 1;
     public $search = null;
     public $report_id = null;
+    public $years=[];
     public $inspectionId;
 
     public bool $showShareModal = false;
@@ -104,6 +105,7 @@ class GenerationComponent extends Component
     {
 
         $this->brands =  Brand::orderBy('name')->whereHas('models')->get();
+        $this->years = getYears();
         $this->bodyTypes = BodyType::all();
         $this->fuelTypes = FuelType::all();
         $this->transmissions = Transmission::all();

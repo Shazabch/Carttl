@@ -103,6 +103,7 @@ class VehicleFormComponent extends Component
         $this->exteriorFeatures = Feature::where('type', 'exterior')->get();
         $this->interiorFeatures = Feature::where('type', 'interior')->get();
         $this->tags = Feature::where('type', 'tag')->get();
+        $this->years = getYears();
     }
 
     // The hook now works reliably with the array.

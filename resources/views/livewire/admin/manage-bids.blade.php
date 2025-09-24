@@ -9,7 +9,8 @@
         </div>
     </div>
 
-    <div class="table-responsive">
+   <div class="card">
+     <div class="table-responsive">
         <table class="table table-hovered">
             <thead>
                 <tr>
@@ -87,6 +88,7 @@
             </tbody>
         </table>
     </div>
+   </div>
 
     <div class="mt-4">
         {{ $bids->links() }}

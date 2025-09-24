@@ -43,11 +43,11 @@
                     <label class="form-label">Year</label>
                     <select class="form-control @error('reportData.year') is-invalid @enderror" wire:model="reportData.year">
                         <option value="">Select Year</option>
-                        @for ($year = date('Y'); $year >= 1900; $year--)
+                        @foreach ($years as $year)
                         <option value="{{ $year }}" {{ (isset($vehicleData['year']) && $vehicleData['year'] == $year) ? 'selected' : '' }}>
                             {{ $year }}
                         </option>
-                        @endfor
+                        @endforeach
                     </select>
                     @error('reportData.year') <div class="invalid-feedback">{{ $message }}</div> @enderror
                 </div>
@@ -102,7 +102,7 @@
             <div class="col-md-4">
                 @include('livewire.admin.inspection.sections.partials.toggle-single', ['label' => 'Mortgage', 'property' => 'mortgage', 'options' => ['Yes', 'No']])
             </div>
-    
+
         </div>
     </div>
 </div>

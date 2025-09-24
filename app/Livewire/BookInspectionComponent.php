@@ -26,6 +26,7 @@ class BookInspectionComponent extends Component
     public $year;
     public $make;
     public $model;
+    public $years=[];
 
     public bool $formSubmitted = false;
 
@@ -51,6 +52,7 @@ class BookInspectionComponent extends Component
     public $brands = [], $models = [];
     public function mount()
     {
+        $this->years = getYears();
         $this->brands = Brand::orderBy('name')->whereHas('models')->get(['id', 'name'])->toArray();
     }
     public function updatedMake($value)
