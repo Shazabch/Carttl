@@ -1,4 +1,10 @@
 <div>
+    @php
+    $user = auth()->guard('admin')->user();
+    // Checks if the authenticated user has either 'super-admin' or 'admin' role.
+    $isPrivilegedUser = $user && ($user->hasRole('super-admin'));
+    @endphp
+
     {{-- Page Header --}}
     <div class="card mb-5">
         <div class="card-body d-flex justify-content-between align-items-center">
@@ -43,7 +49,7 @@
                                 @endif
                             </a>
                         </li>
-                         <li class="nav-item mb-2">
+                        <li class="nav-item mb-2">
                             <a class="nav-link {{ $activeTab == 'assets' ? 'active' : '' }}"
                                 wire:click.prevent="setActiveTab('assets')" href="#" title="Assets">
                                 <i class="fas fa-photo-video mx-2 text-dark"></i>
@@ -132,11 +138,11 @@
                     @if ($activeTab == 'info')
                     <livewire:admin.vehicle.vehicle-detail-component :vehicleId="$vehicle->id" />
                     <livewire:admin.vehicle-form-component />
-                      @elseif ($activeTab == 'status')
+                    @elseif ($activeTab == 'status')
                     <livewire:admin.vehicle.vehicle-status-component :vehicleId="$vehicle->id" />
                     @elseif ($activeTab == 'assets')
                     <livewire:admin.vehicle.vehicle-assets-component :vehicleId="$vehicle->id" />
-                   
+
 
                     @elseif ($activeTab == 'history')
                     <livewire:admin.vehicle.vehicle-history-component :vehicleId="$vehicle->id" />

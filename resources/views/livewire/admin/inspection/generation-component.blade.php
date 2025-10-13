@@ -4,6 +4,11 @@
     @if(session()->has('success'))
     <div class="alert alert-success">{{ session('success') }}</div>
     @endif
+    @php
+    $user = auth()->guard('admin')->user();
+    // Checks if the authenticated user has either 'super-admin' or 'admin' role.
+    $isPrivilegedUser = $user && ($user->hasRole('super-admin'));
+    @endphp
 
     @if($showForm)
     {{-- ======================================================= --}}
@@ -24,6 +29,7 @@
             </div>
             <div>
                 {{-- This button now calls a Livewire action --}}
+                @if($user->can('report-generate-pdf'))
                 <button wire:click="generatePdf({{ $reportInView->id }})" class="btn btn-danger">
                     <i class="fas fa-file-pdf"></i> Generate PDF Report
                     <span wire:loading wire:target="generatePdf">
@@ -32,6 +38,7 @@
                         </div>
                     </span>
                 </button>
+                @endif
                 <button wire:click="cancel" class="btn btn-secondary">Back to List</button>
             </div>
         </div>
@@ -50,9 +57,11 @@
         <div class="card-header d-flex justify-content-between align-items-center">
             <h4>All Inspection Reports</h4>
             @if($linkedVehicleId==null && $linkedEnquiryId==null)
+            @if($user->can('report-create'))
             <button wire:click="showCreateForm" class="btn btn-primary">
                 <i class="fas fa-plus"></i> Create New Report
             </button>
+            @endif
             @endif
         </div>
         <div class="card-body">
@@ -63,7 +72,7 @@
                     <input type="text" wire:model.live.debounce.300ms="search" class="form-control" placeholder="Search by VIN or Make...">
                 </div>
             </div>
-             @endif
+            @endif
             <div class="table-responsive">
                 <table class="table table-hover">
                     <thead>
@@ -94,14 +103,16 @@
                             <td>{{ $report->created_at->format('M d, Y') }}</td>
                             <td>
                                 {{-- This button now calls a Livewire action --}}
+                                @if($user->can('report-view'))
                                 <button wire:click="showReportDetails({{ $report->id }})" class="btn btn-sm btn-outline-info" title="View Details">
                                     <i class="fas fa-eye"></i>
                                 </button>
-
+                                @endif
+                                @if($user->can('report-edit'))
                                 <button wire:click="showEditForm({{ $report->id }})" class="btn btn-sm btn-outline-primary" title="Edit">
                                     <i class="fas fa-edit"></i>
                                 </button>
-
+                                @endif
 
                                 <button class="btn btn-sm btn-outline-primary dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false">
                                     Actions
@@ -110,6 +121,7 @@
 
 
                                     @if($report->file_path)
+                                    @if($user->can('report-download'))
                                     <li>
                                         <div class="dropdown-item">
                                             <a href="{{asset('storage/'.$report->file_path)}}" target="_blank" class=" btn btn-outline-danger">
@@ -118,6 +130,8 @@
                                         </div>
 
                                     </li>
+                                    @endif
+                                    @if($user->can('report-share'))
                                     <li>
                                         <div class="dropdown-item">
                                             <button wire:click="openShareModal({{ $report->id }})" class=" btn btn-outline-info">
@@ -127,6 +141,8 @@
 
                                     </li>
                                     @endif
+                                    @endif
+                                    @if($user->can('report-delete'))
                                     <li>
                                         <div class="dropdown-item">
                                             <button wire:click.prevent="$dispatch('confirmDelete', { id: {{ $report->id }} })"
@@ -136,6 +152,7 @@
                                         </div>
 
                                     </li>
+                                    @endif
                                 </ul>
 
 
@@ -146,9 +163,11 @@
                             @if($linkedVehicleId==null && $linkedEnquiryId==null)
                             <td colspan="5" class="text-center">No reports found.</td>
                             @else
+                            @if($user->can('report-create'))
                             <button wire:click="showCreateForm" class="btn btn-primary">
                                 <i class="fas fa-plus"></i> Create New Report
                             </button>
+                            @endif
                             @endif
                         </tr>
                         @endforelse
@@ -288,7 +307,7 @@
     </script>
 
     @push('scripts')
-      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         // Listen for the 'livewire:initialized' event to ensure Livewire is ready
         document.addEventListener('livewire:initialized', () => {
@@ -323,7 +342,8 @@
             var carousel = bootstrap.Carousel.getOrCreateInstance(document.getElementById('vehicleImagesCarousel'));
             carousel.to(startIndex);
         }
-         function closeImagesModal() {
+
+        function closeImagesModal() {
             var myModal2 = new bootstrap.Modal(document.getElementById('imageSliderModal'));
             myModal2.hide();
 

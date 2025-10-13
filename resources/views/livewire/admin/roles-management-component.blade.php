@@ -1,4 +1,9 @@
 <div>
+    @php
+    $user = auth()->guard('admin')->user();
+    // Checks if the authenticated user has either 'super-admin' or 'admin' role.
+    $isPrivilegedUser = $user && ($user->hasRole('super-admin'));
+    @endphp
 
 
     @if ($showForm)
@@ -29,13 +34,13 @@
                             <div>
 
                                 <button type="button" class="btn btn-sm btn-outline-primary"
-                                wire:click="selectAllPermissionsInGroup({{ json_encode($permissions->pluck('name')->toArray()) }})"
+                                    wire:click="selectAllPermissionsInGroup({{ json_encode($permissions->pluck('name')->toArray()) }})"
                                     onclick="toggleAllPermissionsInGroup(this, true)">
                                     Select All
                                 </button>
 
                                 <button type="button" class="btn btn-sm btn-outline-secondary ms-1"
-                                wire:click="deselectAllPermissionsInGroup({{ json_encode($permissions->pluck('name')->toArray()) }})"
+                                    wire:click="deselectAllPermissionsInGroup({{ json_encode($permissions->pluck('name')->toArray()) }})"
                                     onclick="toggleAllPermissionsInGroup(this, false)">
                                     Deselect All
                                 </button>
@@ -78,9 +83,11 @@
             <div class="col-md-4">
                 <input type="text" class="form-control" placeholder="Search by name..." wire:model.live.debounce.500ms="search">
             </div>
+            @if ($isPrivilegedUser || $user->can('role-manage'))
             <button class="btn btn-primary" wire:click="addNew">
                 <i class="fas fa-plus-circle me-1"></i> Add Role
             </button>
+            @endif
         </div>
         <div class="card-body">
             <div class="table-responsive">
@@ -107,8 +114,15 @@
                                 @endif
                             </td>
                             <td>
+                                @if ($isPrivilegedUser || $user->can('role-manage'))
                                 <i class="fas fa-edit text-info me-2" style="cursor: pointer;" wire:click="editItem({{ $item->id }})" title="Edit"></i>
-                                <i class="fas fa-trash text-danger" style="cursor: pointer;" wire:click="$dispatch('confirmDelete', { id: {{ $item->id }} })" title="Delete"></i>
+                                @if ($item?->name != 'super-admin' && $item?->name != 'admin' && $item?->name != 'inspector')
+                                <i class="fas fa-trash text-danger"
+                                    style="cursor: pointer;"
+                                    wire:click="$dispatch('confirmDelete', { id: {{ $item->id }} })"
+                                    title="Delete"></i>
+                                @endif
+                                @endif
                             </td>
                         </tr>
                         @empty

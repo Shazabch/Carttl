@@ -42,7 +42,7 @@
                     {{-- Changed type to "password" to allow toggling --}}
                     <input type="email" name="email" class="form-control  @error('email') is-invalid @enderror"
                         id="username" placeholder="Username">
-                    <label for="username">Username</label>
+                    <label for="email">Email</label>
                 </div>
                 @error('email')
                 <div class="text-danger small">{{ $message }}</div>

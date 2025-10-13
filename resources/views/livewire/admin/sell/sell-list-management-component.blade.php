@@ -1,4 +1,10 @@
 <div>
+    @php
+    $user = auth()->guard('admin')->user();
+    // Checks if the authenticated user has either 'super-admin' or 'admin' role.
+    $isPrivilegedUser = $user && ($user->hasRole('super-admin'));
+    @endphp
+
     <div class="card shadow-sm border-0">
         <div class="card-header bg-light border-0 d-flex justify-content-between align-items-center">
             <h4 class="mb-0 text-dark">Sale Enquiries</h4>
@@ -63,12 +69,16 @@
                             </td>
                             <td class="text-center">{{ $enquiry->created_at->format('d M, Y') }}</td>
                             <td class="text-center">
+                                @if ($isPrivilegedUser || $user->can('sale-inquiry-view'))
                                 <button class="btn btn-sm {{ $selectedEnquiryId === $enquiry->id ? 'btn-primary' : 'btn-outline-primary' }}" wire:click="viewDetails({{ $enquiry->id }})" title="View Details">
                                     <i class="fas fa-eye"></i>
                                 </button>
+                                @endif
+                                @if ($isPrivilegedUser || $user->can('sale-inquiry-delete'))
                                 <button class="btn btn-sm btn-outline-danger" wire:click="$dispatch('confirmDelete', { id: {{ $enquiry->id }} })" title="Delete Enquiry">
                                     <i class="fas fa-trash"></i>
                                 </button>
+                                @endif
 
                             </td>
                         </tr>
@@ -94,7 +104,7 @@
                                                 <dt class="col-sm-4">Make:</dt>
                                                 <dd class="col-sm-8">{{ $enquiry->brand?->name ?? 'N/A' }}</dd>
 
-                                                 <dt class="col-sm-4">Year:</dt>
+                                                <dt class="col-sm-4">Year:</dt>
                                                 <dd class="col-sm-8">{{ $enquiry->year ?? 'N/A' }}</dd>
 
 

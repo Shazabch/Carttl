@@ -24,9 +24,7 @@ class AdminAuthenticate
         if ($user->getRoleNames()->isEmpty()) {
             Auth::guard('admin')->logout();
         }
-
-        if ($user->hasRole(['admin', 'super-admin','inspector'])) {
-
+        if (!$user->hasRole(['customer'])) {
             return $next($request);
         } elseif ($user->hasRole(['customer'])) {
             return redirect()->route('account.dashboard');

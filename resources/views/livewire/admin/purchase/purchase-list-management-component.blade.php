@@ -1,4 +1,9 @@
 <div>
+    @php
+    $user = auth()->guard('admin')->user();
+    // Checks if the authenticated user has either 'super-admin' or 'admin' role.
+    $isPrivilegedUser = $user && ($user->hasRole('super-admin'));
+    @endphp
 
     <div class="card shadow-sm border-0">
         <div class="card-header bg-light border-0 d-flex justify-content-between align-items-center">
@@ -59,15 +64,19 @@
 
                             <td class="text-center">{{ $enquiry->created_at->format('d M, Y') }}</td>
                             <td class="text-center">
+                                @if ($isPrivilegedUser || $user->can('purchase-inquiry-view'))
                                 <button class="btn btn-sm {{ $selectedEnquiryId === $enquiry->id ? 'btn-primary' : 'btn-outline-primary' }}"
                                     wire:click="viewDetails({{ $enquiry->id }})" title="View Details">
                                     <i class="fas fa-eye"></i>
                                 </button>
+                                @endif
+                                @if ($isPrivilegedUser || $user->can('purchase-inquiry-delete'))
                                 <button class="btn btn-sm btn-outline-danger"
                                     wire:click="$dispatch('confirmDelete', { id: {{ $enquiry->id }} })"
                                     title="Delete Inquiry">
                                     <i class="fas fa-trash"></i>
                                 </button>
+                                @endif
                             </td>
                         </tr>
 

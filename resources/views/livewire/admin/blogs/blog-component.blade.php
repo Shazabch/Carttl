@@ -1,4 +1,9 @@
 <div class="container py-4">
+    @php
+    $user = auth()->guard('admin')->user();
+    // Checks if the authenticated user has either 'super-admin' or 'admin' role.
+    $isPrivilegedUser = $user && ($user->hasRole('super-admin'));
+    @endphp
 
     @if (session()->has('success'))
     <div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -76,10 +81,11 @@
             <div class="col-md-4">
                 <input type="text" class="form-control" placeholder="Search by title..." wire:model.live.debounce.300ms="search">
             </div>
+            @if ($isPrivilegedUser || $user->can('blog-manage'))
             <button class="btn btn-primary" wire:click="addNew">
                 <i class="fas fa-plus-circle me-1"></i> Add Post
             </button>
-
+            @endif
         </div>
         <div class="card-body">
             <div class="table-responsive">
@@ -114,8 +120,10 @@
                                 @endif
                             </td>
                             <td>
+                                @if ($isPrivilegedUser || $user->can('blog-manage'))
                                 <i class="fas fa-edit text-info me-2" style="cursor: pointer;" wire:click="editBlog({{ $item->id }})" title="Edit"></i>
                                 <i class="fas fa-trash text-danger" style="cursor: pointer;" wire:click="$dispatch('confirmDelete', { id: {{ $item->id }} })" title="Delete"></i>
+                                @endif
                             </td>
                         </tr>
                         @empty

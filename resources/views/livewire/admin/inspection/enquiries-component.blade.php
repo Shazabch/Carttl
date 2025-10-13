@@ -6,6 +6,12 @@
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
     @endif
+    @php
+    $user = auth()->guard('admin')->user();
+    // Checks if the authenticated user has either 'super-admin' or 'admin' role.
+    $isPrivilegedUser = $user && ($user->hasRole('super-admin'));
+    @endphp
+
 
     <div class="card">
         <div class="card-header d-flex justify-content-between align-items-center">
@@ -45,17 +51,23 @@
                             <td>{{ $item->email }}</td>
                             <td>{{ $item->created_at->format('M d, Y H:i A') }}</td>
                             <td>
+                                @if($user->can('inspection-create'))
                                 <a href="{{ route('admin.inspection.generate.from-enquiry', ['enquiry' => $item->id]) }}" class="btn btn-sm btn-primary">
                                     Create Inspection
                                 </a>
+                                @endif
+                                @if($user->can('inspection-view'))
                                 <button class="btn btn-sm btn-info" wire:click="view({{ $item->id }})">
                                     <i class="fas fa-eye"></i> View
                                 </button>
+                                @endif
+                                @if($user->can('inspection-delete'))
                                 <button class="btn btn-sm btn-danger"
 
                                     wire:click="$dispatch('confirmDeleteUser', { id: {{ $item->id }} })">
                                     <i class="fas fa-trash"></i> Delete
                                 </button>
+                                @endif
                             </td>
                         </tr>
                         @empty
@@ -112,7 +124,7 @@
                     <h6 class="fw-bold text-uppercase text-muted small mb-3">Appointment Details</h6>
                     <div class="card bg-light border-0 p-3 mb-4">
                         <div class="row">
-                             <div class="col-md-6 mb-3 mb-md-0">
+                            <div class="col-md-6 mb-3 mb-md-0">
                                 <label class="form-label small"><i class="fas fa-calendar-alt mx-2"> </i>Preferred Date & Time</label>
                                 <p class="fw-bold mb-0">{{ \Carbon\Carbon::parse($selectedEnquiry->date)->format('F j, Y') }} at {{ $selectedEnquiry->time }}</p>
                             </div>
@@ -136,12 +148,12 @@
                                 <label class="form-label small">Make</label>
                                 <p class="fw-bold mb-0">{{ $selectedEnquiry->brand?->name }}</p>
                             </div>
-                            
+
                             <div class="col-6 col-md-3">
                                 <label class="form-label small">Model</label>
                                 <p class="fw-bold mb-0">{{ $selectedEnquiry->vehicleModel?->name }}</p>
                             </div>
-                             <div class="col-6 col-md-3">
+                            <div class="col-6 col-md-3">
                                 <label class="form-label small">Model Year</label>
                                 <p class="fw-bold mb-0">{{ $selectedEnquiry->year }}</p>
                             </div>

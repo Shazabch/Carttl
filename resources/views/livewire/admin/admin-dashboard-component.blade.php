@@ -1,12 +1,20 @@
 <div>
     {{-- Define the user and the privileged status once, respecting the 'admin' guard. --}}
     @php
-        $user = auth()->guard('admin')->user();
-        // Checks if the authenticated user has either 'super-admin' or 'admin' role.
-        $isPrivilegedUser = $user && ($user->hasRole('super-admin') || $user->hasRole('admin'));
+    $user = auth()->guard('admin')->user();
+    $isPrivilegedUser = $user && ($user->hasRole('super-admin'));
+
+    // Check if user has any of the permissions used below
+    $hasAnyPermission =
+    $isPrivilegedUser ||
+    $user->can('vehicle-list') ||
+    $user->can('inspection-list') ||
+    $user->can('purchase-inquiry-list') ||
+    $user->can('sale-inquiry-list');
     @endphp
 
     <div class="container-fluid px-4">
+        @if ($hasAnyPermission)
         <div class="row g-4">
 
             @if ($isPrivilegedUser || $user->can('vehicle-list'))
@@ -46,7 +54,7 @@
             @endif
 
             {{-- Assuming Auctions fall under general vehicle listing view --}}
-            @if ($isPrivilegedUser || $user->can('vehicle-list')) 
+            @if ($isPrivilegedUser || $user->can('vehicle-list'))
             <div class="col-md-4">
                 <div class="card shadow-sm border-0 bg-white">
                     <div class="card-body d-flex justify-content-between align-items-start">
@@ -100,7 +108,7 @@
             </div>
             @endif
 
-            @if ($isPrivilegedUser || $user->can('client-list'))
+            @if ($isPrivilegedUser || $user->can('purchase-inquiry-list'))
             <div class="col-md-4 mt-3">
                 <div class="card shadow-sm border-0 bg-white">
                     <div class="card-body d-flex justify-content-between align-items-start">
@@ -118,7 +126,7 @@
             </div>
             @endif
 
-            @if ($isPrivilegedUser || $user->can('client-list'))
+            @if ($isPrivilegedUser || $user->can('sale-inquiry-list'))
             <div class="col-md-4 mt-3">
                 <div class="card shadow-sm border-0 bg-white">
                     <div class="card-body d-flex justify-content-between align-items-start">
@@ -137,5 +145,18 @@
             @endif
 
         </div>
+        @else
+        {{-- 🩵 Beautiful Note for No Permission --}}
+        <div class="d-flex flex-column align-items-center justify-content-center py-5">
+            <div class="text-center">
+                <i class="fas fa-lock text-muted" style="font-size: 4rem;"></i>
+                <h4 class="mt-3 text-secondary fw-semibold">Access Restricted</h4>
+                <p class="text-muted">
+                    You currently don't have permission to view any dashboard modules.<br>
+                    Please contact your administrator if you think this is a mistake.
+                </p>
+            </div>
+        </div>
+        @endif
     </div>
 </div>

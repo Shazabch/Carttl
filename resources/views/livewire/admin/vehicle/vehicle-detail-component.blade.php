@@ -1,4 +1,9 @@
 <div>
+      @php
+    $user = auth()->guard('admin')->user();
+    // Checks if the authenticated user has either 'super-admin' or 'admin' role.
+    $isPrivilegedUser = $user && ($user->hasRole('super-admin') || $user->hasRole('admin'));
+    @endphp
     @if(!$showForm)
     {{-- Page Header --}}
     <div class="card mb-4">
@@ -8,7 +13,9 @@
                 <small class="text-muted">{{ $vehicle->title }}</small>
             </div>
             <div>
+                @if ($isPrivilegedUser || $user->can('vehicle-edit'))
                 <button class="btn btn-sm btn-info" wire:click="editVehicle({{ $vehicle?->id }})"> <i class="fas fa-edit me-1"></i> Edit</button>
+               @endif
             </div>
         </div>
     </div>

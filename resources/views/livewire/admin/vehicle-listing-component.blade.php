@@ -1,4 +1,10 @@
 <div>
+    @php
+    $user = auth()->guard('admin')->user();
+    // Checks if the authenticated user has either 'super-admin' or 'admin' role.
+    $isPrivilegedUser = $user && ($user->hasRole('super-admin'));
+    @endphp
+
     @if (!$showForm)
     <div class="card">
         <div class="card-header d-flex justify-content-between align-items-center">
@@ -6,10 +12,12 @@
             <div class="col-md-4">
                 <input type="text" class="form-control" placeholder="Search by Title, VIN..." wire:model.live.debounce.300ms="search">
             </div>
-           @if($type!='sold')
+            @if($type!='sold')
+            @if ($isPrivilegedUser || $user->can('vehicle-create'))
             <button class="btn btn-primary" wire:click="addNew">
                 <i class="fas fa-plus-circle me-1"></i> Add Vehicle
             </button>
+            @endif
             @endif
         </div>
         <div class="card-body">
@@ -31,14 +39,13 @@
                     <tbody>
                         @forelse ($vehicles as $vehicle)
                         <tr wire:key="{{ $vehicle->id }}">
-                             <td>
+                            <td>
                                 @if($vehicle->coverImage)
                                 <img
                                     src="{{ asset('storage/' . $vehicle->coverImage?->path) }}"
                                     alt="{{ $vehicle->title }}"
                                     class="rounded"
-                                    style="width: 60px; height: 60px; object-fit: cover;"
-                                >
+                                    style="width: 60px; height: 60px; object-fit: cover;">
                                 @endif
                             </td>
                             <td>{{ $vehicle->title }}</td>
@@ -51,12 +58,22 @@
                                 <!-- <a href="{{ route('admin.inspection.generate.from-vehicle', ['vehicle' => $vehicle->id]) }}" class="btn btn-sm btn-primary">
                                     Create Inspection
                                 </a> -->
+                                @if ($isPrivilegedUser || $user->can('vehicle-view'))
                                 <a href="{{ route('admin.vehicles.details', ['id' => $vehicle->id]) }}" class="btn btn-sm btn-secondary">
                                     <i class="fas fa-eye"></i> Details
                                 </a>
+                                @endif
+
+                                @if ($isPrivilegedUser || $user->can('vehicle-edit'))
                                 <button class="btn btn-sm btn-info" wire:click="editVehicle({{ $vehicle->id }})">Edit</button>
+                                @endif
+
+                                @if ($isPrivilegedUser || $user->can('vehicle-delete'))
                                 <button class="btn btn-sm btn-danger" wire:click="$dispatch('confirmDelete', { id: {{ $vehicle->id }} })">Delete</button>
+                                @endif
+
                             </td>
+
                         </tr>
                         @empty
                         <tr>

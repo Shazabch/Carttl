@@ -23,17 +23,63 @@ class RolesAndPermissionsSeeder extends Seeder
         // 2. Define and create all permissions
         $permissions = [
             // Inspections
-            'inspection-list', 'inspection-view', 'inspection-create', 'inspection-edit',
-            'inspection-delete', 'inspection-approve', 'inspection-assign',
+            'inspection-list',
+            'inspection-view',
+            'inspection-create',
+            'inspection-edit',
+            'inspection-delete',
+            'inspection-approve',
+            'inspection-assign',
             // Vehicles
-            'vehicle-list', 'vehicle-view', 'vehicle-create', 'vehicle-edit', 'vehicle-delete',
+            'vehicle-list',
+            'vehicle-view',
+            'vehicle-create',
+            'vehicle-edit',
+            'vehicle-delete',
+             //Contact Inquiry
+            'contact-inquiry-list',
+            'contact-inquiry-view',
+            'contact-inquiry-edit',
+            'contact-inquiry-delete',
+             //Purchase Inquiry
+            'purchase-inquiry-list',
+            'purchase-inquiry-view',
+            'purchase-inquiry-edit',
+            'purchase-inquiry-delete',
+             //Sale Inquiry
+            'sale-inquiry-list',
+            'sale-inquiry-view',
+            'sale-inquiry-edit',
+            'sale-inquiry-delete',
+            //Makes
+            'make-list',
+            'make-actions',
+            //Biddings
+            'bidding-list',
+            'bidding-actions',
             // Clients
-            'client-list', 'client-create', 'client-edit', 'client-delete',
+            'client-list',
+            'client-create',
+            'client-edit',
+            'client-delete',
             // Reports
-            'report-view', 'report-download', 'report-share',
+            'report-view',
+            'report-download',
+            'report-share',
+            'report-delete',
+            'report-edit',
+            'report-create',
+            'report-generate-pdf',
             // System & User Management
-            'user-list', 'user-manage',
-            'role-list', 'role-manage',
+            'user-list',
+            'system-settings',
+            'user-manage',
+            'role-list',
+            'role-manage',
+            'blog-list',
+            'blog-manage',
+            'testimonial-list',
+            'testimonial-manage',
             'dashboard-view',
         ];
 
@@ -53,11 +99,33 @@ class RolesAndPermissionsSeeder extends Seeder
         $adminRole = Role::updateOrCreate(['name' => 'admin']);
         $adminPermissions = [
             'dashboard-view',
-            'inspection-list', 'inspection-view', 'inspection-delete', 'inspection-approve', 'inspection-assign',
-            'vehicle-list', 'vehicle-view', 'vehicle-create', 'vehicle-edit', 'vehicle-delete',
-            'client-list', 'client-create', 'client-edit', 'client-delete',
-            'report-view', 'report-download', 'report-share',
-            'user-list', 'user-manage',
+            'inspection-list',
+            'inspection-view',
+            'inspection-delete',
+            'inspection-approve',
+            'inspection-assign',
+            'vehicle-list',
+            'vehicle-view',
+            'vehicle-create',
+            'vehicle-edit',
+            'vehicle-delete',
+            'client-list',
+            'client-create',
+            'client-edit',
+            'client-delete',
+            'report-view',
+            'report-download',
+            'report-share',
+            'report-delete',
+            'report-edit',
+            'report-create',
+            'report-generate-pdf',
+            'user-list',
+            'user-manage',
+            'bidding-list',
+            'bidding-actions',
+            'make-list',
+            'make-actions',
             'role-list', // Can see roles but not manage them
         ];
         $adminRole->syncPermissions($adminPermissions);
@@ -69,7 +137,8 @@ class RolesAndPermissionsSeeder extends Seeder
             'inspection-list',
             'inspection-view',
             'inspection-create',
-            'inspection-edit', // Can only edit inspections they are assigned to (logic in policy/controller)
+            'inspection-edit',
+            'inspection-delete', // Can only edit inspections they are assigned to (logic in policy/controller)
             'vehicle-list',
             'vehicle-view',
             'report-view',
