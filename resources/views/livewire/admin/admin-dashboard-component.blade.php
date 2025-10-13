@@ -1,8 +1,15 @@
 <div>
+    {{-- Define the user and the privileged status once, respecting the 'admin' guard. --}}
+    @php
+        $user = auth()->guard('admin')->user();
+        // Checks if the authenticated user has either 'super-admin' or 'admin' role.
+        $isPrivilegedUser = $user && ($user->hasRole('super-admin') || $user->hasRole('admin'));
+    @endphp
+
     <div class="container-fluid px-4">
         <div class="row g-4">
 
-            <!-- Vehicle Management -->
+            @if ($isPrivilegedUser || $user->can('vehicle-list'))
             <div class="col-md-4">
                 <div class="card shadow-sm border-0 bg-white">
                     <div class="card-body d-flex justify-content-between align-items-start">
@@ -18,8 +25,9 @@
                     </div>
                 </div>
             </div>
+            @endif
 
-            <!-- Inspections -->
+            @if ($isPrivilegedUser || $user->can('inspection-list'))
             <div class="col-md-4">
                 <div class="card shadow-sm border-0 bg-white">
                     <div class="card-body d-flex justify-content-between align-items-start">
@@ -35,8 +43,10 @@
                     </div>
                 </div>
             </div>
+            @endif
 
-            <!-- Auctions -->
+            {{-- Assuming Auctions fall under general vehicle listing view --}}
+            @if ($isPrivilegedUser || $user->can('vehicle-list')) 
             <div class="col-md-4">
                 <div class="card shadow-sm border-0 bg-white">
                     <div class="card-body d-flex justify-content-between align-items-start">
@@ -52,8 +62,9 @@
                     </div>
                 </div>
             </div>
+            @endif
 
-            <!-- Vehicle Listings -->
+            @if ($isPrivilegedUser || $user->can('vehicle-list'))
             <div class="col-md-4 mt-3">
                 <div class="card shadow-sm border-0 bg-white">
                     <div class="card-body d-flex justify-content-between align-items-start">
@@ -69,8 +80,9 @@
                     </div>
                 </div>
             </div>
+            @endif
 
-            <!-- Sold Vehicles -->
+            @if ($isPrivilegedUser || $user->can('vehicle-list'))
             <div class="col-md-4 mt-3">
                 <div class="card shadow-sm border-0 bg-white">
                     <div class="card-body d-flex justify-content-between align-items-start">
@@ -86,8 +98,9 @@
                     </div>
                 </div>
             </div>
+            @endif
 
-            <!-- Purchase Enquiries -->
+            @if ($isPrivilegedUser || $user->can('client-list'))
             <div class="col-md-4 mt-3">
                 <div class="card shadow-sm border-0 bg-white">
                     <div class="card-body d-flex justify-content-between align-items-start">
@@ -103,9 +116,10 @@
                     </div>
                 </div>
             </div>
+            @endif
 
-            <!-- sale enquiry -->
-              <div class="col-md-4 mt-3">
+            @if ($isPrivilegedUser || $user->can('client-list'))
+            <div class="col-md-4 mt-3">
                 <div class="card shadow-sm border-0 bg-white">
                     <div class="card-body d-flex justify-content-between align-items-start">
                         <div>
@@ -120,6 +134,7 @@
                     </div>
                 </div>
             </div>
+            @endif
 
         </div>
     </div>

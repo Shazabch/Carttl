@@ -117,10 +117,10 @@ class UsersManagementComponent extends Component
         if (!empty($this->password)) {
             $data['password'] = Hash::make($this->password);
         }
-
+      
         // Use updateOrCreate to handle both creating and updating in one line.
-        User::updateOrCreate(['id' => $this->editingUserId], $data);
-        $user = User::find($this->editingUserId);
+       $user= User::updateOrCreate(['id' => $this->editingUserId], $data);
+       
         $user->syncRoles($this->role);
         // Determine the success message
         $message = $this->editingUserId ? 'User updated successfully.' : 'User created successfully.';

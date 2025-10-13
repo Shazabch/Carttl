@@ -25,7 +25,7 @@ class AdminAuthenticate
             Auth::guard('admin')->logout();
         }
 
-        if ($user->hasRole(['admin', 'super-admin'])) {
+        if ($user->hasRole(['admin', 'super-admin','inspector'])) {
 
             return $next($request);
         } elseif ($user->hasRole(['customer'])) {
