@@ -10,7 +10,7 @@ use Tymon\JWTAuth\Facades\JWTAuth;
 
 class AuthController extends Controller
 {
-    // ✅ Register API
+    
     public function register(Request $request)
     {
         $request->validate([
@@ -35,7 +35,7 @@ class AuthController extends Controller
         ]);
     }
 
-    // ✅ Login API (uses api guard)
+   
     public function login(Request $request)
     {
         $credentials = $request->only('email', 'password');
@@ -47,29 +47,23 @@ class AuthController extends Controller
         return $this->respondWithToken($token);
     }
 
-    // ✅ Profile API (protected)
-    public function profile()
-    {
-        return response()->json([
-            'status' => 'success',
-            'user' => auth('api')->user()
-        ]);
-    }
+  
+   
 
-    // ✅ Logout API
+   
     public function logout()
     {
         auth('api')->logout();
         return response()->json(['status' => 'success', 'message' => 'Logged out successfully']);
     }
 
-    // ✅ Refresh token
+    
     public function refresh()
     {
         return $this->respondWithToken(auth('api')->refresh());
     }
 
-    // ✅ Helper for token response
+    
     protected function respondWithToken($token)
     {
         return response()->json([

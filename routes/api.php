@@ -9,13 +9,18 @@ use App\Models\Testimonial;
 use App\Models\Vehicle;
 
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\BuyCarController;
 use App\Http\Controllers\Api\ContactController;
+use App\Http\Controllers\Api\FavoriteController;
 use App\Http\Controllers\Api\InspectionController;
+use App\Http\Controllers\Api\SellCarController;
+use App\Http\Controllers\Api\UserDataController;
 use App\Livewire\ContactForm;
 
 //Auth routes
 Route::post('register', [AuthController::class, 'register']);
 Route::post('login', [AuthController::class, 'login']);
+Route::middleware('auth:api')->post('logout', [AuthController::class, 'logout']);
 
 
 Route::controller(VehicleController::class)->group(function () {
@@ -71,4 +76,26 @@ Route::controller(InspectionController::class)->group(function () {
     Route::post('/inspection/submit', 'saveInspection')->name('inspection.submit');
 });
 
-Route::group(['middleware' => 'auth:api'], function () {});
+
+
+
+Route::group(['middleware' => 'auth:api'], function () {
+
+    //Sell Inquiry
+    Route::post('sell-car', [SellCarController::class, 'store'])->name('sell.car.store');
+    //Buy Inquiry
+    Route::post('buy-car', [BuyCarController::class, 'store']);
+
+    Route::controller(FavoriteController::class)->group(function () {
+        Route::get('favorites', 'index')->name('favorites.index');
+        Route::post('favorites/toggle', 'toggle')->name('favorites.toggle');
+        Route::delete('favorites/clear', 'clear')->name('favorites.clear');
+    });
+    Route::controller(UserDataController::class)->group(function () {
+        Route::get('profile', 'profile')->name('profile');
+        Route::get('user/biddings', 'getUserBiddings')->name('user.biddings');
+        Route::get('user/enquiries/purchase', 'getPurchaseEnquiries')->name('user.enquiries.purchase');
+        Route::get('user/enquiries/sale', 'getSaleEnquiries')->name('user.enquiries.sale');
+        Route::get('user/inspection-reports', 'getInspectionReports')->name('user.inspection.reports');
+    });
+});
