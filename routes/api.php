@@ -46,6 +46,8 @@ Route::controller(BlogController::class)->group(function () {
 
     Route::get('featured-blog', 'featuredBlog')->name('featured.blogs');
     Route::get('blogs', 'getAllBlogs')->name('blogs');
+    Route::get('blog/{slug}', 'blogDetail')->name('blog.detail');
+    Route::get('blog/related/{slug}', 'relatedBlogs')->name('blog.related');
 });
 
 
