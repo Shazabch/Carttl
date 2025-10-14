@@ -93,6 +93,8 @@ Route::group(['middleware' => 'auth:api'], function () {
     });
     Route::controller(UserDataController::class)->group(function () {
         Route::get('profile', 'profile')->name('profile');
+        Route::post('user/profile/update', 'updateProfile');
+        Route::post('user/profile/change-password', 'changePassword');
         Route::get('user/biddings', 'getUserBiddings')->name('user.biddings');
         Route::get('user/enquiries/purchase', 'getPurchaseEnquiries')->name('user.enquiries.purchase');
         Route::get('user/enquiries/sale', 'getSaleEnquiries')->name('user.enquiries.sale');
