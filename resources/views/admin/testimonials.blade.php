@@ -13,7 +13,7 @@
                 <!--end::Page Title-->
                 <!--begin::Actions-->
                 <div class="subheader-separator subheader-separator-ver mt-2 mb-2 mr-4 bg-gray-200"></div>
-                <span class=" font-weight-bold mr-4">Testimonials - GOLDEN X</span>
+                <span class=" font-weight-bold mr-4">Testimonials - Carttl</span>
                 {{-- <a href="#" class="btn btn-light-warning font-weight-bolder btn-sm">User Management</a> --}}
                 <!--end::Actions-->
             </div>
