@@ -1,14 +1,19 @@
 <?php
 
+use App\Http\Controllers\Api\Admin\BidManagementController;
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\Admin\BlogsController;
+use App\Http\Controllers\Api\Admin\ContactSubmissionController;
+use App\Http\Controllers\Api\Admin\InspectionEnquiryController;
+use App\Http\Controllers\Api\Admin\PurchaseEnquiryController;
+use App\Http\Controllers\Api\Admin\RolePermissionController;
+use App\Http\Controllers\Api\Admin\SaleEnquiryController;
+use App\Http\Controllers\Api\Admin\TestimonialsController;
+use App\Http\Controllers\Api\Admin\UserManagementController;
 use App\Http\Controllers\Api\Customer\BlogController;
 use App\Http\Controllers\Api\Customer\TestimonialController;
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\Customer\VehicleController;
-use App\Models\Testimonial;
-use App\Models\Vehicle;
-
-use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\Customer\BiddingController;
 use App\Http\Controllers\Api\Customer\BuyCarController;
 use App\Http\Controllers\Api\Customer\ContactController;
@@ -16,12 +21,99 @@ use App\Http\Controllers\Api\Customer\FavoriteController;
 use App\Http\Controllers\Api\Customer\InspectionController;
 use App\Http\Controllers\Api\Customer\SellCarController;
 use App\Http\Controllers\Api\Customer\UserDataController;
-use App\Livewire\ContactForm;
 
 //Auth routes
 Route::post('register', [AuthController::class, 'register']);
 Route::post('login', [AuthController::class, 'login']);
 Route::middleware('auth:api')->post('logout', [AuthController::class, 'logout']);
+
+// Admin Panel Routes Start
+Route::prefix('admin')
+    ->middleware(['middleware' => 'auth:api'])
+    ->group(function () {
+        // Role and Permissions
+        Route::controller(RolePermissionController::class)->group(function () {
+            Route::get('/roles', 'index');
+            Route::get('/roles/show/{id}', 'show');
+            Route::post('/roles/create', 'store');
+            Route::put('/roles/update/{id}', 'update');
+            Route::delete('/roles/delete/{id}', 'destroy');
+            Route::get('/permissions', 'getPermissions');
+        });
+
+        // User Management
+        Route::controller(UserManagementController::class)->group(function () {
+            Route::get('/users', 'index');
+            Route::get('/users/show/{id}', 'show');
+            Route::post('/users/create', 'store');
+            Route::put('/users/update/{id}', 'update');
+            Route::patch('/users/toggle-approval/{id}', 'toggleApproval');
+            Route::delete('/users/delete/{id}', 'destroy');
+            Route::get('/users/roles', 'getRoles');
+        });
+
+        //Blogs Management
+        Route::controller(BlogsController::class)->prefix('blogs')->group(function () {
+            Route::get('/', 'index');
+            Route::get('/show/{id}', 'show');
+            Route::post('/create', 'store');
+            Route::post('/update/{id}', 'update');
+            Route::delete('/delete/{id}', 'destroy');
+        });
+
+        //Testimonials Management
+        Route::controller(TestimonialsController::class)->prefix('testimonials')->group(function () {
+            Route::get('/', 'index');
+            Route::get('/show/{id}', 'show');
+            Route::post('/create', 'store');
+            Route::post('/update/{id}', 'update');
+            Route::delete('/delete/{id}', 'destroy');
+            Route::post('/toggle-status/{id}', 'toggleStatus');
+        });
+
+        //Contact Inquiries
+        Route::controller(ContactSubmissionController::class)->group(function () {
+            Route::get('/contact-enquiries', 'index');
+            Route::get('/contact-enquiries/show/{id}', 'show');
+            Route::delete('/contact-enquiries/delete/{id}', 'destroy');
+        });
+
+        //Inspection Inquiries
+        Route::controller(InspectionEnquiryController::class)->group(function () {
+            Route::get('/inspection-enquiries', 'index');
+            Route::get('/inspection-enquiries/show/{id}', 'show');
+            Route::delete('/inspection-enquiries/delete/{id}', 'destroy');
+        });
+
+        //Purchase Inquiries
+        Route::controller(PurchaseEnquiryController::class)->group(function () {
+            Route::get('/purchase-enquiries', 'index');
+            Route::get('/purchase-enquiries/show/{id}', 'show');
+            Route::delete('/purchase-enquiries/delete/{id}', 'destroy');
+        });
+
+        //Sale Inquiries
+        Route::controller(SaleEnquiryController::class)->group(function () {
+            Route::get('/sale-enquiries', 'index');
+            Route::get('/sale-enquiries/show/{id}', 'show');
+            Route::delete('/sale-enquiries/delete/{id}', 'destroy');
+        });
+
+        //Bid Management
+        Route::controller(BidManagementController::class)->group(function () {
+            Route::get('/bids', 'index');
+            Route::get('/bids/show/{id}', 'show');
+            Route::patch('/bids/toggle-status/{id}', 'toggleStatus');
+            Route::patch('/bids/reject/{id}', 'reject');
+            Route::delete('/bids/delete/{id}', 'destroy');
+            Route::post('/bids/bulk-delete', 'bulkDelete');
+        });
+    });
+
+
+
+
+// Admin Panel Routes Start
 
 // Customer Panel Routes Start
 Route::controller(VehicleController::class)->group(function () {
@@ -45,48 +137,35 @@ Route::controller(VehicleController::class)->group(function () {
     Route::get('/models/{makeId}', 'getModelsByMake')->name('models');
 });
 
-
 //Blogs
 Route::controller(BlogController::class)->group(function () {
-
-
     Route::get('featured-blog', 'featuredBlog')->name('featured.blogs');
     Route::get('blogs', 'getAllBlogs')->name('blogs');
     Route::get('blog/{slug}', 'blogDetail')->name('blog.detail');
     Route::get('blog/related/{slug}', 'relatedBlogs')->name('blog.related');
 });
 
-
 // Testimonials
 Route::controller(TestimonialController::class)->group(function () {
-
-
     Route::get('testimonials', 'getAllTestimonials')->name('testimonials');
 });
 
-
 // contact
 Route::controller(ContactController::class)->group(function () {
-
     Route::post('/contact/submit', 'submit')->name('contact.submit');
 });
 
-
-// inspection
+//Book inspection
 Route::controller(InspectionController::class)->group(function () {
     Route::post('/inspection/submit', 'saveInspection')->name('inspection.submit');
 });
 
-
-
+//Sell Inquiry
+Route::post('sell-car', [SellCarController::class, 'store'])->name('sell.car.store');
+//Buy Inquiry
+Route::post('buy-car', [BuyCarController::class, 'store']);
 
 Route::group(['middleware' => 'auth:api'], function () {
-
-    //Sell Inquiry
-    Route::post('sell-car', [SellCarController::class, 'store'])->name('sell.car.store');
-    //Buy Inquiry
-    Route::post('buy-car', [BuyCarController::class, 'store']);
-
     Route::controller(FavoriteController::class)->group(function () {
         Route::get('favorites', 'index')->name('favorites.index');
         Route::post('favorites/toggle', 'toggle')->name('favorites.toggle');
@@ -101,7 +180,6 @@ Route::group(['middleware' => 'auth:api'], function () {
         Route::get('user/enquiries/sale', 'getSaleEnquiries')->name('user.enquiries.sale');
         Route::get('user/inspection-reports', 'getInspectionReports')->name('user.inspection.reports');
     });
-
     Route::controller(BiddingController::class)->group(function () {
         Route::get('/biddings/{vehicleId}', 'getVehicleBids');
         Route::post('/place-bid/{vehicleId}', 'placeBid');
