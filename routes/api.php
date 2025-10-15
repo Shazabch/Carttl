@@ -6,11 +6,13 @@ use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\Admin\BlogsController;
 use App\Http\Controllers\Api\Admin\ContactSubmissionController;
 use App\Http\Controllers\Api\Admin\InspectionEnquiryController;
+use App\Http\Controllers\Api\Admin\MakeController;
 use App\Http\Controllers\Api\Admin\PurchaseEnquiryController;
 use App\Http\Controllers\Api\Admin\RolePermissionController;
 use App\Http\Controllers\Api\Admin\SaleEnquiryController;
 use App\Http\Controllers\Api\Admin\TestimonialsController;
 use App\Http\Controllers\Api\Admin\UserManagementController;
+use App\Http\Controllers\Api\Admin\VehicleManagementController;
 use App\Http\Controllers\Api\Customer\BlogController;
 use App\Http\Controllers\Api\Customer\TestimonialController;
 use App\Http\Controllers\Api\Customer\VehicleController;
@@ -107,6 +109,21 @@ Route::prefix('admin')
             Route::patch('/bids/reject/{id}', 'reject');
             Route::delete('/bids/delete/{id}', 'destroy');
             Route::post('/bids/bulk-delete', 'bulkDelete');
+        });
+
+        //Makes Management
+        Route::controller(MakeController::class)->group(function () {
+            Route::get('/makes', 'index');
+            Route::get('/makes/show/{id}', 'show');
+            Route::post('/makes/create', 'store');
+            Route::post('/makes/update/{id}', 'update');
+            Route::delete('/makes/delete/{id}', 'destroy');
+        });
+        //Vehicles Management
+        Route::controller(VehicleManagementController::class)->group(function () {
+            Route::get('/vehicles', 'index');
+            Route::get('/vehicles/show/{id}', 'show');
+            Route::delete('/vehicles/delete/{id}', 'destroy');
         });
     });
 
