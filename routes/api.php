@@ -1,20 +1,21 @@
 <?php
 
-use App\Http\Controllers\Api\BlogController;
-use App\Http\Controllers\Api\TestimonialController;
+use App\Http\Controllers\Api\Customer\BlogController;
+use App\Http\Controllers\Api\Customer\TestimonialController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\UserController;
-use App\Http\Controllers\Api\VehicleController;
+use App\Http\Controllers\Api\Customer\VehicleController;
 use App\Models\Testimonial;
 use App\Models\Vehicle;
 
 use App\Http\Controllers\Api\AuthController;
-use App\Http\Controllers\Api\BuyCarController;
-use App\Http\Controllers\Api\ContactController;
-use App\Http\Controllers\Api\FavoriteController;
-use App\Http\Controllers\Api\InspectionController;
-use App\Http\Controllers\Api\SellCarController;
-use App\Http\Controllers\Api\UserDataController;
+use App\Http\Controllers\Api\Customer\BiddingController;
+use App\Http\Controllers\Api\Customer\BuyCarController;
+use App\Http\Controllers\Api\Customer\ContactController;
+use App\Http\Controllers\Api\Customer\FavoriteController;
+use App\Http\Controllers\Api\Customer\InspectionController;
+use App\Http\Controllers\Api\Customer\SellCarController;
+use App\Http\Controllers\Api\Customer\UserDataController;
 use App\Livewire\ContactForm;
 
 //Auth routes
@@ -22,7 +23,7 @@ Route::post('register', [AuthController::class, 'register']);
 Route::post('login', [AuthController::class, 'login']);
 Route::middleware('auth:api')->post('logout', [AuthController::class, 'logout']);
 
-
+// Customer Panel Routes Start
 Route::controller(VehicleController::class)->group(function () {
     //Vehicles
     Route::get('all-vehicles', 'getAllVehicles')->name('all.vehicles');
@@ -100,4 +101,11 @@ Route::group(['middleware' => 'auth:api'], function () {
         Route::get('user/enquiries/sale', 'getSaleEnquiries')->name('user.enquiries.sale');
         Route::get('user/inspection-reports', 'getInspectionReports')->name('user.inspection.reports');
     });
+
+    Route::controller(BiddingController::class)->group(function () {
+        Route::get('/biddings/{vehicleId}', 'getVehicleBids');
+        Route::post('/place-bid/{vehicleId}', 'placeBid');
+        Route::get('/bid-history/{vehicleId}', 'getBidHistory');
+    });
 });
+// Customer Panel Routes End
