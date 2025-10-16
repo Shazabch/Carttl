@@ -17,7 +17,7 @@ class VehicleInspectionController extends Controller
     public function show(Request $request)
     {
 
-        dd('ddd');
+      
         $vehicle=$request->vehicle_id ?? null;
         return view('admin.inspection.generate-report', [
             'vehicle' => $vehicle,

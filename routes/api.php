@@ -13,6 +13,8 @@ use App\Http\Controllers\Api\Admin\SaleEnquiryController;
 use App\Http\Controllers\Api\Admin\TestimonialsController;
 use App\Http\Controllers\Api\Admin\UserManagementController;
 use App\Http\Controllers\Api\Admin\VehicleManagementController;
+use App\Http\Controllers\Api\Admin\InspectionReportController;
+
 use App\Http\Controllers\Api\Customer\BlogController;
 use App\Http\Controllers\Api\Customer\TestimonialController;
 use App\Http\Controllers\Api\Customer\VehicleController;
@@ -23,6 +25,7 @@ use App\Http\Controllers\Api\Customer\FavoriteController;
 use App\Http\Controllers\Api\Customer\InspectionController;
 use App\Http\Controllers\Api\Customer\SellCarController;
 use App\Http\Controllers\Api\Customer\UserDataController;
+
 
 //Auth routes
 Route::post('register', [AuthController::class, 'register']);
@@ -121,7 +124,7 @@ Route::prefix('admin')
         });
 
         //Model By Make
-         Route::controller(MakeController::class)->group(function () {
+        Route::controller(MakeController::class)->group(function () {
             Route::get('/make-models/{id}', 'modelsByMake');
         });
         //Vehicles Management
@@ -131,6 +134,20 @@ Route::prefix('admin')
             Route::post('/vehicles/create', 'store');
             Route::post('/vehicles/update/{id}', 'update');
             Route::delete('/vehicles/delete/{id}', 'destroy');
+        });
+
+        //Inspection Report Management
+        Route::controller(InspectionReportController::class)->group(function () {
+            Route::get('/inspection-reports', 'index');
+            Route::get('/inspection-reports/show/{id}', 'show');
+            Route::post('/inspection-reports/create', 'store');
+            Route::post('/inspection-reports/update/{id}', 'update');
+            Route::delete('/inspection-reports/delete/{id}', 'destroy');
+
+            Route::post('/inspection-reports/generate-pdf/{id}', 'generatePdf');
+            Route::post('/inspection-reports/share-link/{id}', 'share');
+            Route::get('/inspection-reports/download/{id}', 'downloadReport')
+                ->name('inspection.report.download');
         });
     });
 

@@ -49,6 +49,7 @@ class SharedDocumentController extends Controller
             'reportInView' => $report
         ]);
     }
+    
     public function download(VehicleInspectionReport $report)
     {
 

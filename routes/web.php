@@ -105,6 +105,7 @@ Route::group(['prefix' => 'admin'], function () {
     });
 });
 
+
 Route::get('/inspection-report/download/signed/{report}', [SharedDocumentController::class, 'showPublicReport'])
     ->name('inspection.report.download.signed') // This name is crucial
     ->middleware('signed');
