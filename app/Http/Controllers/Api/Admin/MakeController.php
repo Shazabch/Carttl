@@ -4,19 +4,20 @@ namespace App\Http\Controllers\Api\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Brand;
+use App\Models\VehicleModel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 class MakeController extends Controller
 {
-    
+
     public function index(Request $request)
     {
         $search = $request->get('search', '');
         $perPage = $request->get('per_page', 10);
 
-        $makes = Brand::query()
+        $makes = Brand::query()->whereHas('vehicleModels')
             ->when($search, fn($q) => $q->where('name', 'like', "%{$search}%"))
             ->orderBy('created_at', 'desc')
             ->paginate($perPage);
@@ -27,7 +28,25 @@ class MakeController extends Controller
         ]);
     }
 
-   
+    public function ModelsByMake($makeId)
+    {
+        $models = VehicleModel::where('brand_id', $makeId)
+            ->select('id', 'name')
+            ->get();
+
+        if ($models->isEmpty()) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'No models found for this make.',
+            ], 404);
+        }
+
+        return response()->json([
+            'status' => 'success',
+            'data' => $models,
+        ]);
+    }
+
     public function show($id)
     {
         $make = Brand::find($id);
@@ -45,7 +64,7 @@ class MakeController extends Controller
         ]);
     }
 
-    
+
     public function store(Request $request)
     {
         $validated = $request->validate([
@@ -71,7 +90,7 @@ class MakeController extends Controller
         ]);
     }
 
-   
+
     public function update(Request $request, $id)
     {
         $make = Brand::find($id);
@@ -109,7 +128,7 @@ class MakeController extends Controller
         ]);
     }
 
-    
+
     public function destroy($id)
     {
         $make = Brand::find($id);

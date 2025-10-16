@@ -5,10 +5,12 @@ namespace App\Http\Controllers\Api\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Vehicle;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
 
 class VehicleManagementController extends Controller
 {
-   
+
     public function index(Request $request)
     {
         $type = $request->get('type', 'all'); // 'sold', 'listed', 'pending', 'draft', or 'all'
@@ -17,7 +19,7 @@ class VehicleManagementController extends Controller
 
         $query = Vehicle::query();
 
-       
+
         if ($type === 'sold') {
             $query->where('status', 'sold');
         } elseif ($type === 'listed') {
@@ -28,15 +30,15 @@ class VehicleManagementController extends Controller
             $query->where('status', 'draft');
         }
 
-      
+
         if (!empty($search)) {
             $query->where(function ($q) use ($search) {
                 $q->where('title', 'like', "%{$search}%")
-                  ->orWhere('vin', 'like', "%{$search}%");
+                    ->orWhere('vin', 'like', "%{$search}%");
             });
         }
 
-      
+
         $vehicles = $query->with(['brand:id,name', 'vehicleModel:id,name'])
             ->orderBy('created_at', 'desc')
             ->paginate($perPage);
@@ -47,7 +49,7 @@ class VehicleManagementController extends Controller
         ]);
     }
 
-   
+
     public function show($id)
     {
         $vehicle = Vehicle::with(['brand', 'vehicleModel', 'fuelType', 'transmission', 'bodyType'])
@@ -66,7 +68,140 @@ class VehicleManagementController extends Controller
         ]);
     }
 
-    
+    public function store(Request $request)
+    {
+        $rules = [
+            'title' => 'required|string|max:255',
+            'brand_id' => 'required|exists:brands,id',
+            'vehicle_model_id' => 'required|exists:vehicle_models,id',
+            'year' => 'required',
+            'price' => 'required|numeric',
+            'mileage' => 'required|numeric',
+            'transmission_id' => 'required|exists:transmissions,id',
+            'fuel_type_id' => 'required|exists:fuel_types,id',
+            'body_type_id' => 'required|exists:body_types,id',
+            'condition' => 'required|string',
+            'status' => 'required|string',
+            'description' => 'nullable|string',
+            'variant' => 'nullable|string',
+            'engine_cc' => 'nullable|string',
+            'horsepower' => 'nullable|string',
+            'torque' => 'nullable|string',
+            'seats' => 'nullable|integer',
+            'doors' => 'nullable|integer',
+            'color' => 'nullable|string',
+            'interior_color' => 'nullable|string',
+            'drive_type' => 'nullable|string',
+            'vin' => 'nullable|string',
+            'registration_no' => 'nullable|string',
+            'negotiable' => 'boolean',
+            'is_featured' => 'boolean',
+            'is_auction' => 'boolean',
+            'features' => 'nullable|array',
+            'images.*' => 'nullable|file|image|max:5120'
+        ];
+
+        $validated = $request->validate($rules);
+
+       
+        $features = $validated['features'] ?? [];
+        unset($validated['features'], $validated['images']);
+
+      
+        $validated['slug'] = Str::slug(
+            $validated['title'] . ' ' . ($validated['year'] ?? '') . ' ' . ($validated['variant'] ?? '')
+        );
+
+      
+        $vehicle = Vehicle::create($validated);
+
+      
+        if (!empty($features)) {
+            $vehicle->features()->sync($features);
+        }
+
+       
+        if ($request->hasFile('images')) {
+            foreach ($request->file('images') as $image) {
+                $path = $image->store('vehicle_images', 'public');
+                $vehicle->images()->create(['path' => $path]);
+            }
+        }
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Vehicle created successfully',
+            'data' => $vehicle->load('brand', 'vehicleModel', 'features', 'images')
+        ]);
+    }
+
+    public function update(Request $request, $id)
+    {
+        $vehicle = Vehicle::findOrFail($id);
+
+        $rules = [
+            'title' => 'sometimes|required|string|max:255',
+            'brand_id' => 'sometimes|required|exists:brands,id',
+            'vehicle_model_id' => 'sometimes|required|exists:vehicle_models,id',
+            'year' => 'sometimes|required',
+            'price' => 'sometimes|required|numeric',
+            'mileage' => 'sometimes|required|numeric',
+            'transmission_id' => 'sometimes|required|exists:transmissions,id',
+            'fuel_type_id' => 'sometimes|required|exists:fuel_types,id',
+            'body_type_id' => 'sometimes|required|exists:body_types,id',
+            'condition' => 'sometimes|required|string',
+            'status' => 'sometimes|required|string',
+            'description' => 'nullable|string',
+            'variant' => 'nullable|string',
+            'engine_cc' => 'nullable|string',
+            'horsepower' => 'nullable|string',
+            'torque' => 'nullable|string',
+            'seats' => 'nullable|integer',
+            'doors' => 'nullable|integer',
+            'color' => 'nullable|string',
+            'interior_color' => 'nullable|string',
+            'drive_type' => 'nullable|string',
+            'vin' => 'nullable|string',
+            'registration_no' => 'nullable|string',
+            'negotiable' => 'boolean',
+            'is_featured' => 'boolean',
+            'is_auction' => 'boolean',
+            'features' => 'nullable|array',
+            'images.*' => 'nullable|file|image|max:5120',
+        ];
+
+        $validated = $request->validate($rules);
+
+       
+        $features = $validated['features'] ?? [];
+        unset($validated['features'], $validated['images']);
+
+       
+        $vehicle->update($validated);
+
+        
+        if (!empty($features)) {
+            $vehicle->features()->sync($features);
+        }
+
+       
+        if ($request->hasFile('images')) {
+            foreach ($request->file('images') as $image) {
+                $path = $image->store('vehicle_images', 'public');
+                $vehicle->images()->create(['path' => $path]);
+            }
+        }
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Vehicle updated successfully',
+            'data' => $vehicle->load('brand', 'vehicleModel', 'features', 'images')
+        ]);
+    }
+
+
+
+
     public function destroy($id)
     {
         $vehicle = Vehicle::find($id);

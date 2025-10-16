@@ -119,10 +119,17 @@ Route::prefix('admin')
             Route::post('/makes/update/{id}', 'update');
             Route::delete('/makes/delete/{id}', 'destroy');
         });
+
+        //Model By Make
+         Route::controller(MakeController::class)->group(function () {
+            Route::get('/make-models/{id}', 'modelsByMake');
+        });
         //Vehicles Management
         Route::controller(VehicleManagementController::class)->group(function () {
             Route::get('/vehicles', 'index');
             Route::get('/vehicles/show/{id}', 'show');
+            Route::post('/vehicles/create', 'store');
+            Route::post('/vehicles/update/{id}', 'update');
             Route::delete('/vehicles/delete/{id}', 'destroy');
         });
     });
