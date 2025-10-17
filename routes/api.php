@@ -14,6 +14,7 @@ use App\Http\Controllers\Api\Admin\UserManagementController;
 use App\Http\Controllers\Api\Admin\VehicleManagementController;
 use App\Http\Controllers\Api\Admin\InspectionReportController;
 use App\Http\Controllers\Api\Admin\NotificationController;
+use App\Http\Controllers\Api\Admin\ProfileController;
 use App\Http\Controllers\Api\Customer\BlogController;
 use App\Http\Controllers\Api\Customer\TestimonialController;
 use App\Http\Controllers\Api\Customer\VehicleController;
@@ -161,6 +162,11 @@ Route::prefix('admin')
             Route::put('/notifications/read/{id}', 'markAsRead');
             Route::delete('/notifications/delete/{id}', 'destroy');
             Route::delete('/notifications/clear', 'clearAll');
+        });
+
+         //Profile
+        Route::controller(ProfileController::class)->group(function () {
+            Route::get('/profile', 'index');
         });
     });
 
