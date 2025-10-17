@@ -6,16 +6,17 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration {
     public function up(): void {
-        Schema::create('vehicle_specifications', function (Blueprint $table) {
+        Schema::create('vehicle_documents', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('vehicle_id')->constrained()->onDelete('cascade');
-            $table->string('key');
-            $table->string('value');
+            $table->integer('vehicle_id')->nullable();
+            $table->string('file_path');
+            $table->string('type');
+            $table->date('expires_at')->nullable();
             $table->timestamps();
         });
     }
 
     public function down(): void {
-        Schema::dropIfExists('vehicle_specifications');
+        Schema::dropIfExists('vehicle_documents');
     }
 };

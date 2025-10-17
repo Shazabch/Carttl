@@ -8,8 +8,8 @@ return new class extends Migration {
     public function up(): void {
         Schema::create('vehicle_features', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('vehicle_id')->constrained()->onDelete('cascade');
-            $table->foreignId('feature_id')->constrained()->onDelete('cascade');
+            $table->integer('vehicle_id')->nullable();
+            $table->integer('feature_id')->nullable();
         });
     }
 

@@ -10,13 +10,13 @@ return new class extends Migration {
             $table->id();
             $table->string('title');
             $table->string('slug')->unique();
-            $table->foreignId('brand_id')->constrained()->onDelete('cascade');
-            $table->foreignId('model_id')->constrained()->onDelete('cascade');
+            $table->integer('brand_id')->nullable();
+            $table->integer('model_id')->nullable();
             $table->string('variant')->nullable();
             $table->year('year');
-            $table->foreignId('body_type_id')->constrained()->onDelete('cascade');
-            $table->foreignId('fuel_type_id')->constrained()->onDelete('cascade');
-            $table->foreignId('transmission_id')->constrained()->onDelete('cascade');
+            $table->integer('body_type_id')->nullable();
+            $table->integer('fuel_type_id')->nullable();
+            $table->integer('transmission_id')->nullable();
             $table->integer('mileage');
             $table->integer('engine_cc')->nullable();
             $table->integer('horsepower')->nullable();

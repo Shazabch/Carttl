@@ -8,7 +8,7 @@ return new class extends Migration {
     public function up(): void {
         Schema::create('vehicle_location', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('vehicle_id')->constrained()->onDelete('cascade');
+            $table->integer('vehicle_id')->nullable();
             $table->string('country')->nullable();
             $table->string('state')->nullable();
             $table->string('city')->nullable();

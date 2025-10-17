@@ -1,8 +1,7 @@
 <?php
-
-use App\Http\Controllers\Api\Admin\BidManagementController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\Admin\BidManagementController;
 use App\Http\Controllers\Api\Admin\BlogsController;
 use App\Http\Controllers\Api\Admin\ContactSubmissionController;
 use App\Http\Controllers\Api\Admin\InspectionEnquiryController;
@@ -127,14 +126,21 @@ Route::prefix('admin')
         Route::controller(MakeController::class)->group(function () {
             Route::get('/make-models/{id}', 'modelsByMake');
         });
-        
+
         //Vehicles Management
-        Route::controller(VehicleManagementController::class)->group(function () {
-            Route::get('/vehicles', 'index');
-            Route::get('/vehicles/show/{id}', 'show');
-            Route::post('/vehicles/create', 'store');
-            Route::post('/vehicles/update/{id}', 'update');
-            Route::delete('/vehicles/delete/{id}', 'destroy');
+        Route::prefix('vehicles')->controller(VehicleManagementController::class)->group(function () {
+            Route::get('body-types', 'getBodyTypes');
+            Route::get('fuel-types', 'getFuelTypes');
+            Route::get('transmissions', 'getTransmissions');
+            Route::get('features/simple', 'getAllFeatures');
+            Route::get('features/exterior', 'getExteriorFeatures');
+            Route::get('features/interior', 'getInteriorFeatures');
+            Route::get('tags', 'getTags');
+            Route::get('/', 'index');
+            Route::get('show/{id}', 'show');
+            Route::post('create', 'store');
+            Route::post('update/{id}', 'update');
+            Route::delete('delete/{id}', 'destroy');
         });
 
         //Inspection Report Management
@@ -158,10 +164,11 @@ Route::prefix('admin')
         });
     });
 
+// Admin Panel Routes End
 
 
 
-// Admin Panel Routes Start
+
 
 // Customer Panel Routes Start
 Route::controller(VehicleController::class)->group(function () {
@@ -210,6 +217,7 @@ Route::controller(InspectionController::class)->group(function () {
 
 //Sell Inquiry
 Route::post('sell-car', [SellCarController::class, 'store'])->name('sell.car.store');
+
 //Buy Inquiry
 Route::post('buy-car', [BuyCarController::class, 'store']);
 

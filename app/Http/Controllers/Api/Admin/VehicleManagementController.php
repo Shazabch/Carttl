@@ -3,6 +3,10 @@
 namespace App\Http\Controllers\Api\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\BodyType;
+use App\Models\Feature;
+use App\Models\FuelType;
+use App\Models\Transmission;
 use App\Models\Vehicle;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -10,6 +14,76 @@ use Illuminate\Support\Str;
 
 class VehicleManagementController extends Controller
 {
+    public function getBodyTypes()
+{
+    $bodyTypes = BodyType::all();
+
+    return response()->json([
+        'status' => 'success',
+        'data' => $bodyTypes,
+    ]);
+}
+
+public function getFuelTypes()
+{
+    $fuelTypes = FuelType::all();
+
+    return response()->json([
+        'status' => 'success',
+        'data' => $fuelTypes,
+    ]);
+}
+
+public function getTransmissions()
+{
+    $transmissions = Transmission::all();
+
+    return response()->json([
+        'status' => 'success',
+        'data' => $transmissions,
+    ]);
+}
+
+public function getAllFeatures()
+{
+    $features = Feature::where('type', 'simple')->get();
+
+    return response()->json([
+        'status' => 'success',
+        'data' => $features,
+    ]);
+}
+
+public function getExteriorFeatures()
+{
+    $features = Feature::where('type', 'exterior')->get();
+
+    return response()->json([
+        'status' => 'success',
+        'data' => $features,
+    ]);
+}
+
+public function getInteriorFeatures()
+{
+    $features = Feature::where('type', 'interior')->get();
+
+    return response()->json([
+        'status' => 'success',
+        'data' => $features,
+    ]);
+}
+
+public function getTags()
+{
+    $tags = Feature::where('type', 'tag')->get();
+
+    return response()->json([
+        'status' => 'success',
+        'data' => $tags,
+    ]);
+}
+
 
     public function index(Request $request)
     {
