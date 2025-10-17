@@ -14,7 +14,7 @@ use App\Http\Controllers\Api\Admin\TestimonialsController;
 use App\Http\Controllers\Api\Admin\UserManagementController;
 use App\Http\Controllers\Api\Admin\VehicleManagementController;
 use App\Http\Controllers\Api\Admin\InspectionReportController;
-
+use App\Http\Controllers\Api\Admin\NotificationController;
 use App\Http\Controllers\Api\Customer\BlogController;
 use App\Http\Controllers\Api\Customer\TestimonialController;
 use App\Http\Controllers\Api\Customer\VehicleController;
@@ -127,6 +127,7 @@ Route::prefix('admin')
         Route::controller(MakeController::class)->group(function () {
             Route::get('/make-models/{id}', 'modelsByMake');
         });
+        
         //Vehicles Management
         Route::controller(VehicleManagementController::class)->group(function () {
             Route::get('/vehicles', 'index');
@@ -143,11 +144,17 @@ Route::prefix('admin')
             Route::post('/inspection-reports/create', 'store');
             Route::post('/inspection-reports/update/{id}', 'update');
             Route::delete('/inspection-reports/delete/{id}', 'destroy');
-
             Route::post('/inspection-reports/generate-pdf/{id}', 'generatePdf');
             Route::post('/inspection-reports/share-link/{id}', 'share');
-            Route::get('/inspection-reports/download/{id}', 'downloadReport')
-                ->name('inspection.report.download');
+            Route::get('/inspection-reports/download/{id}', 'downloadReport');
+        });
+
+        //Notifications
+        Route::controller(NotificationController::class)->group(function () {
+            Route::get('/notifications', 'index');
+            Route::put('/notifications/read/{id}', 'markAsRead');
+            Route::delete('/notifications/delete/{id}', 'destroy');
+            Route::delete('/notifications/clear', 'clearAll');
         });
     });
 

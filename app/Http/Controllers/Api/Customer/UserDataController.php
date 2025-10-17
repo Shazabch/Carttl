@@ -63,7 +63,7 @@ class UserDataController extends Controller
             'confirm_password' => ['required', 'same:new_password'],
         ]);
 
-       
+
         if (!Hash::check($request->current_password, $user->password)) {
             return response()->json([
                 'status' => 'error',
@@ -71,7 +71,7 @@ class UserDataController extends Controller
             ], 400);
         }
 
-       
+
         $user->update([
             'password' => Hash::make($request->new_password),
         ]);
@@ -82,7 +82,7 @@ class UserDataController extends Controller
         ]);
     }
 
-    public function getUserBiddings()
+    public function getUserBiddings(Request $request)
     {
         $user = Auth::guard('api')->user();
 
@@ -93,8 +93,18 @@ class UserDataController extends Controller
             ], 401);
         }
 
+        $search = $request->input('search');
+        $perPage = $request->input('per_page', 1);
+
         $bids = VehicleBid::where('user_id', $user->id)
-            ->get();
+            ->when($search, function ($query) use ($search) {
+                $query->whereHas('vehicle', function ($q) use ($search) {
+                    $q->where('name', 'like', "%{$search}%")
+                        ->orWhere('vin', 'like', "%{$search}%");
+                });
+            })
+            ->with(['vehicle.brand:id,name,image_source', 'vehicle.vehicleModel:id,name'])
+            ->paginate($perPage);
 
         return response()->json([
             'status' => 'success',
@@ -102,7 +112,8 @@ class UserDataController extends Controller
         ]);
     }
 
-    public function getPurchaseEnquiries()
+
+    public function getPurchaseEnquiries(Request $request)
     {
         $user = Auth::guard('api')->user();
 
@@ -112,14 +123,21 @@ class UserDataController extends Controller
                 'message' => 'Unauthenticated user.'
             ], 401);
         }
+
+        $search = $request->input('search');
+        $perPage = $request->input('per_page', 10);
 
         $enquiries = VehicleEnquiry::where('user_id', $user->id)
             ->where('type', 'purchase')
-            ->with([
-                'brand:id,name,image_source',
-                'vehicleModel:id,name'
-            ])
-            ->get();
+            ->when($search, function ($query) use ($search) {
+                $query->whereHas('brand', function ($q) use ($search) {
+                    $q->where('name', 'like', "%{$search}%");
+                })->orWhereHas('vehicleModel', function ($q) use ($search) {
+                    $q->where('name', 'like', "%{$search}%");
+                });
+            })
+            ->with(['brand:id,name,image_source', 'vehicleModel:id,name'])
+            ->paginate($perPage);
 
         return response()->json([
             'status' => 'success',
@@ -128,7 +146,7 @@ class UserDataController extends Controller
     }
 
 
-    public function getSaleEnquiries()
+    public function getSaleEnquiries(Request $request)
     {
         $user = Auth::guard('api')->user();
 
@@ -138,14 +156,21 @@ class UserDataController extends Controller
                 'message' => 'Unauthenticated user.'
             ], 401);
         }
+
+        $search = $request->input('search');
+        $perPage = $request->input('per_page', 10);
 
         $enquiries = VehicleEnquiry::where('user_id', $user->id)
             ->where('type', 'sale')
-            ->with([
-                'brand:id,name,image_source',
-                'vehicleModel:id,name'
-            ])
-            ->get();
+            ->when($search, function ($query) use ($search) {
+                $query->whereHas('brand', function ($q) use ($search) {
+                    $q->where('name', 'like', "%{$search}%");
+                })->orWhereHas('vehicleModel', function ($q) use ($search) {
+                    $q->where('name', 'like', "%{$search}%");
+                });
+            })
+            ->with(['brand:id,name,image_source', 'vehicleModel:id,name'])
+            ->paginate($perPage);
 
         return response()->json([
             'status' => 'success',
@@ -154,7 +179,7 @@ class UserDataController extends Controller
     }
 
 
-    public function getInspectionReports()
+    public function getInspectionReports(Request $request)
     {
         $user = Auth::guard('api')->user();
 
@@ -165,12 +190,19 @@ class UserDataController extends Controller
             ], 401);
         }
 
+        $search = $request->input('search');
+        $perPage = $request->input('per_page', 10);
+
         $inspections = InspectionEnquiry::where('user_id', $user->id)
-            ->with([
-                'brand:id,name,image_source',
-                'vehicleModel:id,name'
-            ])
-            ->get();
+            ->when($search, function ($query) use ($search) {
+                $query->whereHas('brand', function ($q) use ($search) {
+                    $q->where('name', 'like', "%{$search}%");
+                })->orWhereHas('vehicleModel', function ($q) use ($search) {
+                    $q->where('name', 'like', "%{$search}%");
+                });
+            })
+            ->with(['brand:id,name,image_source', 'vehicleModel:id,name'])
+            ->paginate($perPage);
 
         return response()->json([
             'status' => 'success',

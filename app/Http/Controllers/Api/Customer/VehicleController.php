@@ -8,6 +8,7 @@ use App\Models\Feature;
 use App\Models\User;
 use App\Models\Vehicle;
 use App\Models\VehicleModel;
+use Illuminate\Http\Request;
 
 class VehicleController extends Controller
 {
@@ -69,20 +70,36 @@ class VehicleController extends Controller
 
 
     //Vehicles
-    public function getAllVehicles()
+    public function getBuyVehicles(Request $request)
     {
-        $vehicles = Vehicle::with([
-            'brand:id,name,image_source',
-            'vehicleModel:id,name'
-        ])->get();
+        $search = $request->input('search');
+        $perPage = $request->input('per_page', 10);
 
-
+        $buy_vehicles = Vehicle::where('is_auction', 0)
+            ->where('status', 'published')
+            ->with([
+                'brand:id,name,image_source',
+                'vehicleModel:id,name'
+            ])
+            ->when($search, function ($query) use ($search) {
+                $query->where('name', 'like', "%{$search}%")
+                    ->orWhere('vin', 'like', "%{$search}%")
+                    ->orWhereHas('brand', function ($q) use ($search) {
+                        $q->where('name', 'like', "%{$search}%");
+                    })
+                    ->orWhereHas('vehicleModel', function ($q) use ($search) {
+                        $q->where('name', 'like', "%{$search}%");
+                    });
+            })
+            ->paginate($perPage);
 
         return response()->json([
             'status' => 'success',
-            'data' => $vehicles,
+            'data' => $buy_vehicles,
         ]);
     }
+
+
     public function featuredVehicles()
     {
         $featured_vehicles = Vehicle::where('is_auction', 0)->where('status', 'published')->where('is_featured', 1)->with([
@@ -97,34 +114,34 @@ class VehicleController extends Controller
             'data' => $featured_vehicles,
         ]);
     }
-    public function getSoldVehicles()
+    public function getSoldVehicles(Request $request)
     {
-        $sold_vehicles = Vehicle::where('status', 'sold')->with([
-            'brand:id,name,image_source',
-            'vehicleModel:id,name'
-        ])->get();
+        $search = $request->input('search');
+        $perPage = $request->input('per_page', 10);
 
-
+        $sold_vehicles = Vehicle::where('status', 'sold')
+            ->with([
+                'brand:id,name,image_source',
+                'vehicleModel:id,name'
+            ])
+            ->when($search, function ($query) use ($search) {
+                $query->where('name', 'like', "%{$search}%")
+                    ->orWhere('vin', 'like', "%{$search}%")
+                    ->orWhereHas('brand', function ($q) use ($search) {
+                        $q->where('name', 'like', "%{$search}%");
+                    })
+                    ->orWhereHas('vehicleModel', function ($q) use ($search) {
+                        $q->where('name', 'like', "%{$search}%");
+                    });
+            })
+            ->paginate($perPage);
 
         return response()->json([
             'status' => 'success',
             'data' => $sold_vehicles,
         ]);
     }
-    public function getBuyVehicles()
-    {
-        $buy_vehicles = Vehicle::where('is_auction', 0)->where('status', 'published')->with([
-            'brand:id,name,image_source',
-            'vehicleModel:id,name'
-        ])->get();
-
-
-
-        return response()->json([
-            'status' => 'success',
-            'data' => $buy_vehicles,
-        ]);
-    }
+  
 
     public function detail($id)
     {
@@ -138,11 +155,11 @@ class VehicleController extends Controller
             ], 404);
         }
 
-        
+
         $allExterior = Feature::where('type', 'exterior')->get(['id', 'name']);
         $allInterior = Feature::where('type', 'interior')->get(['id', 'name']);
 
-      
+
         $interiorFeatures = $vehicle->features
             ->where('type', 'interior')
             ->map(fn($f) => ['id' => $f->id, 'name' => $f->name])
@@ -158,7 +175,7 @@ class VehicleController extends Controller
             ->map(fn($f) => ['id' => $f->id, 'name' => $f->name])
             ->values();
 
-       
+
         $mainImage = optional($vehicle->coverImage)->path ?? null;
 
         return response()->json([
@@ -179,18 +196,32 @@ class VehicleController extends Controller
 
 
     //Auctions
-    public function getAuctionVehicles()
+     public function getAuctionVehicles(Request $request)
     {
-        $auction_vehicles = Vehicle::where('is_auction', 1)->where('status', 'published')->with([
-            'brand:id,name,image_source',
-            'vehicleModel:id,name'
-        ])->get();
+        $search = $request->input('search');
+        $perPage = $request->input('per_page', 10);
 
-
+        $auctions = Vehicle::where('is_auction', 1)
+            ->where('status', 'published')
+            ->with([
+                'brand:id,name,image_source',
+                'vehicleModel:id,name'
+            ])
+            ->when($search, function ($query) use ($search) {
+                $query->where('name', 'like', "%{$search}%")
+                    ->orWhere('vin', 'like', "%{$search}%")
+                    ->orWhereHas('brand', function ($q) use ($search) {
+                        $q->where('name', 'like', "%{$search}%");
+                    })
+                    ->orWhereHas('vehicleModel', function ($q) use ($search) {
+                        $q->where('name', 'like', "%{$search}%");
+                    });
+            })
+            ->paginate($perPage);
 
         return response()->json([
             'status' => 'success',
-            'data' => $auction_vehicles,
+            'data' => $auctions,
         ]);
     }
     public function featuredAuctions()

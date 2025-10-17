@@ -22,7 +22,7 @@ class BuyCarController extends Controller
             'vehicle_id' => 'required|exists:vehicles,id',
             'name' => 'required|string',
             'phone' => 'required|min:13|max:13',
-            'email' => 'nullable|email',
+            'email' => 'required|email',
             'address' => 'nullable|string',
         ]);
 
