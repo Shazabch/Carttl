@@ -1,4 +1,5 @@
 <?php
+
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\Admin\BidManagementController;
@@ -13,6 +14,7 @@ use App\Http\Controllers\Api\Admin\TestimonialsController;
 use App\Http\Controllers\Api\Admin\UserManagementController;
 use App\Http\Controllers\Api\Admin\VehicleManagementController;
 use App\Http\Controllers\Api\Admin\InspectionReportController;
+use App\Http\Controllers\Api\Admin\ManagerController;
 use App\Http\Controllers\Api\Admin\NotificationController;
 use App\Http\Controllers\Api\Admin\ProfileController;
 use App\Http\Controllers\Api\Customer\BlogController;
@@ -32,7 +34,7 @@ Route::post('register', [AuthController::class, 'register']);
 Route::post('login', [AuthController::class, 'login']);
 Route::middleware('auth:api')->post('logout', [AuthController::class, 'logout']);
 
-// Admin Panel Routes Start
+// Admin Panel Routes
 Route::prefix('admin')
     ->middleware(['middleware' => 'auth:api'])
     ->group(function () {
@@ -164,19 +166,28 @@ Route::prefix('admin')
             Route::delete('/notifications/clear', 'clearAll');
         });
 
-         //Profile
+        //Assign Tree
+        Route::controller(ManagerController::class)->group(function () {
+            Route::get('/managers', 'index');
+            Route::post('/managers/create', 'store');
+            Route::get('/managers/show/{id}', 'getCustomers');
+            Route::post('/managers/update/{id}', 'update');
+            Route::delete('/managers/delete/{id}', 'destroy');
+        });
+        
+        //Profile
         Route::controller(ProfileController::class)->group(function () {
             Route::get('/profile', 'index');
         });
     });
 
-// Admin Panel Routes End
 
 
 
 
 
-// Customer Panel Routes Start
+
+// Customer Panel Routes
 Route::controller(VehicleController::class)->group(function () {
     //Vehicles
     Route::get('all-vehicles', 'getAllVehicles')->name('all.vehicles');
@@ -248,4 +259,4 @@ Route::group(['middleware' => 'auth:api'], function () {
         Route::get('/bid-history/{vehicleId}', 'getBidHistory');
     });
 });
-// Customer Panel Routes End
+

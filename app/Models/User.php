@@ -61,6 +61,17 @@ class User extends Authenticatable implements JWTSubject
     {
         return $this->hasMany(VehicleBid::class);
     }
+
+    public function managedCustomers()
+    {
+        return $this->hasMany(ManagerCustomer::class, 'manager_id');
+    }
+
+    public function manager()
+    {
+        return $this->hasOne(ManagerCustomer::class, 'customer_id');
+    }
+
     public function getJWTIdentifier()
     {
         return $this->getKey();
