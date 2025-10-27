@@ -99,16 +99,17 @@ class InspectionReportController extends Controller
             $pngFilename = 'damage-image-' . $report->id . '-' . now()->format('Ymd_His') . '.' . $file->getClientOriginalExtension();
             $pngPath     = $pngDir . '/' . $pngFilename;
             Storage::disk('public')->putFileAs($pngDir, $file, $pngFilename);
+             $fullPngPath = asset('storage/' . $pngPath);
             if ($report->vehicle_id) {
                 VehicleDocument::create([
                     'vehicle_id' => $report->vehicle_id,
-                    'file_path'  => $pngPath,
+                    'file_path'  => $fullPngPath,
                     'type'       => 'InspectionReportImage',
                 ]);
             }
 
             // Save path in the report
-            $report->update(['damage_file_path' => $pngPath]);
+            $report->update(['damage_file_path' => $fullPngPath]);
         }
 
         $this->generatePdf($report->id);
@@ -135,10 +136,11 @@ class InspectionReportController extends Controller
         foreach ($request->file('images') as $file) {
 
             $path = $file->store('inspection_images', 'public');
+             $fullPath = asset('storage/' . $path);
 
             $image = VehicleInspectionImage::create([
                 'vehicle_inspection_report_id' => $validated['vehicle_inspection_report_id'],
-                'path'                         => $path,
+                'path'                         => $fullPath,
                 'is_cover'                     => $request->get('is_cover', false),
                 'sort_order'                   => $sortOrder++,
             ]);
@@ -193,14 +195,15 @@ class InspectionReportController extends Controller
             $pngFilename = 'damage-image-' . $report->id . '-' . now()->format('Ymd_His') . '.' . $file->getClientOriginalExtension();
             $pngPath     = $pngDir . '/' . $pngFilename;
             Storage::disk('public')->putFileAs($pngDir, $file, $pngFilename);
+             $fullPngPath = asset('storage/' . $pngPath);
             if ($report->vehicle_id) {
                 VehicleDocument::create([
                     'vehicle_id' => $report->vehicle_id,
-                    'file_path'  => $pngPath,
+                    'file_path'  => $fullPngPath,
                     'type'       => 'InspectionReportImage',
                 ]);
             }
-            $report->update(['damage_file_path' => $pngPath]);
+            $report->update(['damage_file_path' => $fullPngPath]);
         }
 
         // 🟢 Regenerate PDF after update

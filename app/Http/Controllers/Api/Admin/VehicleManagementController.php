@@ -195,13 +195,21 @@ public function getTags()
         }
 
        
-        if ($request->hasFile('images')) {
-            foreach ($request->file('images') as $image) {
-                $path = $image->store('vehicle_images', 'public');
-                $vehicle->images()->create(['path' => $path]);
-            }
+       
+if ($request->hasFile('images')) {
+    foreach ($vehicle->images as $oldImage) {
+        if ($oldImage->path) {
+            $relativePath = str_replace(asset('storage') . '/', '', $oldImage->path);
+            Storage::disk('public')->delete($relativePath);
         }
-
+        $oldImage->delete();
+    }
+    foreach ($request->file('images') as $image) {
+        $storedPath = $image->store('vehicle_images', 'public');
+        $fullUrl = asset('storage/' . $storedPath);
+        $vehicle->images()->create(['path' => $fullUrl]);
+    }
+}
         return response()->json([
             'status' => 'success',
             'message' => 'Vehicle created successfully',

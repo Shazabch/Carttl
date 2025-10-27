@@ -70,25 +70,25 @@ class MakeController extends Controller
     $validated = $request->validate([
         'name' => 'required|string|max:255|unique:brands,name',
         'image_source' => 'nullable|image|max:2048',
-        'models' => 'required|array',          // Expecting an array of model names
+        'models' => 'required|array',       
         'models.*' => 'required|string|max:255'
     ]);
 
-    // Handle brand image upload
+   
     $path = null;
     if ($request->hasFile('image_source')) {
         $storedPath = $request->file('image_source')->store('brand-images', 'public');
         $path = asset('storage/' . $storedPath); // Store full URL
     }
 
-    // Create brand
+    
     $brand = Brand::create([
         'name' => $validated['name'],
         'slug' => Str::slug($validated['name']),
         'image_source' => $path,
     ]);
 
-    // Create vehicle models linked to this brand
+    
     foreach ($validated['models'] as $modelName) {
         VehicleModel::create([
             'brand_id' => $brand->id,
