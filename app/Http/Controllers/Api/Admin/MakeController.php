@@ -188,4 +188,23 @@ class MakeController extends Controller
             'message' => 'Make deleted successfully.'
         ]);
     }
+     public function deleteModel($id)
+    {
+        $model = VehicleModel::find($id);
+
+        if (!$model) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Model not found.'
+            ], 404);
+        }
+
+    
+        $model->delete();
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Model deleted successfully.'
+        ]);
+    }
 }

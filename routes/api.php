@@ -128,8 +128,9 @@ Route::prefix('admin')
             Route::post('/makes/create', 'store');
             Route::post('/makes/update/{id}', 'update');
             Route::delete('/makes/delete/{id}', 'destroy');
+            Route::delete('/model/delete/{id}', 'deleteModel');
         });
-
+       
         //Model By Make
         Route::controller(MakeController::class)->group(function () {
             Route::get('/make-models/{id}', 'modelsByMake');
