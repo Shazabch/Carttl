@@ -4,30 +4,29 @@ namespace App\Http\Controllers\Api\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
-use App\Models\ManagerCustomer;
+use App\Models\AgentCustomer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
-class ManagerController extends Controller
+class AgentController extends Controller
 {
     public function index(Request $request)
     {
         $search = $request->get('search', '');
         $perPage = $request->get('per_page', 10);
 
-        $managers = User::where('role', 'manager')
-            ->when($search, function ($query, $search) {
+        $agents = User::where('role', 'agent')->when($search, function ($query, $search) {
                 $query->where(function ($q) use ($search) {
                     $q->where('name', 'like', "%{$search}%")
                         ->orWhere('email', 'like', "%{$search}%");
                 });
             })
-            ->with(['managedCustomers.customer:id,name,email'])
+            ->with(['assignedCustomers.customer:id,name,email'])
             ->orderBy('created_at', 'desc')
             ->paginate($perPage);
 
-        $managers->getCollection()->transform(function ($manager) {
-            $customers = $manager->managedCustomers->map(function ($relation) {
+        $agents->getCollection()->transform(function ($agent) {
+            $customers = $agent->assignedCustomers->map(function ($relation) {
                 return [
                     'id'    => $relation->customer->id,
                     'name'  => $relation->customer->name,
@@ -35,22 +34,22 @@ class ManagerController extends Controller
                 ];
             });
             return [
-                'id'          => $manager->id,
-                'name'        => $manager->name,
-                'email'       => $manager->email,
-                'phone'       => $manager->phone,
-                'bio'         => $manager->bio,
-                'role'        => $manager->role,
-                'is_approved' => $manager->is_approved,
-                'created_at'  => $manager->created_at,
-                'updated_at'  => $manager->updated_at,
+                'id'          => $agent->id,
+                'name'        => $agent->name,
+                'email'       => $agent->email,
+                'phone'       => $agent->phone,
+                'bio'         => $agent->bio,
+                'role'        => $agent->role,
+                'is_approved' => $agent->is_approved,
+                'created_at'  => $agent->created_at,
+                'updated_at'  => $agent->updated_at,
                 'customers'   => $customers,
             ];
         });
 
         return response()->json([
             'status' => 'success',
-            'data'   => $managers,
+            'data'   => $agents,
         ]);
     }
 
@@ -64,46 +63,45 @@ class ManagerController extends Controller
             'customer_ids.*' => 'exists:users,id',
         ]);
 
-        $manager = User::create([
+        $agent = User::create([
             'name'     => $request->name,
             'email'    => $request->email,
             'password' => Hash::make($request->password),
-            'role'     => 'manager',
+            'role'     => 'agent',
         ]);
 
         if (!empty($request->customer_ids)) {
             foreach ($request->customer_ids as $customerId) {
-                ManagerCustomer::updateOrCreate(
+                AgentCustomer::updateOrCreate(
                     ['customer_id' => $customerId],
-                    ['manager_id' => $manager->id]
+                    ['agent_id' => $agent->id]
                 );
             }
         }
 
         return response()->json([
-            'status'    => 'success',
-            'message'   => 'Manager created successfully',
-            'manager'   => $manager->load('managedCustomers.customer'),
+            'status'  => 'success',
+            'message' => 'Agent created successfully',
+            'agent'   => $agent->load('assignedCustomers.customer'),
         ]);
     }
 
-    public function getCustomers($managerId)
+    public function show($agentId)
     {
-        $manager = User::findOrFail($managerId);
+        $agent = User::findOrFail($agentId);
 
-        $customers = ManagerCustomer::where('manager_id', $manager->id)
+        $customers = AgentCustomer::where('agent_id', $agent->id)
             ->with('customer:id,name,email')
             ->get()
             ->pluck('customer');
 
         return response()->json([
             'status'    => 'success',
-            'manager'   => $manager,
+            'agent'     => $agent,
             'customers' => $customers,
         ]);
     }
 
-    // ✅ Updated and consistent update() method
     public function update(Request $request, $id)
     {
         $request->validate([
@@ -114,35 +112,30 @@ class ManagerController extends Controller
             'customer_ids.*' => 'exists:users,id',
         ]);
 
-        $manager = User::where('role', 'manager')->findOrFail($id);
+        $agent = User::where('role', 'agent')->findOrFail($id);
 
-        // Update manager info
-        $manager->update([
+        $agent->update([
             'name'     => $request->name,
             'email'    => $request->email,
             'password' => $request->filled('password')
                 ? Hash::make($request->password)
-                : $manager->password,
+                : $agent->password,
         ]);
 
-        // Remove all old customer links
-        ManagerCustomer::where('manager_id', $manager->id)->delete();
+        AgentCustomer::where('agent_id', $agent->id)->delete();
 
-        // Reassign new customers
         if (!empty($request->customer_ids)) {
             foreach ($request->customer_ids as $customerId) {
-                ManagerCustomer::updateOrCreate(
+                AgentCustomer::updateOrCreate(
                     ['customer_id' => $customerId],
-                    ['manager_id'  => $manager->id]
+                    ['agent_id'  => $agent->id]
                 );
             }
         }
 
-        // Reload manager with relationships
-        $manager->load('managedCustomers.customer');
+        $agent->load('assignedCustomers.customer');
 
-        // Transform response
-        $customers = $manager->managedCustomers->map(function ($relation) {
+        $customers = $agent->assignedCustomers->map(function ($relation) {
             return [
                 'id'    => $relation->customer->id,
                 'name'  => $relation->customer->name,
@@ -151,12 +144,12 @@ class ManagerController extends Controller
         });
 
         return response()->json([
-            'status'    => 'success',
-            'message'   => 'Manager updated successfully',
-            'manager'   => [
-                'id'        => $manager->id,
-                'name'      => $manager->name,
-                'email'     => $manager->email,
+            'status'  => 'success',
+            'message' => 'Agent updated successfully',
+            'agent'   => [
+                'id'        => $agent->id,
+                'name'      => $agent->name,
+                'email'     => $agent->email,
                 'customers' => $customers,
             ],
         ]);
@@ -164,17 +157,15 @@ class ManagerController extends Controller
 
     public function destroy($id)
     {
-        $manager = User::where('role', 'manager')->findOrFail($id);
+        $agent = User::where('role', 'agent')->findOrFail($id);
 
-        // Step 1: Delete all customer assignments linked to this manager
-        ManagerCustomer::where('manager_id', $manager->id)->delete();
+        AgentCustomer::where('agent_id', $agent->id)->delete();
 
-        // Step 2: Delete the manager itself
-        $manager->delete();
+        $agent->delete();
 
         return response()->json([
-            'status' => 'success',
-            'message' => 'Manager deleted successfully',
+            'status'  => 'success',
+            'message' => 'Agent deleted successfully',
         ]);
     }
 }

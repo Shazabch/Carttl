@@ -5,7 +5,9 @@ namespace App\Http\Controllers\Api\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\InspectionEnquiry;
 use App\Models\VehicleDocument;
+use App\Models\CarDamage;
 use App\Models\VehicleInspectionReport;
+use App\Models\VehicleInspectionImage;
 use App\Models\Vehicle;
 use App\Notifications\VehicleInspectionConfirmation;
 use Barryvdh\DomPDF\Facade\Pdf;
@@ -91,7 +93,7 @@ class InspectionReportController extends Controller
         $validated = $request->validate($rules);
 
 
-        $report = VehicleInspectionReport::create($validated);
+        $report = VehicleInspectionReport::create($request->all());
 
 
         $this->generatePdf($report->id);
@@ -103,7 +105,38 @@ class InspectionReportController extends Controller
         ], 201);
     }
 
+    public function storeImages(Request $request)
+{
+    $validated = $request->validate([
+        'vehicle_inspection_report_id' => 'required|exists:vehicle_inspection_reports,id',
+        'images' => 'required|array|min:1',
+        'images.*' => 'file|mimes:jpg,jpeg,png,webp', 
+        'is_cover' => 'nullable|boolean',
+    ]);
 
+    $uploaded = [];
+    $sortOrder = 1;
+
+    foreach ($request->file('images') as $file) {
+        
+        $path = $file->store('inspection_images', 'public');
+
+        $image = VehicleInspectionImage::create([
+            'vehicle_inspection_report_id' => $validated['vehicle_inspection_report_id'],
+            'path' => $path,
+            'is_cover' => $request->get('is_cover', false),
+            'sort_order' => $sortOrder++,
+        ]);
+
+        $uploaded[] = $image;
+    }
+
+    return response()->json([
+        'status' => 'success',
+        'message' => 'Images uploaded successfully.',
+        'data' => $uploaded,
+    ], 201);
+}
     public function update(Request $request, $id)
     {
         $report = VehicleInspectionReport::findOrFail($id);
@@ -134,7 +167,7 @@ class InspectionReportController extends Controller
 
         $validated = $request->validate($rules);
 
-        $report->update($validated);
+        $report->update($request->all());
 
 
         $this->generatePdf($report->id);
@@ -145,6 +178,94 @@ class InspectionReportController extends Controller
             'data' => $report->fresh()
         ]);
     }
+
+
+    // damage report
+    public function getDamageTypes()
+{
+    $damageTypes = [
+        'a' => ['name' => 'Scratch',           'color' => '#FF0000'],
+        'b' => ['name' => 'Multiple Scratches','color' => '#FF7F00'],
+        'c' => ['name' => 'Cosmetic Paint',    'color' => '#FFD700'],
+        'd' => ['name' => 'Chip',              'color' => '#00AA00'],
+        'e' => ['name' => 'Dent',              'color' => '#0000FF'],
+        'f' => ['name' => 'Repainted',         'color' => '#4B0082'],
+        'g' => ['name' => 'Repaired',          'color' => '#b87bd2ff'],
+        'h' => ['name' => 'Foiled Wrap',       'color' => '#706c6eff'],
+        'i' => ['name' => 'Full PPF',          'color' => '#d80881ff'],
+        'j' => ['name' => 'Rust',              'color' => '#6b5407ff'],
+    ];
+
+    
+    $formatted = collect($damageTypes)->map(function ($item, $key) {
+        return [
+            'type' => $key,
+            'name' => $item['name'],
+            'color' => $item['color'],
+        ];
+    })->values();
+
+    return response()->json([
+        'status' => 'success',
+        'message' => 'Damage types fetched successfully.',
+        'data' => $formatted,
+    ]);
+}
+
+     public function addDamage(Request $request)
+    {
+        $validated = $request->validate([
+            'inspection_id' => 'required|exists:vehicle_inspection_reports,id',
+
+            'damages' => 'required|array|min:1',
+            'damages.*.type' => 'required|string|max:255',
+            'damages.*.body_part' => 'required|string|max:255',
+            'damages.*.severity' => 'required|string|max:100',
+            'damages.*.x' => 'required|numeric',
+            'damages.*.y' => 'required|numeric',
+            'damages.*.remark' => 'nullable|string',
+        ]);
+
+        $inspection = VehicleInspectionReport::findOrFail($validated['inspection_id']);
+        $savedDamages = [];
+
+        foreach ($validated['damages'] as $damageData) {
+            $damage = new CarDamage([
+                'type' => $damageData['type'],
+                'body_part' => $damageData['body_part'],
+                'severity' => $damageData['severity'],
+                'x' => $damageData['x'],
+                'y' => $damageData['y'],
+                'remark' => $damageData['remark'] ?? null,
+            ]);
+
+            $damage->inspection_id = $inspection->id;
+            $damage->save();
+
+            $savedDamages[] = $damage;
+        }
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Damages added successfully.',
+            'data' => $savedDamages,
+        ], 201);
+    }
+  public function removeDamage(Request $request)
+{
+    $validated = $request->validate([
+        'damage_ids' => 'required|array|min:1',
+        'damage_ids.*' => 'integer|exists:car_damages,id',
+    ]);
+
+    $deletedCount = \App\Models\CarDamage::whereIn('id', $validated['damage_ids'])->delete();
+
+    return response()->json([
+        'status' => 'success',
+        'message' => "{$deletedCount} damage record(s) removed successfully.",
+        'deleted_ids' => $validated['damage_ids'],
+    ], 200);
+}
 
 
     public function destroy($id)

@@ -14,7 +14,7 @@ use App\Http\Controllers\Api\Admin\TestimonialsController;
 use App\Http\Controllers\Api\Admin\UserManagementController;
 use App\Http\Controllers\Api\Admin\VehicleManagementController;
 use App\Http\Controllers\Api\Admin\InspectionReportController;
-use App\Http\Controllers\Api\Admin\ManagerController;
+use App\Http\Controllers\Api\Admin\AgentController;
 use App\Http\Controllers\Api\Admin\NotificationController;
 use App\Http\Controllers\Api\Admin\ProfileController;
 use App\Http\Controllers\Api\Customer\BlogController;
@@ -151,6 +151,10 @@ Route::prefix('admin')
             Route::get('/inspection-reports', 'index');
             Route::get('/inspection-reports/show/{id}', 'show');
             Route::post('/inspection-reports/create', 'store');
+            Route::post('/inspection-reports/upload-images', 'storeImages');
+            Route::get('/inspection-reports/damage-types', 'getDamageTypes');
+            Route::post('/inspection-reports/damage/add', 'addDamage');
+            Route::post('/inspection-reports/damage/remove', 'removeDamage');
             Route::post('/inspection-reports/update/{id}', 'update');
             Route::delete('/inspection-reports/delete/{id}', 'destroy');
             Route::post('/inspection-reports/generate-pdf/{id}', 'generatePdf');
@@ -167,12 +171,12 @@ Route::prefix('admin')
         });
 
         //Assign Tree
-        Route::controller(ManagerController::class)->group(function () {
-            Route::get('/managers', 'index');
-            Route::post('/managers/create', 'store');
-            Route::get('/managers/show/{id}', 'getCustomers');
-            Route::post('/managers/update/{id}', 'update');
-            Route::delete('/managers/delete/{id}', 'destroy');
+        Route::controller(AgentController::class)->group(function () {
+            Route::get('/ajents', 'index');
+            Route::post('/ajents/create', 'store');
+            Route::get('/ajents/show/{id}', 'show');
+            Route::post('/ajents/update/{id}', 'update');
+            Route::delete('/ajents/delete/{id}', 'destroy');
         });
         
         //Profile
@@ -190,7 +194,7 @@ Route::prefix('admin')
 // Customer Panel Routes
 Route::controller(VehicleController::class)->group(function () {
     //Vehicles
-    Route::get('all-vehicles', 'getAllVehicles')->name('all.vehicles');
+  
     Route::get('featured-vehicles', 'featuredVehicles')->name('featured.vehicles');
     Route::get('vehicles', 'getBuyVehicles')->name('vehicles');
     Route::get('sold-vehicles', 'getSoldVehicles')->name('sold.vehicles');

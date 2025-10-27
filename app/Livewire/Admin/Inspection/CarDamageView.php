@@ -30,7 +30,6 @@ class CarDamageView extends Component
      */
     public function mount($inspectionId)
     {
-        $this->inspectionId = $inspectionId;
         $this->loadDamages();
     }
 

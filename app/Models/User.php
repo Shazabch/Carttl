@@ -62,10 +62,11 @@ class User extends Authenticatable implements JWTSubject
         return $this->hasMany(VehicleBid::class);
     }
 
-    public function managedCustomers()
-    {
-        return $this->hasMany(ManagerCustomer::class, 'manager_id');
-    }
+   public function assignedCustomers()
+{
+    return $this->hasMany(AgentCustomer::class, 'agent_id');
+}
+
 
     public function manager()
     {
