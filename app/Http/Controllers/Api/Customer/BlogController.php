@@ -13,7 +13,7 @@ class BlogController extends Controller
 {
     public function getAllBlogs()
     {
-        $blogs = Blog::orderBy('id', 'desc')->where('is_published', 1)->skip(1)->take(3)->get();
+        $blogs = Blog::orderBy('id', 'desc')->where('is_published', 0)->take(3)->get();
 
         return response()->json([
             'status' => 'success',

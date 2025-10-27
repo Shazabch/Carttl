@@ -1,22 +1,20 @@
 <?php
-
 namespace App\Http\Controllers\Api\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\CarDamage;
 use App\Models\InspectionEnquiry;
 use App\Models\VehicleDocument;
-use App\Models\CarDamage;
-use App\Models\VehicleInspectionReport;
 use App\Models\VehicleInspectionImage;
-use App\Models\Vehicle;
+use App\Models\VehicleInspectionReport;
 use App\Notifications\VehicleInspectionConfirmation;
 use Barryvdh\DomPDF\Facade\Pdf;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Str;
-use Illuminate\Support\Facades\URL;
 use Carbon\Carbon;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Notification;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\URL;
+use Illuminate\Support\Str;
 use Symfony\Component\HttpFoundation\Response;
 
 class InspectionReportController extends Controller
@@ -47,10 +45,9 @@ class InspectionReportController extends Controller
 
         return response()->json([
             'status' => 'success',
-            'data' => $reports
+            'data'   => $reports,
         ]);
     }
-
 
     public function show($id)
     {
@@ -58,185 +55,220 @@ class InspectionReportController extends Controller
 
         return response()->json([
             'status' => 'success',
-            'data' => $report
+            'data'   => $report,
         ]);
     }
 
     public function store(Request $request)
     {
         $rules = [
-            'vehicle_id' => 'nullable|exists:vehicles,id',
-            'inspection_enquiry_id' => 'nullable|exists:inspection_enquiries,id',
-            'make' => 'required',
-            'model' => 'required',
-            'year' => 'required|integer',
-            'vin' => 'nullable|string',
-            'engine_cc' => 'nullable|string',
-            'horsepower' => 'nullable|string',
-            'noOfCylinders' => 'nullable|integer',
-            'transmission' => 'nullable|string',
-            'color' => 'nullable|string',
-            'body_type' => 'nullable|string',
-            'specs' => 'nullable|string',
-            'odometer' => 'nullable|numeric',
-            // Many of your component fields are arrays (paintCondition etc.)
-            'paintCondition' => 'nullable|array',
-            'frontLeftTire' => 'nullable|array',
-            'rearRightTire' => 'nullable|array',
-            'seatsCondition' => 'nullable|array',
-            'brakeDiscs' => 'nullable|array',
+            'vehicle_id'             => 'nullable|exists:vehicles,id',
+            'inspection_enquiry_id'  => 'nullable|exists:inspection_enquiries,id',
+            'make'                   => 'required',
+            'model'                  => 'required',
+            'year'                   => 'required|integer',
+            'vin'                    => 'nullable|string',
+            'engine_cc'              => 'nullable|string',
+            'horsepower'             => 'nullable|string',
+            'noOfCylinders'          => 'nullable|integer',
+            'transmission'           => 'nullable|string',
+            'color'                  => 'nullable|string',
+            'body_type'              => 'nullable|string',
+            'specs'                  => 'nullable|string',
+            'odometer'               => 'nullable|numeric',
+            'paintCondition'         => 'nullable|array',
+            'frontLeftTire'          => 'nullable|array',
+            'rearRightTire'          => 'nullable|array',
+            'seatsCondition'         => 'nullable|array',
+            'brakeDiscs'             => 'nullable|array',
             'shockAbsorberOperation' => 'nullable|array',
-            // Any other scalar fields:
-            'notes' => 'nullable|string',
+            'notes'                  => 'nullable|string',
         ];
 
         $validated = $request->validate($rules);
 
+        $reportData = $request->except('damage_image');
+        $report     = VehicleInspectionReport::create($reportData);
 
-        $report = VehicleInspectionReport::create($request->all());
+        if ($request->hasFile('damage_image')) {
+            $file   = $request->file('damage_image');
+            $pngDir = 'damage-assessments';
+            if (! Storage::disk('public')->exists($pngDir)) {
+                Storage::disk('public')->makeDirectory($pngDir);
+            }
+            $pngFilename = 'damage-image-' . $report->id . '-' . now()->format('Ymd_His') . '.' . $file->getClientOriginalExtension();
+            $pngPath     = $pngDir . '/' . $pngFilename;
+            Storage::disk('public')->putFileAs($pngDir, $file, $pngFilename);
+            if ($report->vehicle_id) {
+                VehicleDocument::create([
+                    'vehicle_id' => $report->vehicle_id,
+                    'file_path'  => $pngPath,
+                    'type'       => 'InspectionReportImage',
+                ]);
+            }
 
+            // Save path in the report
+            $report->update(['damage_file_path' => $pngPath]);
+        }
 
         $this->generatePdf($report->id);
 
         return response()->json([
-            'status' => 'success',
+            'status'  => 'success',
             'message' => 'Report created successfully',
-            'data' => $report->fresh()
+            'data'    => $report->fresh(),
         ], 201);
     }
 
     public function storeImages(Request $request)
-{
-    $validated = $request->validate([
-        'vehicle_inspection_report_id' => 'required|exists:vehicle_inspection_reports,id',
-        'images' => 'required|array|min:1',
-        'images.*' => 'file|mimes:jpg,jpeg,png,webp', 
-        'is_cover' => 'nullable|boolean',
-    ]);
-
-    $uploaded = [];
-    $sortOrder = 1;
-
-    foreach ($request->file('images') as $file) {
-        
-        $path = $file->store('inspection_images', 'public');
-
-        $image = VehicleInspectionImage::create([
-            'vehicle_inspection_report_id' => $validated['vehicle_inspection_report_id'],
-            'path' => $path,
-            'is_cover' => $request->get('is_cover', false),
-            'sort_order' => $sortOrder++,
+    {
+        $validated = $request->validate([
+            'vehicle_inspection_report_id' => 'required|exists:vehicle_inspection_reports,id',
+            'images'                       => 'required|array|min:1',
+            'images.*'                     => 'file|mimes:jpg,jpeg,png,webp',
+            'is_cover'                     => 'nullable|boolean',
         ]);
 
-        $uploaded[] = $image;
-    }
+        $uploaded  = [];
+        $sortOrder = 1;
 
-    return response()->json([
-        'status' => 'success',
-        'message' => 'Images uploaded successfully.',
-        'data' => $uploaded,
-    ], 201);
-}
+        foreach ($request->file('images') as $file) {
+
+            $path = $file->store('inspection_images', 'public');
+
+            $image = VehicleInspectionImage::create([
+                'vehicle_inspection_report_id' => $validated['vehicle_inspection_report_id'],
+                'path'                         => $path,
+                'is_cover'                     => $request->get('is_cover', false),
+                'sort_order'                   => $sortOrder++,
+            ]);
+
+            $uploaded[] = $image;
+        }
+
+        return response()->json([
+            'status'  => 'success',
+            'message' => 'Images uploaded successfully.',
+            'data'    => $uploaded,
+        ], 201);
+    }
     public function update(Request $request, $id)
     {
         $report = VehicleInspectionReport::findOrFail($id);
 
         $rules = [
-            'vehicle_id' => 'nullable|exists:vehicles,id',
-            'inspection_enquiry_id' => 'nullable|exists:inspection_enquiries,id',
-            'make' => 'required',
-            'model' => 'required',
-            'year' => 'required|integer',
-            'vin' => 'nullable|string',
-            'engine_cc' => 'nullable|string',
-            'horsepower' => 'nullable|string',
-            'noOfCylinders' => 'nullable|integer',
-            'transmission' => 'nullable|string',
-            'color' => 'nullable|string',
-            'body_type' => 'nullable|string',
-            'specs' => 'nullable|string',
-            'odometer' => 'nullable|numeric',
-            'paintCondition' => 'nullable|array',
-            'frontLeftTire' => 'nullable|array',
-            'rearRightTire' => 'nullable|array',
-            'seatsCondition' => 'nullable|array',
-            'brakeDiscs' => 'nullable|array',
+            'vehicle_id'             => 'nullable|exists:vehicles,id',
+            'inspection_enquiry_id'  => 'nullable|exists:inspection_enquiries,id',
+            'make'                   => 'required',
+            'model'                  => 'required',
+            'year'                   => 'required|integer',
+            'vin'                    => 'nullable|string',
+            'engine_cc'              => 'nullable|string',
+            'horsepower'             => 'nullable|string',
+            'noOfCylinders'          => 'nullable|integer',
+            'transmission'           => 'nullable|string',
+            'color'                  => 'nullable|string',
+            'body_type'              => 'nullable|string',
+            'specs'                  => 'nullable|string',
+            'odometer'               => 'nullable|numeric',
+            'paintCondition'         => 'nullable|array',
+            'frontLeftTire'          => 'nullable|array',
+            'rearRightTire'          => 'nullable|array',
+            'seatsCondition'         => 'nullable|array',
+            'brakeDiscs'             => 'nullable|array',
             'shockAbsorberOperation' => 'nullable|array',
-            'notes' => 'nullable|string',
+            'notes'                  => 'nullable|string',
         ];
 
         $validated = $request->validate($rules);
 
-        $report->update($request->all());
+        $updateData = $request->except('damage_image');
+        $report->update($updateData);
+        if ($request->hasFile('damage_image')) {
+            $file   = $request->file('damage_image');
+            $pngDir = 'damage-assessments';
+            if (! Storage::disk('public')->exists($pngDir)) {
+                Storage::disk('public')->makeDirectory($pngDir);
+            }
+            $pngFilename = 'damage-image-' . $report->id . '-' . now()->format('Ymd_His') . '.' . $file->getClientOriginalExtension();
+            $pngPath     = $pngDir . '/' . $pngFilename;
+            Storage::disk('public')->putFileAs($pngDir, $file, $pngFilename);
+            if ($report->vehicle_id) {
+                VehicleDocument::create([
+                    'vehicle_id' => $report->vehicle_id,
+                    'file_path'  => $pngPath,
+                    'type'       => 'InspectionReportImage',
+                ]);
+            }
+            $report->update(['damage_file_path' => $pngPath]);
+        }
 
-
+        // 🟢 Regenerate PDF after update
         $this->generatePdf($report->id);
 
         return response()->json([
-            'status' => 'success',
+            'status'  => 'success',
             'message' => 'Report updated successfully',
-            'data' => $report->fresh()
+            'data'    => $report->fresh(),
         ]);
     }
 
-
     // damage report
     public function getDamageTypes()
-{
-    $damageTypes = [
-        'a' => ['name' => 'Scratch',           'color' => '#FF0000'],
-        'b' => ['name' => 'Multiple Scratches','color' => '#FF7F00'],
-        'c' => ['name' => 'Cosmetic Paint',    'color' => '#FFD700'],
-        'd' => ['name' => 'Chip',              'color' => '#00AA00'],
-        'e' => ['name' => 'Dent',              'color' => '#0000FF'],
-        'f' => ['name' => 'Repainted',         'color' => '#4B0082'],
-        'g' => ['name' => 'Repaired',          'color' => '#b87bd2ff'],
-        'h' => ['name' => 'Foiled Wrap',       'color' => '#706c6eff'],
-        'i' => ['name' => 'Full PPF',          'color' => '#d80881ff'],
-        'j' => ['name' => 'Rust',              'color' => '#6b5407ff'],
-    ];
-
-    
-    $formatted = collect($damageTypes)->map(function ($item, $key) {
-        return [
-            'type' => $key,
-            'name' => $item['name'],
-            'color' => $item['color'],
+    {
+        $damageTypes = [
+            'a' => ['name' => 'Scratch', 'color' => '#FF0000'],
+            'b' => ['name' => 'Multiple Scratches', 'color' => '#FF7F00'],
+            'c' => ['name' => 'Cosmetic Paint', 'color' => '#FFD700'],
+            'd' => ['name' => 'Chip', 'color' => '#00AA00'],
+            'e' => ['name' => 'Dent', 'color' => '#0000FF'],
+            'f' => ['name' => 'Repainted', 'color' => '#4B0082'],
+            'g' => ['name' => 'Repaired', 'color' => '#b87bd2ff'],
+            'h' => ['name' => 'Foiled Wrap', 'color' => '#706c6eff'],
+            'i' => ['name' => 'Full PPF', 'color' => '#d80881ff'],
+            'j' => ['name' => 'Rust', 'color' => '#6b5407ff'],
         ];
-    })->values();
 
-    return response()->json([
-        'status' => 'success',
-        'message' => 'Damage types fetched successfully.',
-        'data' => $formatted,
-    ]);
-}
+        $formatted = collect($damageTypes)->map(function ($item, $key) {
+            return [
+                'type'  => $key,
+                'name'  => $item['name'],
+                'color' => $item['color'],
+            ];
+        })->values();
 
-     public function addDamage(Request $request)
+        return response()->json([
+            'status'  => 'success',
+            'message' => 'Damage types fetched successfully.',
+            'data'    => $formatted,
+        ]);
+    }
+
+    public function addDamage(Request $request)
     {
         $validated = $request->validate([
-            'inspection_id' => 'required|exists:vehicle_inspection_reports,id',
+            'inspection_id'       => 'required|exists:vehicle_inspection_reports,id',
 
-            'damages' => 'required|array|min:1',
-            'damages.*.type' => 'required|string|max:255',
+            'damages'             => 'required|array|min:1',
+            'damages.*.type'      => 'required|string|max:255',
             'damages.*.body_part' => 'required|string|max:255',
-            'damages.*.severity' => 'required|string|max:100',
-            'damages.*.x' => 'required|numeric',
-            'damages.*.y' => 'required|numeric',
-            'damages.*.remark' => 'nullable|string',
+            'damages.*.severity'  => 'required|string|max:100',
+            'damages.*.x'         => 'required|numeric',
+            'damages.*.y'         => 'required|numeric',
+            'damages.*.remark'    => 'nullable|string',
         ]);
 
-        $inspection = VehicleInspectionReport::findOrFail($validated['inspection_id']);
+        $inspection   = VehicleInspectionReport::findOrFail($validated['inspection_id']);
         $savedDamages = [];
 
         foreach ($validated['damages'] as $damageData) {
             $damage = new CarDamage([
-                'type' => $damageData['type'],
+                'type'      => $damageData['type'],
                 'body_part' => $damageData['body_part'],
-                'severity' => $damageData['severity'],
-                'x' => $damageData['x'],
-                'y' => $damageData['y'],
-                'remark' => $damageData['remark'] ?? null,
+                'severity'  => $damageData['severity'],
+                'x'         => $damageData['x'],
+                'y'         => $damageData['y'],
+                'remark'    => $damageData['remark'] ?? null,
             ]);
 
             $damage->inspection_id = $inspection->id;
@@ -246,32 +278,30 @@ class InspectionReportController extends Controller
         }
 
         return response()->json([
-            'status' => 'success',
+            'status'  => 'success',
             'message' => 'Damages added successfully.',
-            'data' => $savedDamages,
+            'data'    => $savedDamages,
         ], 201);
     }
-  public function removeDamage(Request $request)
-{
-    $validated = $request->validate([
-        'damage_ids' => 'required|array|min:1',
-        'damage_ids.*' => 'integer|exists:car_damages,id',
-    ]);
+    public function removeDamage(Request $request)
+    {
+        $validated = $request->validate([
+            'damage_ids'   => 'required|array|min:1',
+            'damage_ids.*' => 'integer|exists:car_damages,id',
+        ]);
 
-    $deletedCount = \App\Models\CarDamage::whereIn('id', $validated['damage_ids'])->delete();
+        $deletedCount = \App\Models\CarDamage::whereIn('id', $validated['damage_ids'])->delete();
 
-    return response()->json([
-        'status' => 'success',
-        'message' => "{$deletedCount} damage record(s) removed successfully.",
-        'deleted_ids' => $validated['damage_ids'],
-    ], 200);
-}
-
+        return response()->json([
+            'status'  => 'success',
+            'message' => "{$deletedCount} damage record(s) removed successfully.",
+            'deleted_ids' => $validated['damage_ids'],
+        ], 200);
+    }
 
     public function destroy($id)
     {
         $report = VehicleInspectionReport::findOrFail($id);
-
 
         if ($report->damage_file_path && Storage::disk('public')->exists($report->damage_file_path)) {
             Storage::disk('public')->delete($report->damage_file_path);
@@ -282,7 +312,6 @@ class InspectionReportController extends Controller
             Storage::disk('public')->delete($report->file_path);
             VehicleDocument::where('file_path', $report->file_path)->delete();
         }
-
 
         foreach (Storage::disk('public')->files('damage-assessments') as $path) {
             if (Str::startsWith(basename($path), 'damage-report-' . $report->id . '-')) {
@@ -300,16 +329,15 @@ class InspectionReportController extends Controller
         $report->delete();
 
         return response()->json([
-            'status' => 'success',
-            'message' => 'Report deleted successfully'
+            'status'  => 'success',
+            'message' => 'Report deleted successfully',
         ]);
     }
-
 
     public function share(Request $request, $id)
     {
         $request->validate([
-            'expires_at' => 'nullable|date'
+            'expires_at' => 'nullable|date',
         ]);
 
         $report = VehicleInspectionReport::findOrFail($id);
@@ -327,10 +355,9 @@ class InspectionReportController extends Controller
         );
 
         $report->update([
-            'shared_link' => $link,
-            'shared_link_expires_at' => $expiry
+            'shared_link'            => $link,
+            'shared_link_expires_at' => $expiry,
         ]);
-
 
         if ($report->inspection_enquiry_id) {
             $enquiry = InspectionEnquiry::find($report->inspection_enquiry_id);
@@ -343,83 +370,34 @@ class InspectionReportController extends Controller
         }
 
         return response()->json([
-            'status' => 'success',
+            'status'  => 'success',
             'message' => 'Share link generated',
-            'data' => [
-                'link' => $link,
-                'expires_at' => $expiry->toDateTimeString()
-            ]
+            'data'    => [
+                'link'       => $link,
+                'expires_at' => $expiry->toDateTimeString(),
+            ],
         ]);
     }
-
 
     public function generatePdf($reportId)
     {
         try {
             $reportInView = VehicleInspectionReport::findOrFail($reportId);
-
-            // --- Cleanup existing old files ---
-            if ($reportInView->damage_file_path && Storage::disk('public')->exists($reportInView->damage_file_path)) {
-                Storage::disk('public')->delete($reportInView->damage_file_path);
-                VehicleDocument::where('file_path', $reportInView->damage_file_path)->delete();
-            }
-
             if ($reportInView->file_path && Storage::disk('public')->exists($reportInView->file_path)) {
                 Storage::disk('public')->delete($reportInView->file_path);
                 VehicleDocument::where('file_path', $reportInView->file_path)->delete();
             }
-
             foreach (Storage::disk('public')->files('damage-assessments') as $path) {
                 if (Str::startsWith(basename($path), 'damage-report-' . $reportInView->id . '-')) {
                     Storage::disk('public')->delete($path);
                     VehicleDocument::where('file_path', $path)->delete();
                 }
             }
-
             foreach (Storage::disk('public')->files('inspection_pdf') as $path) {
                 if (Str::startsWith(basename($path), 'inspection_' . $reportInView->id . '_')) {
                     Storage::disk('public')->delete($path);
                     VehicleDocument::where('file_path', $path)->delete();
                 }
-            }
-
-            // --- Generate damage image ---
-            $is_image = true;
-            if ($is_image) {
-                $html = view('pdf.inspection.damage-assessment-image', compact('reportInView'))->render();
-                $snappyImage = app('snappy.image');
-
-                $pngOptions = [
-                    'width' => 1200,
-                    'quality' => 90,
-                    'encoding' => 'UTF-8',
-                    'enable-local-file-access' => true,
-                    'disable-smart-width' => true,
-                    'javascript-delay' => 300,
-                    'no-stop-slow-scripts' => true,
-                    'load-error-handling' => 'ignore',
-                ];
-
-                $pngBinary = $snappyImage->getOutputFromHtml($html, $pngOptions);
-                $pngDir = 'damage-assessments';
-
-                if (!Storage::disk('public')->exists($pngDir)) {
-                    Storage::disk('public')->makeDirectory($pngDir);
-                }
-
-                $pngFilename = 'damage-report-' . $reportInView->id . '-' . now()->format('Ymd_His') . '.png';
-                $pngPath = $pngDir . '/' . $pngFilename;
-                Storage::disk('public')->put($pngPath, $pngBinary);
-
-                if ($reportInView->vehicle_id) {
-                    VehicleDocument::create([
-                        'vehicle_id' => $reportInView->vehicle_id,
-                        'file_path' => $pngPath,
-                        'type' => 'InspectionReportImage',
-                    ]);
-                }
-
-                $reportInView->update(['damage_file_path' => $pngPath]);
             }
 
             // --- Generate PDF ---
@@ -430,12 +408,12 @@ class InspectionReportController extends Controller
             );
 
             $directory = 'inspection_pdf';
-            if (!Storage::disk('public')->exists($directory)) {
+            if (! Storage::disk('public')->exists($directory)) {
                 Storage::disk('public')->makeDirectory($directory);
             }
 
             $pdf = Pdf::loadView('pdf.inspection.report-pdf-template', [
-                'reportInView' => $reportInView,
+                'reportInView'         => $reportInView,
                 'damageAssessmentLink' => $damageAssessmentLink,
             ])->setPaper('a4', 'portrait');
 
@@ -446,56 +424,55 @@ class InspectionReportController extends Controller
             if ($reportInView->vehicle_id) {
                 VehicleDocument::create([
                     'vehicle_id' => $reportInView->vehicle_id,
-                    'file_path' => $filepath,
-                    'type' => 'InspectionReport',
+                    'file_path'  => $filepath,
+                    'type'       => 'InspectionReport',
                 ]);
             }
 
             $reportInView->update(['file_path' => $filepath]);
 
             return response()->json([
-                'status' => 'success',
+                'status'  => 'success',
                 'message' => 'Inspection Report PDF generated successfully.',
-                'data' => [
+                'data'    => [
                     'report_id' => $reportInView->id,
-                    'pdf_url' => asset('storage/' . $filepath),
+                    'pdf_url'   => asset('storage/' . $filepath),
                     'image_url' => $reportInView->damage_file_path ? asset('storage/' . $reportInView->damage_file_path) : null,
                 ],
             ], 200);
         } catch (\Exception $e) {
             return response()->json([
-                'status' => 'error',
+                'status'  => 'error',
                 'message' => 'Failed to generate inspection PDF.',
-                'error' => $e->getMessage(),
+                'error'   => $e->getMessage(),
             ], 500);
         }
     }
 
-
     public function downloadReport($id)
     {
         try {
-          
+
             $report = VehicleInspectionReport::findOrFail($id);
 
             $filePath = $report->file_path;
-            if (!$filePath || !Storage::disk('public')->exists($filePath)) {
+            if (! $filePath || ! Storage::disk('public')->exists($filePath)) {
                 return response()->json([
-                    'status' => 'error',
-                    'message' => 'Inspection report file not found.'
+                    'status'  => 'error',
+                    'message' => 'Inspection report file not found.',
                 ], Response::HTTP_NOT_FOUND);
             }
 
-            $fullPath = storage_path('app/public/' . $filePath);
+            $fullPath         = storage_path('app/public/' . $filePath);
             $downloadFilename = 'Inspection-Report-' . ($report->inspection->vin ?? 'UnknownVIN') . '.pdf';
             return response()->download($fullPath, $downloadFilename, [
-                'Content-Type' => 'application/pdf'
+                'Content-Type' => 'application/pdf',
             ]);
         } catch (\Exception $e) {
             return response()->json([
-                'status' => 'error',
+                'status'  => 'error',
                 'message' => 'Failed to download report.',
-                'error' => $e->getMessage(),
+                'error'   => $e->getMessage(),
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }

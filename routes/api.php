@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\Admin\DashboardController;
 use App\Http\Controllers\Api\Admin\BidManagementController;
 use App\Http\Controllers\Api\Admin\BlogsController;
 use App\Http\Controllers\Api\Admin\ContactSubmissionController;
@@ -38,12 +39,16 @@ Route::middleware('auth:api')->post('logout', [AuthController::class, 'logout'])
 Route::prefix('admin')
     ->middleware(['middleware' => 'auth:api'])
     ->group(function () {
+        Route::get('/dashboard', [DashboardController::class, 'index']);
+
         // Role and Permissions
         Route::controller(RolePermissionController::class)->group(function () {
             Route::get('/roles', 'index');
             Route::get('/roles/show/{id}', 'show');
             Route::post('/roles/create', 'store');
-            Route::put('/roles/update/{id}', 'update');
+            Route::post('/roles/update/{id}', 'update');
+            Route::post('/permissions/add/{id}', 'addPermissions');
+            Route::post('/permissions/remove/{id}', 'removePermissions');
             Route::delete('/roles/delete/{id}', 'destroy');
             Route::get('/permissions', 'getPermissions');
         });

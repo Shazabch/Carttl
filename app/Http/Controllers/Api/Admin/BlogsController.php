@@ -56,7 +56,8 @@ class BlogsController extends Controller
         $validated['slug'] = $validated['slug'] ?? Str::slug($validated['title']);
 
         if ($request->hasFile('image')) {
-            $validated['image'] = $request->file('image')->store('blog-images', 'public');
+           $path = $request->file('image')->store('blog-images', 'public');
+           $validated['image'] = asset('storage/' . $path); // full URL
         }
 
         $blog = Blog::create($validated);
@@ -91,7 +92,8 @@ class BlogsController extends Controller
             if ($blog->image) {
                 Storage::disk('public')->delete($blog->image);
             }
-            $validated['image'] = $request->file('image')->store('blog-images', 'public');
+           $path = $request->file('image')->store('blog-images', 'public');
+           $validated['image'] = asset('storage/' . $path); 
         }
 
         $blog->update($validated);

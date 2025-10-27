@@ -38,28 +38,33 @@ class TestimonialsController extends Controller
     }
 
     
-    public function store(Request $request)
-    {
-        $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'rank' => 'required|string|max:255',
-            'comment' => 'nullable|string',
-            'status' => 'boolean',
-            'image_path' => 'required|image|mimes:jpg,jpeg,png|max:2048',
-        ]);
+  public function store(Request $request)
+{
+    $validated = $request->validate([
+        'name' => 'required|string|max:255',
+        'rank' => 'required|string|max:255',
+        'comment' => 'nullable|string',
+        'status' => 'boolean',
+        'image_path' => 'required|image|mimes:jpg,jpeg,png',
+    ]);
 
-        if ($request->hasFile('image_path')) {
-            $validated['image_path'] = $request->file('image_path')->store('testimonial-images', 'public');
-        }
-
-        $testimonial = Testimonial::create($validated);
-
-        return response()->json([
-            'status' => 'success',
-            'message' => 'Testimonial created successfully.',
-            'data' => $testimonial,
-        ]);
+    if ($request->hasFile('image_path')) {
+        $path = $request->file('image_path')->store('testimonial-images', 'public');
+        $validated['image_path'] = $path;
     }
+
+    $testimonial = Testimonial::create($validated);
+
+    // Add full image URL to response
+    $testimonial->image_url = asset('storage/' . $testimonial->image_path);
+
+    return response()->json([
+        'status' => 'success',
+        'message' => 'Testimonial created successfully.',
+        'data' => $testimonial,
+    ]);
+}
+
 
     public function update(Request $request, $id)
     {
@@ -70,14 +75,15 @@ class TestimonialsController extends Controller
             'rank' => 'required|string|max:255',
             'comment' => 'nullable|string',
             'status' => 'boolean',
-            'image_path' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+            'image_path' => 'nullable|image|mimes:jpg,jpeg,png',
         ]);
 
         if ($request->hasFile('image_path')) {
             if ($testimonial->image_path) {
                 Storage::disk('public')->delete($testimonial->image_path);
             }
-            $validated['image_path'] = $request->file('image_path')->store('testimonial-images', 'public');
+            $path = $request->file('image_path')->store('testimonial-images', 'public');
+        $validated['image_path'] = $path;
         }
 
         $testimonial->update($validated);
