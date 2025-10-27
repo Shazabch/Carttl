@@ -15,7 +15,7 @@ class VehicleEnquiry extends Model
 }
     public function imageSet(): HasOne
     {
-        return $this->hasOne(VehicleImage::class, 'vehicle_id');
+        return $this->hasOne(SaleEnquiryImage::class, 'sale_enquiry_id');
     }
 
 

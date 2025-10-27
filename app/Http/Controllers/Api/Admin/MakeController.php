@@ -65,69 +65,106 @@ class MakeController extends Controller
     }
 
 
-    public function store(Request $request)
-    {
-        $validated = $request->validate([
-            'name' => 'required|string|max:255|unique:brands,name',
-            'image_source' => 'nullable|image|max:2048'
-        ]);
+   public function store(Request $request)
+{
+    $validated = $request->validate([
+        'name' => 'required|string|max:255|unique:brands,name',
+        'image_source' => 'nullable|image|max:2048',
+        'models' => 'required|array',          // Expecting an array of model names
+        'models.*' => 'required|string|max:255'
+    ]);
 
-        $path = null;
-        if ($request->hasFile('image_source')) {
-            $path = $request->file('image_source')->store('brand-images', 'public');
-        }
+    // Handle brand image upload
+    $path = null;
+    if ($request->hasFile('image_source')) {
+        $storedPath = $request->file('image_source')->store('brand-images', 'public');
+        $path = asset('storage/' . $storedPath); // Store full URL
+    }
 
-        $make = Brand::create([
-            'name' => $validated['name'],
-            'slug' => Str::slug($validated['name']),
-            'image_source' => $path
-        ]);
+    // Create brand
+    $brand = Brand::create([
+        'name' => $validated['name'],
+        'slug' => Str::slug($validated['name']),
+        'image_source' => $path,
+    ]);
 
-        return response()->json([
-            'status' => 'success',
-            'message' => 'Make created successfully.',
-            'data' => $make
+    // Create vehicle models linked to this brand
+    foreach ($validated['models'] as $modelName) {
+        VehicleModel::create([
+            'brand_id' => $brand->id,
+            'name' => $modelName,
+           
         ]);
     }
 
+    return response()->json([
+        'status' => 'success',
+        'message' => 'Brand and models created successfully.',
+        'data' => [
+            'brand' => $brand,
+            'models' => VehicleModel::where('brand_id', $brand->id)->get(),
+        ],
+    ]);
+}
 
-    public function update(Request $request, $id)
-    {
-        $make = Brand::find($id);
 
-        if (!$make) {
-            return response()->json([
-                'status' => 'error',
-                'message' => 'Make not found.'
-            ], 404);
-        }
+   public function update(Request $request, $id)
+{
+    $brand = Brand::find($id);
 
-        $validated = $request->validate([
-            'name' => 'required|string|max:255|unique:brands,name,' . $make->id,
-            'image_source' => 'nullable|image|max:2048'
-        ]);
-
-        $path = $make->image_source;
-        if ($request->hasFile('image_source')) {
-            if ($make->image_source) {
-                Storage::disk('public')->delete($make->image_source);
-            }
-            $path = $request->file('image_source')->store('brand-images', 'public');
-        }
-
-        $make->update([
-            'name' => $validated['name'],
-            'slug' => Str::slug($validated['name']),
-            'image_source' => $path
-        ]);
-
+    if (!$brand) {
         return response()->json([
-            'status' => 'success',
-            'message' => 'Make updated successfully.',
-            'data' => $make
-        ]);
+            'status' => 'error',
+            'message' => 'Brand not found.'
+        ], 404);
     }
 
+    $validated = $request->validate([
+        'name' => 'required|string|max:255|unique:brands,name,' . $brand->id,
+        'image_source' => 'nullable|image|max:2048',
+        'models' => 'nullable|array',
+        'models.*' => 'required|string|max:255'
+    ]);
+
+    // Handle image upload (with full URL)
+    $path = $brand->image_source;
+    if ($request->hasFile('image_source')) {
+        // Delete old file if it's a local storage path
+        if ($brand->image_source && str_starts_with($brand->image_source, 'brand-images/')) {
+            Storage::disk('public')->delete($brand->image_source);
+        }
+
+        $storedPath = $request->file('image_source')->store('brand-images', 'public');
+        $path = asset('storage/' . $storedPath);
+    }
+
+    // Update brand info
+    $brand->update([
+        'name' => $validated['name'],
+        'slug' => Str::slug($validated['name']),
+        'image_source' => $path,
+    ]);
+
+   if (!empty($validated['models'])) {
+    VehicleModel::where('brand_id', $brand->id)->delete();
+    foreach ($validated['models'] as $modelName) {
+        VehicleModel::create([
+            'brand_id' => $brand->id,
+            'name' => $modelName,
+        ]);
+    }
+}
+
+
+    return response()->json([
+        'status' => 'success',
+        'message' => 'Brand updated successfully.',
+        'data' => [
+            'brand' => $brand,
+            'models' => VehicleModel::where('brand_id', $brand->id)->get(),
+        ],
+    ]);
+}
 
     public function destroy($id)
     {

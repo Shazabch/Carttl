@@ -30,7 +30,7 @@ class SellCarController extends Controller
             'mileage'       => 'required',
             'specification' => 'required',
             'notes'         => 'nullable',
-            'images.*'      => 'nullable|image|mimes:jpg,jpeg,png|max:2048'
+            'images.*'      => 'nullable|image|mimes:jpg,jpeg,png'
         ]);
 
        
@@ -70,17 +70,24 @@ class SellCarController extends Controller
             'user_id'       => $user->id ?? null,
         ]);
 
-        if ($request->hasFile('images')) {
-            $imagePaths = [];
-            foreach ($request->file('images') as $index => $image) {
-                $imagePaths['image' . ($index + 1)] = $image->store('sale-enquiries', 'public');
-            }
+if ($request->hasFile('images')) {
+    $imagePaths = [];
 
-            SaleEnquiryImage::create(array_merge(
-                ['sale_enquiry_id' => $enquiry->id],
-                $imagePaths
-            ));
-        }
+    foreach ($request->file('images') as $index => $image) {
+        $storedPath = $image->store('sale-enquiries', 'public');
+        $fullUrl = asset('storage/' . $storedPath);
+
+        $imagePaths['image' . ($index + 1)] = $fullUrl;
+    }
+
+    // Save image URLs to database
+    SaleEnquiryImage::create(array_merge(
+        ['sale_enquiry_id' => $enquiry->id],
+        $imagePaths
+    ));
+}
+
+
 
       
         $recipients = User::role(['admin', 'super-admin'], 'web')->get();
