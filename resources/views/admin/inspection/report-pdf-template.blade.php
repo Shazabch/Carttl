@@ -547,7 +547,7 @@
         <table class="header-table" width="100%">
             <tr>
                 <td class="header-logo-cell" valign="bottom">
-                    <img src="{{ asset('images/golden-x.png') }}" alt="Golden X Logo" class="header-logo-img">
+                    <img src="{{ asset('images/golden-x.png') }}" alt="Caartl Logo" class="header-logo-img">
                 </td>
                 <td class="header-details-cell" valign="bottom" align="right">
                     <h1>Vehicle Inspection Report</h1>
@@ -1310,31 +1310,31 @@
                                 The inspection is strictly limited to the items listed in this Inspection Report and does not
                                 cover any other items. 2. The inspection is visual and non-mechanical only. If you wish to
                                 complete a mechanical inspection or an inspection of the internal parts of the vehicle,
-                                Golden X encourages you to contact a different service provider who undertakes that type
-                                of inspection. 3. Golden X does not inspect historic service records or accident records for
+                                Caartl encourages you to contact a different service provider who undertakes that type
+                                of inspection. 3. Caartl does not inspect historic service records or accident records for
                                 the vehicle, and does not check whether the vehicle is subject to a recall notice. 4. While
-                                Golden X uses accepted methods for inspecting the vehicle, these methods do not
+                                Caartl uses accepted methods for inspecting the vehicle, these methods do not
                                 necessarily identify all faults with the vehicle. In particular, the inspection does not cover
                                 intermittent problems which are not apparent at the time of the inspection. 5. This
                                 Inspection Report, and all intellectual property rights therein, will remain the exclusive
-                                property of Golden X. 6. This Inspection Report represents Golden X subjective opinion as to
+                                property of Caartl. 6. This Inspection Report represents Caartl subjective opinion as to
                                 the condition of the vehicle (limited to the specific items listed in this Inspection Report),
                                 considering the age and condition of the vehicle at the time of inspection and based on the
-                                Golden Xinspector’s knowledge and experience. This Inspection Report is designed to assist
-                                you to make decisions based on the general condition of the vehicle only. Golden X will not
-                                provide a recommendation as to whether to sell or purchase the vehicle. 7. Golden X can
+                                Caartlinspector’s knowledge and experience. This Inspection Report is designed to assist
+                                you to make decisions based on the general condition of the vehicle only. Caartl will not
+                                provide a recommendation as to whether to sell or purchase the vehicle. 7. Caartl can
                                 only advise on the condition of the vehicle at the time of the inspection, and this Inspection
                                 Report is only current as at the time it is issued. If you are considering purchasing the
                                 vehicle, it is your responsibility to conduct a further inspection of the vehicle at the time of
-                                purchase. 8. This Inspection Report is provided by Golden X ‘as is’ for your information only,
-                                without any warranties whatsoever. In particular, Golden X does not provide any warranty
+                                purchase. 8. This Inspection Report is provided by Caartl ‘as is’ for your information only,
+                                without any warranties whatsoever. In particular, Caartl does not provide any warranty
                                 regarding the accuracy or completeness of any information contained in this Inspection
                                 Report, or the fitness of the information contained in this Inspection Report for any purpose
-                                intended. 9. If this Inspection Report is provided to you directly by Golden X, only you may
-                                rely on the content of this Inspection Report, and Golden X does not accept any liability
+                                intended. 9. If this Inspection Report is provided to you directly by Caartl, only you may
+                                rely on the content of this Inspection Report, and Caartl does not accept any liability
                                 whatsoever to any third-party you may choose to share this Inspection Report with. 10. If
-                                this Inspection Report is provided to you by someone else than Golden X, you may not rely
-                                on the content of this Inspection Report, and Golden X does not accept any liability
+                                this Inspection Report is provided to you by someone else than Caartl, you may not rely
+                                on the content of this Inspection Report, and Caartl does not accept any liability
                                 whatsoever to you in connection with this Inspection Report.
                             </p>
                         </div>
@@ -1347,7 +1347,7 @@
     </div>
 
     <div class="footer">
-        <span class="footer-brand">Golden X</span> &copy; {{ date('Y') }} | Vehicle Inspection Report
+        <span class="footer-brand">Caartl</span> &copy; {{ date('Y') }} | Vehicle Inspection Report
     </div>
     </div>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
