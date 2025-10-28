@@ -20,44 +20,69 @@ use Symfony\Component\HttpFoundation\Response;
 class InspectionReportController extends Controller
 {
 
-    public function index(Request $request)
-    {
-        $query = VehicleInspectionReport::query();
+   public function index(Request $request)
+{
+    $query = VehicleInspectionReport::with([
+        'brand:id,name',
+        'model:id,name',
+    ]);
 
-        if ($request->has('inspection_enquiry_id')) {
-            $query->where('inspection_enquiry_id', $request->inspection_enquiry_id);
-        }
-        if ($request->has('vehicle_id')) {
-            $query->where('vehicle_id', $request->vehicle_id);
-        }
-        if ($request->has('search')) {
-            $s = $request->search;
-            $query->where(function ($q) use ($s) {
-                $q->where('vin', 'like', "%{$s}%")
-                    ->orWhere('make', 'like', "%{$s}%")
-                    ->orWhere('model', 'like', "%{$s}%");
-            });
-        }
-
-        $perPage = $request->get('per_page', 10);
-
-        $reports = $query->latest()->paginate($perPage);
-
-        return response()->json([
-            'status' => 'success',
-            'data'   => $reports,
-        ]);
+    // --- Filters ---
+    if ($request->has('inspection_enquiry_id')) {
+        $query->where('inspection_enquiry_id', $request->inspection_enquiry_id);
     }
 
-    public function show($id)
-    {
-        $report = VehicleInspectionReport::with('vehicle')->findOrFail($id);
-
-        return response()->json([
-            'status' => 'success',
-            'data'   => $report,
-        ]);
+    if ($request->has('vehicle_id')) {
+        $query->where('vehicle_id', $request->vehicle_id);
     }
+
+    if ($request->has('search')) {
+        $s = $request->search;
+        $query->where(function ($q) use ($s) {
+            $q->where('vin', 'like', "%{$s}%")
+                ->orWhereHas('brand', fn($b) => $b->where('name', 'like', "%{$s}%"))
+                ->orWhereHas('model', fn($m) => $m->where('name', 'like', "%{$s}%"));
+        });
+    }
+
+    // --- Pagination ---
+    $perPage = $request->get('per_page', 10);
+    $reports = $query->latest()->paginate($perPage);
+
+   
+    $reports->getCollection()->transform(function ($report) {
+        $report->make_name = $report->brand->name ?? null;
+        $report->model_name = $report->model->name ?? null;
+
+       
+        unset($report->brand, $report->model);
+
+        return $report;
+    });
+
+    return response()->json([
+        'status' => 'success',
+        'data' => $reports,
+    ]);
+}
+
+
+  public function show($id)
+{
+    $report = VehicleInspectionReport::with(['vehicle', 'brand:id,name', 'model:id,name'])
+        ->findOrFail($id);
+
+    $report->make_name = $report->brand->name ?? null;
+    $report->model_name = $report->model->name ?? null;
+
+    unset($report->brand, $report->model);
+
+    return response()->json([
+        'status' => 'success',
+        'data'   => $report,
+    ]);
+}
+
 
     public function store(Request $request)
     {

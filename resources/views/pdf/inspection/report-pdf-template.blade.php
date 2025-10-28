@@ -1152,63 +1152,62 @@
         {{-- Premium Image Gallery Section (Table-based for DomPDF) --}}
         <div class="report-card">
             <div class="card-header"><i class="fa-solid fa-images"></i>Vehicle Images</div>
-            <div class="card-body image-gallery">
+           <div class="card-body image-gallery">
 
-                @php
-                $vehicleImages = $reportInView->images ?? collect();
-                // Ensure we always have a collection to chunk
-                if (!($vehicleImages instanceof \Illuminate\Support\Collection)) {
-                $vehicleImages = collect($vehicleImages ?: []);
-                }
-                $imageNum=1;
-                @endphp
+    @php
+        $vehicleImages = $reportInView->images ?? collect();
+        // Ensure we always have a collection to chunk
+        if (!($vehicleImages instanceof \Illuminate\Support\Collection)) {
+            $vehicleImages = collect($vehicleImages ?: []);
+        }
+        $imageNum = 1;
+    @endphp
 
-                @if($vehicleImages->count())
-                <table width="100%" cellspacing="0" cellpadding="8" style="border-collapse: collapse;">
-                    @foreach($vehicleImages->chunk(3) as $row)
-                    <tr>
-                        @foreach($row as $image)
+    @if($vehicleImages->count())
+        <table width="100%" cellspacing="0" cellpadding="8" style="border-collapse: collapse;">
+            @foreach($vehicleImages->chunk(3) as $row)
+                <tr>
+                    @foreach($row as $image)
                         <td width="33.33%" valign="top" style="border: 1px solid #e0e0e0; border-radius: 8px;">
                             <div style="margin: 4px;">
                                 <img
-                                    src="{{ storage_path('app/public/' . $image->path) }}"
+                                    src="{{ $image->path }}"
                                     alt="{{ $image['title'] ?? 'Vehicle Image' }}"
                                     style="display: block; width: 100%; height: 180px; object-fit: cover; border-radius: 6px;">
                                 <div style="margin-top: 6px; border-top: 1px solid #f0f0f0; padding-top: 6px;">
                                     <div style="font-size: 12px; font-weight: 600; color: #222;">
                                         <i class="fas fa-camera" style="color: #d7b236;"></i>
-                                        Vehicle Image #{{$imageNum}}
+                                        Vehicle Image #{{ $imageNum }}
                                     </div>
                                     <div style="font-size: 10px; color: #666; margin-top: 2px;">
                                         <i class="fas fa-clock"></i>
-                                        {{ isset($image->created_at) ? \Carbon\Carbon::parse($image['created_at'])->format('M d, Y') : 'N/A' }}
+                                        {{ isset($image->created_at)
+                                            ? \Carbon\Carbon::parse($image['created_at'])->format('M d, Y')
+                                            : 'N/A' }}
                                     </div>
                                 </div>
                             </div>
                         </td>
-                        @php
-                        $imageNum++;
-
-                        @endphp
-                        @endforeach
-
-                        {{-- Fill remaining cells if row has fewer than 3 items --}}
-                        @for($i = $row->count(); $i < 3; $i++)
-                            <td width="33.33%">
-                            </td>
-                            @endfor
-                    </tr>
+                        @php $imageNum++; @endphp
                     @endforeach
-                </table>
-                @else
-                <div class="no-images">
-                    <i class="fas fa-image"></i>
-                    <h3>No Images Available</h3>
-                    <p>No vehicle images have been uploaded for this inspection report.</p>
-                </div>
-                @endif
 
-            </div>
+                    {{-- Fill remaining cells if row has fewer than 3 items --}}
+                    @for($i = $row->count(); $i < 3; $i++)
+                        <td width="33.33%"></td>
+                    @endfor
+                </tr>
+            @endforeach
+        </table>
+    @else
+        <div class="no-images">
+            <i class="fas fa-image"></i>
+            <h3>No Images Available</h3>
+            <p>No vehicle images have been uploaded for this inspection report.</p>
+        </div>
+    @endif
+
+</div>
+
         </div>
 
         {{-- Car Damage View Section - Static Content for PDF --}}

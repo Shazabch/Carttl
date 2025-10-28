@@ -81,4 +81,11 @@ class VehicleInspectionReport extends Model
     {
         return $this->hasMany(CarDamage::class, 'inspection_id');
     }
+ 
+
+public function model()
+{
+    return $this->belongsTo(VehicleModel::class);
+}
+
 }
