@@ -819,27 +819,22 @@
         {{-- == 2. Damage Assessment Section                                   == --}}
         {{-- ==================================================================== --}}
         <div class="report-card">
-            @if($reportInView->damage_file_path)
-            <img src="{{ storage_path('app/public/' . $reportInView->damage_file_path) }}" alt="Damage Assessment" style="max-width: 100%; height: auto;">
-            @else
-            <div class="damage-assessment">
-                <div class="status-pill status-good">
-                    <i class="fas fa-check-circle"></i>
-                    No Damage Reported or Image Not Found
-                </div>
-            </div>
-            @endif
-            <div style="margin:20px;margin-top: 15px; padding-top: 10px; border-top: 1px solid #eee;">
-                <p style="font-size: 12px; color: #333; margin: 0; padding: 0;">
-                    For a live and detailed view, access the full interactive report online:
-                    <br>
-                    <a href="{{ $damageAssessmentLink }}" target="_blank" style="color: #0056b3; text-decoration: none; font-weight: bold;">
-                        {{-- This creates a descriptive, unique link text --}}
-                        View Full Report for VIN: {{ $reportInView->vin }}
-                    </a>
-                </p>
-                <p style="font-size: 10px; color: #777; margin-top: 4px;">(Link valid until {{ now()->addDays(30)->format('F j, Y') }})</p>
-            </div>
+          @if($reportInView->damage_file_path && file_exists(public_path(parse_url($reportInView->damage_file_path, PHP_URL_PATH))))
+    @php
+        $imageData = base64_encode(file_get_contents(public_path(parse_url($reportInView->damage_file_path, PHP_URL_PATH))));
+        $mimeType = mime_content_type(public_path(parse_url($reportInView->damage_file_path, PHP_URL_PATH)));
+    @endphp
+    <img src="data:{{ $mimeType }};base64,{{ $imageData }}" style="max-width: 100%; height: auto;">
+@else
+    <div class="damage-assessment">
+        <div class="status-pill status-good">
+            <i class="fas fa-check-circle"></i>
+            No Damage Reported or Image Not Found
+        </div>
+    </div>
+@endif
+
+           
 
 
         </div>

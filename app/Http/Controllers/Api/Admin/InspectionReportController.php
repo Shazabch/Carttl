@@ -382,75 +382,80 @@ class InspectionReportController extends Controller
         ]);
     }
 
-    public function generatePdf($reportId)
-    {
-        try {
-            $reportInView = VehicleInspectionReport::findOrFail($reportId);
-            if ($reportInView->file_path && Storage::disk('public')->exists($reportInView->file_path)) {
-                Storage::disk('public')->delete($reportInView->file_path);
-                VehicleDocument::where('file_path', $reportInView->file_path)->delete();
-            }
-            foreach (Storage::disk('public')->files('damage-assessments') as $path) {
-                if (Str::startsWith(basename($path), 'damage-report-' . $reportInView->id . '-')) {
-                    Storage::disk('public')->delete($path);
-                    VehicleDocument::where('file_path', $path)->delete();
-                }
-            }
-            foreach (Storage::disk('public')->files('inspection_pdf') as $path) {
-                if (Str::startsWith(basename($path), 'inspection_' . $reportInView->id . '_')) {
-                    Storage::disk('public')->delete($path);
-                    VehicleDocument::where('file_path', $path)->delete();
-                }
-            }
-
-            // --- Generate PDF ---
-            $damageAssessmentLink = URL::temporarySignedRoute(
-                'inspection.report.damage-assessment.view',
-                now()->addDays(30),
-                ['report' => $reportInView->id]
-            );
-
-            $directory = 'inspection_pdf';
-            if (! Storage::disk('public')->exists($directory)) {
-                Storage::disk('public')->makeDirectory($directory);
-            }
-
-            $pdf = Pdf::loadView('pdf.inspection.report-pdf-template', [
-                'reportInView'         => $reportInView,
-                'damageAssessmentLink' => $damageAssessmentLink,
-            ])->setPaper('a4', 'portrait');
-
-            $filename = 'inspection_' . $reportInView->id . '_' . now()->format('Ymd_His') . '.pdf';
-            $filepath = $directory . '/' . $filename;
-            Storage::disk('public')->put($filepath, $pdf->output());
-
-            if ($reportInView->vehicle_id) {
-                VehicleDocument::create([
-                    'vehicle_id' => $reportInView->vehicle_id,
-                    'file_path'  => $filepath,
-                    'type'       => 'InspectionReport',
-                ]);
-            }
-
-            $reportInView->update(['file_path' => $filepath]);
-
-            return response()->json([
-                'status'  => 'success',
-                'message' => 'Inspection Report PDF generated successfully.',
-                'data'    => [
-                    'report_id' => $reportInView->id,
-                    'pdf_url'   => asset('storage/' . $filepath),
-                    'image_url' => $reportInView->damage_file_path ? asset('storage/' . $reportInView->damage_file_path) : null,
-                ],
-            ], 200);
-        } catch (\Exception $e) {
-            return response()->json([
-                'status'  => 'error',
-                'message' => 'Failed to generate inspection PDF.',
-                'error'   => $e->getMessage(),
-            ], 500);
+   public function generatePdf($reportId)
+{
+    try {
+        $reportInView = VehicleInspectionReport::findOrFail($reportId);
+        
+        // --- Delete old files if exist ---
+        if ($reportInView->file_path && Storage::disk('public')->exists($reportInView->file_path)) {
+            Storage::disk('public')->delete($reportInView->file_path);
+            VehicleDocument::where('file_path', $reportInView->file_path)->delete();
         }
+
+        foreach (Storage::disk('public')->files('damage-assessments') as $path) {
+            if (Str::startsWith(basename($path), 'damage-report-' . $reportInView->id . '-')) {
+                Storage::disk('public')->delete($path);
+                VehicleDocument::where('file_path', $path)->delete();
+            }
+        }
+
+        foreach (Storage::disk('public')->files('inspection_pdf') as $path) {
+            if (Str::startsWith(basename($path), 'inspection_' . $reportInView->id . '_')) {
+                Storage::disk('public')->delete($path);
+                VehicleDocument::where('file_path', $path)->delete();
+            }
+        }
+
+        // --- NEW: use stored damage PNG instead of generating link ---
+       $damageAssessmentImage = $reportInView->damage_file_path
+    ? asset('storage/' . $reportInView->damage_file_path)
+    : null;
+
+        // --- Generate PDF ---
+        $directory = 'inspection_pdf';
+        if (! Storage::disk('public')->exists($directory)) {
+            Storage::disk('public')->makeDirectory($directory);
+        }
+
+        $pdf = Pdf::loadView('pdf.inspection.report-pdf-template', [
+            'reportInView'         => $reportInView,
+            'damageAssessmentImage' => $damageAssessmentImage, // send to PDF template
+        ])->setPaper('a4', 'portrait');
+
+        $filename = 'inspection_' . $reportInView->id . '_' . now()->format('Ymd_His') . '.pdf';
+        $filepath = $directory . '/' . $filename;
+
+        Storage::disk('public')->put($filepath, $pdf->output());
+
+        if ($reportInView->vehicle_id) {
+            VehicleDocument::create([
+                'vehicle_id' => $reportInView->vehicle_id,
+                'file_path'  => $filepath,
+                'type'       => 'InspectionReport',
+            ]);
+        }
+
+        $reportInView->update(['file_path' => $filepath]);
+
+        return response()->json([
+            'status'  => 'success',
+            'message' => 'Inspection Report PDF generated successfully.',
+            'data'    => [
+                'report_id' => $reportInView->id,
+                'pdf_url'   => asset('storage/' . $filepath),
+                'image_url' => $damageAssessmentImage,
+            ],
+        ], 200);
+    } catch (\Exception $e) {
+        return response()->json([
+            'status'  => 'error',
+            'message' => 'Failed to generate inspection PDF.',
+            'error'   => $e->getMessage(),
+        ], 500);
     }
+}
+
 
     public function downloadReport($id)
     {
