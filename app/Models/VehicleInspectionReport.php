@@ -85,7 +85,7 @@ class VehicleInspectionReport extends Model
 
 public function model()
 {
-    return $this->belongsTo(VehicleModel::class);
+    return $this->belongsTo(VehicleModel::class,'model');
 }
 
 }

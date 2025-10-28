@@ -24,7 +24,7 @@ class InspectionReportController extends Controller
 {
     $query = VehicleInspectionReport::with([
         'brand:id,name',
-        'model:id,name',
+        'vehicleModel:id,name',
     ]);
 
     // --- Filters ---
@@ -52,10 +52,10 @@ class InspectionReportController extends Controller
    
     $reports->getCollection()->transform(function ($report) {
         $report->make_name = $report->brand->name ?? null;
-        $report->model_name = $report->model->name ?? null;
+        $report->model_name = $report->vehicleModel->name ?? null;
 
        
-        unset($report->brand, $report->model);
+        unset($report->brand, $report->vehicleModel);
 
         return $report;
     });
@@ -69,13 +69,13 @@ class InspectionReportController extends Controller
 
   public function show($id)
 {
-    $report = VehicleInspectionReport::with(['vehicle', 'brand:id,name', 'model:id,name'])
+    $report = VehicleInspectionReport::with(['vehicle', 'brand:id,name', 'vehicleModel:id,name'])
         ->findOrFail($id);
 
     $report->make_name = $report->brand->name ?? null;
-    $report->model_name = $report->model->name ?? null;
+    $report->model_name = $report->vehicleModel->name ?? null;
 
-    unset($report->brand, $report->model);
+    unset($report->brand, $report->vehicleModel);
 
     return response()->json([
         'status' => 'success',
@@ -165,7 +165,7 @@ class InspectionReportController extends Controller
 
             $image = VehicleInspectionImage::create([
                 'vehicle_inspection_report_id' => $validated['vehicle_inspection_report_id'],
-                'path'                         => $fullPath,
+                'path'                         => $path,
                 'is_cover'                     => $request->get('is_cover', false),
                 'sort_order'                   => $sortOrder++,
             ]);
@@ -447,7 +447,7 @@ class InspectionReportController extends Controller
             'reportInView'         => $reportInView,
             'damageAssessmentImage' => $damageAssessmentImage, // send to PDF template
         ])->setPaper('a4', 'portrait');
-
+        
         $filename = 'inspection_' . $reportInView->id . '_' . now()->format('Ymd_His') . '.pdf';
         $filepath = $directory . '/' . $filename;
 
