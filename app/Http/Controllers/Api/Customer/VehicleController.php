@@ -14,19 +14,26 @@ class VehicleController extends Controller
 {
 
     //Makes
-    public function getAllMakes()
-    {
-        $makes = Brand::whereHas('vehicleModels')->get();
+   public function getAllMakes(Request $request)
+{
+    $search = $request->get('search'); 
 
-        return response()->json([
-            'status' => 'success',
-            'data' => $makes,
-        ]);
-    }
+    $makes = Brand::whereHas('vehicleModels')
+        ->when($search, function ($query, $search) {
+            $query->where('name', 'like', '%' . $search . '%');
+        })
+         ->get(['id', 'name', 'slug', 'image_source']);
+
+    return response()->json([
+        'status' => 'success',
+        'data' => $makes,
+    ]);
+}
+
 
     public function featuredMakes()
     {
-        $featured_makes = Brand::where('is_active', true)->take(12)->get();
+        $featured_makes = Brand::where('is_active', true)->take(12)->get(['id', 'name', 'slug', 'image_source']);
 
         return response()->json([
             'status' => 'success',
@@ -82,7 +89,7 @@ class VehicleController extends Controller
                 'vehicleModel:id,name'
             ])
             ->when($search, function ($query) use ($search) {
-                $query->where('name', 'like', "%{$search}%")
+                $query->where('title', 'like', "%{$search}%")
                     ->orWhere('vin', 'like', "%{$search}%")
                     ->orWhereHas('brand', function ($q) use ($search) {
                         $q->where('name', 'like', "%{$search}%");
@@ -125,7 +132,7 @@ class VehicleController extends Controller
                 'vehicleModel:id,name'
             ])
             ->when($search, function ($query) use ($search) {
-                $query->where('name', 'like', "%{$search}%")
+                $query->where('title', 'like', "%{$search}%")
                     ->orWhere('vin', 'like', "%{$search}%")
                     ->orWhereHas('brand', function ($q) use ($search) {
                         $q->where('name', 'like', "%{$search}%");
@@ -208,7 +215,7 @@ class VehicleController extends Controller
                 'vehicleModel:id,name'
             ])
             ->when($search, function ($query) use ($search) {
-                $query->where('name', 'like', "%{$search}%")
+                $query->where('title', 'like', "%{$search}%")
                     ->orWhere('vin', 'like', "%{$search}%")
                     ->orWhereHas('brand', function ($q) use ($search) {
                         $q->where('name', 'like', "%{$search}%");
