@@ -16,15 +16,13 @@
         /* --- Customizable CSS Variables --- */
         :root {
             --primary-color: #c9da29;
-            --primary-light: rgba(201, 218, 41, 0.15);
-            --primary-dark: #a8b622;
-            --accent-black: #000000;
-            --accent-dark: #1a1a1a;
+            --primary-light: rgba(215, 178, 54, 0.1);
+            --primary-dark: #b5972d;
 
             --font-family: 'Inter', 'Helvetica', sans-serif;
             --border-color: #e0e0e0;
             --background-light: #f9f9f9;
-            --text-dark: #000000;
+            --text-dark: #222;
             --text-muted: #666;
             --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.05);
             --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.05);
@@ -64,7 +62,7 @@
 
         /* --- Premium Card Sections --- */
         .report-card {
-            border: 2px solid var(--primary-color);
+            border: 1px solid var(--border-color);
             border-radius: 8px;
             margin-bottom: 25px;
             overflow: hidden;
@@ -73,12 +71,12 @@
         }
 
         .card-header {
-            background: linear-gradient(135deg, var(--accent-black) 0%, var(--accent-dark) 100%);
-            color: var(--accent-black);
+            background: linear-gradient(to right, var(--primary-light), white);
+            color: var(--text-dark);
             padding: 12px 20px;
             font-size: 14px;
             font-weight: 600;
-            border-bottom: 3px solid var(--primary-color);
+            border-bottom: 1px solid var(--border-color);
             display: flex;
             align-items: center;
             gap: 10px;
@@ -117,8 +115,8 @@
 
         /* --- Label/Value Pairs --- */
         .item-label {
-            font-weight: 600;
-            color: var(--accent-black);
+            font-weight: 500;
+            color: var(--text-muted);
             margin-bottom: 4px;
             display: flex;
             align-items: center;
@@ -131,7 +129,7 @@
         .item-label .fa-solid {
             font-size: 12px;
             color: var(--primary-color);
-            opacity: 1;
+            opacity: 0.8;
         }
 
         .item-value {
@@ -154,13 +152,12 @@
         }
 
         .item-value-list li {
-            background-color: var(--primary-light);
-            color: var(--accent-black);
+            background-color: #f0f0f0;
+            color: #555;
             padding: 4px 12px;
             border-radius: 12px;
             font-size: 11px;
             font-weight: 500;
-            border: 1px solid var(--primary-color);
         }
 
         /* --- Enhanced Status Pills with Colors --- */
@@ -248,6 +245,7 @@
         .gallery-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
+            /* exactly 3 per row */
             gap: 20px;
             margin-top: 15px;
         }
@@ -261,7 +259,7 @@
             width: 300px !important;
             box-shadow: var(--shadow-md);
             transition: transform 0.2s ease, box-shadow 0.2s ease;
-            border: 2px solid var(--accent-black);
+            border: 1px solid var(--border-color);
         }
 
         .gallery-item:hover {
@@ -279,13 +277,13 @@
         .gallery-caption {
             padding: 12px 15px;
             background: linear-gradient(to right, var(--primary-light), white);
-            border-top: 2px solid var(--accent-black);
+            border-top: 1px solid var(--border-color);
         }
 
         .gallery-title {
             font-size: 13px;
             font-weight: 600;
-            color: var(--accent-black);
+            color: var(--text-dark);
             margin: 0 0 4px 0;
             display: flex;
             align-items: center;
@@ -325,8 +323,8 @@
             font-size: 10px;
             padding: 3px 8px;
             border-radius: 10px;
-            background: var(--accent-black);
-            color: var(--primary-color);
+            background: var(--primary-color);
+            color: white;
             font-weight: 500;
         }
 
@@ -358,7 +356,7 @@
             padding: 20px;
             background: #f8f9fa;
             border-radius: 8px;
-            border: 2px solid var(--accent-black);
+            border: 1px solid #e9ecef;
         }
 
         .damage-item {
@@ -390,15 +388,12 @@
             padding: 15px 0;
             font-size: 10px;
             color: var(--text-muted);
-            border-top: 3px solid var(--accent-black);
+            border-top: 1px solid var(--border-color);
         }
 
         .footer-brand {
             color: var(--primary-color);
-            font-weight: 700;
-            background: var(--accent-black);
-            padding: 4px 12px;
-            border-radius: 4px;
+            font-weight: 600;
         }
 
         /* --- Print Optimization --- */
@@ -413,6 +408,7 @@
 
             .report-card {
                 page-break-inside: avoid;
+                /* break-inside: avoid; */
             }
 
             .damage-assessment {
@@ -422,24 +418,30 @@
 
             .gallery-grid {
                 grid-template-columns: repeat(3, 1fr);
+                /* keep 3 per row in print */
                 gap: 15px;
             }
 
             .gallery-image {
                 height: 150px;
+                /* adjust as you like for print */
             }
 
             .gallery-item {
                 break-inside: avoid;
             }
+
+
         }
 
-        /* --- Full-Page Vertical Centered Header --- */
+        /* --- NEW & IMPROVED: Full-Page Vertical Centered Header --- */
         .cover-page {
+            /* This forces the cover page to take up the entire first page */
             height: 100vh;
             width: 100%;
+
+            /* This ensures that the content that follows starts on a new, second page */
             page-break-after: always;
-            background: linear-gradient(135deg, var(--accent-black) 0%, var(--accent-dark) 50%, var(--accent-black) 100%);
         }
 
         .cover-page-table {
@@ -449,37 +451,46 @@
         }
 
         .cover-page-content {
+            /* This is the key to vertical centering in a table */
             vertical-align: middle !important;
+
+            /* This handles the horizontal centering */
             text-align: center !important;
+
+            /* Add some padding so content isn't flush with the page edges */
             padding: 40px !important;
         }
 
         .header-logo {
             margin-top: 300px !important;
             max-width: 250px;
+            /* Made the logo a bit bigger for a cover page */
             margin: 40px auto 0 auto;
+            /* Add space above the logo, centered horizontally */
+        }
+
+        .header-logo img {
+            /* width: 100%; */
+            /* height: auto; */
         }
 
         .header-title {
             font-size: 36px;
+            /* Larger title for a cover page */
             font-weight: 700;
-            color: var(--primary-color);
+            color: var(--text-dark);
             margin: 0 0 15px 0;
-            text-transform: uppercase;
-            letter-spacing: 2px;
         }
 
         .header-meta {
             font-size: 14px;
-            color: var(--accent-black);
+            /* Slightly larger meta text */
+            color: var(--text-muted);
         }
 
         .header-meta span {
             display: inline-block;
             margin: 0 12px;
-            background: rgba(201, 218, 41, 0.1);
-            padding: 6px 12px;
-            border-radius: 4px;
         }
 
         .header-meta .fas {
@@ -487,22 +498,25 @@
         }
 
         .disclaimer-text {
-            text-align: justify;
-            line-height: 1.5;
-            font-size: 14px;
-            margin: 0;
-        }
+    text-align: justify;
+    line-height: 1.5;      /* Better readability */
+    font-size: 14px;       /* Adjust for print */
+    margin: 0;
+}
 
     </style>
 </head>
 
 <body>
     <div class="container">
-        <!-- Full-Page Cover Header -->
+        <!-- NEW, CENTERED HEADER STRUCTURE -->
+        <!-- NEW: FULL-PAGE COVER HEADER -->
         <div class="cover-page">
             <table class="cover-page-table">
                 <tr>
                     <td class="cover-page-content">
+                        <!-- All your header content now goes inside this single table cell -->
+
                         <h1 class="header-title">Vehicle Inspection Report</h1>
 
                         <div class="header-meta">
@@ -522,10 +536,7 @@
             </table>
         </div>
         @php
- // These variables are now only needed for the hardcoded logic inside the template.
-        $columnsPerRow = 5;
 
-        // It's still helpful to have the icons in one place.
 
         // Field icons mapping
         $fieldIcons = [
@@ -593,6 +604,176 @@
         'sunroofType' => 'fas fa-sun',
         'drive' => 'fas fa-road',
         // Brakes
+        'steeringOperation' => 'fas fa-steering-wheel',
+        'wheelAlignment' => 'fas fa-crosshairs',
+        'brakePads' => 'fas fa-stop-circle',
+        'suspension' => 'fas fa-car-crash',
+        'brakeDiscs' => 'fas fa-compact-disc',
+        'shockAbsorberOperation' => 'fas fa-car-crash',
+        'comment_section1' => 'fas fa-comment',
+        'comment_section2' => 'fas fa-comment',
+        'final_conclusion' => 'fas fa-comment',
+        ];
+        @endphp
+
+        {{-- Basic Vehicle Information Card - Show ALL fields --}}
+        <div class="report-card">
+            <div class="card-header"><i class="fa-solid fa-car"></i>Basic Vehicle Information</div>
+            <div class="card-body">
+                <table class="details-table">
+                    <tr>
+                        <td>
+                            <div class="item-label"><i class="{{ $fieldIcons['make'] ?? 'fas fa-circle-notch' }}"></i> Make </div>
+                            <div class="item-value">{{ $reportInView->brand?->name ?? 'N/A' }}</div>
+
+                        </td>
+                        <td>
+                            <div class="item-label"><i class="{{ $fieldIcons['model'] ?? 'fas fa-circle-notch' }}"></i> Model</div>
+                            <div class="item-value">{{ $reportInView->vehicleModel?->name ?? 'N/A' }}</div>
+                        </td>
+                        <td>
+                            <div class="item-label"><i class="{{ $fieldIcons['trim'] ?? 'fas fa-circle-notch' }}"></i> Trim</div>
+                            <div class="item-value">{{ $reportInView->trim ?? 'N/A' }}</div>
+                        </td>
+
+                        <td>
+                            <div class="item-label"><i class="{{ $fieldIcons['year'] ?? 'fas fa-circle-notch' }}"></i> Year</div>
+                            <div class="item-value">{{ $reportInView->year ?? 'N/A' }}</div>
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="item-label"><i class="{{ $fieldIcons['vin'] ?? 'fas fa-circle-notch' }}"></i> VIN</div>
+                            <div class="item-value">{{ $reportInView->vin ?? 'N/A' }}</div>
+                        </td>
+                        <td>
+                            <div class="item-label"><i class="{{ $fieldIcons['odometer'] ?? 'fas fa-circle-notch' }}"></i> Mileage/Odometer</div>
+                            <div class="item-value">{{ $reportInView->odometer.' kms' ?? 'N/A' }}</div>
+                        </td>
+                        <td>
+                            <div class="item-label"><i class="{{ $fieldIcons['engine_cc'] ?? 'fas fa-circle-notch' }}"></i> Engine CC</div>
+                            <div class="item-value">{{ $reportInView->engine_cc ?? 'N/A' }}</div>
+                        </td>
+
+                        <td>
+                            <div class="item-label"><i class="{{ $fieldIcons['horsepower'] ?? 'fas fa-circle-notch' }}"></i> Horsepower</div>
+                            <div class="item-value">{{ $reportInView->horsepower ?? 'N/A' }}</div>
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="item-label"><i class="{{ $fieldIcons['color'] ?? 'fas fa-circle-notch' }}"></i> Color</div>
+                            <div class="item-value">{{ $reportInView->color ?? 'N/A' }}</div>
+                        </td>
+                        <td>
+                            <div class="item-label"><i class="{{ $fieldIcons['specs'] ?? 'fas fa-circle-notch' }}"></i> Specs</div>
+                            <div class="item-value">{{ $reportInView->specs ?? 'N/A' }}</div>
+                        </td>
+
+                        <td>
+                            <div class="item-label"><i class="{{ $fieldIcons['registeredEmirates'] ?? 'fas fa-circle-notch' }}"></i> Registered Emirates</div>
+                            <div class="item-value">{{ $reportInView->registerEmirates ?? 'N/A' }}</div>
+                        </td>
+                        <td>
+                            <div class="item-label"><i class="{{ $fieldIcons['body_type'] ?? 'fas fa-circle-notch' }}"></i> Body Type</div>
+                            <div class="item-value">{{ $reportInView->body_type ?? 'N/A' }}</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="item-label"><i class="{{ $fieldIcons['transmission'] ?? 'fas fa-circle-notch' }}"></i> Transmission</div>
+                            <div class="item-value">{{ $reportInView->transmission ?? 'N/A' }}</div>
+                        </td>
+                        <td>
+                            <div class="item-label"><i class="{{ $fieldIcons['warrantyAvailable'] ?? 'fas fa-circle-notch' }}"></i> Warranty Available</div>
+                            <div class="item-value">{{ $reportInView->warrantyAvailable ?? 'N/A' }}</div>
+                        </td>
+
+                        <td>
+                            <div class="item-label"><i class="{{ $fieldIcons['serviceContractAvailable'] ?? 'fas fa-circle-notch' }}"></i> Service Contract</div>
+                            <div class="item-value">{{ $reportInView->serviceContractAvailable ?? 'N/A' }}</div>
+                        </td>
+                        <td>
+                            <div class="item-label"><i class="{{ $fieldIcons['serviceHistory'] ?? 'fas fa-circle-notch' }}"></i> Service History</div>
+                            <div class="item-value">{{ $reportInView->serviceHistory ?? 'N/A' }}</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="item-label"><i class="{{ $fieldIcons['noOfKeys'] ?? 'fas fa-circle-notch' }}"></i> No Of Keys</div>
+                            <div class="item-value">{{ $reportInView->noOfKeys ?? 'N/A' }}</div>
+                        </td>
+                        <td>
+                            <div class="item-label"><i class="{{ $fieldIcons['mortgage'] ?? 'fas fa-circle-notch' }}"></i> Mortgage</div>
+                            <div class="item-value">{{ $reportInView->mortgage ?? 'N/A' }}</div>
+                        </td>
+                        <td>
+                            <div class="item-label"><i class="{{ $fieldIcons['noOfCylinders'] ?? 'fas fa-circle-notch' }}"></i> No. of Cylinders</div>
+                            <div class="item-value">{{ $reportInView->noOfCylinders ?? 'N/A' }}</div>
+                        </td>
+                    </tr>
+                    <!-- <tr>
+                        <td>
+                            <div class="item-label"><i class="{{ $fieldIcons['is_inspection'] ?? 'fas fa-circle-notch' }}"></i> Inspection</div>
+                            <div class="item-value">{{ $reportInView->is_inspection ?? 'N/A' }}</div>
+                        </td>
+                        <td></td>
+                    </tr> -->
+                </table>
+            </div>
+        </div>
+        @php
+        // These variables are now only needed for the hardcoded logic inside the template.
+        $columnsPerRow = 5;
+
+        // It's still helpful to have the icons in one place.
+        $fieldIcons = [
+        'paintCondition' => 'fa-solid fa-spray-can',
+        'convertible' => 'fa-solid fa-car',
+        'blindSpot' => 'fa-solid fa-car-on',
+        'sideSteps' => 'fa-solid fa-shoe-prints',
+        'wheelsType' => 'fa-solid fa-circle-dot',
+        'rimsSizeFront' => 'fa-solid fa-arrows-left-right',
+        'rimsSizeRear' => 'fa-solid fa-arrows-left-right',
+        'engineOil' => 'fa-solid fa-oil-can',
+        'gearOil' => 'fa-solid fa-gear',
+        'gearshifting' => 'fa-solid fa-gears',
+        'engineNoise' => 'fa-solid fa-volume-high',
+        'engineSmoke' => 'fa-solid fa-smog',
+        'fourWdSystemCondition' => 'fa-solid fa-car-side',
+        'obdError' => 'fa-solid fa-triangle-exclamation',
+        'remarks' => 'fa-solid fa-comment-dots',
+        'frontLeftTire' => 'fa-solid fa-circle-dot',
+        'frontRightTire' => 'fa-solid fa-circle-dot',
+        'rearLeftTire' => 'fa-solid fa-circle-dot',
+        'rearRightTire' => 'fa-solid fa-circle-dot',
+        'tiresSize' => 'fa-solid fa-ruler-combined',
+        'spareTire' => 'fa-solid fa-life-ring',
+        'commentTire' => 'fa-solid fa-comment',
+        'parkingSensors' => 'fa-solid fa-car-burst',
+        'keylessStart' => 'fa-solid fa-key',
+        'seats' => 'fa-solid fa-chair',
+        'cooledSeats' => 'fa-solid fa-snowflake',
+        'heatedSeats' => 'fa-solid fa-fire',
+        'powerSeats' => 'fa-solid fa-bolt',
+        'viveCamera' => 'fa-solid fa-camera-retro',
+        'sunroofType' => 'fa-solid fa-sun',
+        'drive' => 'fa-solid fa-road',
+        'headsDisplay' => 'fa-solid fa-desktop',
+        'premiumSound' => 'fa-solid fa-music',
+        'carbonFiber' => 'fa-solid fa-cubes',
+        'speedmeterCluster' => 'fa-solid fa-gauge-high',
+        'headLining' => 'fa-solid fa-arrow-up',
+        'seatControls' => 'fa-solid fa-toggle-on',
+        'seatsCondition' => 'fa-solid fa-check-double',
+        'centralLockOperation' => 'fa-solid fa-lock',
+        'sunroofCondition' => 'fa-solid fa-sun',
+        'windowsControl' => 'fa-solid fa-window-maximize',
+        'cruiseControl' => 'fa-solid fa-forward',
+        'acCooling' => 'fa-solid fa-wind',
+        'comment_section2' => 'fa-solid fa-comments',
         'steeringOperation' => 'fa-solid fa-dharmachakra',
         'wheelAlignment' => 'fa-solid fa-arrows-to-dot',
         'brakePads' => 'fa-solid fa-compact-disc',
@@ -604,7 +785,9 @@
         @endphp
 
 
-        {{-- Exterior Section --}}
+        {{-- ==================================================================== --}}
+        {{-- == 1. Exterior Section                                            == --}}
+        {{-- ==================================================================== --}}
        <div class="report-card">
             <div class="card-header"><i class="fa-solid fa-brush"></i>Exterior</div>
             <div class="card-body">
@@ -621,16 +804,20 @@
                             @else <div class="item-value">{{ $data }}</div> @endif
                         </td>
                     </tr>
+                    {{-- Row 1 of other fields --}}
                     <tr>
 
                     </tr>
+                    {{-- Row 2 of other fields --}}
 
                 </table>
             </div>
         </div>
 
 
-        {{-- Damage Assessment Section --}}
+        {{-- ==================================================================== --}}
+        {{-- == 2. Damage Assessment Section                                   == --}}
+        {{-- ==================================================================== --}}
         <div class="report-card">
           @if($reportInView->damage_file_path && file_exists(public_path(parse_url($reportInView->damage_file_path, PHP_URL_PATH))))
     @php
@@ -647,10 +834,15 @@
     </div>
 @endif
 
+           
+
+
         </div>
 
 
-        {{-- Engine & Transmission Section --}}
+        {{-- ==================================================================== --}}
+        {{-- == 3. Engine & Transmission Section                               == --}}
+        {{-- ==================================================================== --}}
         <div class="report-card">
             <div class="card-header"><i class="fa-solid fa-gears"></i>Engine & Transmission</div>
             <div class="card-body">
@@ -684,7 +876,7 @@
                         @endforeach
                         <td></td>
                         <td></td>
-                        <td></td>
+                        <td></td> {{-- 3 empty cells --}}
                     </tr>
                     {{-- Full-width row for Remarks --}}
                     <tr>
@@ -703,7 +895,9 @@
         </div>
 
 
-        {{-- Tires Section --}}
+        {{-- ==================================================================== --}}
+        {{-- == 4. Tires Section                                               == --}}
+        {{-- ==================================================================== --}}
          <div class="report-card">
             <div class="card-header"><i class="fa-solid fa-circle-dot"></i>Tires</div>
             <div class="card-body">
@@ -755,7 +949,9 @@
         </div>
 
 
-        {{-- Car Specs Section --}}
+        {{-- ==================================================================== --}}
+        {{-- == 5. Car Specs Section                                           == --}}
+        {{-- ==================================================================== --}}
         <div class="report-card">
             <div class="card-header"><i class="fa-solid fa-sliders"></i>Car Specs</div>
             <div class="card-body">
@@ -824,7 +1020,9 @@
         </div>
 
 
-        {{-- Interior, Electrical & Air Conditioner Section --}}
+        {{-- ==================================================================== --}}
+        {{-- == 6. Interior, Electrical & Air Conditioner Section              == --}}
+        {{-- ==================================================================== --}}
         <div class="report-card">
             <div class="card-header"><i class="fa-solid fa-bolt"></i>Interior, Electrical & Air Conditioner</div>
             <div class="card-body">
@@ -856,7 +1054,7 @@
                             @else <div class="item-value">{{ $data }}</div> @endif
                         </td>
                         @endforeach
-                        <td></td>
+                        <td></td> {{-- 1 empty cell --}}
                     </tr>
                     {{-- Full-width row for Comments --}}
                     <tr>
@@ -875,7 +1073,9 @@
         </div>
 
 
-        {{-- Steering, Suspension & Brakes Section --}}
+        {{-- ==================================================================== --}}
+        {{-- == 7. Steering, Suspension & Brakes Section                       == --}}
+        {{-- ==================================================================== --}}
         <div class="report-card">
             <div class="card-header"><i class="fa-solid fa-car-burst"></i>Steering, Suspension & Brakes</div>
             <div class="card-body">
@@ -910,7 +1110,7 @@
                         <td></td>
                         <td></td>
                         <td></td>
-                        <td></td>
+                        <td></td> {{-- 4 empty cells --}}
                     </tr>
                     {{-- Full-width row for Comments --}}
                     <tr>
@@ -927,7 +1127,9 @@
                 </table>
             </div>
         </div>
-         {{-- Final Conclusion Section --}}
+         {{-- ==================================================================== --}}
+        {{-- == 5. Final Conclusion Section                                           == --}}
+        {{-- ==================================================================== --}}
         <div class="report-card">
             <div class="card-header"><i class="fa-solid fa-clipboard"></i>Final Conclusion</div>
             <div class="card-body">
@@ -947,13 +1149,14 @@
             </div>
         </div>
 
-        {{-- Premium Image Gallery Section --}}
+        {{-- Premium Image Gallery Section (Table-based for DomPDF) --}}
         <div class="report-card">
             <div class="card-header"><i class="fa-solid fa-images"></i>Vehicle Images</div>
             <div class="card-body image-gallery">
 
                 @php
                 $vehicleImages = $reportInView->images ?? collect();
+                // Ensure we always have a collection to chunk
                 if (!($vehicleImages instanceof \Illuminate\Support\Collection)) {
                 $vehicleImages = collect($vehicleImages ?: []);
                 }
@@ -965,15 +1168,15 @@
                     @foreach($vehicleImages->chunk(3) as $row)
                     <tr>
                         @foreach($row as $image)
-                        <td width="33.33%" valign="top" >
+                        <td width="33.33%" valign="top" style="border: 1px solid #e0e0e0; border-radius: 8px;">
                             <div style="margin: 4px;">
                                 <img
                                     src="{{ storage_path('app/public/' . $image->path) }}"
                                     alt="{{ $image['title'] ?? 'Vehicle Image' }}"
                                     style="display: block; width: 100%; height: 180px; object-fit: cover; border-radius: 6px;">
-                                <div style="margin-top: 6px; border-top: 2px solid #000; padding-top: 6px;">
-                                    <div style="font-size: 12px; font-weight: 600; color: #000;">
-                                        <i class="fas fa-camera" style="color: #c9da29;"></i>
+                                <div style="margin-top: 6px; border-top: 1px solid #f0f0f0; padding-top: 6px;">
+                                    <div style="font-size: 12px; font-weight: 600; color: #222;">
+                                        <i class="fas fa-camera" style="color: #d7b236;"></i>
                                         Vehicle Image #{{$imageNum}}
                                     </div>
                                     <div style="font-size: 10px; color: #666; margin-top: 2px;">
@@ -1008,8 +1211,10 @@
             </div>
         </div>
 
-        {{-- Disclaimer Section --}}
+        {{-- Car Damage View Section - Static Content for PDF --}}
+
         <div class="report-card">
+            <!-- <div class="card-header"><i class="fa-solid fa-car"></i>Basic Vehicle Information</div> -->
             <div class="card-body">
                 <table class="details-table">
                     <tr>
@@ -1030,13 +1235,13 @@
                                     property of Caartl. 6. This Inspection Report represents Caartl subjective opinion as to
                                     the condition of the vehicle (limited to the specific items listed in this Inspection Report),
                                     considering the age and condition of the vehicle at the time of inspection and based on the
-                                    Caartlinspector's knowledge and experience. This Inspection Report is designed to assist
+                                    Caartlinspector’s knowledge and experience. This Inspection Report is designed to assist
                                     you to make decisions based on the general condition of the vehicle only. Caartl will not
                                     provide a recommendation as to whether to sell or purchase the vehicle. 7. Caartl can
                                     only advise on the condition of the vehicle at the time of the inspection, and this Inspection
                                     Report is only current as at the time it is issued. If you are considering purchasing the
                                     vehicle, it is your responsibility to conduct a further inspection of the vehicle at the time of
-                                    purchase. 8. This Inspection Report is provided by Caartl 'as is' for your information only,
+                                    purchase. 8. This Inspection Report is provided by Caartl ‘as is’ for your information only,
                                     without any warranties whatsoever. In particular, Caartl does not provide any warranty
                                     regarding the accuracy or completeness of any information contained in this Inspection
                                     Report, or the fitness of the information contained in this Inspection Report for any purpose
