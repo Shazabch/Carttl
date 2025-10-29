@@ -34,6 +34,21 @@ class DashboardController extends Controller
         ->select('id', 'title', 'auction_start_date', 'auction_end_date')
         ->first();
 
+        $user = auth('api')->user();
+        if (!$user) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Unauthorized access',
+            ], 401);
+        }
+        $profile = [
+            'id' => $user->id,
+            'name' => $user->name,
+            'email' => $user->email,
+            'role' => $user->role ?? 'Admin',
+            'created_at' => $user->created_at,
+        ];
+
         return response()->json([
             'status'  => 'success',
             'message' => 'Dashboard statistics fetched successfully.',
@@ -50,6 +65,7 @@ class DashboardController extends Controller
                 'inspections_enquiries'   => $inspectionCount,
                 'purchase_enquiries' => $purchaseEnquiryCount,
                 'sell_enquiries'     => $sellEnquiryCount,
+                'profile'     => $profile,
             ],
         ]);
     }
