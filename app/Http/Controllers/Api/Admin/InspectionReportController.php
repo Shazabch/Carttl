@@ -69,7 +69,7 @@ class InspectionReportController extends Controller
 
   public function show($id)
 {
-    $report = VehicleInspectionReport::with(['vehicle', 'brand:id,name', 'vehicleModel:id,name'])
+    $report = VehicleInspectionReport::with(['vehicle','damages','inspector','images', 'brand:id,name', 'vehicleModel:id,name'])
         ->findOrFail($id);
 
     $report->make_name = $report->brand->name ?? null;
