@@ -13,21 +13,41 @@ class DashboardController extends Controller
     {
         $vehicleCount         = Vehicle::count();
         $inspectionCount      = InspectionEnquiry::count();
-        $listingCount         = Vehicle::where('is_auction', false)->where('status', '!=', 'sold')->count();
+        $listingCount         = Vehicle::where('status', 'published')->where('status', '!=', 'sold')->count();
+        $verifiedCount        = Vehicle::where('status', 'published')->where('status', '!=', 'sold')->count();
+        $pendingCount         = Vehicle::where('status', 'pending')->where('status', '!=', 'sold')->count();
+        $rejectedCount        = Vehicle::where('status', 'rejected')->where('status', '!=', 'sold')->count();
         $auctionCount         = Vehicle::where('is_auction', true)->where('status', '!=', 'sold')->count();
         $soldVehicleCount     = Vehicle::where('status', 'sold')->count();
         $purchaseEnquiryCount = VehicleEnquiry::where('type', 'purchase')->count();
         $sellEnquiryCount     = VehicleEnquiry::where('type', 'sale')->count();
+
+         $activeauctionCount = Vehicle::where('is_auction', true)
+        ->where('status', '!=', 'sold')
+        ->where('auction_start_date', '<=', now())
+        ->where('auction_end_date', '>=', now())
+        ->count();
+        $nextAuction = Vehicle::where('is_auction', true)
+        ->where('status', '!=', 'sold')
+        ->where('auction_start_date', '>', now())
+        ->orderBy('auction_start_date', 'asc')
+        ->select('id', 'title', 'auction_start_date', 'auction_end_date')
+        ->first();
 
         return response()->json([
             'status'  => 'success',
             'message' => 'Dashboard statistics fetched successfully.',
             'data'    => [
                 'total_vehicles'     => $vehicleCount,
-                'inspections'        => $inspectionCount,
                 'vehicles'           => $listingCount,
-                'auctions'           => $auctionCount,
                 'sold_vehicles'      => $soldVehicleCount,
+                'verified_listings'  => $verifiedCount,
+                'pending_listings'   => $pendingCount,
+                'rejected_listings'  => $rejectedCount,
+                'auctions'           => $auctionCount,
+                'active_auctions'    => $activeauctionCount,
+                'next_auction'       => $nextAuction,
+                'inspections_enquiries'   => $inspectionCount,
                 'purchase_enquiries' => $purchaseEnquiryCount,
                 'sell_enquiries'     => $sellEnquiryCount,
             ],

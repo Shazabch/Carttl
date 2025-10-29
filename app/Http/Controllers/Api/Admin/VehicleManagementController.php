@@ -187,7 +187,7 @@ public function getTags()
         );
 
       
-        $vehicle = Vehicle::create($validated);
+         $vehicle = Vehicle::create($request->except(['images', 'features']));
 
       
         if (!empty($features)) {
@@ -260,6 +260,7 @@ if ($request->hasFile('images')) {
 
        
         $vehicle->update($validated);
+         $vehicle->update($request->except(['images', 'features']));
 
         
         if (!empty($features)) {

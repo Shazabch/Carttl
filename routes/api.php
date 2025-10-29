@@ -176,7 +176,7 @@ Route::prefix('admin')
             Route::delete('/notifications/clear', 'clearAll');
         });
 
-        //Assign Tree
+        //Assign Dree
         Route::controller(AgentController::class)->group(function () {
             Route::get('/ajents', 'index');
             Route::post('/ajents/create', 'store');
