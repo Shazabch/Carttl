@@ -157,10 +157,17 @@ Route::prefix('admin')
             Route::get('/inspection-reports', 'index');
             Route::get('/inspection-reports/show/{id}', 'show');
             Route::post('/inspection-reports/create', 'store');
-            Route::post('/inspection-reports/upload-images', 'storeImages');
+            
+            Route::post('/inspection-reports/upload-images', 'storeVehicleImages');
+            Route::post('/inspection-reports/remove-images', 'removeVehicleImages');
+
+            Route::post('/inspection-reports/field-images/add', 'storeInspectionFields');
+            Route::post('/inspection-reports/field-images/remove', 'removeInspectionFieldImages');
+
             Route::get('/inspection-reports/damage-types', 'getDamageTypes');
             Route::post('/inspection-reports/damage/add', 'addDamage');
             Route::post('/inspection-reports/damage/remove', 'removeDamage');
+
             Route::post('/inspection-reports/update/{id}', 'update');
             Route::delete('/inspection-reports/delete/{id}', 'destroy');
             Route::post('/inspection-reports/generate-pdf/{id}', 'generatePdf');

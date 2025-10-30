@@ -112,28 +112,10 @@ public function store(Request $request)
     $validated = $request->validate($rules);
 
     
-    $reportData = $request->except(['damage_image', 'inspection_image_fields']);
+    $reportData = $request->except(['damage_image']);
     $report = VehicleInspectionReport::create($reportData);
   
-    if (!empty($request->inspection_image_fields)) {
-        foreach ($request->inspection_image_fields as $fieldName => $fieldImages) {
-           
-            $field = InspectionField::create([
-                'vehicle_inspection_report_id' => $report->id,
-                'name' => $fieldName,
-            ]);
-
-            if (!empty($fieldImages) && $field) {
-                foreach ($fieldImages as $imageFile) {
-                    $path = $imageFile->store('inspection_field_images', 'public');
-                    InspectionFieldImage::create([
-                        'inspection_field_id' => $field->id,
-                        'path' => asset('storage/' . $path),
-                    ]);
-                }
-            }
-        }
-    }
+    
 
     
     if ($request->hasFile('damage_image')) {
@@ -166,12 +148,12 @@ public function store(Request $request)
     return response()->json([
         'status'  => 'success',
         'message' => 'Report created successfully',
-        'data'    => $report->load('fields.images'),
+        'data'    => $report,
     ], 201);
 }
 
 
-    public function storeImages(Request $request)
+    public function storeVehicleImages(Request $request)
     {
         $validated = $request->validate([
             'vehicle_inspection_report_id' => 'required|exists:vehicle_inspection_reports,id',
@@ -204,6 +186,125 @@ public function store(Request $request)
             'data'    => $uploaded,
         ], 201);
     }
+    public function removeVehicleImages(Request $request)
+{
+    $validated = $request->validate([
+        'image_ids' => 'required|array|min:1',
+        'image_ids.*' => 'integer|exists:vehicle_inspection_images,id',
+    ]);
+
+    $removed = [];
+
+    foreach ($validated['image_ids'] as $id) {
+        $image = VehicleInspectionImage::find($id);
+
+        if ($image) {
+            
+            if (!empty($image->path)) {
+                Storage::disk('public')->delete($image->path);
+            }
+
+            
+            $image->delete();
+
+            $removed[] = $id;
+        }
+    }
+
+    return response()->json([
+        'status'  => 'success',
+        'message' => 'Selected inspection images removed successfully.',
+        'removed' => $removed,
+    ], 200);
+}
+
+    public function storeInspectionFields(Request $request)
+{
+    $validated = $request->validate([
+        'vehicle_inspection_report_id' => 'required|exists:vehicle_inspection_reports,id',
+        'inspection_image_fields' => 'required|array',
+        
+    ]);
+
+    $reportId = $validated['vehicle_inspection_report_id'];
+
+    $responseData = [];
+
+    foreach ($request->inspection_image_fields as $fieldName => $fieldImages) {
+        // Create inspection field
+        $field = InspectionField::create([
+            'vehicle_inspection_report_id' => $reportId,
+            'name' => $fieldName,
+        ]);
+
+        $savedImages = [];
+
+        if (!empty($fieldImages)) {
+            foreach ($fieldImages as $imageFile) {
+                if ($imageFile instanceof \Illuminate\Http\UploadedFile) {
+                    $path = $imageFile->store('inspection_field_images', 'public');
+                    $fullPath = asset('storage/' . $path);
+
+                    $img = InspectionFieldImage::create([
+                        'inspection_field_id' => $field->id,
+                        'path' => $fullPath,
+                    ]);
+
+                    $savedImages[] = $img;
+                }
+            }
+        }
+
+        $responseData[] = [
+            'field' => $field,
+            'images' => $savedImages,
+        ];
+    }
+
+    return response()->json([
+        'status'  => 'success',
+        'message' => 'Inspection fields and images saved successfully.',
+        'data'    => $responseData,
+    ]);
+}
+
+    public function removeInspectionFieldImages(Request $request)
+{
+    $validated = $request->validate([
+        'inspection_image_fields' => 'required|array',
+        'inspection_image_fields.*' => 'array', // e.g. inspection_image_fields[rimSize] = [1, 2, 3]
+        'inspection_image_fields.*.*' => 'integer|exists:inspection_field_images,id',
+    ]);
+
+    $removed = [];
+
+    foreach ($validated['inspection_image_fields'] as $fieldName => $imageIds) {
+        foreach ($imageIds as $imageId) {
+            $image = InspectionFieldImage::find($imageId);
+
+            if ($image) {
+                // Delete from storage
+                $relativePath = str_replace(asset('storage/'), '', $image->path);
+                Storage::disk('public')->delete($relativePath);
+
+                // Delete record
+                $image->delete();
+
+                $removed[] = [
+                    'field_name' => $fieldName,
+                    'image_id'   => $imageId,
+                ];
+            }
+        }
+    }
+
+    return response()->json([
+        'status'  => 'success',
+        'message' => 'Selected inspection field images removed successfully.',
+        'removed' => $removed,
+    ]);
+}
+
   public function update(Request $request, $id)
 {
     $report = VehicleInspectionReport::findOrFail($id);
@@ -230,43 +331,11 @@ public function store(Request $request)
     $validated = $request->validate($rules);
 
     
-    $updateData = $request->except(['damage_image', 'inspection_image_fields']);
+    $updateData = $request->except(['damage_image']);
     $report->update($updateData);
 
     
-    if (!empty($request->inspection_image_fields)) {
-        foreach ($request->inspection_image_fields as $fieldName => $fieldImages) {
-            $field = InspectionField::where('vehicle_inspection_report_id', $report->id)
-                ->where('name', $fieldName)
-                ->first();
-
-            
-            if (!$field) {
-                $field = InspectionField::create([
-                    'vehicle_inspection_report_id' => $report->id,
-                    'name' => $fieldName,
-                ]);
-            }
-
-            if (!empty($fieldImages)) {
-                $oldImages = InspectionFieldImage::where('inspection_field_id', $field->id)->get();
-                foreach ($oldImages as $img) {
-                    $relativePath = str_replace(asset('storage/'), '', $img->path);
-                    Storage::disk('public')->delete($relativePath);
-                    $img->delete();
-                }
-
-                foreach ($fieldImages as $imageFile) {
-                    $path = $imageFile->store('inspection_field_images', 'public');
-                    InspectionFieldImage::create([
-                        'inspection_field_id' => $field->id,
-                        'path' => asset('storage/' . $path),
-                    ]);
-                }
-            }
-        }
-    }
-
+   
     
     if ($request->hasFile('damage_image')) {
         $file = $request->file('damage_image');
@@ -303,7 +372,7 @@ public function store(Request $request)
     return response()->json([
         'status'  => 'success',
         'message' => 'Report updated successfully',
-        'data'    => $report->load('fields.images'),
+        'data'    => $report,
     ]);
 }
 
@@ -339,44 +408,45 @@ public function store(Request $request)
     }
 
     public function addDamage(Request $request)
-    {
-        $validated = $request->validate([
-            'inspection_id'       => 'required|exists:vehicle_inspection_reports,id',
+{
+    $validated = $request->validate([
+        'inspection_id'       => 'required|exists:vehicle_inspection_reports,id',
+        'damages'             => 'required|array|min:1',
+        'damages.*.type'      => 'required|string|max:255',
+        'damages.*.body_part' => 'required|string|max:255',
+        'damages.*.severity'  => 'required|string|max:100',
+        'damages.*.x'         => 'required|numeric',
+        'damages.*.y'         => 'required|numeric',
+        'damages.*.remark'    => 'nullable|string',
+    ]);
 
-            'damages'             => 'required|array|min:1',
-            'damages.*.type'      => 'required|string|max:255',
-            'damages.*.body_part' => 'required|string|max:255',
-            'damages.*.severity'  => 'required|string|max:100',
-            'damages.*.x'         => 'required|numeric',
-            'damages.*.y'         => 'required|numeric',
-            'damages.*.remark'    => 'nullable|string',
+    $inspection = VehicleInspectionReport::findOrFail($validated['inspection_id']);
+
+    CarDamage::where('inspection_id', $inspection->id)->delete();
+
+    $savedDamages = [];
+
+    foreach ($validated['damages'] as $damageData) {
+        $damage = CarDamage::create([
+            'inspection_id' => $inspection->id,
+            'type'          => $damageData['type'],
+            'body_part'     => $damageData['body_part'],
+            'severity'      => $damageData['severity'],
+            'x'             => $damageData['x'],
+            'y'             => $damageData['y'],
+            'remark'        => $damageData['remark'] ?? null,
         ]);
 
-        $inspection   = VehicleInspectionReport::findOrFail($validated['inspection_id']);
-        $savedDamages = [];
-
-        foreach ($validated['damages'] as $damageData) {
-            $damage = new CarDamage([
-                'type'      => $damageData['type'],
-                'body_part' => $damageData['body_part'],
-                'severity'  => $damageData['severity'],
-                'x'         => $damageData['x'],
-                'y'         => $damageData['y'],
-                'remark'    => $damageData['remark'] ?? null,
-            ]);
-
-            $damage->inspection_id = $inspection->id;
-            $damage->save();
-
-            $savedDamages[] = $damage;
-        }
-
-        return response()->json([
-            'status'  => 'success',
-            'message' => 'Damages added successfully.',
-            'data'    => $savedDamages,
-        ], 201);
+        $savedDamages[] = $damage;
     }
+
+    return response()->json([
+        'status'  => 'success',
+        'message' => 'Damages replaced successfully.',
+        'data'    => $savedDamages,
+    ], 201);
+}
+
     public function removeDamage(Request $request)
     {
         $validated = $request->validate([
