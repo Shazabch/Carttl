@@ -16,6 +16,7 @@ use App\Http\Controllers\Api\Admin\UserManagementController;
 use App\Http\Controllers\Api\Admin\VehicleManagementController;
 use App\Http\Controllers\Api\Admin\InspectionReportController;
 use App\Http\Controllers\Api\Admin\AgentController;
+use App\Http\Controllers\Api\Admin\AgentManagementController;
 use App\Http\Controllers\Api\Admin\NotificationController;
 use App\Http\Controllers\Api\Admin\ProfileController;
 use App\Http\Controllers\Api\Customer\BlogController;
@@ -183,13 +184,15 @@ Route::prefix('admin')
             Route::delete('/notifications/clear', 'clearAll');
         });
 
-        //Assign Dree
-        Route::controller(AgentController::class)->group(function () {
-            Route::get('/ajents', 'index');
-            Route::post('/ajents/create', 'store');
-            Route::get('/ajents/show/{id}', 'show');
-            Route::post('/ajents/update/{id}', 'update');
-            Route::delete('/ajents/delete/{id}', 'destroy');
+       
+        Route::controller(AgentManagementController::class)->group(function () {      
+            Route::get('/agents', 'index');
+            Route::post('/agents/create', 'store');
+            Route::get('/agents/show/{id}', 'show');
+            Route::post('/agents/update/{id}', 'update');
+            Route::post('/agents/assign-customers/{id}', 'assignCustomers'); 
+            Route::get('/unassigned-customers', 'unassignedCustomers');      
+            Route::delete('/agents/delete/{id}', 'destroy');
         });
         
         //Profile
@@ -276,4 +279,3 @@ Route::group(['middleware' => 'auth:api'], function () {
         Route::get('/bid-history/{vehicleId}', 'getBidHistory');
     });
 });
-

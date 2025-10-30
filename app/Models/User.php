@@ -68,10 +68,17 @@ class User extends Authenticatable implements JWTSubject
 }
 
 
-    public function manager()
-    {
-        return $this->hasOne(ManagerCustomer::class, 'customer_id');
-    }
+   
+    public function customers()
+{
+    return $this->hasMany(User::class, 'agent_id');
+}
+
+public function agent()
+{
+    return $this->belongsTo(User::class, 'agent_id');
+}
+
 
     public function getJWTIdentifier()
     {
