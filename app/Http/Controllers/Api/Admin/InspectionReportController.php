@@ -7,6 +7,8 @@ use App\Models\InspectionEnquiry;
 use App\Models\VehicleDocument;
 use App\Models\VehicleInspectionImage;
 use App\Models\VehicleInspectionReport;
+use App\Models\InspectionField;
+use App\Models\InspectionFieldImage;
 use App\Notifications\VehicleInspectionConfirmation;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
@@ -84,67 +86,90 @@ class InspectionReportController extends Controller
 }
 
 
-    public function store(Request $request)
-    {
-        $rules = [
-            'vehicle_id'             => 'nullable|exists:vehicles,id',
-            'inspection_enquiry_id'  => 'nullable|exists:inspection_enquiries,id',
-            'make'                   => 'required',
-            'model'                  => 'required',
-            'year'                   => 'required|integer',
-            'vin'                    => 'nullable|string',
-            'engine_cc'              => 'nullable|string',
-            'horsepower'             => 'nullable|string',
-            'noOfCylinders'          => 'nullable|integer',
-            'transmission'           => 'nullable|string',
-            'color'                  => 'nullable|string',
-            'body_type'              => 'nullable|string',
-            'specs'                  => 'nullable|string',
-            'odometer'               => 'nullable|numeric',
-            'paintCondition'         => 'nullable|array',
-            'frontLeftTire'          => 'nullable|array',
-            'rearRightTire'          => 'nullable|array',
-            'seatsCondition'         => 'nullable|array',
-            'brakeDiscs'             => 'nullable|array',
-            'shockAbsorberOperation' => 'nullable|array',
-            'notes'                  => 'nullable|string',
-        ];
+public function store(Request $request)
+{
+    
+    $rules = [
+        'vehicle_id'             => 'nullable|exists:vehicles,id',
+        'inspection_enquiry_id'  => 'nullable|exists:inspection_enquiries,id',
+        'make'                   => 'required',
+        'model'                  => 'required',
+        'year'                   => 'required|integer',
+        'vin'                    => 'nullable|string',
+        'engine_cc'              => 'nullable|string',
+        'horsepower'             => 'nullable|string',
+        'noOfCylinders'          => 'nullable|integer',
+        'transmission'           => 'nullable|string',
+        'color'                  => 'nullable|string',
+        'body_type'              => 'nullable|string',
+        'specs'                  => 'nullable|string',
+        'odometer'               => 'nullable|numeric',
+        'notes'                  => 'nullable|string',
 
-        $validated = $request->validate($rules);
+        'damage_image'           => 'nullable|file|image',
+    ];
 
-        $reportData = $request->except('damage_image');
-        $report     = VehicleInspectionReport::create($reportData);
+    $validated = $request->validate($rules);
 
-        if ($request->hasFile('damage_image')) {
-            $file   = $request->file('damage_image');
-            $pngDir = 'damage-assessments';
-            if (! Storage::disk('public')->exists($pngDir)) {
-                Storage::disk('public')->makeDirectory($pngDir);
+    
+    $reportData = $request->except(['damage_image', 'inspection_image_fields']);
+    $report = VehicleInspectionReport::create($reportData);
+  
+    if (!empty($request->inspection_image_fields)) {
+        foreach ($request->inspection_image_fields as $fieldName => $fieldImages) {
+           
+            $field = InspectionField::create([
+                'vehicle_inspection_report_id' => $report->id,
+                'name' => $fieldName,
+            ]);
+
+            if (!empty($fieldImages) && $field) {
+                foreach ($fieldImages as $imageFile) {
+                    $path = $imageFile->store('inspection_field_images', 'public');
+                    InspectionFieldImage::create([
+                        'inspection_field_id' => $field->id,
+                        'path' => asset('storage/' . $path),
+                    ]);
+                }
             }
-            $pngFilename = 'damage-image-' . $report->id . '-' . now()->format('Ymd_His') . '.' . $file->getClientOriginalExtension();
-            $pngPath     = $pngDir . '/' . $pngFilename;
-            Storage::disk('public')->putFileAs($pngDir, $file, $pngFilename);
-             $fullPngPath = asset('storage/' . $pngPath);
-            if ($report->vehicle_id) {
-                VehicleDocument::create([
-                    'vehicle_id' => $report->vehicle_id,
-                    'file_path'  => $fullPngPath,
-                    'type'       => 'InspectionReportImage',
-                ]);
-            }
+        }
+    }
 
-            // Save path in the report
-            $report->update(['damage_file_path' => $fullPngPath]);
+    
+    if ($request->hasFile('damage_image')) {
+        $file   = $request->file('damage_image');
+        $dir = 'damage-assessments';
+        if (!Storage::disk('public')->exists($dir)) {
+            Storage::disk('public')->makeDirectory($dir);
+        }
+        $filename = 'damage-image-' . $report->id . '-' . now()->format('Ymd_His') . '.' . $file->getClientOriginalExtension();
+        $path = $dir . '/' . $filename;
+
+        Storage::disk('public')->putFileAs($dir, $file, $filename);
+        $fullUrl = asset('storage/' . $path);
+
+        
+        if ($report->vehicle_id) {
+            VehicleDocument::create([
+                'vehicle_id' => $report->vehicle_id,
+                'file_path'  => $fullUrl,
+                'type'       => 'InspectionReportImage',
+            ]);
         }
 
-        $this->generatePdf($report->id);
-
-        return response()->json([
-            'status'  => 'success',
-            'message' => 'Report created successfully',
-            'data'    => $report->fresh(),
-        ], 201);
+        $report->update(['damage_file_path' => $fullUrl]);
     }
+
+  
+    $this->generatePdf($report->id);
+
+    return response()->json([
+        'status'  => 'success',
+        'message' => 'Report created successfully',
+        'data'    => $report->load('fields.images'),
+    ], 201);
+}
+
 
     public function storeImages(Request $request)
     {
@@ -179,67 +204,108 @@ class InspectionReportController extends Controller
             'data'    => $uploaded,
         ], 201);
     }
-    public function update(Request $request, $id)
-    {
-        $report = VehicleInspectionReport::findOrFail($id);
+  public function update(Request $request, $id)
+{
+    $report = VehicleInspectionReport::findOrFail($id);
 
-        $rules = [
-            'vehicle_id'             => 'nullable|exists:vehicles,id',
-            'inspection_enquiry_id'  => 'nullable|exists:inspection_enquiries,id',
-            'make'                   => 'required',
-            'model'                  => 'required',
-            'year'                   => 'required|integer',
-            'vin'                    => 'nullable|string',
-            'engine_cc'              => 'nullable|string',
-            'horsepower'             => 'nullable|string',
-            'noOfCylinders'          => 'nullable|integer',
-            'transmission'           => 'nullable|string',
-            'color'                  => 'nullable|string',
-            'body_type'              => 'nullable|string',
-            'specs'                  => 'nullable|string',
-            'odometer'               => 'nullable|numeric',
-            'paintCondition'         => 'nullable|array',
-            'frontLeftTire'          => 'nullable|array',
-            'rearRightTire'          => 'nullable|array',
-            'seatsCondition'         => 'nullable|array',
-            'brakeDiscs'             => 'nullable|array',
-            'shockAbsorberOperation' => 'nullable|array',
-            'notes'                  => 'nullable|string',
-        ];
+    $rules = [
+        'vehicle_id'             => 'nullable|exists:vehicles,id',
+        'inspection_enquiry_id'  => 'nullable|exists:inspection_enquiries,id',
+        'make'                   => 'required',
+        'model'                  => 'required',
+        'year'                   => 'required|integer',
+        'vin'                    => 'nullable|string',
+        'engine_cc'              => 'nullable|string',
+        'horsepower'             => 'nullable|string',
+        'noOfCylinders'          => 'nullable|integer',
+        'transmission'           => 'nullable|string',
+        'color'                  => 'nullable|string',
+        'body_type'              => 'nullable|string',
+        'specs'                  => 'nullable|string',
+        'odometer'               => 'nullable|numeric',
+        'notes'                  => 'nullable|string',
+        'damage_image'           => 'nullable|file|image',
+    ];
 
-        $validated = $request->validate($rules);
+    $validated = $request->validate($rules);
 
-        $updateData = $request->except('damage_image');
-        $report->update($updateData);
-        if ($request->hasFile('damage_image')) {
-            $file   = $request->file('damage_image');
-            $pngDir = 'damage-assessments';
-            if (! Storage::disk('public')->exists($pngDir)) {
-                Storage::disk('public')->makeDirectory($pngDir);
-            }
-            $pngFilename = 'damage-image-' . $report->id . '-' . now()->format('Ymd_His') . '.' . $file->getClientOriginalExtension();
-            $pngPath     = $pngDir . '/' . $pngFilename;
-            Storage::disk('public')->putFileAs($pngDir, $file, $pngFilename);
-             $fullPngPath = asset('storage/' . $pngPath);
-            if ($report->vehicle_id) {
-                VehicleDocument::create([
-                    'vehicle_id' => $report->vehicle_id,
-                    'file_path'  => $fullPngPath,
-                    'type'       => 'InspectionReportImage',
+    
+    $updateData = $request->except(['damage_image', 'inspection_image_fields']);
+    $report->update($updateData);
+
+    
+    if (!empty($request->inspection_image_fields)) {
+        foreach ($request->inspection_image_fields as $fieldName => $fieldImages) {
+            $field = InspectionField::where('vehicle_inspection_report_id', $report->id)
+                ->where('name', $fieldName)
+                ->first();
+
+            
+            if (!$field) {
+                $field = InspectionField::create([
+                    'vehicle_inspection_report_id' => $report->id,
+                    'name' => $fieldName,
                 ]);
             }
-            $report->update(['damage_file_path' => $fullPngPath]);
+
+            if (!empty($fieldImages)) {
+                $oldImages = InspectionFieldImage::where('inspection_field_id', $field->id)->get();
+                foreach ($oldImages as $img) {
+                    $relativePath = str_replace(asset('storage/'), '', $img->path);
+                    Storage::disk('public')->delete($relativePath);
+                    $img->delete();
+                }
+
+                foreach ($fieldImages as $imageFile) {
+                    $path = $imageFile->store('inspection_field_images', 'public');
+                    InspectionFieldImage::create([
+                        'inspection_field_id' => $field->id,
+                        'path' => asset('storage/' . $path),
+                    ]);
+                }
+            }
+        }
+    }
+
+    
+    if ($request->hasFile('damage_image')) {
+        $file = $request->file('damage_image');
+        $dir = 'damage-assessments';
+
+        if (!Storage::disk('public')->exists($dir)) {
+            Storage::disk('public')->makeDirectory($dir);
+        }
+        if ($report->damage_file_path) {
+            $oldPath = str_replace(asset('storage/'), '', $report->damage_file_path);
+            Storage::disk('public')->delete($oldPath);
         }
 
-        // 🟢 Regenerate PDF after update
-        $this->generatePdf($report->id);
+        $filename = 'damage-image-' . $report->id . '-' . now()->format('Ymd_His') . '.' . $file->getClientOriginalExtension();
+        $path = $dir . '/' . $filename;
 
-        return response()->json([
-            'status'  => 'success',
-            'message' => 'Report updated successfully',
-            'data'    => $report->fresh(),
-        ]);
+        Storage::disk('public')->putFileAs($dir, $file, $filename);
+        $fullUrl = asset('storage/' . $path);
+
+        if ($report->vehicle_id) {
+            VehicleDocument::create([
+                'vehicle_id' => $report->vehicle_id,
+                'file_path'  => $fullUrl,
+                'type'       => 'InspectionReportImage',
+            ]);
+        }
+
+        $report->update(['damage_file_path' => $fullUrl]);
     }
+
+   
+    $this->generatePdf($report->id);
+
+    return response()->json([
+        'status'  => 'success',
+        'message' => 'Report updated successfully',
+        'data'    => $report->load('fields.images'),
+    ]);
+}
 
     // damage report
     public function getDamageTypes()

@@ -82,7 +82,10 @@ class VehicleInspectionReport extends Model
         return $this->hasMany(CarDamage::class, 'inspection_id');
     }
  
-
+    public function fields()
+    {
+        return $this->hasMany(InspectionField::class, 'vehicle_inspection_report_id');
+    }
 
 
 }
