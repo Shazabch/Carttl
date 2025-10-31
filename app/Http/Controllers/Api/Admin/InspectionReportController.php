@@ -584,8 +584,24 @@ public function store(Request $request)
 {
     try {
         $reportInView = VehicleInspectionReport::findOrFail($reportId);
+    
+    
+
+    $damageTypes = [
+        'a' => ['name' => 'Scratch',       'color' => '#FF0000'],
+        'b' => ['name' => 'Multiple Scratches', 'color' => '#FF7F00'],
+        'c' => ['name' => 'Cosmetic Paint', 'color' => '#FFD700'],
+        'd' => ['name' => 'Chip',          'color' => '#00AA00'],
+        'e' => ['name' => 'Dent',          'color' => '#0000FF'],
+        'f' => ['name' => 'Repainted',     'color' => '#4B0082'],
+        'g' => ['name' => 'Repaired',      'color' => '#B87BD2'],
+        'h' => ['name' => 'Foiled Wrap',   'color' => '#706C6E'],
+        'i' => ['name' => 'Full PPF',      'color' => '#D80881'],
+        'j' => ['name' => 'Rust',          'color' => '#6B5407'],
+    ];
+
+    $damages = CarDamage::where('inspection_id', $reportInView->id)->get();
         
-        // --- Delete old files if exist ---
         if ($reportInView->file_path && Storage::disk('public')->exists($reportInView->file_path)) {
             Storage::disk('public')->delete($reportInView->file_path);
             VehicleDocument::where('file_path', $reportInView->file_path)->delete();
@@ -619,6 +635,7 @@ public function store(Request $request)
         $pdf = Pdf::loadView('pdf.inspection.report-pdf-template', [
             'reportInView'         => $reportInView,
             'damageAssessmentImage' => $damageAssessmentImage, // send to PDF template
+            'damages' => $damages, // send to PDF template
         ])->setPaper('a4', 'portrait');
         
         $filename = 'inspection_' . $reportInView->id . '_' . now()->format('Ymd_His') . '.pdf';
@@ -653,6 +670,7 @@ public function store(Request $request)
         ], 500);
     }
 }
+
 
 
     public function downloadReport($id)

@@ -648,7 +648,74 @@
 @endif
 
         </div>
-
+         {{-- damage summery--}}
+         <div class="report-card">
+    <div class="card-header">
+        <i class="fa-solid fa-car-burst"></i> Damage Assessment Report
+    </div>
+    <div class="card-body">
+        @if($damages->count())
+            <table class="details-table" style="width: 100%; border-collapse: collapse;">
+                <thead>
+                    <tr style="background: #333; color: #fff;">
+                        <th style="padding: 8px; text-align: left;">#</th>
+                        <th style="padding: 8px; text-align: left;">Type</th>
+                        <th style="padding: 8px; text-align: left;">Body Part</th>
+                        <th style="padding: 8px; text-align: left;">Severity</th>
+                        <th style="padding: 8px; text-align: left;">Remarks</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach($damages as $index => $damage)
+                        @php
+                            $typeInfo = $damageTypes[$damage->type] ?? ['name' => 'Unknown', 'color' => '#999'];
+                            $badgeColor = match(strtolower($damage->severity)) {
+                                'minor' => '#28a745',
+                                'moderate' => '#ffc107',
+                                'major', 'severe' => '#dc3545',
+                                default => '#17a2b8'
+                            };
+                        @endphp
+                        <tr style="border-bottom: 1px solid #ccc;">
+                            <td style="padding: 8px;">{{ $index + 1 }}</td>
+                            <td style="padding: 8px;">
+                                <span style="
+                                    display:inline-block;
+                                    width:14px; height:14px;
+                                    background:{{ $typeInfo['color'] }};
+                                    border-radius:50%;
+                                    margin-right:5px;
+                                "></span>
+                                <strong>{{ strtoupper($damage->type) }}</strong>
+                                <small style="color:#666;">({{ $typeInfo['name'] }})</small>
+                            </td>
+                            <td style="padding: 8px;">{{ $damage->body_part }}</td>
+                            <td style="padding: 8px;">
+                                <span style="
+                                    background: {{ $badgeColor }};
+                                    color: white;
+                                    border-radius: 10px;
+                                    padding: 4px 8px;
+                                    font-size: 12px;
+                                ">
+                                    {{ ucfirst($damage->severity) }}
+                                </span>
+                            </td>
+                            <td style="padding: 8px;">{{ $damage->remark ?: 'N/A' }}</td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        @else
+            <div class="damage-assessment">
+                <div class="status-pill status-good">
+                    <i class="fas fa-check-circle"></i>
+                    No Damages Recorded
+                </div>
+            </div>
+        @endif
+    </div>
+</div>
 
         {{-- Engine & Transmission Section --}}
         <div class="report-card">
