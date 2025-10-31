@@ -152,54 +152,79 @@ public function store(Request $request)
 }
 
 
- public function storeVehicleImages(Request $request)
+public function storeVehicleImages(Request $request)
 {
     $validated = $request->validate([
         'vehicle_inspection_report_id' => 'required|exists:vehicle_inspection_reports,id',
-        'images'                       => 'required|array|min:1',
-        'images.*'                     => 'file|mimes:jpg,jpeg,png,webp', 
+        'image_ids'                    => 'nullable|array',        
+        'image_ids.*'                  => 'integer|exists:vehicle_inspection_images,id',
+        'images'                       => 'nullable|array',       
+        'images.*'                     => 'file|mimes:jpg,jpeg,png,webp',
         'is_cover'                     => 'nullable|array',
         'is_cover.*'                   => 'boolean',
     ]);
 
     $reportId = $validated['vehicle_inspection_report_id'];
+
     $existingImages = VehicleInspectionImage::where('vehicle_inspection_report_id', $reportId)->get();
 
-    foreach ($existingImages as $image) {
+    $keepIds = $validated['image_ids'] ?? [];
+    $deleteImages = $existingImages->whereNotIn('id', $keepIds);
+
+    foreach ($deleteImages as $image) {
         if (\Storage::disk('public')->exists($image->path)) {
             \Storage::disk('public')->delete($image->path);
         }
         $image->delete();
     }
 
-    $uploaded  = [];
+    $uploaded = [];
     $sortOrder = 1;
 
-    foreach ($request->file('images') as $index => $file) {
-        $path = $file->store('inspection_images', 'public');
+    foreach ($keepIds as $index => $id) {
+        $img = VehicleInspectionImage::find($id);
+        if ($img) {
+            $img->update([
+                'sort_order' => $sortOrder++,
+                'is_cover'   => $request->is_cover[$index] ?? $img->is_cover,
+            ]);
 
-        $image = VehicleInspectionImage::create([
-            'vehicle_inspection_report_id' => $reportId,
-            'path'                         => $path,
-            'is_cover'                     => $request->is_cover[$index] ?? false,
-            'sort_order'                   => $sortOrder++,
-        ]);
-
-        $uploaded[] = [
-            'id'        => $image->id,
-            'url'       => asset('storage/' . $path),
-            'is_cover'  => $image->is_cover,
-            'sort_order'=> $image->sort_order,
-        ];
+            $uploaded[] = [
+                'id'         => $img->id,
+                'url'        => asset('storage/' . $img->path),
+                'is_cover'   => $img->is_cover,
+                'sort_order' => $img->sort_order,
+            ];
+        }
     }
 
+    if ($request->hasFile('images')) {
+        foreach ($request->file('images') as $index => $file) {
+            $path = $file->store('inspection_images', 'public');
+
+            $newImage = VehicleInspectionImage::create([
+                'vehicle_inspection_report_id' => $reportId,
+                'path'                         => $path,
+                'is_cover'                     => $request->is_cover[$index] ?? false,
+                'sort_order'                   => $sortOrder++,
+            ]);
+
+            $uploaded[] = [
+                'id'         => $newImage->id,
+                'url'        => asset('storage/' . $path),
+                'is_cover'   => $newImage->is_cover,
+                'sort_order' => $newImage->sort_order,
+            ];
+        }
+    }
 
     return response()->json([
         'status'  => 'success',
-        'message' => 'Existing images deleted and new images uploaded successfully.',
+        'message' => 'Images updated successfully — old removed, kept retained, and new added.',
         'data'    => $uploaded,
-    ], 201);
+    ], 200);
 }
+
 
 
     public function removeVehicleImages(Request $request)
@@ -650,9 +675,11 @@ public function store(Request $request)
 
         $pdf = Pdf::loadView('pdf.inspection.report-pdf-template', [
             'reportInView'         => $reportInView,
-            'damageAssessmentImage' => $damageAssessmentImage, // send to PDF template
-            'damages' => $damages, // send to PDF template
+            'damageAssessmentImage' => $damageAssessmentImage, 
+            'damageTypes' => $damageTypes, 
+            'damages' => $damages, 
         ])->setPaper('a4', 'portrait');
+        
         
         $filename = 'inspection_' . $reportInView->id . '_' . now()->format('Ymd_His') . '.pdf';
         $filepath = $directory . '/' . $filename;
