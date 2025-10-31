@@ -153,39 +153,40 @@ public function store(Request $request)
 }
 
 
-    public function storeVehicleImages(Request $request)
-    {
-        $validated = $request->validate([
-            'vehicle_inspection_report_id' => 'required|exists:vehicle_inspection_reports,id',
-            'images'                       => 'required|array|min:1',
-            'images.*'                     => 'file|mimes:jpg,jpeg,png,webp',
-            'is_cover'                     => 'nullable|boolean',
+   public function storeVehicleImages(Request $request)
+{
+    $validated = $request->validate([
+        'vehicle_inspection_report_id' => 'required|exists:vehicle_inspection_reports,id',
+        'images'                       => 'required|array|min:1',
+        'images.*'                     => 'file|mimes:jpg,jpeg,png,webp',
+        'is_cover'                     => 'nullable|array',
+        'is_cover.*'                   => 'boolean',
+    ]);
+
+    $uploaded  = [];
+    $sortOrder = 1;
+
+    foreach ($request->file('images') as $index => $file) {
+        $path = $file->store('inspection_images', 'public');
+        $fullPath = asset('storage/' . $path);
+
+        $image = VehicleInspectionImage::create([
+            'vehicle_inspection_report_id' => $validated['vehicle_inspection_report_id'],
+            'path'                         => $path,
+            'is_cover'                     => $request->is_cover[$index] ?? false,
+            'sort_order'                   => $sortOrder++,
         ]);
 
-        $uploaded  = [];
-        $sortOrder = 1;
-
-        foreach ($request->file('images') as $file) {
-
-            $path = $file->store('inspection_images', 'public');
-             $fullPath = asset('storage/' . $path);
-
-            $image = VehicleInspectionImage::create([
-                'vehicle_inspection_report_id' => $validated['vehicle_inspection_report_id'],
-                'path'                         => $path,
-                'is_cover'                     => $request->get('is_cover', false),
-                'sort_order'                   => $sortOrder++,
-            ]);
-
-            $uploaded[] = $image;
-        }
-
-        return response()->json([
-            'status'  => 'success',
-            'message' => 'Images uploaded successfully.',
-            'data'    => $uploaded,
-        ], 201);
+        $uploaded[] = $image;
     }
+
+    return response()->json([
+        'status'  => 'success',
+        'message' => 'Images uploaded successfully.',
+        'data'    => $uploaded,
+    ], 201);
+}
+
     public function removeVehicleImages(Request $request)
 {
     $validated = $request->validate([
