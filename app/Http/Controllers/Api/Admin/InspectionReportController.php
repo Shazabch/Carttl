@@ -105,7 +105,6 @@ public function store(Request $request)
         'specs'                  => 'nullable|string',
         'odometer'               => 'nullable|numeric',
         'notes'                  => 'nullable|string',
-
         'damage_image'           => 'nullable|file|image',
     ];
 
@@ -419,14 +418,17 @@ public function store(Request $request)
         'damages.*.x'         => 'required|numeric',
         'damages.*.y'         => 'required|numeric',
         'damages.*.remark'    => 'nullable|string',
+        'damage_image'        => 'nullable|file',
     ]);
 
+    // ✅ Find the inspection report
     $inspection = VehicleInspectionReport::findOrFail($validated['inspection_id']);
 
+    // ✅ Delete old damage records for this inspection
     CarDamage::where('inspection_id', $inspection->id)->delete();
 
+    // ✅ Create new damages
     $savedDamages = [];
-
     foreach ($validated['damages'] as $damageData) {
         $damage = CarDamage::create([
             'inspection_id' => $inspection->id,
@@ -441,9 +443,37 @@ public function store(Request $request)
         $savedDamages[] = $damage;
     }
 
+   
+    if ($request->hasFile('damage_image')) {
+        $file = $request->file('damage_image');
+        $dir  = 'damage-assessments';
+
+        if (!Storage::disk('public')->exists($dir)) {
+            Storage::disk('public')->makeDirectory($dir);
+        }
+
+        $filename = 'damage-image-' . $inspection->id . '-' . now()->format('Ymd_His') . '.' . $file->getClientOriginalExtension();
+        $path     = $dir . '/' . $filename;
+
+        Storage::disk('public')->putFileAs($dir, $file, $filename);
+        $fullUrl = asset('storage/' . $path);
+
+       
+        if ($inspection->vehicle_id) {
+            VehicleDocument::create([
+                'vehicle_id' => $inspection->vehicle_id,
+                'file_path'  => $fullUrl,
+                'type'       => 'InspectionReportImage',
+            ]);
+        }
+
+        
+        $inspection->update(['damage_file_path' => $fullUrl]);
+    }
+
     return response()->json([
         'status'  => 'success',
-        'message' => 'Damages replaced successfully.',
+        'message' => 'Damages and image saved successfully.',
         'data'    => $savedDamages,
     ], 201);
 }

@@ -216,6 +216,59 @@ if ($request->hasFile('images')) {
             'data' => $vehicle->load('brand', 'vehicleModel', 'features', 'images')
         ]);
     }
+    
+
+    public function addImages(Request $request, $vehicleId)
+{
+    $vehicle = Vehicle::findOrFail($vehicleId);
+
+    $validated = $request->validate([
+        'images'   => 'required|array|min:1',
+        'images.*' => 'file|image',
+    ]);
+
+    $uploaded = [];
+
+    foreach ($request->file('images') as $file) {
+        $path = $file->store('vehicle_images', 'public');
+        $fullUrl = asset('storage/' . $path);
+
+        $image = $vehicle->images()->create([
+            'path' => $fullUrl,
+        ]);
+
+        $uploaded[] = $image;
+    }
+
+    return response()->json([
+        'status' => 'success',
+        'message' => 'Images uploaded successfully.',
+        'data' => $uploaded,
+    ], 201);
+}
+    
+public function removeImages(Request $request)
+{
+    $validated = $request->validate([
+        'image_ids' => 'required|array|min:1',
+        'image_ids.*' => 'integer|exists:vehicle_images,id',
+    ]);
+
+    $images = VehicleImage::whereIn('id', $validated['image_ids'])->get();
+
+    foreach ($images as $image) {
+        if ($image->path) {
+            $relativePath = str_replace(asset('storage') . '/', '', $image->path);
+            Storage::disk('public')->delete($relativePath);
+        }
+        $image->delete();
+    }
+
+    return response()->json([
+        'status' => 'success',
+        'message' => count($images) . ' images deleted successfully.',
+    ]);
+}
 
     public function update(Request $request, $id)
     {
