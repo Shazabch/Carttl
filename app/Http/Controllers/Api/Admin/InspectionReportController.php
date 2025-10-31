@@ -444,21 +444,30 @@ public function store(Request $request)
     }
 
    
-    if ($request->hasFile('damage_image')) {
-        $file = $request->file('damage_image');
-        $dir  = 'damage-assessments';
+   if ($request->hasFile('damage_image')) {
+        $dir = 'damage-assessments';
 
         if (!Storage::disk('public')->exists($dir)) {
             Storage::disk('public')->makeDirectory($dir);
         }
 
+        // ✅ Delete old image if exists
+        if ($inspection->damage_file_path) {
+            $oldPath = str_replace(asset('storage/'), '', $inspection->damage_file_path);
+            if (Storage::disk('public')->exists($oldPath)) {
+                Storage::disk('public')->delete($oldPath);
+            }
+        }
+
+        // ✅ Save new image
+        $file = $request->file('damage_image');
         $filename = 'damage-image-' . $inspection->id . '-' . now()->format('Ymd_His') . '.' . $file->getClientOriginalExtension();
-        $path     = $dir . '/' . $filename;
+        $path = $dir . '/' . $filename;
 
         Storage::disk('public')->putFileAs($dir, $file, $filename);
         $fullUrl = asset('storage/' . $path);
 
-       
+        // ✅ Save to vehicle document if linked
         if ($inspection->vehicle_id) {
             VehicleDocument::create([
                 'vehicle_id' => $inspection->vehicle_id,
@@ -467,7 +476,7 @@ public function store(Request $request)
             ]);
         }
 
-        
+        // ✅ Update inspection record
         $inspection->update(['damage_file_path' => $fullUrl]);
     }
 
