@@ -8,8 +8,10 @@ use App\Models\Feature;
 use App\Models\FuelType;
 use App\Models\Transmission;
 use App\Models\Vehicle;
+use App\Models\VehicleImage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 class VehicleManagementController extends Controller
