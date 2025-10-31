@@ -451,7 +451,6 @@ public function store(Request $request)
             Storage::disk('public')->makeDirectory($dir);
         }
 
-        // ✅ Delete old image if exists
         if ($inspection->damage_file_path) {
             $oldPath = str_replace(asset('storage/'), '', $inspection->damage_file_path);
             if (Storage::disk('public')->exists($oldPath)) {
@@ -459,7 +458,6 @@ public function store(Request $request)
             }
         }
 
-        // ✅ Save new image
         $file = $request->file('damage_image');
         $filename = 'damage-image-' . $inspection->id . '-' . now()->format('Ymd_His') . '.' . $file->getClientOriginalExtension();
         $path = $dir . '/' . $filename;
@@ -467,7 +465,6 @@ public function store(Request $request)
         Storage::disk('public')->putFileAs($dir, $file, $filename);
         $fullUrl = asset('storage/' . $path);
 
-        // ✅ Save to vehicle document if linked
         if ($inspection->vehicle_id) {
             VehicleDocument::create([
                 'vehicle_id' => $inspection->vehicle_id,
@@ -476,7 +473,7 @@ public function store(Request $request)
             ]);
         }
 
-        // ✅ Update inspection record
+      
         $inspection->update(['damage_file_path' => $fullUrl]);
     }
 
@@ -494,7 +491,7 @@ public function store(Request $request)
             'damage_ids.*' => 'integer|exists:car_damages,id',
         ]);
 
-        $deletedCount = \App\Models\CarDamage::whereIn('id', $validated['damage_ids'])->delete();
+        $deletedCount = CarDamage::whereIn('id', $validated['damage_ids'])->delete();
 
         return response()->json([
             'status'  => 'success',

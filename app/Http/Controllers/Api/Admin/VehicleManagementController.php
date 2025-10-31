@@ -126,7 +126,7 @@ public function getTags()
 
     public function show($id)
     {
-        $vehicle = Vehicle::with(['brand', 'vehicleModel', 'fuelType', 'transmission', 'bodyType'])
+        $vehicle = Vehicle::with(['brand','images', 'vehicleModel', 'fuelType', 'transmission', 'bodyType'])
             ->find($id);
 
         if (!$vehicle) {
@@ -218,34 +218,41 @@ if ($request->hasFile('images')) {
     }
     
 
-    public function addImages(Request $request, $vehicleId)
+   public function addImages(Request $request, $vehicleId)
 {
     $vehicle = Vehicle::findOrFail($vehicleId);
 
     $validated = $request->validate([
-        'images'   => 'required|array|min:1',
-        'images.*' => 'file|image',
+        'images'        => 'required|array|min:1',
+        'images.*'      => 'file|image',
+        'is_cover'      => 'nullable|array',
+        'is_cover.*'    => 'nullable|boolean',
     ]);
 
     $uploaded = [];
 
-    foreach ($request->file('images') as $file) {
+    $images = $request->file('images');
+    $isCovers = $request->input('is_cover', []);
+
+    foreach ($images as $index => $file) {
         $path = $file->store('vehicle_images', 'public');
         $fullUrl = asset('storage/' . $path);
 
         $image = $vehicle->images()->create([
-            'path' => $fullUrl,
+            'path'     => $fullUrl,
+            'is_cover' => isset($isCovers[$index]) ? (bool)$isCovers[$index] : false,
         ]);
 
         $uploaded[] = $image;
     }
 
     return response()->json([
-        'status' => 'success',
+        'status'  => 'success',
         'message' => 'Images uploaded successfully.',
-        'data' => $uploaded,
+        'data'    => $uploaded,
     ], 201);
 }
+
     
 public function removeImages(Request $request)
 {

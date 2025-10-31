@@ -150,8 +150,8 @@ Route::prefix('admin')
             Route::get('show/{id}', 'show');
             Route::post('create', 'store');
             Route::post('update/{id}', 'update');
-            Route::post('images/add/{id}', 'update');
-            Route::post('update/{id}', 'update');
+            Route::post('images/add/{id}', 'addImages');
+            Route::post('images/remove/{id}', 'removeImages');
             Route::delete('delete/{id}', 'destroy');
         });
 
