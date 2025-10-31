@@ -687,7 +687,7 @@
                                     margin-right:5px;
                                 "></span>
                                 <strong>{{ strtoupper($damage->type) }}</strong>
-                                <small style="color:#666;">({{ $typeInfo['name'] }})</small>
+                                
                             </td>
                             <td style="padding: 8px;">{{ $damage->body_part }}</td>
                             <td style="padding: 8px;">

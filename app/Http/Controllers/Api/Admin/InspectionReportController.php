@@ -152,39 +152,55 @@ public function store(Request $request)
 }
 
 
-   public function storeVehicleImages(Request $request)
+ public function storeVehicleImages(Request $request)
 {
     $validated = $request->validate([
         'vehicle_inspection_report_id' => 'required|exists:vehicle_inspection_reports,id',
         'images'                       => 'required|array|min:1',
-        'images.*'                     => 'file|mimes:jpg,jpeg,png,webp',
+        'images.*'                     => 'file|mimes:jpg,jpeg,png,webp', 
         'is_cover'                     => 'nullable|array',
         'is_cover.*'                   => 'boolean',
     ]);
+
+    $reportId = $validated['vehicle_inspection_report_id'];
+    $existingImages = VehicleInspectionImage::where('vehicle_inspection_report_id', $reportId)->get();
+
+    foreach ($existingImages as $image) {
+        if (\Storage::disk('public')->exists($image->path)) {
+            \Storage::disk('public')->delete($image->path);
+        }
+        $image->delete();
+    }
 
     $uploaded  = [];
     $sortOrder = 1;
 
     foreach ($request->file('images') as $index => $file) {
         $path = $file->store('inspection_images', 'public');
-        $fullPath = asset('storage/' . $path);
 
         $image = VehicleInspectionImage::create([
-            'vehicle_inspection_report_id' => $validated['vehicle_inspection_report_id'],
+            'vehicle_inspection_report_id' => $reportId,
             'path'                         => $path,
             'is_cover'                     => $request->is_cover[$index] ?? false,
             'sort_order'                   => $sortOrder++,
         ]);
 
-        $uploaded[] = $image;
+        $uploaded[] = [
+            'id'        => $image->id,
+            'url'       => asset('storage/' . $path),
+            'is_cover'  => $image->is_cover,
+            'sort_order'=> $image->sort_order,
+        ];
     }
+
 
     return response()->json([
         'status'  => 'success',
-        'message' => 'Images uploaded successfully.',
+        'message' => 'Existing images deleted and new images uploaded successfully.',
         'data'    => $uploaded,
     ], 201);
 }
+
 
     public function removeVehicleImages(Request $request)
 {
