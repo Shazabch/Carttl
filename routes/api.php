@@ -131,7 +131,7 @@ Route::prefix('admin')
             Route::delete('/makes/delete/{id}', 'destroy');
             Route::delete('/model/delete/{id}', 'deleteModel');
         });
-       
+
         //Model By Make
         Route::controller(MakeController::class)->group(function () {
             Route::get('/make-models/{id}', 'modelsByMake');
@@ -160,7 +160,7 @@ Route::prefix('admin')
             Route::get('/inspection-reports', 'index');
             Route::get('/inspection-reports/show/{id}', 'show');
             Route::post('/inspection-reports/create', 'store');
-            
+
             Route::post('/inspection-reports/upload-images', 'storeVehicleImages');
             Route::post('/inspection-reports/remove-images', 'removeVehicleImages');
 
@@ -175,6 +175,7 @@ Route::prefix('admin')
             Route::delete('/inspection-reports/delete/{id}', 'destroy');
             Route::post('/inspection-reports/generate-pdf/{id}', 'generatePdf');
             Route::post('/inspection-reports/share-link/{id}', 'share');
+            Route::post('/inspection-reports/share-link2/{id}', 'showPublicReport');
             Route::get('/inspection-reports/download/{id}', 'downloadReport');
         });
 
@@ -186,17 +187,17 @@ Route::prefix('admin')
             Route::delete('/notifications/clear', 'clearAll');
         });
 
-       
-        Route::controller(AgentManagementController::class)->group(function () {      
+
+        Route::controller(AgentManagementController::class)->group(function () {
             Route::get('/agents', 'index');
             Route::post('/agents/create', 'store');
             Route::get('/agents/show/{id}', 'show');
             Route::post('/agents/update/{id}', 'update');
-            Route::post('/agents/assign-customers/{id}', 'assignCustomers'); 
-            Route::get('/unassigned-customers', 'unassignedCustomers');      
+            Route::post('/agents/assign-customers/{id}', 'assignCustomers');
+            Route::get('/unassigned-customers', 'unassignedCustomers');
             Route::delete('/agents/delete/{id}', 'destroy');
         });
-        
+
         //Profile
         Route::controller(ProfileController::class)->group(function () {
             Route::get('/profile', 'index');
@@ -212,7 +213,7 @@ Route::prefix('admin')
 // Customer Panel Routes
 Route::controller(VehicleController::class)->group(function () {
     //Vehicles
-  
+
     Route::get('featured-vehicles', 'featuredVehicles')->name('featured.vehicles');
     Route::get('vehicles', 'getBuyVehicles')->name('vehicles');
     Route::get('sold-vehicles', 'getSoldVehicles')->name('sold.vehicles');
