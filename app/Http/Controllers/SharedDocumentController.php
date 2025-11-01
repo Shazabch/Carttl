@@ -36,7 +36,7 @@ class SharedDocumentController extends Controller
     public function showPublicReport(VehicleInspectionReport $report)
     {
 
-        return view('pdf.inspection.report-pdf-template', [
+        return view('admin.inspection.report-pdf-template-public', [
             'reportInView' => $report
         ]);
     }

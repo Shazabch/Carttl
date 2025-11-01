@@ -16,9 +16,9 @@
     <style>
         /* --- Customizable CSS Variables --- */
         :root {
-            --primary-color: #d7b236;
-            --primary-light: rgba(215, 178, 54, 0.1);
-            --primary-dark: #b5972d;
+             --primary-color: #c9da29;
+            --primary-light: rgba(201, 218, 41, 0.15);
+            --primary-dark: #a8b622;
 
             --font-family: 'Inter', 'Helvetica', sans-serif;
             --border-color: #e0e0e0;

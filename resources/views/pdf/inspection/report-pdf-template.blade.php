@@ -492,7 +492,6 @@
             font-size: 14px;
             margin: 0;
         }
-
     </style>
 </head>
 
@@ -522,7 +521,7 @@
             </table>
         </div>
         @php
- // These variables are now only needed for the hardcoded logic inside the template.
+        // These variables are now only needed for the hardcoded logic inside the template.
         $columnsPerRow = 5;
 
         // It's still helpful to have the icons in one place.
@@ -603,7 +602,7 @@
         ];
         @endphp
 
- {{-- Basic Vehicle Information Card - Show ALL fields --}}
+        {{-- Basic Vehicle Information Card - Show ALL fields --}}
         <div class="report-card">
             <div class="card-header"><i class="fa-solid fa-car"></i>Basic Vehicle Information</div>
             <div class="card-body">
@@ -712,7 +711,7 @@
             </div>
         </div>
         {{-- Exterior Section --}}
-       <div class="report-card">
+        <div class="report-card">
             <div class="card-header"><i class="fa-solid fa-brush"></i>Exterior</div>
             <div class="card-body">
                 <table class="details-table">
@@ -739,49 +738,49 @@
 
         {{-- Damage Assessment Section --}}
         <div class="report-card">
-          @if($reportInView->damage_file_path && file_exists(public_path(parse_url($reportInView->damage_file_path, PHP_URL_PATH))))
-    @php
-        $imageData = base64_encode(file_get_contents(public_path(parse_url($reportInView->damage_file_path, PHP_URL_PATH))));
-        $mimeType = mime_content_type(public_path(parse_url($reportInView->damage_file_path, PHP_URL_PATH)));
-    @endphp
-    <img src="data:{{ $mimeType }};base64,{{ $imageData }}" style="max-width: 100%; height: auto;">
-@else
-    <div class="damage-assessment">
-        <div class="status-pill status-good">
-            <i class="fas fa-check-circle"></i>
-            No Damage Reported or Image Not Found
-        </div>
-    </div>
-@endif
+            @if($reportInView->damage_file_path && file_exists(public_path(parse_url($reportInView->damage_file_path, PHP_URL_PATH))))
+            @php
+            $imageData = base64_encode(file_get_contents(public_path(parse_url($reportInView->damage_file_path, PHP_URL_PATH))));
+            $mimeType = mime_content_type(public_path(parse_url($reportInView->damage_file_path, PHP_URL_PATH)));
+            @endphp
+            <img src="data:{{ $mimeType }};base64,{{ $imageData }}" style="max-width: 100%; height: auto;">
+            @else
+            <div class="damage-assessment">
+                <div class="status-pill status-good">
+                    <i class="fas fa-check-circle"></i>
+                    No Damage Reported or Image Not Found
+                </div>
+            </div>
+            @endif
 
         </div>
-         {{-- damage summery--}}
-         <div class="report-card">
-    <div class="card-header">
-        <i class="fa-solid fa-car-burst"></i> Damage Assessment Report
-    </div>
-    <div class="card-body">
-        @if($reportInView->damages->count())
-            <table class="details-table" style="width: 100%; border-collapse: collapse;">
-                <thead>
-                    <tr style="background: #333; color: #fff;">
-                        <th style="padding: 8px; text-align: left;">#</th>
-                        <th style="padding: 8px; text-align: left;">Type</th>
-                        <th style="padding: 8px; text-align: left;">Body Part</th>
-                        <th style="padding: 8px; text-align: left;">Severity</th>
-                        <th style="padding: 8px; text-align: left;">Remarks</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach($reportInView->damages as $index => $damage)
+        {{-- damage summery--}}
+        <div class="report-card">
+            <div class="card-header">
+                <i class="fa-solid fa-car-burst"></i> Damage Assessment Report
+            </div>
+            <div class="card-body">
+                @if($reportInView->damages->count())
+                <table class="details-table" style="width: 100%; border-collapse: collapse;">
+                    <thead>
+                        <tr style="background: #333; color: #fff;">
+                            <th style="padding: 8px; text-align: left;">#</th>
+                            <th style="padding: 8px; text-align: left;">Type</th>
+                            <th style="padding: 8px; text-align: left;">Body Part</th>
+                            <th style="padding: 8px; text-align: left;">Severity</th>
+                            <th style="padding: 8px; text-align: left;">Remarks</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach($reportInView->damages as $index => $damage)
                         @php
-                            $typeInfo = $damageTypes[$damage->type] ?? ['name' => 'Unknown', 'color' => '#999'];
-                            $badgeColor = match(strtolower($damage->severity)) {
-                                'minor' => '#28a745',
-                                'moderate' => '#ffc107',
-                                'major', 'severe' => '#dc3545',
-                                default => '#17a2b8'
-                            };
+                        $typeInfo = $damageTypes[$damage->type] ?? ['name' => 'Unknown', 'color' => '#999'];
+                        $badgeColor = match(strtolower($damage->severity)) {
+                        'minor' => '#28a745',
+                        'moderate' => '#ffc107',
+                        'major', 'severe' => '#dc3545',
+                        default => '#17a2b8'
+                        };
                         @endphp
                         <tr style="border-bottom: 1px solid #ccc;">
                             <td style="padding: 8px;">{{ $index + 1 }}</td>
@@ -810,19 +809,19 @@
                             </td>
                             <td style="padding: 8px;">{{ $damage->remark ?: 'N/A' }}</td>
                         </tr>
-                    @endforeach
-                </tbody>
-            </table>
-        @else
-            <div class="damage-assessment">
-                <div class="status-pill status-good">
-                    <i class="fas fa-check-circle"></i>
-                    No Damages Recorded
+                        @endforeach
+                    </tbody>
+                </table>
+                @else
+                <div class="damage-assessment">
+                    <div class="status-pill status-good">
+                        <i class="fas fa-check-circle"></i>
+                        No Damages Recorded
+                    </div>
                 </div>
+                @endif
             </div>
-        @endif
-    </div>
-</div>
+        </div>
 
         {{-- Engine & Transmission Section --}}
         <div class="report-card">
@@ -878,7 +877,7 @@
 
 
         {{-- Tires Section --}}
-         <div class="report-card">
+        <div class="report-card">
             <div class="card-header"><i class="fa-solid fa-circle-dot"></i>Tires</div>
             <div class="card-body">
                 <table class="details-table">
@@ -1101,7 +1100,7 @@
                 </table>
             </div>
         </div>
-         {{-- Final Conclusion Section --}}
+        {{-- Final Conclusion Section --}}
         <div class="report-card">
             <div class="card-header"><i class="fa-solid fa-clipboard"></i>Final Conclusion</div>
             <div class="card-body">
@@ -1139,7 +1138,7 @@
                     @foreach($vehicleImages->chunk(3) as $row)
                     <tr>
                         @foreach($row as $image)
-                        <td width="33.33%" valign="top" >
+                        <td width="33.33%" valign="top">
                             <div style="margin: 4px;">
                                 <img
                                     src="{{ storage_path('app/public/' . $image->path) }}"
