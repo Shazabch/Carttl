@@ -579,7 +579,7 @@ class InspectionReportController extends Controller
     public function showPublicReport(VehicleInspectionReport $report)
     {
         return response(
-            view('admin.inspection.report-pdf-template-public', [
+            view('admin.inspection.report-pdf-template', [
                 'reportInView' => $report
             ])->render(),
             200
