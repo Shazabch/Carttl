@@ -603,7 +603,114 @@
         ];
         @endphp
 
+ {{-- Basic Vehicle Information Card - Show ALL fields --}}
+        <div class="report-card">
+            <div class="card-header"><i class="fa-solid fa-car"></i>Basic Vehicle Information</div>
+            <div class="card-body">
+                <table class="details-table">
+                    <tr>
+                        <td>
+                            <div class="item-label"><i class="{{ $fieldIcons['make'] ?? 'fas fa-circle-notch' }}"></i> Make </div>
+                            <div class="item-value">{{ $reportInView->brand?->name ?? 'N/A' }}</div>
 
+                        </td>
+                        <td>
+                            <div class="item-label"><i class="{{ $fieldIcons['model'] ?? 'fas fa-circle-notch' }}"></i> Model</div>
+                            <div class="item-value">{{ $reportInView->vehicleModel?->name ?? 'N/A' }}</div>
+                        </td>
+                        <td>
+                            <div class="item-label"><i class="{{ $fieldIcons['trim'] ?? 'fas fa-circle-notch' }}"></i> Trim</div>
+                            <div class="item-value">{{ $reportInView->trim ?? 'N/A' }}</div>
+                        </td>
+
+                        <td>
+                            <div class="item-label"><i class="{{ $fieldIcons['year'] ?? 'fas fa-circle-notch' }}"></i> Year</div>
+                            <div class="item-value">{{ $reportInView->year ?? 'N/A' }}</div>
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="item-label"><i class="{{ $fieldIcons['vin'] ?? 'fas fa-circle-notch' }}"></i> VIN</div>
+                            <div class="item-value">{{ $reportInView->vin ?? 'N/A' }}</div>
+                        </td>
+                        <td>
+                            <div class="item-label"><i class="{{ $fieldIcons['odometer'] ?? 'fas fa-circle-notch' }}"></i> Mileage/Odometer</div>
+                            <div class="item-value">{{ $reportInView->odometer.' kms' ?? 'N/A' }}</div>
+                        </td>
+                        <td>
+                            <div class="item-label"><i class="{{ $fieldIcons['engine_cc'] ?? 'fas fa-circle-notch' }}"></i> Engine CC</div>
+                            <div class="item-value">{{ $reportInView->engine_cc ?? 'N/A' }}</div>
+                        </td>
+
+                        <td>
+                            <div class="item-label"><i class="{{ $fieldIcons['horsepower'] ?? 'fas fa-circle-notch' }}"></i> Horsepower</div>
+                            <div class="item-value">{{ $reportInView->horsepower ?? 'N/A' }}</div>
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="item-label"><i class="{{ $fieldIcons['color'] ?? 'fas fa-circle-notch' }}"></i> Color</div>
+                            <div class="item-value">{{ $reportInView->color ?? 'N/A' }}</div>
+                        </td>
+                        <td>
+                            <div class="item-label"><i class="{{ $fieldIcons['specs'] ?? 'fas fa-circle-notch' }}"></i> Specs</div>
+                            <div class="item-value">{{ $reportInView->specs ?? 'N/A' }}</div>
+                        </td>
+
+                        <td>
+                            <div class="item-label"><i class="{{ $fieldIcons['registeredEmirates'] ?? 'fas fa-circle-notch' }}"></i> Registered Emirates</div>
+                            <div class="item-value">{{ $reportInView->registerEmirates ?? 'N/A' }}</div>
+                        </td>
+                        <td>
+                            <div class="item-label"><i class="{{ $fieldIcons['body_type'] ?? 'fas fa-circle-notch' }}"></i> Body Type</div>
+                            <div class="item-value">{{ $reportInView->body_type ?? 'N/A' }}</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="item-label"><i class="{{ $fieldIcons['transmission'] ?? 'fas fa-circle-notch' }}"></i> Transmission</div>
+                            <div class="item-value">{{ $reportInView->transmission ?? 'N/A' }}</div>
+                        </td>
+                        <td>
+                            <div class="item-label"><i class="{{ $fieldIcons['warrantyAvailable'] ?? 'fas fa-circle-notch' }}"></i> Warranty Available</div>
+                            <div class="item-value">{{ $reportInView->warrantyAvailable ?? 'N/A' }}</div>
+                        </td>
+
+                        <td>
+                            <div class="item-label"><i class="{{ $fieldIcons['serviceContractAvailable'] ?? 'fas fa-circle-notch' }}"></i> Service Contract</div>
+                            <div class="item-value">{{ $reportInView->serviceContractAvailable ?? 'N/A' }}</div>
+                        </td>
+                        <td>
+                            <div class="item-label"><i class="{{ $fieldIcons['serviceHistory'] ?? 'fas fa-circle-notch' }}"></i> Service History</div>
+                            <div class="item-value">{{ $reportInView->serviceHistory ?? 'N/A' }}</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="item-label"><i class="{{ $fieldIcons['noOfKeys'] ?? 'fas fa-circle-notch' }}"></i> No Of Keys</div>
+                            <div class="item-value">{{ $reportInView->noOfKeys ?? 'N/A' }}</div>
+                        </td>
+                        <td>
+                            <div class="item-label"><i class="{{ $fieldIcons['mortgage'] ?? 'fas fa-circle-notch' }}"></i> Mortgage</div>
+                            <div class="item-value">{{ $reportInView->mortgage ?? 'N/A' }}</div>
+                        </td>
+                        <td>
+                            <div class="item-label"><i class="{{ $fieldIcons['noOfCylinders'] ?? 'fas fa-circle-notch' }}"></i> No. of Cylinders</div>
+                            <div class="item-value">{{ $reportInView->noOfCylinders ?? 'N/A' }}</div>
+                        </td>
+                    </tr>
+                    <!-- <tr>
+                        <td>
+                            <div class="item-label"><i class="{{ $fieldIcons['is_inspection'] ?? 'fas fa-circle-notch' }}"></i> Inspection</div>
+                            <div class="item-value">{{ $reportInView->is_inspection ?? 'N/A' }}</div>
+                        </td>
+                        <td></td>
+                    </tr> -->
+                </table>
+            </div>
+        </div>
         {{-- Exterior Section --}}
        <div class="report-card">
             <div class="card-header"><i class="fa-solid fa-brush"></i>Exterior</div>
