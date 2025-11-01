@@ -36,7 +36,7 @@ class SharedDocumentController extends Controller
     public function showPublicReport(VehicleInspectionReport $report)
     {
 
-        return view('admin.inspection.report-pdf-template-public', [
+        return view('pdf.inspection.report-pdf-template', [
             'reportInView' => $report
         ]);
     }
@@ -49,7 +49,7 @@ class SharedDocumentController extends Controller
             'reportInView' => $report
         ]);
     }
-    
+
     public function download(VehicleInspectionReport $report)
     {
 
