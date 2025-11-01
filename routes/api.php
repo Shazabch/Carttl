@@ -175,7 +175,6 @@ Route::prefix('admin')
             Route::delete('/inspection-reports/delete/{id}', 'destroy');
             Route::post('/inspection-reports/generate-pdf/{id}', 'generatePdf');
             Route::post('/inspection-reports/share-link/{id}', 'share');
-            Route::post('/inspection-reports/share-link2/{id}', 'showPublicReport');
             Route::get('/inspection-reports/download/{id}', 'downloadReport');
         });
 
