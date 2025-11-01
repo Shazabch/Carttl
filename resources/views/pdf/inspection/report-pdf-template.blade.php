@@ -761,7 +761,7 @@
         <i class="fa-solid fa-car-burst"></i> Damage Assessment Report
     </div>
     <div class="card-body">
-        @if($damages->count())
+        @if($reportInView->damages->count())
             <table class="details-table" style="width: 100%; border-collapse: collapse;">
                 <thead>
                     <tr style="background: #333; color: #fff;">
@@ -773,7 +773,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach($damages as $index => $damage)
+                    @foreach($reportInView->damages as $index => $damage)
                         @php
                             $typeInfo = $damageTypes[$damage->type] ?? ['name' => 'Unknown', 'color' => '#999'];
                             $badgeColor = match(strtolower($damage->severity)) {
@@ -794,7 +794,7 @@
                                     margin-right:5px;
                                 "></span>
                                 <strong>{{ strtoupper($damage->type) }}</strong>
-                                
+
                             </td>
                             <td style="padding: 8px;">{{ $damage->body_part }}</td>
                             <td style="padding: 8px;">
@@ -992,7 +992,7 @@
                         <td></td>
                     </tr>
 
-                   
+
                 </table>
             </div>
         </div>
