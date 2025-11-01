@@ -16,7 +16,7 @@
     <style>
         /* --- Customizable CSS Variables --- */
         :root {
-             --primary-color: #c9da29;
+            --primary-color: #c9da29;
             --primary-light: rgba(201, 218, 41, 0.15);
             --primary-dark: #a8b622;
 
@@ -868,13 +868,92 @@
         </div>
 
 
-        {{-- ==================================================================== --}}
-        {{-- == 2. Damage Assessment Section                                   == --}}
-        {{-- ==================================================================== --}}
+        {{-- Damage Assessment Section --}}
         <div class="report-card">
-            <livewire:admin.inspection.car-damage-view :inspectionId="$reportInView->id" />
-        </div>
+            @if($reportInView->damage_file_path && file_exists(public_path(parse_url($reportInView->damage_file_path, PHP_URL_PATH))))
+            @php
+            $imageData = base64_encode(file_get_contents(public_path(parse_url($reportInView->damage_file_path, PHP_URL_PATH))));
+            $mimeType = mime_content_type(public_path(parse_url($reportInView->damage_file_path, PHP_URL_PATH)));
+            @endphp
+            <img src="data:{{ $mimeType }};base64,{{ $imageData }}" style="max-width: 100%; height: auto;">
+            @else
+            <div class="damage-assessment">
+                <div class="status-pill status-good">
+                    <i class="fas fa-check-circle"></i>
+                    No Damage Reported or Image Not Found
+                </div>
+            </div>
+            @endif
 
+        </div>
+        {{-- damage summery--}}
+        <div class="report-card">
+            <div class="card-header">
+                <i class="fa-solid fa-car-burst"></i> Damage Assessment Report
+            </div>
+            <div class="card-body">
+                @if($reportInView->damages->count())
+                <table class="details-table" style="width: 100%; border-collapse: collapse;">
+                    <thead>
+                        <tr style="background: #333; color: #fff;">
+                            <th style="padding: 8px; text-align: left;">#</th>
+                            <th style="padding: 8px; text-align: left;">Type</th>
+                            <th style="padding: 8px; text-align: left;">Body Part</th>
+                            <th style="padding: 8px; text-align: left;">Severity</th>
+                            <th style="padding: 8px; text-align: left;">Remarks</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach($reportInView->damages as $index => $damage)
+                        @php
+                        $typeInfo = $damageTypes[$damage->type] ?? ['name' => 'Unknown', 'color' => '#999'];
+                        $badgeColor = match(strtolower($damage->severity)) {
+                        'minor' => '#28a745',
+                        'moderate' => '#ffc107',
+                        'major', 'severe' => '#dc3545',
+                        default => '#17a2b8'
+                        };
+                        @endphp
+                        <tr style="border-bottom: 1px solid #ccc;">
+                            <td style="padding: 8px;">{{ $index + 1 }}</td>
+                            <td style="padding: 8px;">
+                                <span style="
+                                    display:inline-block;
+                                    width:14px; height:14px;
+                                    background:{{ $typeInfo['color'] }};
+                                    border-radius:50%;
+                                    margin-right:5px;
+                                "></span>
+                                <strong>{{ strtoupper($damage->type) }}</strong>
+
+                            </td>
+                            <td style="padding: 8px;">{{ $damage->body_part }}</td>
+                            <td style="padding: 8px;">
+                                <span style="
+                                    background: {{ $badgeColor }};
+                                    color: white;
+                                    border-radius: 10px;
+                                    padding: 4px 8px;
+                                    font-size: 12px;
+                                ">
+                                    {{ ucfirst($damage->severity) }}
+                                </span>
+                            </td>
+                            <td style="padding: 8px;">{{ $damage->remark ?: 'N/A' }}</td>
+                        </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+                @else
+                <div class="damage-assessment">
+                    <div class="status-pill status-good">
+                        <i class="fas fa-check-circle"></i>
+                        No Damages Recorded
+                    </div>
+                </div>
+                @endif
+            </div>
+        </div>
 
         {{-- ==================================================================== --}}
         {{-- == 3. Engine & Transmission Section                               == --}}
@@ -1147,7 +1226,7 @@
     {{-- == 7. Steering, Suspension & Brakes Section                       == --}}
     {{-- ==================================================================== --}}
     <div class="report-card">
-        <div class="card-header"><i class="fa-solid fa-car-burst"></i>Steering, Suspension & Brakes</div>
+        <div class="card-header p-3"><i class="fa-solid fa-car-burst"></i>Steering, Suspension & Brakes</div>
         <div class="card-body">
             <div class="row">
                 {{-- Row 1 --}}
