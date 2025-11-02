@@ -30,7 +30,8 @@ Route::get('/test-email', function () {
     }
 });
 
-Route::view('/', 'home')->name('home');
+Route::redirect('/', 'https://caartl.com');
+
 Route::get('/blog/{slug}', [BlogController::class, 'blogDetails'])->name('get-blog');
 
 Route::view('/book-inspection', 'book-inspection')->name('book-inspection');

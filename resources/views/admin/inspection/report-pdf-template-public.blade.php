@@ -547,7 +547,7 @@
         <table class="header-table" width="100%">
             <tr>
                 <td class="header-logo-cell" valign="bottom">
-                    <img src="{{ asset('images/golden-x.png') }}" alt="Golden X Logo" class="header-logo-img">
+                    <img src="{{ asset('images/caartl.png') }}" alt="Golden X Logo" class="header-logo-img">
                 </td>
                 <td class="header-details-cell" valign="bottom" align="right">
                     <h1>Vehicle Inspection Report</h1>
@@ -1426,7 +1426,7 @@
     </div>
 
     <div class="footer">
-        <span class="footer-brand">Golden X</span> &copy; {{ date('Y') }} | Vehicle Inspection Report
+        <span class="footer-brand">Caartl</span> &copy; {{ date('Y') }} | Vehicle Inspection Report
     </div>
     </div>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
