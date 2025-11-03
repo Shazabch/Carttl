@@ -28,7 +28,51 @@ class NotificationController extends Controller
         ]);
     }
 
-   
+    public function allNotifications(Request $request)
+    {
+        $user = Auth::guard('api')->user();
+
+        if (!$user) {
+            return response()->json(['status' => 'error', 'message' => 'Unauthorized.'], 401);
+        }
+
+        $perPage = $request->get('per_page', 10);
+
+        $notifications = $user->notifications()
+            ->latest()
+            ->paginate($perPage);
+
+        return response()->json([
+            'status' => 'success',
+            'data' => $notifications
+        ]);
+    }
+
+    
+ public function unreadNotifications(Request $request)
+{
+    $user = Auth::guard('api')->user();
+
+    if (!$user) {
+        return response()->json([
+            'status' => 'error',
+            'message' => 'Unauthorized.'
+        ], 401);
+    }
+
+    $perPage = $request->get('per_page', 10);
+
+    $unread = $user->unreadNotifications()
+        ->latest()
+        ->take($perPage)
+        ->get();
+
+    return response()->json([
+        'status' => 'success',
+        'data' => $unread
+    ]);
+}
+
     public function destroy($id)
     {
         $user = Auth::guard('api')->user();

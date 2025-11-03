@@ -14,10 +14,10 @@ class DashboardController extends Controller
     {
         $vehicleCount         = Vehicle::count();
         $inspectionCount      = InspectionEnquiry::count();
-        $listingCount         = Vehicle::where('status', 'published')->where('status', '!=', 'sold')->count();
-        $verifiedCount        = Vehicle::where('status', 'published')->where('status', '!=', 'sold')->count();
-        $pendingCount         = Vehicle::where('status', 'pending')->where('status', '!=', 'sold')->count();
-        $rejectedCount        = Vehicle::where('status', 'rejected')->where('status', '!=', 'sold')->count();
+        $listingCount         = Vehicle::where('status', 'published')->where('is_auction', false)->count();
+        $verifiedCount        = Vehicle::where('status', 'published')->where('is_auction', false)->count();
+        $pendingCount         = Vehicle::where('status', 'pending')->where('is_auction', false)->count();
+        $rejectedCount        = Vehicle::where('status', 'rejected')->where('is_auction', false)->count();
         $auctionCount         = Vehicle::where('is_auction', true)->where('status', '!=', 'sold')->count();
         $soldVehicleCount     = Vehicle::where('status', 'sold')->count();
         $purchaseEnquiryCount = VehicleEnquiry::where('type', 'purchase')->count();
