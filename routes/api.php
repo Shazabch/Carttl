@@ -18,6 +18,7 @@ use App\Http\Controllers\Api\Admin\InspectionReportController;
 use App\Http\Controllers\Api\Admin\AgentController;
 use App\Http\Controllers\Api\Admin\AgentManagementController;
 use App\Http\Controllers\Api\Admin\NotificationController;
+use App\Http\Controllers\Api\Admin\PackageController;
 use App\Http\Controllers\Api\Admin\ProfileController;
 use App\Http\Controllers\Api\Customer\BlogController;
 use App\Http\Controllers\Api\Customer\TestimonialController;
@@ -29,7 +30,7 @@ use App\Http\Controllers\Api\Customer\FavoriteController;
 use App\Http\Controllers\Api\Customer\InspectionController;
 use App\Http\Controllers\Api\Customer\SellCarController;
 use App\Http\Controllers\Api\Customer\UserDataController;
-
+use App\Models\Package;
 
 //Auth routes
 Route::post('register', [AuthController::class, 'register']);
@@ -154,6 +155,11 @@ Route::prefix('admin')
             Route::post('images/remove/{id}', 'removeImages');
             Route::delete('delete/{id}', 'destroy');
         });
+        Route::controller(VehicleManagementController::class)->group(function () {
+          
+            Route::get('/auctions', 'auctions');
+           
+        });
 
         //Inspection Report Management
         Route::controller(InspectionReportController::class)->group(function () {
@@ -194,8 +200,16 @@ Route::prefix('admin')
             Route::get('/agents/show/{id}', 'show');
             Route::post('/agents/update/{id}', 'update');
             Route::post('/agents/assign-customers/{id}', 'assignCustomers');
-            Route::get('/unassigned-customers', 'unassignedCustomers');
+            Route::get('/unassigned-customers/{id}', 'customersByAgent');
             Route::delete('/agents/delete/{id}', 'destroy');
+        });
+        //Packges
+         Route::controller(PackageController::class)->group(function () {
+            Route::get('/packages', 'index');
+            Route::post('/packages/create', 'store');
+            Route::get('/packages/show/{id}', 'show');
+            Route::post('/packages/update/{id}', 'update');
+            Route::delete('/packages/delete/{id}', 'destroy');
         });
 
         //Profile

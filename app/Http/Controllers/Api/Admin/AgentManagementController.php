@@ -11,54 +11,56 @@ class AgentManagementController extends Controller
 {
 
     public function index(Request $request)
-{
-    $perPage = $request->get('per_page', 10);
-    $search  = $request->get('search', '');
+    {
+        $perPage = $request->get('per_page', 10);
+        $search  = $request->get('search', '');
 
-    $query = User::where('role', 'agent')
-        ->when($search, function ($q) use ($search) {
-            $q->where(function ($inner) use ($search) {
-                $inner->where('name', 'like', "%{$search}%")
-                      ->orWhere('email', 'like', "%{$search}%")
-                      ->orWhere('phone', 'like', "%{$search}%");
-            });
-        })
-        ->withCount('Customers')
-        ->orderBy('created_at', 'desc');
+        $query = User::where('role', 'agent')
+            ->when($search, function ($q) use ($search) {
+                $q->where(function ($inner) use ($search) {
+                    $inner->where('name', 'like', "%{$search}%")
+                        ->orWhere('email', 'like', "%{$search}%")
+                        ->orWhere('phone', 'like', "%{$search}%");
+                });
+            })
+            ->withCount('Customers')
+            ->orderBy('created_at', 'desc');
 
-    $agents = $query->paginate($perPage);
+        $agents = $query->paginate($perPage);
 
-   
-    $agents->getCollection()->transform(function ($agent) {
-        return [
-            'id'               => $agent->id,
-            'name'             => $agent->name,
-            'email'            => $agent->email,
-            'phone'            => $agent->phone,
-            'role'             => $agent->role,
-            'customers_count'  => $agent->customers_count,
-            'created_at'       => $agent->created_at,
-        ];
-    });
 
-    return response()->json([
-        'status' => 'success',
-        'data'   => $agents,
-    ]);
-}
+        $agents->getCollection()->transform(function ($agent) {
+            return [
+                'id'               => $agent->id,
+                'name'             => $agent->name,
+                'email'            => $agent->email,
+                'phone'            => $agent->phone,
+                'role'             => $agent->role,
+                'customers_count'  => $agent->customers_count,
+                'created_at'       => $agent->created_at,
+            ];
+        });
 
-    
+        return response()->json([
+            'status' => 'success',
+            'data'   => $agents,
+        ]);
+    }
+
+
     public function store(Request $request)
     {
         $request->validate([
             'name'     => 'required|string|max:255',
             'email'    => 'required|email|unique:users,email',
+            'phone'    => 'nullable',
             'password' => 'required|string|min:6',
         ]);
 
         $agent = User::create([
             'name'     => $request->name,
             'email'    => $request->email,
+            'phone'    => $request->phone,
             'password' => Hash::make($request->password),
             'role'     => 'agent',
         ]);
@@ -88,44 +90,46 @@ class AgentManagementController extends Controller
         ]);
     }
 
-    
-   public function update(Request $request, $id)
-{
-    $request->validate([
-        'name'      => 'required|string|max:255',
-        'email'     => 'required|email|unique:users,email,' . $id,
-        'password'  => 'nullable|string|min:6',
-        'customers' => 'nullable|array', 
-    ]);
 
-    $agent = User::where('role', 'agent')->findOrFail($id);
-    $agent->update([
-        'name'     => $request->name,
-        'email'    => $request->email,
-        'password' => $request->filled('password')
-            ? Hash::make($request->password)
-            : $agent->password,
-    ]);
-       if ($request->has('customers')) {
-        $customerIds = $request->customers;
-        User::where('role', 'customer')
-            ->where('agent_id', $agent->id)
-            ->whereNotIn('id', $customerIds)
-            ->update(['agent_id' => null]);
-        User::where('role', 'customer')
-            ->whereIn('id', $customerIds)
-            ->update(['agent_id' => $agent->id]);
+    public function update(Request $request, $id)
+    {
+        $request->validate([
+            'name'      => 'required|string|max:255',
+            'email'     => 'required|email|unique:users,email,' . $id,
+            'phone'    => 'nullable',
+            'password'  => 'nullable|string|min:6',
+            'customers' => 'nullable|array',
+        ]);
+
+        $agent = User::where('role', 'agent')->findOrFail($id);
+        $agent->update([
+            'name'     => $request->name,
+            'email'    => $request->email,
+            'phone'    => $request->phone,
+            'password' => $request->filled('password')
+                ? Hash::make($request->password)
+                : $agent->password,
+        ]);
+        if ($request->has('customers')) {
+            $customerIds = $request->customers;
+            User::where('role', 'customer')
+                ->where('agent_id', $agent->id)
+                ->whereNotIn('id', $customerIds)
+                ->update(['agent_id' => null]);
+            User::where('role', 'customer')
+                ->whereIn('id', $customerIds)
+                ->update(['agent_id' => $agent->id]);
+        }
+
+        return response()->json([
+            'status'  => 'success',
+            'message' => 'Agent and customer assignments updated successfully',
+            'data'    => $agent->load('customers'),
+        ]);
     }
 
-    return response()->json([
-        'status'  => 'success',
-        'message' => 'Agent and customer assignments updated successfully',
-        'data'    => $agent->load('customers'), 
-    ]);
-}
 
 
-   
     public function assignCustomers(Request $request, $agentId)
     {
         $request->validate([
@@ -135,10 +139,10 @@ class AgentManagementController extends Controller
 
         $agent = User::where('role', 'agent')->findOrFail($agentId);
 
-        
+
         User::where('agent_id', $agent->id)->update(['agent_id' => null]);
 
-        
+
         User::whereIn('id', $request->customer_ids)
             ->update(['agent_id' => $agent->id]);
 
@@ -156,30 +160,62 @@ class AgentManagementController extends Controller
         ]);
     }
 
-   
-   public function unassignedCustomers()
-{
-    $customers = User::where('role', 'customer')
-        ->whereNull('agent_id')
-        ->select('id', 'name', 'email', 'agent_id')
-        ->get();
 
-    return response()->json([
-        'status' => 'success',
-        'data'   => $customers,
-    ]);
-}
+    public function customersByAgent(Request $request, $agentId)
+    {
+        
+        $user = auth('api')->user();
 
-   public function destroy($id)
-{
-    $agent = User::where('role', 'agent')->findOrFail($id);
-    User::where('agent_id', $agent->id)->update(['agent_id' => null]);
-    $agent->delete();
+        if (!$user) {
+            return response()->json([
+                'status'  => 'error',
+                'message' => 'Unauthorized access.',
+            ], 401);
+        }
 
-    return response()->json([
-        'status'  => 'success',
-        'message' => 'Agent deleted successfully and assigned customers unlinked.',
-    ]);
-}
+      
+        $agent = User::where('role', 'agent')->find($agentId);
 
+        if (!$agent) {
+            return response()->json([
+                'status'  => 'error',
+                'message' => 'Agent not found.',
+            ], 404);
+        }
+
+        
+        $assigned = User::where('role', 'customer')
+            ->where('agent_id', $agentId)
+            ->select('id', 'name', 'email', 'agent_id')
+            ->get();
+
+       
+        $unassigned = User::where('role', 'customer')
+            ->whereNull('agent_id')
+            ->select('id', 'name', 'email', 'agent_id')
+            ->get();
+
+        return response()->json([
+            'status' => 'success',
+            'data'   => [
+                'agent'                 => $agent,
+                'assigned_customers'    => $assigned,
+                'unassigned_customers'  => $unassigned,
+            ],
+        ]);
+    }
+
+
+
+    public function destroy($id)
+    {
+        $agent = User::where('role', 'agent')->findOrFail($id);
+        User::where('agent_id', $agent->id)->update(['agent_id' => null]);
+        $agent->delete();
+
+        return response()->json([
+            'status'  => 'success',
+            'message' => 'Agent deleted successfully and assigned customers unlinked.',
+        ]);
+    }
 }
