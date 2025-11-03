@@ -66,6 +66,31 @@ class NotificationController extends Controller
 
         return response()->json(['status' => 'success', 'message' => 'Notification marked as read.']);
     }
+    public function markAllAsRead()
+{
+    $user = Auth::guard('api')->user();
+
+    if (!$user) {
+        return response()->json(['status' => 'error', 'message' => 'Unauthorized.'], 401);
+    }
+
+    $unreadNotifications = $user->unreadNotifications;
+
+    if ($unreadNotifications->isEmpty()) {
+        return response()->json([
+            'status'  => 'success',
+            'message' => 'No unread notifications found.'
+        ]);
+    }
+
+    $unreadNotifications->markAsRead();
+
+    return response()->json([
+        'status'  => 'success',
+        'message' => 'All notifications marked as read.'
+    ]);
+}
+
 
     public function clearAll()
     {

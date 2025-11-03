@@ -89,30 +89,41 @@ class AgentManagementController extends Controller
     }
 
     
-    public function update(Request $request, $id)
-    {
-        $request->validate([
-            'name'     => 'required|string|max:255',
-            'email'    => 'required|email|unique:users,email,' . $id,
-            'password' => 'nullable|string|min:6',
-        ]);
+   public function update(Request $request, $id)
+{
+    $request->validate([
+        'name'      => 'required|string|max:255',
+        'email'     => 'required|email|unique:users,email,' . $id,
+        'password'  => 'nullable|string|min:6',
+        'customers' => 'nullable|array', 
+    ]);
 
-        $agent = User::where('role', 'agent')->findOrFail($id);
-
-        $agent->update([
-            'name'     => $request->name,
-            'email'    => $request->email,
-            'password' => $request->filled('password')
-                ? Hash::make($request->password)
-                : $agent->password,
-        ]);
-
-        return response()->json([
-            'status'  => 'success',
-            'message' => 'Agent updated successfully',
-            'data'    => $agent,
-        ]);
+    $agent = User::where('role', 'agent')->findOrFail($id);
+    $agent->update([
+        'name'     => $request->name,
+        'email'    => $request->email,
+        'password' => $request->filled('password')
+            ? Hash::make($request->password)
+            : $agent->password,
+    ]);
+       if ($request->has('customers')) {
+        $customerIds = $request->customers;
+        User::where('role', 'customer')
+            ->where('agent_id', $agent->id)
+            ->whereNotIn('id', $customerIds)
+            ->update(['agent_id' => null]);
+        User::where('role', 'customer')
+            ->whereIn('id', $customerIds)
+            ->update(['agent_id' => $agent->id]);
     }
+
+    return response()->json([
+        'status'  => 'success',
+        'message' => 'Agent and customer assignments updated successfully',
+        'data'    => $agent->load('customers'), 
+    ]);
+}
+
 
    
     public function assignCustomers(Request $request, $agentId)

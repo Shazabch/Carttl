@@ -5,6 +5,7 @@ use App\Http\Controllers\Controller;
 use App\Models\InspectionEnquiry;
 use App\Models\Vehicle;
 use App\Models\VehicleEnquiry;
+use App\Models\VehicleBid;
 use Illuminate\Http\JsonResponse;
 
 class DashboardController extends Controller
@@ -48,6 +49,27 @@ class DashboardController extends Controller
             'role' => $user->role ?? 'Admin',
             'created_at' => $user->created_at,
         ];
+         $topBids = VehicleBid::with([
+            'vehicle' => function ($query) {
+                $query->select('id', 'title', 'brand_id', 'vehicle_model_id', 'year', 'status', 'price')
+                      ->with([
+                          'brand:id,name',
+                          'vehicleModel:id,name'
+                      ]);
+            }
+        ])
+        ->orderByDesc('bid_amount')
+        ->take(3)
+        ->get(['id', 'vehicle_id', 'bid_amount', 'created_at']);
+         $recentListings = Vehicle::with([
+            'brand:id,name',
+            'vehicleModel:id,name'
+        ])
+        ->where('status', 'published')
+        ->where('is_auction', false)
+        ->orderByDesc('created_at')
+        ->take(3)
+        ->get(['id', 'title', 'brand_id', 'vehicle_model_id', 'year', 'price', 'status', 'created_at']);
 
         return response()->json([
             'status'  => 'success',
@@ -66,6 +88,8 @@ class DashboardController extends Controller
                 'purchase_enquiries' => $purchaseEnquiryCount,
                 'sell_enquiries'     => $sellEnquiryCount,
                 'profile'     => $profile,
+                'top_bids'     => $topBids,
+                 'recent_listings'       => $recentListings,
             ],
         ]);
     }

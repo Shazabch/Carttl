@@ -31,6 +31,7 @@ Route::get('/test-email', function () {
 });
 
 Route::redirect('/', 'https://caartl.com');
+Route::view('/home', 'home')->name('home');
 
 Route::get('/blog/{slug}', [BlogController::class, 'blogDetails'])->name('get-blog');
 

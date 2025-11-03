@@ -182,6 +182,7 @@ Route::prefix('admin')
         Route::controller(NotificationController::class)->group(function () {
             Route::get('/notifications', 'index');
             Route::put('/notifications/read/{id}', 'markAsRead');
+            Route::post('/notifications/all-read', 'markAllAsRead');
             Route::delete('/notifications/delete/{id}', 'destroy');
             Route::delete('/notifications/clear', 'clearAll');
         });
