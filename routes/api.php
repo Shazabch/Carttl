@@ -236,7 +236,7 @@ Route::controller(VehicleController::class)->group(function () {
     Route::get('/vehicle/{id}', 'detail');
 
     //Auctions
-    Route::get('auctions', 'getAuctionVehicles')->name('auctions');
+    Route::get('auctions', 'getAuctionVehicles')->name('auctions-list');
     Route::get('featured-auctions', 'featuredAuctions')->name('featured.auctions');
 
     //Makes
