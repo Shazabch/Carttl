@@ -629,17 +629,17 @@ public function storeVehicleImages(Request $request)
 
 
     $damageTypes = [
-        'a' => ['name' => 'Scratch',       'color' => '#FF0000'],
-        'b' => ['name' => 'Multiple Scratches', 'color' => '#FF7F00'],
-        'c' => ['name' => 'Cosmetic Paint', 'color' => '#FFD700'],
-        'd' => ['name' => 'Chip',          'color' => '#00AA00'],
-        'e' => ['name' => 'Dent',          'color' => '#0000FF'],
-        'f' => ['name' => 'Repainted',     'color' => '#4B0082'],
-        'g' => ['name' => 'Repaired',      'color' => '#B87BD2'],
-        'h' => ['name' => 'Foiled Wrap',   'color' => '#706C6E'],
-        'i' => ['name' => 'Full PPF',      'color' => '#D80881'],
-        'j' => ['name' => 'Rust',          'color' => '#6B5407'],
-    ];
+            'Scratch' => ['name' => 'Scratch',       'color' => '#FF0000'],
+            'Multiple Scratches' => ['name' => 'Multiple Scratches', 'color' => '#FF7F00'],
+            'Cosmetic Paint' => ['name' => 'Cosmetic Paint', 'color' => '#FFD700'],
+            'Chip' => ['name' => 'Chip',          'color' => '#00AA00'],
+            'Dent' => ['name' => 'Dent',          'color' => '#0000FF'],
+            'Repainted' => ['name' => 'Repainted',     'color' => '#4B0082'],
+            'Repaired' => ['name' => 'Repaired',      'color' => '#B87BD2'],
+            'Foiled Wrap' => ['name' => 'Foiled Wrap',   'color' => '#706C6E'],
+            'Full PPF' => ['name' => 'Full PPF',      'color' => '#D80881'],
+            'Rust' => ['name' => 'Rust',          'color' => '#6B5407'],
+        ];
 
     $damages = CarDamage::where('inspection_id', $reportInView->id)->get();
 

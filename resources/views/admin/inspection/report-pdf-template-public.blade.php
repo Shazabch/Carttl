@@ -906,6 +906,7 @@
                     <tbody>
                         @foreach($reportInView->damages as $index => $damage)
                         @php
+                        
                         $typeInfo = $damageTypes[$damage->type] ?? ['name' => 'Unknown', 'color' => '#999'];
                         $badgeColor = match(strtolower($damage->severity)) {
                         'minor' => '#28a745',
