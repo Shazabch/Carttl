@@ -2,8 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Models\User;
-// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\Transmission;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -13,11 +12,18 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
+        // 🔹 Add all your seeders here
+        $this->call([
+            RolesAndPermissionsSeeder::class,
+            UserSeeder::class,
+            BrandSeeder::class,
+            VehicleModelSeeder::class,
+            FuelTypeSeeder::class,
+            BodyTypeSeeder::class,
+            TransmissionSeeder::class,
+            FeatureSeeder::class,
+        ]);
 
-        // User::factory()->create([
-        //     'name' => 'Test User',
-        //     'email' => 'test@example.com',
-        // ]);
+        $this->command->info('✅ All seeders executed successfully!');
     }
 }

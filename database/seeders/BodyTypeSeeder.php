@@ -11,7 +11,7 @@ class BodyTypeSeeder extends Seeder
     {
         $types = ['Sedan', 'SUV', 'Hatchback', 'Truck', 'Coupe'];
         foreach ($types as $type) {
-            BodyType::create(['name' => $type]);
+            BodyType::updateOrCreate(['name' => $type]);
         }
     }
 }

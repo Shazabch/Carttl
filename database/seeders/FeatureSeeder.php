@@ -9,9 +9,16 @@ class FeatureSeeder extends Seeder
 {
     public function run(): void
     {
-        $features = ['Airbags', 'ABS', 'Bluetooth', 'Sunroof', 'Backup Camera', 'Cruise Control'];
+        $features = [
+            'Airbags',
+            'ABS',
+            'Bluetooth',
+            'Sunroof',
+            'Backup Camera',
+            'Cruise Control',
+        ];
+
         $exterior = [
-           
             'Alloy Wheels',
             'Halogen Headlights',
             'LED Headlights',
@@ -22,8 +29,6 @@ class FeatureSeeder extends Seeder
             'Chrome Grille',
             'Rear Wiper & Washer',
             'Mudguards / Mudflaps',
-
-            
             'Steel Wheels',
             'Roof Rails',
             'Sunroof / Moonroof / Panoramic Roof',
@@ -37,11 +42,10 @@ class FeatureSeeder extends Seeder
             'Auto-Folding Side Mirrors',
             'Dual Exhaust Pipes',
             'Tow Hook / Tow Hitch',
-            'Side Skirts'
+            'Side Skirts',
         ];
 
         $interior = [
-           
             'Air Conditioning / Climate Control',
             'Power Windows',
             'Power Door Locks',
@@ -52,8 +56,6 @@ class FeatureSeeder extends Seeder
             'Infotainment System (Touchscreen, Android Auto, Apple CarPlay)',
             'USB Charging Ports',
             'Cruise Control',
-
-           
             'Leather Seats',
             'Power Adjustable Seats',
             'Heated Seats',
@@ -71,23 +73,43 @@ class FeatureSeeder extends Seeder
             'Armrest (Front / Rear)',
             'Premium Sound System',
             'Rear Seat Entertainment Screens',
-            'Cabin Air Filter'
+            'Cabin Air Filter',
         ];
 
         $tags = ['Luxury', 'Sports Car', 'Certified By GX'];
 
+        // --- EXTERIOR ---
         foreach ($exterior as $feature) {
-            Feature::firstOrCreate(['name' => $feature, 'type' => 'exterior']);
+            Feature::updateOrCreate(
+                ['name' => $feature, 'type' => 'exterior'],
+                [] // Add fields here if you want to update in future
+            );
         }
 
+        // --- INTERIOR ---
         foreach ($interior as $feature) {
-            Feature::firstOrCreate(['name' => $feature, 'type' => 'interior']);
+            Feature::updateOrCreate(
+                ['name' => $feature, 'type' => 'interior'],
+                []
+            );
         }
+
+        // --- SIMPLE ---
         foreach ($features as $feature) {
-            Feature::firstOrCreate(['name' => $feature, 'type' => 'simple']);
+            Feature::updateOrCreate(
+                ['name' => $feature, 'type' => 'simple'],
+                []
+            );
         }
+
+        // --- TAGS ---
         foreach ($tags as $tag) {
-            Feature::firstOrCreate(['name' => $tag, 'type' => 'tag']);
+            Feature::updateOrCreate(
+                ['name' => $tag, 'type' => 'tag'],
+                []
+            );
         }
+
+        $this->command->info('✅ Features seeded successfully without duplicates!');
     }
 }

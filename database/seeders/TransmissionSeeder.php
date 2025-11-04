@@ -11,7 +11,7 @@ class TransmissionSeeder extends Seeder
     {
         $types = ['Manual', 'Automatic', 'CVT'];
         foreach ($types as $type) {
-            Transmission::create(['name' => $type]);
+            Transmission::updateOrCreate(['name' => $type]);
         }
     }
 }
