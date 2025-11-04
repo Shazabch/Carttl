@@ -16,7 +16,7 @@ jobs:
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: 8.2
+          php-version: 8.3
           extensions: mbstring, intl, bcmath, mysql, zip
           coverage: none
 
@@ -43,14 +43,11 @@ jobs:
           local-dir: ./
           server-dir: /public_html/
           exclude: |
-            **/.git*
-            **/.github/**
-            **/node_modules/**
             **/vendor/**
-            storage/framework/cache/**
-            storage/framework/sessions/**
-            storage/framework/views/**
-            storage/logs/**
+            **/node_modules/**
+            **/storage/**
+            **/tests/**
+            .git**
             .env
             .htaccess
           dangerous-clean-slate: false
