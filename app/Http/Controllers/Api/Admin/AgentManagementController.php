@@ -6,10 +6,10 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 
 class AgentManagementController extends Controller
 {
-
     public function index(Request $request)
     {
         $perPage = $request->get('per_page', 10);
@@ -28,16 +28,17 @@ class AgentManagementController extends Controller
 
         $agents = $query->paginate($perPage);
 
-
         $agents->getCollection()->transform(function ($agent) {
             return [
-                'id'               => $agent->id,
-                'name'             => $agent->name,
-                'email'            => $agent->email,
-                'phone'            => $agent->phone,
-                'role'             => $agent->role,
-                'customers_count'  => $agent->customers_count,
-                'created_at'       => $agent->created_at,
+                'id'              => $agent->id,
+                'name'            => $agent->name,
+                'email'           => $agent->email,
+                'phone'           => $agent->phone,
+                'role'            => $agent->role,
+                'photo'           => $agent->photo,
+                'target'           => $agent->target,
+                'customers_count' => $agent->customers_count,
+                'created_at'      => $agent->created_at,
             ];
         });
 
@@ -47,15 +48,23 @@ class AgentManagementController extends Controller
         ]);
     }
 
-
     public function store(Request $request)
     {
         $request->validate([
             'name'     => 'required|string|max:255',
             'email'    => 'required|email|unique:users,email',
-            'phone'    => 'nullable',
+            'phone'    => 'nullable|string',
             'password' => 'required|string|min:6',
+            'photo'    => 'nullable|image',
+            'target'    => 'nullable',
         ]);
+
+        $photoUrl = null;
+
+        if ($request->hasFile('photo')) {
+            $path = $request->file('photo')->store('agent_photos', 'public');
+            $photoUrl = url('storage/' . $path); // ✅ store full URL
+        }
 
         $agent = User::create([
             'name'     => $request->name,
@@ -63,6 +72,8 @@ class AgentManagementController extends Controller
             'phone'    => $request->phone,
             'password' => Hash::make($request->password),
             'role'     => 'agent',
+            'photo'    => $photoUrl,
+            'target'    => $request->target,
         ]);
 
         return response()->json([
@@ -71,6 +82,7 @@ class AgentManagementController extends Controller
             'data'    => $agent,
         ], 201);
     }
+
     public function show($id)
     {
         $agent = User::where('role', 'agent')
@@ -90,18 +102,36 @@ class AgentManagementController extends Controller
         ]);
     }
 
-
     public function update(Request $request, $id)
     {
         $request->validate([
             'name'      => 'required|string|max:255',
             'email'     => 'required|email|unique:users,email,' . $id,
-            'phone'    => 'nullable',
+            'phone'     => 'nullable|string',
             'password'  => 'nullable|string|min:6',
+            'photo'     => 'nullable|image',
+            'target'     => 'nullable',
             'customers' => 'nullable|array',
         ]);
 
         $agent = User::where('role', 'agent')->findOrFail($id);
+
+        $photoUrl = $agent->photo;
+
+        // Delete old photo if a new one is uploaded
+        if ($request->hasFile('photo')) {
+            // Delete old if stored in our domain
+            if ($photoUrl && str_contains($photoUrl, url('/'))) {
+                $relativePath = str_replace(url('storage') . '/', '', $photoUrl);
+                if (Storage::disk('public')->exists($relativePath)) {
+                    Storage::disk('public')->delete($relativePath);
+                }
+            }
+
+            $path = $request->file('photo')->store('agent_photos', 'public');
+            $photoUrl = url('storage/' . $path);
+        }
+
         $agent->update([
             'name'     => $request->name,
             'email'    => $request->email,
@@ -109,13 +139,18 @@ class AgentManagementController extends Controller
             'password' => $request->filled('password')
                 ? Hash::make($request->password)
                 : $agent->password,
+            'photo'    => $photoUrl,
+            'target'    => $request->target,
+
         ]);
+
         if ($request->has('customers')) {
             $customerIds = $request->customers;
             User::where('role', 'customer')
                 ->where('agent_id', $agent->id)
                 ->whereNotIn('id', $customerIds)
                 ->update(['agent_id' => null]);
+
             User::where('role', 'customer')
                 ->whereIn('id', $customerIds)
                 ->update(['agent_id' => $agent->id]);
@@ -123,14 +158,11 @@ class AgentManagementController extends Controller
 
         return response()->json([
             'status'  => 'success',
-            'message' => 'Agent and customer assignments updated successfully',
+            'message' => 'Agent updated successfully',
             'data'    => $agent->load('customers'),
         ]);
     }
-
-
-
-    public function assignCustomers(Request $request, $agentId)
+      public function assignCustomers(Request $request, $agentId)
     {
         $request->validate([
             'customer_ids'   => 'required|array|min:1',
@@ -206,10 +238,17 @@ class AgentManagementController extends Controller
     }
 
 
-
     public function destroy($id)
     {
         $agent = User::where('role', 'agent')->findOrFail($id);
+
+        if ($agent->photo && str_contains($agent->photo, url('/'))) {
+            $relativePath = str_replace(url('storage') . '/', '', $agent->photo);
+            if (Storage::disk('public')->exists($relativePath)) {
+                Storage::disk('public')->delete($relativePath);
+            }
+        }
+
         User::where('agent_id', $agent->id)->update(['agent_id' => null]);
         $agent->delete();
 

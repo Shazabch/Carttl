@@ -15,7 +15,6 @@ use App\Http\Controllers\Api\Admin\TestimonialsController;
 use App\Http\Controllers\Api\Admin\UserManagementController;
 use App\Http\Controllers\Api\Admin\VehicleManagementController;
 use App\Http\Controllers\Api\Admin\InspectionReportController;
-use App\Http\Controllers\Api\Admin\AgentController;
 use App\Http\Controllers\Api\Admin\AgentManagementController;
 use App\Http\Controllers\Api\Admin\NotificationController;
 use App\Http\Controllers\Api\Admin\PackageController;
