@@ -166,7 +166,7 @@ class VehicleManagementController extends Controller
 
     public function show($id)
     {
-        $vehicle = Vehicle::with(['brand:id,name', 'images:id,vehicle_id,path', 'features', 'latestBid', 'bids', 'coverImage:id,vehicle_id,path', 'vehicleModel', 'fuelType', 'transmission', 'bodyType'])
+        $vehicle = Vehicle::with(['brand:id,name', 'images:id,vehicle_id,path,is_cover', 'features', 'latestBid', 'bids', 'coverImage:id,vehicle_id,path', 'vehicleModel', 'fuelType', 'transmission', 'bodyType'])
             ->find($id);
 
         if (!$vehicle) {
@@ -212,7 +212,7 @@ class VehicleManagementController extends Controller
             'is_featured' => 'boolean',
             'is_auction' => 'boolean',
             'features' => 'nullable|array',
-            'images.*' => 'nullable|file|image|max:5120'
+            'images.*' => 'nullable|file|image'
         ];
 
         $validated = $request->validate($rules);
@@ -391,7 +391,7 @@ class VehicleManagementController extends Controller
             'is_featured' => 'boolean',
             'is_auction' => 'boolean',
             'features' => 'nullable|array',
-            'images.*' => 'nullable|file|image|max:5120',
+            'images.*' => 'nullable|file',
         ];
 
         $validated = $request->validate($rules);
