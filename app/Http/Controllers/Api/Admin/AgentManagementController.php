@@ -174,8 +174,8 @@ class AgentManagementController extends Controller
     public function assignCustomers(Request $request, $agentId)
     {
         $request->validate([
-            'customer_ids'   => 'nullable|array|min:1',
-            'customer_ids.*' => 'exists:users,id',
+            'customer_ids'   => 'nullable',
+            'customer_ids.*' => 'nullable|exists:users,id',
         ]);
 
         $agent = User::where('role', 'agent')->findOrFail($agentId);
@@ -184,10 +184,10 @@ class AgentManagementController extends Controller
         User::where('agent_id', $agent->id)->update(['agent_id' => null]);
 
 
-        User::whereIn('id', $request->customer_ids)
+        User::whereIn('id', $request->customer_ids ?? [])
             ->update(['agent_id' => $agent->id]);
 
-        $assigned = User::whereIn('id', $request->customer_ids)
+        $assigned = User::whereIn('id', $request->customer_ids ?? [])
             ->select('id', 'name', 'email', 'agent_id')
             ->get();
 
