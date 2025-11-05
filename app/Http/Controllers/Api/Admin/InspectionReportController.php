@@ -160,7 +160,7 @@ class InspectionReportController extends Controller
             'image_ids'                    => 'nullable|array',
             'image_ids.*'                  => 'integer|exists:vehicle_inspection_images,id',
             'images'                       => 'nullable|array',
-            'images.*'                     => 'file|mimes:jpg,jpeg,png,webp',
+            'images.*'                     => 'image',
             'is_cover'                     => 'nullable|array',
             'is_cover.*'                   => 'boolean',
         ]);
