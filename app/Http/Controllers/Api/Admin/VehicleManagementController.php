@@ -266,7 +266,7 @@ class VehicleManagementController extends Controller
             'image_ids'     => 'nullable|array',
             'image_ids.*'   => 'integer|exists:vehicle_images,id',
             'images'        => 'nullable|array',
-            'images.*'      => 'file|image',
+            'images.*'      => 'file|mimetypes:image/jpeg,image/png,image/jpg,image/gif,image/webp,image/bmp,image/svg+xml,image/x-icon,image/tiff,image/heic,image/heif,image/avif',
             'is_cover'      => 'nullable|array',
             'is_cover.*'    => 'boolean',
         ]);
@@ -391,7 +391,7 @@ class VehicleManagementController extends Controller
             'is_featured' => 'boolean',
             'is_auction' => 'boolean',
             'features' => 'nullable|array',
-            'images.*' => 'nullable|file',
+             'images.*'=> 'file|mimetypes:image/jpeg,image/png,image/jpg,image/gif,image/webp,image/bmp,image/svg+xml,image/x-icon,image/tiff,image/heic,image/heif,image/avif',
         ];
 
         $validated = $request->validate($rules);
