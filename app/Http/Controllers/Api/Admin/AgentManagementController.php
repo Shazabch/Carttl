@@ -174,7 +174,7 @@ class AgentManagementController extends Controller
     public function assignCustomers(Request $request, $agentId)
     {
         $request->validate([
-            'customer_ids'   => 'required|array|min:1',
+            'customer_ids'   => 'nullable|array|min:1',
             'customer_ids.*' => 'exists:users,id',
         ]);
 
