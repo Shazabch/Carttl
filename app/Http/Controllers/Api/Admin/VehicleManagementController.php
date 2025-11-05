@@ -279,8 +279,8 @@ class VehicleManagementController extends Controller
         foreach ($deleteImages as $image) {
             // extract relative path if stored as full URL
             $path = str_replace(asset('storage/') . '/', '', $image->path);
-            if (\Storage::disk('public')->exists($path)) {
-                \Storage::disk('public')->delete($path);
+            if (Storage::disk('public')->exists($path)) {
+                Storage::disk('public')->delete($path);
             }
             $image->delete();
         }

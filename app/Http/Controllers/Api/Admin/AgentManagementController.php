@@ -63,7 +63,7 @@ class AgentManagementController extends Controller
 
         if ($request->hasFile('photo')) {
             $path = $request->file('photo')->store('agent_photos', 'public');
-            $photoUrl = url('storage/' . $path); // ✅ store full URL
+            $photoUrl = url('storage/' . $path);
         }
 
         $agent = User::create([
@@ -105,22 +105,30 @@ class AgentManagementController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'name'      => 'required|string|max:255',
-            'email'     => 'required|email|unique:users,email,' . $id,
-            'phone'     => 'nullable|string',
-            'password'  => 'nullable|string|min:6',
-            'photo'     => 'nullable|image',
-            'target'     => 'nullable',
-            'customers' => 'nullable|array',
+            'name'        => 'required|string|max:255',
+            'email'       => 'required|email|unique:users,email,' . $id,
+            'phone'       => 'nullable|string',
+            'password'    => 'nullable|string|min:6',
+            'photo'       => 'nullable|image',
+            'target'      => 'nullable',
+            'customers'   => 'nullable|array',
+            'remove_image' => 'nullable|boolean', 
         ]);
 
         $agent = User::where('role', 'agent')->findOrFail($id);
 
         $photoUrl = $agent->photo;
 
-        // Delete old photo if a new one is uploaded
+        if ($request->boolean('remove_image')) {
+            if ($photoUrl && str_contains($photoUrl, url('/'))) {
+                $relativePath = str_replace(url('storage') . '/', '', $photoUrl);
+                if (Storage::disk('public')->exists($relativePath)) {
+                    Storage::disk('public')->delete($relativePath);
+                }
+            }
+            $photoUrl = null;
+        }
         if ($request->hasFile('photo')) {
-            // Delete old if stored in our domain
             if ($photoUrl && str_contains($photoUrl, url('/'))) {
                 $relativePath = str_replace(url('storage') . '/', '', $photoUrl);
                 if (Storage::disk('public')->exists($relativePath)) {
@@ -140,12 +148,12 @@ class AgentManagementController extends Controller
                 ? Hash::make($request->password)
                 : $agent->password,
             'photo'    => $photoUrl,
-            'target'    => $request->target,
-
+            'target'   => $request->target,
         ]);
 
         if ($request->has('customers')) {
             $customerIds = $request->customers;
+
             User::where('role', 'customer')
                 ->where('agent_id', $agent->id)
                 ->whereNotIn('id', $customerIds)
@@ -162,7 +170,8 @@ class AgentManagementController extends Controller
             'data'    => $agent->load('customers'),
         ]);
     }
-      public function assignCustomers(Request $request, $agentId)
+
+    public function assignCustomers(Request $request, $agentId)
     {
         $request->validate([
             'customer_ids'   => 'required|array|min:1',
@@ -195,7 +204,7 @@ class AgentManagementController extends Controller
 
     public function customersByAgent(Request $request, $agentId)
     {
-        
+
         $user = auth('api')->user();
 
         if (!$user) {
@@ -205,7 +214,7 @@ class AgentManagementController extends Controller
             ], 401);
         }
 
-      
+
         $agent = User::where('role', 'agent')->find($agentId);
 
         if (!$agent) {
@@ -215,13 +224,13 @@ class AgentManagementController extends Controller
             ], 404);
         }
 
-        
+
         $assigned = User::where('role', 'customer')
             ->where('agent_id', $agentId)
             ->select('id', 'name', 'email', 'agent_id')
             ->get();
 
-       
+
         $unassigned = User::where('role', 'customer')
             ->whereNull('agent_id')
             ->select('id', 'name', 'email', 'agent_id')
