@@ -112,7 +112,7 @@ class AgentManagementController extends Controller
             'photo'       => 'nullable|image',
             'target'      => 'nullable',
             'customers'   => 'nullable|array',
-            'remove_image' => 'nullable|boolean', 
+            'remove_image' => 'nullable|boolean',
         ]);
 
         $agent = User::where('role', 'agent')->findOrFail($id);
@@ -204,7 +204,6 @@ class AgentManagementController extends Controller
 
     public function customersByAgent(Request $request, $agentId)
     {
-
         $user = auth('api')->user();
 
         if (!$user) {
@@ -213,7 +212,6 @@ class AgentManagementController extends Controller
                 'message' => 'Unauthorized access.',
             ], 401);
         }
-
 
         $agent = User::where('role', 'agent')->find($agentId);
 
@@ -224,24 +222,32 @@ class AgentManagementController extends Controller
             ], 404);
         }
 
-
+        // Assigned customers
         $assigned = User::where('role', 'customer')
             ->where('agent_id', $agentId)
             ->select('id', 'name', 'email', 'agent_id')
             ->get();
 
+        // Search filter for unassigned customers
+        $search = $request->get('search');
 
         $unassigned = User::where('role', 'customer')
             ->whereNull('agent_id')
+            ->when($search, function ($query, $search) {
+                $query->where(function ($q) use ($search) {
+                    $q->where('name', 'like', "%{$search}%")
+                        ->orWhere('email', 'like', "%{$search}%");
+                });
+            })
             ->select('id', 'name', 'email', 'agent_id')
             ->get();
 
         return response()->json([
             'status' => 'success',
             'data'   => [
-                'agent'                 => $agent,
-                'assigned_customers'    => $assigned,
-                'unassigned_customers'  => $unassigned,
+                'agent'                => $agent,
+                'assigned_customers'   => $assigned,
+                'unassigned_customers' => $unassigned,
             ],
         ]);
     }
