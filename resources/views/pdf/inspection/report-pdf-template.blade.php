@@ -824,7 +824,7 @@
         </div>
 
         {{-- Engine & Transmission Section --}}
-        <div class="report-card">
+        <!-- <div class="report-card">
             <div class="card-header"><i class="fa-solid fa-gears"></i>Engine & Transmission</div>
             <div class="card-body">
                 <table class="details-table">
@@ -873,7 +873,7 @@
                     </tr>
                 </table>
             </div>
-        </div>
+        </div> -->
 
 
         {{-- Tires Section --}}
@@ -1181,7 +1181,7 @@
             </div>
         </div>
 
-        {{-- Disclaimer Section --}}
+        {{-- Disclaimer Section 
         <div class="report-card">
             <div class="card-body">
                 <table class="details-table">
@@ -1227,7 +1227,7 @@
                     </tr>
                 </table>
             </div>
-        </div>
+        </div> --}}
 
         <div class="footer">
             <span class="footer-brand">Caartl</span> &copy; {{ date('Y') }} | Vehicle Inspection Report

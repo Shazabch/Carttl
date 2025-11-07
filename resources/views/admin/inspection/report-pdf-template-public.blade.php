@@ -14,955 +14,921 @@
     <link rel="stylesheet" href="{{ asset('css/inspection.css') }}">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
-        /* --- Customizable CSS Variables --- */
-        :root {
-            --primary-color: #c9da29;
-            --primary-light: rgba(201, 218, 41, 0.15);
-            --primary-dark: #a8b622;
+    /* --- Customizable CSS Variables --- */
+    :root {
+        --primary-color: #c9da29;
+        --primary-light: rgba(201, 218, 41, 0.15);
+        --primary-dark: #a8b622;
+        --font-family: 'Inter', 'Helvetica', sans-serif;
+        --border-color: #e0e0e0;
+        --background-light: #f9f9f9;
+        --text-dark: #222;
+        --text-muted: #666;
+        --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.05);
+        --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.05);
 
-            --font-family: 'Inter', 'Helvetica', sans-serif;
-            --border-color: #e0e0e0;
-            --background-light: #f9f9f9;
-            --text-dark: #222;
-            --text-muted: #666;
-            --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.05);
-            --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.05);
+        /* Enhanced Status Colors */
+        --status-excellent-bg: #e8f5e8;
+        --status-excellent-text: #2d5a2d;
+        --status-good-bg: #e6f7ee;
+        --status-good-text: #0a6e3d;
+        --status-warning-bg: #fff8e6;
+        --status-warning-text: #8a6d3b;
+        --status-danger-bg: #fde8e8;
+        --status-danger-text: #c53030;
+        --status-info-bg: #e6f3ff;
+        --status-info-text: #1a5490;
+        --status-na-bg: #f5f5f5;
+        --status-na-text: #888;
+    }
 
-            /* Enhanced Status Colors */
-            --status-excellent-bg: #e8f5e8;
-            --status-excellent-text: #2d5a2d;
-            --status-good-bg: #e6f7ee;
-            --status-good-text: #0a6e3d;
-            --status-warning-bg: #fff8e6;
-            --status-warning-text: #8a6d3b;
-            --status-danger-bg: #fde8e8;
-            --status-danger-text: #c53030;
-            --status-info-bg: #e6f3ff;
-            --status-info-text: #1a5490;
-            --status-na-bg: #f5f5f5;
-            --status-na-text: #888;
+    /* Accordion Open State - Lime Green */
+    .accordion-button:not(.collapsed) {
+        background-color: #c9da29 !important;
+        color: #000 !important;
+        box-shadow: none !important;
+    }
+    .accordion-button:not(.collapsed) i { color: #000 !important; }
+    .accordion-button:hover { filter: brightness(110%); }
+
+    body {
+        font-family: var(--font-family);
+        font-size: 13px;
+        color: var(--text-dark);
+        background-color: #fff;
+        line-height: 1.6;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+    }
+
+    .container { 
+        padding: 0 15px; 
+        max-width: 1000px; 
+        margin: 0 auto; 
+    }
+
+    /* Header - Fully Responsive */
+    .header-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 20px;
+        border-bottom: 1px solid var(--border-color);
+        position: relative;
+    }
+    .header-table::after {
+        content: '';
+        position: absolute;
+        bottom: -1px;
+        left: 0;
+        width: 100px;
+        height: 3px;
+        background: var(--primary-color);
+    }
+    .header-logo-img {
+        max-width: 160px;
+        height: auto;
+    }
+    .header-details-cell h1 {
+        font-size: 20px;
+        margin: 10px 0 5px;
+        font-weight: 700;
+    }
+    .header-meta {
+        font-size: 11px;
+        color: var(--text-muted);
+    }
+    .header-meta span {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        margin-right: 12px;
+    }
+
+    /* Cards & Sections */
+    .report-card, .report-card-top {
+        margin-bottom: 20px;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: var(--shadow-md);
+        border: 1px solid var(--border-color);
+        page-break-inside: avoid;
+    }
+    .card-header, .card-header-top {
+        font-size: 17px;
+        font-weight: 700;
+        padding: 14px 18px;
+        background: var(--primary-color);
+        color: #000;
+    }
+    .card-header i { margin-right: 10px; font-size: 18px; }
+    .card-body, .card-body-top {
+        padding: 20px;
+    }
+
+    /* Responsive Grid for Info Cards */
+    .row > [class*="col-"] {
+        padding: 6px 10px;
+    }
+    .main-col-class {
+        border: 1px solid #dbd9d9;
+    }
+    .col-bg-class {
+        background-color: var(--background-light);
+    }
+    .item-label {
+        font-weight: 600;
+        font-size: 13px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        color: #444;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+    .item-label i {
+        color: var(--primary-color);
+        font-size: 14px;
+    }
+    .item-value {
+        font-size: 14px;
+        font-weight: 500;
+        text-align: right;
+        color: var(--text-dark);
+    }
+
+    /* Status Pills */
+    .status-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 6px 12px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 700;
+        text-transform: uppercase;
+        float: right;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    .status-excellent { background: var(--status-excellent-bg); color: var(--status-excellent-text); }
+    .status-good      { background: var(--status-good-bg);      color: var(--status-good-text); }
+    .status-warning   { background: var(--status-warning-bg);   color: var(--status-warning-text); }
+    .status-danger    { background: var(--status-danger-bg);    color: var(--status-danger-text); }
+    .status-info      { background: var(--status-info-bg);      color: var(--status-info-text); }
+    .status-na        { background: var(--status-na-bg);        color: var(--status-na-text); }
+
+    /* Vehicle Images - Mobile First */
+    .card-body-top .row {
+        margin: 0 -10px;
+    }
+    .card-body-top img {
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+    .position-relative .position-absolute {
+        border-radius: 0 0 12px 12px;
+    }
+
+    /* Damage Image & Table */
+    .damage-assessment img {
+        border-radius: 12px;
+        box-shadow: var(--shadow-md);
+    }
+    .details-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 12px;
+    }
+    .details-table th {
+        background: #c9da29;
+        color: white;
+        padding: 10px 8px;
+        font-weight: 600;
+        text-align: left;
+    }
+    .details-table td {
+        padding: 10px 8px;
+        border-bottom: 1px solid #eee;
+    }
+
+    /* Footer */
+    .footer {
+        text-align: center;
+        padding: 20px 0;
+        font-size: 11px;
+        color: var(--text-muted);
+        border-top: 1px solid var(--border-color);
+        margin-top: 40px;
+    }
+    .footer-brand {
+        color: var(--primary-color);
+        font-weight: 700;
+    }
+
+    /* PDF Page Fix */
+    @page {
+        margin: 100px 20px 60px 20px;
+    }
+    header { position: fixed; top: -90px; left: 0; right: 0; height: 80px; }
+    footer { position: fixed; bottom: -50px; left: 0; right: 0; height: 40px; text-align: center; }
+
+    /* ======================================== */
+    /* RESPONSIVE BREAKPOINTS - MOBILE FIRST    */
+    /* ======================================== */
+    @media (max-width: 768px) {
+        .header-details-cell h1 { font-size: 18px; }
+        .header-logo-img { max-width: 130px; }
+
+        /* Stack vehicle info side-by-side → full width */
+        .row > [class*="col-"] {
+            flex: 0 0 100%;
+            max-width: 100%;
+        }
+        .main-col-class {
+            border-left: none !important;
+            border-right: none !important;
+            border-top: none !important;
+        }
+        .col-6.main-col-class { border-bottom: none; }
+
+        /* Image Gallery - Stack vertically */
+        .gallery-grid { grid-template-columns: 1fr !important; }
+        .card-body-top .col-md-8,
+        .card-body-top .col-md-4 { flex: 0 0 100%; max-width: 100%; }
+        .card-body-top .col-md-4 img { height: 150px !important; }
+
+        /* Accordion headers bigger tap area */
+        .accordion-button {
+            padding: 16px 18px !important;
+            font-size: 16px;
         }
 
-        body {
-            font-family: var(--font-family);
-            font-size: 12px;
-            color: var(--text-dark);
-            background-color: #fff;
-            line-height: 1.5;
-            -webkit-print-color-adjust: exact !important;
-            print-color-adjust: exact !important;
-        }
-
-        .container {
-            width: 100%;
-            max-width: 1000px;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
-
-        /* This is the main table container for the header */
-        .header-table {
-            width: 100%;
-            border-collapse: collapse;
-            padding-bottom: 15px;
-            margin-bottom: 30px;
-            border-bottom: 1px solid var(--border-color);
-            position: relative;
-        }
-
-        /* This recreates the accent line using a pseudo-element on the table */
-        .header-table::after {
-            content: '';
-            position: absolute;
-            bottom: -1px;
-            left: 0;
-            width: 120px;
-            height: 3px;
-            background: var(--primary-color);
-        }
-
-        /* Style the table cells */
-        .header-logo-cell,
-        .header-details-cell {
-            padding: 0;
-            border: none;
-        }
-
-        /* Style the logo image within its cell */
-        .header-logo-img {
-            max-width: 180px;
-            max-height: 60px;
-            object-fit: contain;
-            display: block;
-            /* Helps remove extra space below the image */
-        }
-
-        /* Keep the existing styles for the details section */
-        .header-details-cell h1 {
-            margin: 0;
-            font-size: 24px;
-            font-weight: 600;
-            color: var(--text-dark);
-            letter-spacing: -0.5px;
-        }
-
-        .header-details-cell .header-meta {
-            display: block;
-            /* Use block instead of flex */
-            margin-top: 8px;
-            font-size: 11px;
-            color: var(--text-muted);
-        }
-
-        .header-details-cell .header-meta span {
-            display: inline-block;
-            /* Use inline-block for spacing */
-            margin-left: 15px;
-            align-items: center;
-            gap: 5px;
-            /* Note: gap might not work in dompdf, margin is safer */
-        }
-
-        .header-details-cell .header-meta span:first-child {
-            margin-left: 0;
-        }
-
-        /* ==================================================================== */
-        /* == END: NEW HEADER CSS == */
-        /* ==================================================================== */
-        /* --- Premium Card Sections --- */
-        .report-card {
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            margin-bottom: 25px;
-            page-break-inside: avoid;
-            overflow: hidden;
-            background: #fff;
-            box-shadow: var(--shadow-sm);
-        }
-
-        .card-header {
-            background: linear-gradient(to right, var(--primary-light), white);
-            color: var(--text-dark);
-            padding: 12px 20px;
-            font-size: 14px;
-            font-weight: 600;
-            border-bottom: 1px solid var(--border-color);
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .card-header .fa-solid {
-            color: var(--primary-color);
-            font-size: 14px;
-        }
-
-        .card-body {
-            padding: 20px;
-        }
-
-        /* --- Premium Table Layout --- */
-        .details-table {
-            width: 100%;
-            border-collapse: separate;
-            border-spacing: 0 10px;
-        }
-
-        .details-table tr:nth-child(even) td {
-            /* background-color: var(--background-light); */
-        }
-
-        .details-table td {
-            padding: 12px 15px;
-            vertical-align: middle;
-            border: none;
-            border-radius: 4px;
-        }
-
-        .details-table tr:first-child td {
-            padding-top: 0;
-        }
-
-        /* --- Label/Value Pairs --- */
-        .item-label {
-            font-weight: 500;
-            color: var(--text-muted);
-            margin-top: 4px;
-            margin-bottom: 4px;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            font-size: 12px;
-            text-transform: uppercase;
-            letter-spacing: 0.9px;
-            border-radius: 10px !important;
-        }
-
-        .item-label .fa-solid {
-            font-size: 12px;
-            color: var(--primary-color);
-            opacity: 0.8;
-        }
-
-        .item-value {
-            font-weight: 400;
-            font-size: 13px;
-            padding: 8px 12px;
-            line-height: 1.4;
-
-            border-radius: 4px;
-            /* border: 1px solid var(--border-color); */
-        }
-
-        .item-value-list {
-            list-style-type: none;
-            padding-left: 0;
-            margin: 0;
-            display: flex;
-            flex-wrap: wrap;
-            gap: 6px;
-        }
-
-        .item-value-list li {
-            background-color: #f0f0f0;
-            color: #555;
-            padding: 4px 12px;
-            border-radius: 12px;
-            font-size: 11px;
-            font-weight: 500;
-        }
-
-        /* --- Enhanced Status Pills with Colors --- */
+        /* Status pills full width on mobile */
         .status-pill {
-            /* display: inline-flex; */
-            align-items: center;
-            padding: 6px 14px;
-            /* border-radius: 16px; */
-            font-size: 12px;
-            font-weight: 500;
-            text-transform: capitalize;
-            box-shadow: var(--shadow-sm);
-            margin-top: 2px;
-            gap: 6px;
+            float: none;
+            display: block;
+            text-align: center;
+            margin-top: 8px;
+        }
+
+        /* Table responsive */
+        .details-table,
+        .details-table thead,
+        .details-table tbody,
+        .details-table th,
+        .details-table td,
+        .details-table tr {
+            display: block;
+        }
+        .details-table thead tr { position: absolute; top: -9999px; left: -9999px; }
+        .details-table tr { border: 1px solid #ccc; margin-bottom: 10px; border-radius: 8px; overflow: hidden; }
+        .details-table td {
+            border: none;
+            position: relative;
+            padding-left: 50% !important;
             text-align: right;
         }
-
-        .status-pill i {
-            margin-right: 5px !important;
-        }
-
-        .status-pill .fa-solid {
-            font-size: 10px;
-        }
-
-        /* Excellent Status */
-        .status-excellent {
-            background-color: var(--status-excellent-bg);
-            color: var(--status-excellent-text);
-        }
-
-        .status-excellent .fa-solid {
-            color: var(--status-excellent-text);
-        }
-
-        /* Good Status */
-        .status-good {
-            background-color: var(--status-good-bg);
-            color: var(--status-good-text);
-        }
-
-        .status-good .fa-solid {
-            color: var(--status-good-text);
-        }
-
-        /* Warning Status */
-        .status-warning {
-            background-color: var(--status-warning-bg);
-            color: var(--status-warning-text);
-        }
-
-        .status-warning .fa-solid {
-            color: var(--status-warning-text);
-        }
-
-        /* Danger Status */
-        .status-danger {
-            background-color: var(--status-danger-bg);
-            color: var(--status-danger-text);
-        }
-
-        .status-danger .fa-solid {
-            color: var(--status-danger-text);
-        }
-
-        /* Info Status */
-        .status-info {
-            background-color: var(--status-info-bg);
-            color: var(--status-info-text);
-        }
-
-        .status-info .fa-solid {
-            color: var(--status-info-text);
-        }
-
-        /* N/A Status */
-        .status-na {
-            background-color: var(--status-na-bg);
-            color: var(--status-na-text);
-        }
-
-        .status-na .fa-solid {
-            color: var(--status-na-text);
-        }
-
-        /* --- Premium Image Gallery Styles --- */
-        .image-gallery {
-            padding: 0;
-        }
-
-        .gallery-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            /* exactly 3 per row */
-            gap: 20px;
-            margin-top: 15px;
-        }
-
-        .gallery-item {
-            position: relative;
-            background: #fff;
-            border-radius: 12px;
-            overflow: hidden;
-            margin: 5px;
-            width: 300px !important;
-            box-shadow: var(--shadow-md);
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
-            border: 1px solid var(--border-color);
-        }
-
-        .gallery-item:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
-        }
-
-        .gallery-image {
-            width: 100%;
-            height: 200px;
-            object-fit: cover;
-            display: block;
-        }
-
-        .gallery-caption {
-            padding: 12px 15px;
-            background: linear-gradient(to right, var(--primary-light), white);
-            border-top: 1px solid var(--border-color);
-        }
-
-        .gallery-title {
-            font-size: 13px;
-            font-weight: 600;
-            color: var(--text-dark);
-            margin: 0 0 4px 0;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .gallery-title .fa-solid {
+        .details-table td:before {
+            content: attr(data-label);
+            position: absolute;
+            left: 12px;
+            width: 45%;
+            font-weight: bold;
+            text-align: left;
             color: var(--primary-color);
-            font-size: 12px;
         }
+    }
 
-        .gallery-description {
-            font-size: 11px;
-            color: var(--text-muted);
-            margin: 0;
-            line-height: 1.4;
-        }
+    @media (max-width: 480px) {
+        body { font-size: 12.5px; }
+        .card-header, .card-header-top { font-size: 16px; padding: 12px 15px; }
+        .item-label, .item-value { font-size: 13px; }
+        .status-pill { font-size: 11px; padding: 5px 10px; }
+    }
+    /* DUBIZZLE OFFICIAL MOBILE NAVBAR - EXACT COPY */
+.dubizzle-mobile-nav {
+    border-radius: 24px 24px 0 0;
+    overflow: hidden;
+    padding: 8px 4px 12px;
+    background: rgba(255,255,255,0.95) !important;
+}
 
-        .gallery-meta {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-top: 8px;
-            padding-top: 8px;
-            border-top: 1px solid #f0f0f0;
-        }
+.dubizzle-nav-item {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    color: #8c8c8c;
+    font-size: 10px;
+    font-weight: 600;
+    padding: 6px 2px;
+    border-radius: 16px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    min-width: 0;
+}
 
-        .gallery-timestamp {
-            font-size: 10px;
-            color: var(--text-muted);
-            display: flex;
-            align-items: center;
-            gap: 4px;
-        }
+.dubizzle-nav-item .icon {
+    width: 46px;
+    height: 46px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 4px;
+    border-radius: 50%;
+    background: transparent;
+    transition: all 0.3s ease;
+    position: relative;
+}
 
-        .gallery-category {
-            font-size: 10px;
-            padding: 3px 8px;
-            border-radius: 10px;
-            background: var(--primary-color);
-            color: white;
-            font-weight: 500;
-        }
+.dubizzle-nav-item i {
+    font-size: 20px;
+    transition: transform 0.3s ease;
+}
 
-        .no-images {
-            text-align: center;
-            padding: 40px 20px;
-            color: var(--text-muted);
-        }
+/* ACTIVE STATE - DUBIZZLE ORANGE */
+.dubizzle-nav-item.active {
+    color: #ff6b00 !important;
+}
 
-        .no-images .fa-solid {
-            font-size: 48px;
-            color: var(--border-color);
-            margin-bottom: 15px;
-        }
+.dubizzle-nav-item.active .icon {
+    background: #fff2e6;
+    box-shadow: 0 4px 12px rgba(255, 107, 0, 0.25);
+    transform: scale(1.1);
+}
 
-        .no-images h3 {
-            margin: 0 0 8px 0;
-            font-size: 16px;
-            font-weight: 500;
-        }
+.dubizzle-nav-item.active i {
+    transform: translateY(-2px);
+}
 
-        .no-images p {
-            margin: 0;
-            font-size: 12px;
-        }
+/* Active indicator dot */
+.dubizzle-nav-item.active::after {
+    content: '';
+    position: absolute;
+    top: 4px;
+    width: 6px;
+    height: 6px;
+    background: #ff6b00;
+    border-radius: 50%;
+    box-shadow: 0 0 8px rgba(255, 107, 0, 0.6);
+}
 
-        /* --- Damage Assessment Styles --- */
-        .damage-assessment {
-            padding: 20px;
-            background: #f8f9fa;
-            border-radius: 8px;
-            border: 1px solid #e9ecef;
-        }
+/* Hover */
+.dubizzle-nav-item:hover .icon {
+    background: #fff2e6;
+    transform: scale(1.05);
+}
 
-        .damage-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 10px 0;
-            border-bottom: 1px solid #e9ecef;
-        }
-
-        .damage-item:last-child {
-            border-bottom: none;
-        }
-
-        .damage-type {
-            font-weight: 500;
-            color: var(--text-dark);
-        }
-
-        .damage-location {
-            color: var(--text-muted);
-            font-size: 11px;
-        }
-
-        /* --- Premium Footer --- */
-        .footer {
-            text-align: center;
-            margin-top: 40px;
-            padding: 15px 0;
-            font-size: 10px;
-            color: var(--text-muted);
-            border-top: 1px solid var(--border-color);
-        }
-
-        .footer-brand {
-            color: var(--primary-color);
-            font-weight: 600;
-        }
-
-        /* ==================================================================== */
-        /* == START: PDF Page Layout Fix for Empty First Page == */
-        /* ==================================================================== */
-
-        @page {
-            /* Define the physical page margins. This is where the fixed header/footer will live. */
-            margin: 110px 25px 60px 25px;
-            /* Top, Right, Bottom, Left */
-        }
-
-        header {
-            position: fixed;
-            top: -100px;
-            /* Pull the header up into the top margin area */
-            left: 0px;
-            right: 0px;
-            height: 90px;
-            /* The approximate height of your header content */
-        }
-
-        footer {
-            position: fixed;
-            bottom: -50px;
-            /* Pull the footer down into the bottom margin area */
-            left: 0px;
-            right: 0px;
-            height: 40px;
-            /* The approximate height of your footer content */
-        }
-
-        /* Optional: Add a page number counter */
-        footer .page-number:after {
-            content: "Page " counter(page);
-        }
-
-        /* This ensures the main content flows correctly and doesn't start on page 2 */
-        main {
-            position: relative;
-            /* No top/bottom padding needed here because the @page margin handles it */
-        }
-
-        .disclaimer-text {
-            text-align: justify;
-            line-height: 1.5;
-            /* Better readability */
-            font-size: 14px;
-            /* Adjust for print */
-            margin: 0;
-        }
-
-        .col-bg-class {
-            background-color: var(--background-light);
-        }
-
-        .main-col-class {
-            border: 1px solid #dbd9d9ff;
-        }
-
-        /* ==================================================================== */
-        /* == END: PDF Page Layout Fix == */
-        /* ==================================================================== */
-    </style>
+/* Prevent content overlap */
+body { padding-bottom: 100px !important; }
+html { scroll-behavior: smooth; }
+</style>
 </head>
 
 <body>
-    <div class="">
-        <!-- ==================================================================== -->
-        <!-- == START: REFACTORED HEADER (Use this for both web and PDF) == -->
-        <!-- ==================================================================== -->
-        <table class="header-table" width="100%">
-            <tr>
-                <td class="header-logo-cell" valign="bottom">
-                    <img src="{{ asset('images/caartl.png') }}" alt="Golden X Logo" class="header-logo-img">
-                </td>
-                <td class="header-details-cell" valign="bottom" align="right">
-                    <h1>Vehicle Inspection Report</h1>
-                    <div class="header-meta">
-                        <span><i class="fas fa-file-alt"></i> Report #{{ $reportInView->id }}</span>
-                        <span><i class="fas fa-calendar"></i> Generated on {{ now()->format('M d, Y g:i A') }}</span>
-                    </div>
-                </td>
-            </tr>
-        </table>
-        <!-- ==================================================================== -->
-        <!-- == END: REFACTORED HEADER == -->
-        <!-- ==================================================================== -->
-
-        @php
-        // Field icons mapping
-        $fieldIcons = [
-        'make' => 'fas fa-industry',
-        'model' => 'fas fa-car',
-        'year' => 'fas fa-calendar-alt',
-        'vin' => 'fas fa-barcode',
-        'odometer' => 'fas fa-tachometer-alt',
-        'color' => 'fas fa-palette',
-        'noOfCylinders' => 'fas fa-cog',
-        'body_type' => 'fas fa-car-side',
-        'registeredEmirates' => 'fas fa-map-marker-alt',
-        'specs' => 'fas fa-sliders-h',
-        'transmission' => 'fas fa-cogs',
-        'horsepower' => 'fas fa-horse-head',
-        'warrantyAvailable' => 'fas fa-shield-alt',
-        'serviceHistory' => 'fas fa-history',
-        'noOfKeys' => 'fas fa-key',
-        'mortgage' => 'fas fa-file-invoice-dollar',
-        'engine_cc' => 'fas fa-engine',
-        'serviceContractAvailable' => 'fas fa-handshake',
-        'is_inspection' => 'fas fa-search',
-        // Engine fields
-        'engineOil' => 'fas fa-oil-can',
-        'gearOil' => 'fas fa-cog',
-        'gearshifting' => 'fas fa-exchange-alt',
-        'engineNoise' => 'fas fa-volume-up',
-        'engineSmoke' => 'fas fa-smog',
-        'fourWdSystemCondition' => 'fas fa-road',
-        'obdError' => 'fas fa-exclamation-triangle',
-        'remarks' => 'fas fa-comment',
-
-        // Exterior fields
-        'paintCondition' => 'fas fa-brush',
-        'convertible' => 'fas fa-car-alt',
-        'blindSpot' => 'fas fa-eye',
-        'sideSteps' => 'fas fa-stairs',
-        'wheelsType' => 'fas fa-circle',
-        'rimsSizeFront' => 'fas fa-circle-notch',
-        'rimsSizeRear' => 'fas fa-circle-notch',
-        // Tires
-        'frontLeftTire' => 'fas fa-circle',
-        'frontRightTire' => 'fas fa-circle',
-        'rearLeftTire' => 'fas fa-circle',
-        'rearRightTire' => 'fas fa-circle',
-        'tiresSize' => 'fas fa-ruler',
-        'spareTire' => 'fas fa-life-ring',
-        // Interior
-        'speedmeterCluster' => 'fas fa-tachometer-alt',
-        'headLining' => 'fas fa-home',
-        'seatControls' => 'fas fa-chair',
-        'seatsCondition' => 'fas fa-couch',
-        'centralLockOperation' => 'fas fa-lock',
-        'sunroofCondition' => 'fas fa-sun',
-        'windowsControl' => 'fas fa-window-maximize',
-        'cruiseControl' => 'fas fa-ship',
-        'acCooling' => 'fas fa-snowflake',
-        // Car Specs
-        'parkingSensors' => 'fas fa-radar',
-        'keylessStart' => 'fas fa-key',
-        'seats' => 'fas fa-chair',
-        'cooledSeats' => 'fas fa-snowflake',
-        'heatedSeats' => 'fas fa-fire',
-        'powerSeats' => 'fas fa-bolt',
-        'viveCamera' => 'fas fa-camera',
-        'sunroofType' => 'fas fa-sun',
-        'drive' => 'fas fa-road',
-
-        // Brakes
-        'steeringOperation' => 'fas fa-steering-wheel',
-        'wheelAlignment' => 'fas fa-crosshairs',
-        'brakePads' => 'fas fa-stop-circle',
-        'suspension' => 'fas fa-car-crash',
-        'brakeDiscs' => 'fas fa-compact-disc',
-        'shockAbsorberOperation' => 'fas fa-car-crash',
-        'comment_section1' => 'fas fa-comment',
-        'comment_section2' => 'fas fa-comment',
-        'final_conclusion' => 'fas fa-clipboard',
-        ];
-        @endphp
-
-        {{-- Basic Vehicle Information Card - Show ALL fields --}}
-        <div class="report-card">
-            <div class="card-header p-3"><i class="fa-solid fa-car"></i>Basic Vehicle Information</div>
-            <div class="card-body p-3">
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="row p-md-4">
-                            <div class="col-6 main-col-class col-bg-class">
-                                <div class="item-label"><i class="{{ $fieldIcons['make'] ?? 'fas fa-circle-notch' }}"></i> Make </div>
-                            </div>
-                            <div class="col-6 main-col-class">
-                                <div class="item-value">{{ $reportInView->brand?->name ?? 'N/A' }}</div>
-                            </div>
-                            <div class="col-6 main-col-class col-bg-class">
-                                <div class="item-label"><i class="{{ $fieldIcons['model'] ?? 'fas fa-circle-notch' }}"></i> Model</div>
-                            </div>
-                            <div class="col-6 main-col-class">
-                                <div class="item-value">{{ $reportInView->vehicleModel?->name ?? 'N/A' }}</div>
-                            </div>
-                            <div class="col-6 main-col-class col-bg-class">
-                                <div class="item-label"><i class="{{ $fieldIcons['trim'] ?? 'fas fa-circle-notch' }}"></i> Trim</div>
-                            </div>
-                            <div class="col-6 main-col-class">
-                                <div class="item-value">{{ $reportInView->trim ?? 'N/A' }}</div>
-                            </div>
-
-                            <div class="col-6 main-col-class col-bg-class">
-                                <div class="item-label"><i class="{{ $fieldIcons['year'] ?? 'fas fa-circle-notch' }}"></i> Year</div>
-                            </div>
-                            <div class="col-6 main-col-class">
-                                <div class="item-value">{{ $reportInView->year ?? 'N/A' }}</div>
-                            </div>
-                            <div class="col-6 main-col-class col-bg-class">
-                                <div class="item-label"><i class="{{ $fieldIcons['vin'] ?? 'fas fa-circle-notch' }}"></i> VIN</div>
-                            </div>
-                            <div class="col-6 main-col-class">
-                                <div class="item-value">{{ $reportInView->vin ?? 'N/A' }}</div>
-                            </div>
-                            <div class="col-6 main-col-class col-bg-class">
-                                <div class="item-label"><i class="{{ $fieldIcons['odometer'] ?? 'fas fa-circle-notch' }}"></i> Mileage / Odometer</div>
-                            </div>
-                            <div class="col-6 main-col-class">
-                                <div class="item-value">{{ $reportInView->odometer.' kms' ?? 'N/A' }}</div>
-                            </div>
-                            <div class="col-6 main-col-class col-bg-class">
-                                <div class="item-label"><i class="{{ $fieldIcons['engine_cc'] ?? 'fas fa-circle-notch' }}"></i> Engine CC</div>
-                            </div>
-                            <div class="col-6 main-col-class">
-                                <div class="item-value">{{ $reportInView->engine_cc ?? 'N/A' }}</div>
-                            </div>
-                            <div class="col-6 main-col-class col-bg-class">
-                                <div class="item-label"><i class="{{ $fieldIcons['horsepower'] ?? 'fas fa-circle-notch' }}"></i> Horsepower</div>
-                            </div>
-                            <div class="col-6 main-col-class">
-                                <div class="item-value">{{ $reportInView->horsepower ?? 'N/A' }}</div>
-                            </div>
-                            <div class="col-6 main-col-class col-bg-class">
-                                <div class="item-label"><i class="{{ $fieldIcons['color'] ?? 'fas fa-circle-notch' }}"></i> Color</div>
-                            </div>
-                            <div class="col-6 main-col-class">
-                                <div class="item-value">{{ $reportInView->color ?? 'N/A' }}</div>
-                            </div>
-                            <div class="col-6 main-col-class col-bg-class">
-                                <div class="item-label"><i class="{{ $fieldIcons['specs'] ?? 'fas fa-circle-notch' }}"></i> Specs</div>
-                            </div>
-                            <div class="col-6 main-col-class">
-                                <div class="item-value">{{ $reportInView->specs ?? 'N/A' }}</div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="row p-md-4">
-                            <div class="col-6 main-col-class col-bg-class">
-                                <div class="item-label"><i class="{{ $fieldIcons['registeredEmirates'] ?? 'fas fa-circle-notch' }}"></i> Registered Emirates</div>
-                            </div>
-                            <div class="col-6 main-col-class">
-                                <div class="item-value">{{ $reportInView->registerEmirates ?? 'N/A' }}</div>
-                            </div>
-                            <div class="col-6 main-col-class col-bg-class">
-                                <div class="item-label"><i class="{{ $fieldIcons['body_type'] ?? 'fas fa-circle-notch' }}"></i> Body Type</div>
-                            </div>
-                            <div class="col-6 main-col-class">
-                                <div class="item-value">{{ $reportInView->body_type ?? 'N/A' }}</div>
-                            </div>
-
-                            <div class="col-6 main-col-class col-bg-class">
-                                <div class="item-label"><i class="{{ $fieldIcons['transmission'] ?? 'fas fa-circle-notch' }}"></i> Transmission</div>
-                            </div>
-                            <div class="col-6 main-col-class">
-                                <div class="item-value">{{ $reportInView->transmission ?? 'N/A' }}</div>
-                            </div>
-                            <div class="col-6 main-col-class col-bg-class">
-                                <div class="item-label"><i class="{{ $fieldIcons['warrantyAvailable'] ?? 'fas fa-circle-notch' }}"></i> Warranty Available</div>
-                            </div>
-                            <div class="col-6 main-col-class">
-                                <div class="item-value">{{ $reportInView->warrantyAvailable ?? 'N/A' }}</div>
-                            </div>
-
-                            <div class="col-6 main-col-class col-bg-class">
-                                <div class="item-label"><i class="{{ $fieldIcons['serviceContractAvailable'] ?? 'fas fa-circle-notch' }}"></i> Service Contract</div>
-                            </div>
-                            <div class="col-6 main-col-class">
-                                <div class="item-value">{{ $reportInView->serviceContractAvailable ?? 'N/A' }}</div>
-                            </div>
-                            <div class="col-6 main-col-class col-bg-class">
-                                <div class="item-label"><i class="{{ $fieldIcons['serviceHistory'] ?? 'fas fa-circle-notch' }}"></i> Service History</div>
-                            </div>
-                            <div class="col-6 main-col-class">
-                                <div class="item-value">{{ $reportInView->serviceHistory ?? 'N/A' }}</div>
-                            </div>
-                            <div class="col-6 main-col-class col-bg-class">
-                                <div class="item-label"><i class="{{ $fieldIcons['noOfKeys'] ?? 'fas fa-circle-notch' }}"></i> No Of Keys</div>
-                            </div>
-                            <div class="col-6 main-col-class">
-                                <div class="item-value">{{ $reportInView->noOfKeys ?? 'N/A' }}</div>
-                            </div>
-                            <div class="col-6 main-col-class col-bg-class">
-                                <div class="item-label"><i class="{{ $fieldIcons['mortgage'] ?? 'fas fa-circle-notch' }}"></i> Mortgage</div>
-                            </div>
-                            <div class="col-6 main-col-class">
-                                <div class="item-value">{{ $reportInView->mortgage ?? 'N/A' }}</div>
-                            </div>
-                            <div class="col-6 main-col-class col-bg-class">
-                                <div class="item-label"><i class="{{ $fieldIcons['noOfCylinders'] ?? 'fas fa-circle-notch' }}"></i> No. of Cylinders</div>
-                            </div>
-                            <div class="col-6 main-col-class">
-                                <div class="item-value">{{ $reportInView->noOfCylinders ?? 'N/A' }}</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+<!-- DUBIZZLE OFFICIAL MOBILE BOTTOM NAVBAR - 100% MATCH -->
+<div id="mobileNav" class="d-block d-md-none position-fixed bottom-0 start-0 end-0" style="z-index: 9999; pointer-events: none;">
+    <div class="dubizzle-nav-wrapper" style="pointer-events: auto;">
+        <div class="dubizzle-mobile-nav bg-white" 
+             style="display: flex; height: 72px; border-top: 1px solid #e4e4e4; 
+                    box-shadow: 0 -2px 12px rgba(0,0,0,0.08);
+                    backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);">
+            
+            <!-- <a href="#summary"     class="dubizzle-nav-item active" data-section="summary">
+                <div class="icon"><i class="fas fa-home"></i></div>
+                <span>Summary</span>
+            </a> -->
+            <a href="#car-details" class="dubizzle-nav-item" data-section="car-details">
+                <div class="icon"><i class="fas fa-car"></i></div>
+                <span>Car Details</span>
+            </a>
+            <a href="#exterior"    class="dubizzle-nav-item" data-section="exterior">
+                <div class="icon"><i class="fas fa-paint-roller"></i></div>
+                <span>Exterior</span>
+            </a>
+              <a href="#specs" class="dubizzle-nav-item" data-section="specs">
+                <div class="icon"><i class="fas fa-cogs"></i></div>
+                <span>Specs</span>
+            </a>
+            <!-- <a href="#wheels"      class="dubizzle-nav-item" data-section="wheels">
+                <div class="icon"><i class="fas fa-tire"></i></div>
+                <span>Wheels & Tyres</span>
+            </a> -->
+            <!-- <a href="#engine"      class="dubizzle-nav-item" data-section="engine">
+                <div class="icon"><i class="fas fa-engine"></i></div>
+                <span>Engine</span>
+            </a> -->
+            <!-- <a href="#steering"    class="dubizzle-nav-item" data-section="steering">
+                <div class="icon"><i class="fas fa-steering-wheel"></i></div>
+                <span>Steering & Brakes</span>
+            </a> -->
+           
+            <a href="#interior"    class="dubizzle-nav-item" data-section="interior">
+                <div class="icon"><i class="fas fa-chair"></i></div>
+                <span>Interior</span>
+            </a>
+           
         </div>
+    </div>
+</div>
+    <div class="container">
+        <div class="">
+            <!-- ==================================================================== -->
+            <!-- == START: REFACTORED HEADER (Use this for both web and PDF) == -->
+            <!-- ==================================================================== -->
+            <table class="header-table" width="100%">
+                <tr>
+                    <td class="header-logo-cell" valign="bottom">
+                        <img src="{{ asset('images/caartl.png') }}" alt="Golden X Logo" class="header-logo-img">
+                    </td>
+                    <td class="header-details-cell" valign="bottom" align="right">
+                        <h1>Vehicle Inspection Report</h1>
+                        <div class="header-meta">
+                            <span><i class="fas fa-file-alt"></i> Report #{{ $reportInView->id }}</span>
+                            <span><i class="fas fa-calendar"></i> Generated on {{ now()->format('M d, Y g:i A') }}</span>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+            <!-- ==================================================================== -->
+            <!-- == END: REFACTORED HEADER == -->
+            <!-- ==================================================================== -->
 
-        @php
-        // These variables are now only needed for the hardcoded logic inside the template.
-        $columnsPerRow = 5;
-
-        // It's still helpful to have the icons in one place.
-        $fieldIcons = [
-        'paintCondition' => 'fa-solid fa-spray-can',
-        'convertible' => 'fa-solid fa-car',
-        'blindSpot' => 'fa-solid fa-car-on',
-        'sideSteps' => 'fa-solid fa-shoe-prints',
-        'wheelsType' => 'fa-solid fa-circle-dot',
-        'rimsSizeFront' => 'fa-solid fa-arrows-left-right',
-        'rimsSizeRear' => 'fa-solid fa-arrows-left-right',
-        'engineOil' => 'fa-solid fa-oil-can',
-        'gearOil' => 'fa-solid fa-gear',
-        'gearshifting' => 'fa-solid fa-gears',
-        'engineNoise' => 'fa-solid fa-volume-high',
-        'engineSmoke' => 'fa-solid fa-smog',
-        'fourWdSystemCondition' => 'fa-solid fa-car-side',
-        'obdError' => 'fa-solid fa-triangle-exclamation',
-        'remarks' => 'fa-solid fa-comment-dots',
-        'frontLeftTire' => 'fa-solid fa-circle-dot',
-        'frontRightTire' => 'fa-solid fa-circle-dot',
-        'rearLeftTire' => 'fa-solid fa-circle-dot',
-        'rearRightTire' => 'fa-solid fa-circle-dot',
-        'tiresSize' => 'fa-solid fa-ruler-combined',
-        'spareTire' => 'fa-solid fa-life-ring',
-        'commentTire' => 'fa-solid fa-comment',
-        'parkingSensors' => 'fa-solid fa-car-burst',
-        'keylessStart' => 'fa-solid fa-key',
-        'seats' => 'fa-solid fa-chair',
-        'cooledSeats' => 'fa-solid fa-snowflake',
-        'heatedSeats' => 'fa-solid fa-fire',
-        'powerSeats' => 'fa-solid fa-bolt',
-        'viveCamera' => 'fa-solid fa-camera-retro',
-        'sunroofType' => 'fa-solid fa-sun',
-        'drive' => 'fa-solid fa-road',
-        'headsDisplay' => 'fa-solid fa-desktop',
-        'premiumSound' => 'fa-solid fa-music',
-        'carbonFiber' => 'fa-solid fa-cubes',
-        'speedmeterCluster' => 'fa-solid fa-gauge-high',
-        'headLining' => 'fa-solid fa-arrow-up',
-        'seatControls' => 'fa-solid fa-toggle-on',
-        'seatsCondition' => 'fa-solid fa-check-double',
-        'centralLockOperation' => 'fa-solid fa-lock',
-        'sunroofCondition' => 'fa-solid fa-sun',
-        'windowsControl' => 'fa-solid fa-window-maximize',
-        'cruiseControl' => 'fa-solid fa-forward',
-        'acCooling' => 'fa-solid fa-wind',
-        'comment_section2' => 'fa-solid fa-comments',
-        'steeringOperation' => 'fa-solid fa-dharmachakra',
-        'wheelAlignment' => 'fa-solid fa-arrows-to-dot',
-        'brakePads' => 'fa-solid fa-compact-disc',
-        'suspension' => 'fa-solid fa-car-burst',
-        'brakeDiscs' => 'fa-solid fa-compact-disc',
-        'shockAbsorberOperation' => 'fa-solid fa-car-burst',
-        'comment_section1' => 'fa-solid fa-comments',
-        ];
-        @endphp
-
-
-        {{-- ==================================================================== --}}
-        {{-- == 1. Exterior Section                                            == --}}
-        {{-- ==================================================================== --}}
-        <div class="report-card">
-            <div class="card-header"><i class="fa-solid fa-brush"></i>Exterior</div>
-            <div class="card-body">
-                <table class="details-table">
-                    {{-- Special full-width row for Paint Condition --}}
-                    <tr>
-                        <td colspan="{{ $columnsPerRow }}">
-                            @php $field = 'paintCondition'; $data = $reportInView->{$field} ?? 'N/A'; $statusInfo = getStatusInfo($data); @endphp
-                            <div class="item-label"><i class="{{ $fieldIcons[$field] ?? 'fas fa-circle-notch' }}"></i> {{ Str::of($field)->kebab()->replace('-', ' ')->title() }}</div>
-                            @if(is_array($data)) <div class="item-value">
-                                <ul class="item-value-list">@foreach($data as $value)<li>{{ $value }}</li>@endforeach</ul>
-                            </div>
-                            @elseif($statusInfo['class'] !== 'item-value') <div class="status-pill {{ $statusInfo['class'] }}"><i class="{{ $statusInfo['icon'] }}"></i>{{ $data }}</div>
-                            @else <div class="item-value">{{ $data }}</div> @endif
-                        </td>
-                    </tr>
-                    {{-- Row 1 of other fields --}}
-                    <tr>
-
-                    </tr>
-                    {{-- Row 2 of other fields --}}
-
-                </table>
-            </div>
-        </div>
-
-
-        {{-- Damage Assessment Section --}}
-        <div class="report-card">
-            @if($reportInView->damage_file_path && file_exists(public_path(parse_url($reportInView->damage_file_path, PHP_URL_PATH))))
             @php
-            $imageData = base64_encode(file_get_contents(public_path(parse_url($reportInView->damage_file_path, PHP_URL_PATH))));
-            $mimeType = mime_content_type(public_path(parse_url($reportInView->damage_file_path, PHP_URL_PATH)));
+            // Field icons mapping
+            $fieldIcons = [
+            'make' => 'fas fa-industry',
+            'model' => 'fas fa-car',
+            'year' => 'fas fa-calendar-alt',
+            'vin' => 'fas fa-barcode',
+            'odometer' => 'fas fa-tachometer-alt',
+            'color' => 'fas fa-palette',
+            'noOfCylinders' => 'fas fa-cog',
+            'body_type' => 'fas fa-car-side',
+            'registeredEmirates' => 'fas fa-map-marker-alt',
+            'specs' => 'fas fa-sliders-h',
+            'transmission' => 'fas fa-cogs',
+            'horsepower' => 'fas fa-horse-head',
+            'warrantyAvailable' => 'fas fa-shield-alt',
+            'serviceHistory' => 'fas fa-history',
+            'noOfKeys' => 'fas fa-key',
+            'mortgage' => 'fas fa-file-invoice-dollar',
+            'engine_cc' => 'fas fa-engine',
+            'serviceContractAvailable' => 'fas fa-handshake',
+            'is_inspection' => 'fas fa-search',
+            // Engine fields
+            'engineOil' => 'fas fa-oil-can',
+            'gearOil' => 'fas fa-cog',
+            'gearshifting' => 'fas fa-exchange-alt',
+            'engineNoise' => 'fas fa-volume-up',
+            'engineSmoke' => 'fas fa-smog',
+            'fourWdSystemCondition' => 'fas fa-road',
+            'obdError' => 'fas fa-exclamation-triangle',
+            'remarks' => 'fas fa-comment',
+
+            // Exterior fields
+            'paintCondition' => 'fas fa-brush',
+            'convertible' => 'fas fa-car-alt',
+            'blindSpot' => 'fas fa-eye',
+            'sideSteps' => 'fas fa-stairs',
+            'wheelsType' => 'fas fa-circle',
+            'rimsSizeFront' => 'fas fa-circle-notch',
+            'rimsSizeRear' => 'fas fa-circle-notch',
+            // Tires
+            'frontLeftTire' => 'fas fa-circle',
+            'frontRightTire' => 'fas fa-circle',
+            'rearLeftTire' => 'fas fa-circle',
+            'rearRightTire' => 'fas fa-circle',
+            'tiresSize' => 'fas fa-ruler',
+            'spareTire' => 'fas fa-life-ring',
+            // Interior
+            'speedmeterCluster' => 'fas fa-tachometer-alt',
+            'headLining' => 'fas fa-home',
+            'seatControls' => 'fas fa-chair',
+            'seatsCondition' => 'fas fa-couch',
+            'centralLockOperation' => 'fas fa-lock',
+            'sunroofCondition' => 'fas fa-sun',
+            'windowsControl' => 'fas fa-window-maximize',
+            'cruiseControl' => 'fas fa-ship',
+            'acCooling' => 'fas fa-snowflake',
+            // Car Specs
+            'parkingSensors' => 'fas fa-radar',
+            'keylessStart' => 'fas fa-key',
+            'seats' => 'fas fa-chair',
+            'cooledSeats' => 'fas fa-snowflake',
+            'heatedSeats' => 'fas fa-fire',
+            'powerSeats' => 'fas fa-bolt',
+            'viveCamera' => 'fas fa-camera',
+            'sunroofType' => 'fas fa-sun',
+            'drive' => 'fas fa-road',
+
+            // Brakes
+            'steeringOperation' => 'fas fa-steering-wheel',
+            'wheelAlignment' => 'fas fa-crosshairs',
+            'brakePads' => 'fas fa-stop-circle',
+            'suspension' => 'fas fa-car-crash',
+            'brakeDiscs' => 'fas fa-compact-disc',
+            'shockAbsorberOperation' => 'fas fa-car-crash',
+            'comment_section1' => 'fas fa-comment',
+            'comment_section2' => 'fas fa-comment',
+            'final_conclusion' => 'fas fa-clipboard',
+            ];
             @endphp
-            <img src="data:{{ $mimeType }};base64,{{ $imageData }}" style="max-width: 100%; height: auto;">
-            @else
-            <div class="damage-assessment">
-                <div class="status-pill status-good">
-                    <i class="fas fa-check-circle"></i>
-                    No Damage Reported or Image Not Found
+            {{-- Premium Image Gallery Section --}}
+            <div class="report-card-top" id="summary">
+                <div class="card-header-top p-3">
+                    <h3><b>{{ $reportInView->year ?? 'N/A' }} - {{ $reportInView->brand?->name ?? 'N/A' }} {{ $reportInView->vehicleModel?->name ?? 'N/A' }}</b></h3>
+                    <!-- <i class="fa-solid fa-images"></i> Vehicle Images -->
+                </div>
+
+                @php
+                $vehicleImages = $reportInView->images ?? collect();
+                if (!($vehicleImages instanceof \Illuminate\Support\Collection)) {
+                $vehicleImages = collect($vehicleImages ?: []);
+                }
+                @endphp
+
+                <div class="card-body-top ">
+                    <div class="container">
+                        @if($vehicleImages->count())
+                        <div class="row g-3">
+                            {{-- Main Large Image --}}
+                            <div class="col-12 col-md-8">
+                                @php $firstImage = $vehicleImages->first(); @endphp
+                                @if($firstImage)
+                                <img onclick="openImagesModal()"
+                                    src="{{ asset('storage/' . $firstImage->path) }}"
+                                    alt="Vehicle Image"
+                                    class="img-fluid rounded shadow w-100"
+                                    style="max-height: 600px;  cursor: pointer;">
+                                @endif
+                            </div>
+
+                            {{-- Side Images --}}
+                            <div class="col-12 col-md-4 d-flex flex-column gap-3">
+                                @foreach($vehicleImages->skip(1)->take(1) as $image)
+                                <img onclick="openImagesModal()"
+                                    src="{{ asset('storage/' . $image->path) }}"
+                                    alt="Vehicle Image"
+                                    class="img-fluid rounded shadow w-100"
+                                    style="height: 190px; object-fit: cover; cursor: pointer;">
+                                @endforeach
+
+                                {{-- Extra images counter overlay on last thumbnail --}}
+                                @if($vehicleImages->count() > 3)
+                                <div class="position-relative" onclick="openImagesModal()" style="cursor: pointer;">
+                                    <img src="{{ asset('storage/' . $vehicleImages->skip(2)->first()->path) }}"
+                                        alt="Vehicle Image"
+                                        class="img-fluid rounded shadow w-100"
+                                        style="height: 190px; object-fit: cover;">
+                                    <div class="position-absolute bottom-0 d-flex align-items-center justify-content-center p-2 bg-dark bg-opacity-50 text-white fw-bold fs-5 rounded"
+                                        style="pointer-events: none;">
+                                        <i class="fa-solid fa-images mx-3"></i>
+                                        {{ $vehicleImages->count() - 3 }} more
+                                    </div>
+                                </div>
+                                @endif
+                            </div>
+                        </div>
+                        @else
+                        <div class="no-images text-center py-4">
+                            <i class="fas fa-image fa-2x text-muted mb-2"></i>
+                            <h5>No Images Available</h5>
+                            <p class="text-muted small">
+                                No vehicle images have been uploaded for this inspection report.
+                            </p>
+                        </div>
+                        @endif
+                    </div>
                 </div>
             </div>
-            @endif
+            {{-- Basic Vehicle Information Card - Show ALL fields --}}
+            <div class="report-card" id="car-details">
+                <div class="card-header p-3"><i class="fa-solid fa-car"></i>Basic Vehicle Information</div>
+                <div class="card-body p-3">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="row p-md-4">
+                                <div class="col-6 main-col-class col-bg-class">
+                                    <div class="item-label"><i class="{{ $fieldIcons['make'] ?? 'fas fa-circle-notch' }}"></i> Make </div>
+                                </div>
+                                <div class="col-6 main-col-class">
+                                    <div class="item-value">{{ $reportInView->brand?->name ?? 'N/A' }}</div>
+                                </div>
+                                <div class="col-6 main-col-class col-bg-class">
+                                    <div class="item-label"><i class="{{ $fieldIcons['model'] ?? 'fas fa-circle-notch' }}"></i> Model</div>
+                                </div>
+                                <div class="col-6 main-col-class">
+                                    <div class="item-value">{{ $reportInView->vehicleModel?->name ?? 'N/A' }}</div>
+                                </div>
+                                <div class="col-6 main-col-class col-bg-class">
+                                    <div class="item-label"><i class="{{ $fieldIcons['trim'] ?? 'fas fa-circle-notch' }}"></i> Trim</div>
+                                </div>
+                                <div class="col-6 main-col-class">
+                                    <div class="item-value">{{ $reportInView->trim ?? 'N/A' }}</div>
+                                </div>
 
-        </div>
-        {{-- damage summery--}}
-        <div class="report-card">
-            <div class="card-header">
-                <i class="fa-solid fa-car-burst"></i> Damage Assessment Report
+                                <div class="col-6 main-col-class col-bg-class">
+                                    <div class="item-label"><i class="{{ $fieldIcons['year'] ?? 'fas fa-circle-notch' }}"></i> Year</div>
+                                </div>
+                                <div class="col-6 main-col-class">
+                                    <div class="item-value">{{ $reportInView->year ?? 'N/A' }}</div>
+                                </div>
+                                <div class="col-6 main-col-class col-bg-class">
+                                    <div class="item-label"><i class="{{ $fieldIcons['vin'] ?? 'fas fa-circle-notch' }}"></i> VIN</div>
+                                </div>
+                                <div class="col-6 main-col-class">
+                                    <div class="item-value">{{ $reportInView->vin ?? 'N/A' }}</div>
+                                </div>
+                                <div class="col-6 main-col-class col-bg-class">
+                                    <div class="item-label"><i class="{{ $fieldIcons['odometer'] ?? 'fas fa-circle-notch' }}"></i> Mileage / Odometer</div>
+                                </div>
+                                <div class="col-6 main-col-class">
+                                    <div class="item-value">{{ $reportInView->odometer.' kms' ?? 'N/A' }}</div>
+                                </div>
+                                <div class="col-6 main-col-class col-bg-class">
+                                    <div class="item-label"><i class="{{ $fieldIcons['engine_cc'] ?? 'fas fa-circle-notch' }}"></i> Engine CC</div>
+                                </div>
+                                <div class="col-6 main-col-class">
+                                    <div class="item-value">{{ $reportInView->engine_cc ?? 'N/A' }}</div>
+                                </div>
+                                <div class="col-6 main-col-class col-bg-class">
+                                    <div class="item-label"><i class="{{ $fieldIcons['horsepower'] ?? 'fas fa-circle-notch' }}"></i> Horsepower</div>
+                                </div>
+                                <div class="col-6 main-col-class">
+                                    <div class="item-value">{{ $reportInView->horsepower ?? 'N/A' }}</div>
+                                </div>
+                                <div class="col-6 main-col-class col-bg-class">
+                                    <div class="item-label"><i class="{{ $fieldIcons['color'] ?? 'fas fa-circle-notch' }}"></i> Color</div>
+                                </div>
+                                <div class="col-6 main-col-class">
+                                    <div class="item-value">{{ $reportInView->color ?? 'N/A' }}</div>
+                                </div>
+                                <div class="col-6 main-col-class col-bg-class">
+                                    <div class="item-label"><i class="{{ $fieldIcons['specs'] ?? 'fas fa-circle-notch' }}"></i> Specs</div>
+                                </div>
+                                <div class="col-6 main-col-class">
+                                    <div class="item-value">{{ $reportInView->specs ?? 'N/A' }}</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="row p-md-4">
+                                <div class="col-6 main-col-class col-bg-class">
+                                    <div class="item-label"><i class="{{ $fieldIcons['registeredEmirates'] ?? 'fas fa-circle-notch' }}"></i> Registered Emirates</div>
+                                </div>
+                                <div class="col-6 main-col-class">
+                                    <div class="item-value">{{ $reportInView->registerEmirates ?? 'N/A' }}</div>
+                                </div>
+                                <div class="col-6 main-col-class col-bg-class">
+                                    <div class="item-label"><i class="{{ $fieldIcons['body_type'] ?? 'fas fa-circle-notch' }}"></i> Body Type</div>
+                                </div>
+                                <div class="col-6 main-col-class">
+                                    <div class="item-value">{{ $reportInView->body_type ?? 'N/A' }}</div>
+                                </div>
+
+                                <div class="col-6 main-col-class col-bg-class">
+                                    <div class="item-label"><i class="{{ $fieldIcons['transmission'] ?? 'fas fa-circle-notch' }}"></i> Transmission</div>
+                                </div>
+                                <div class="col-6 main-col-class">
+                                    <div class="item-value">{{ $reportInView->transmission ?? 'N/A' }}</div>
+                                </div>
+                                <div class="col-6 main-col-class col-bg-class">
+                                    <div class="item-label"><i class="{{ $fieldIcons['warrantyAvailable'] ?? 'fas fa-circle-notch' }}"></i> Warranty Available</div>
+                                </div>
+                                <div class="col-6 main-col-class">
+                                    <div class="item-value">{{ $reportInView->warrantyAvailable ?? 'N/A' }}</div>
+                                </div>
+
+                                <div class="col-6 main-col-class col-bg-class">
+                                    <div class="item-label"><i class="{{ $fieldIcons['serviceContractAvailable'] ?? 'fas fa-circle-notch' }}"></i> Service Contract</div>
+                                </div>
+                                <div class="col-6 main-col-class">
+                                    <div class="item-value">{{ $reportInView->serviceContractAvailable ?? 'N/A' }}</div>
+                                </div>
+                                <div class="col-6 main-col-class col-bg-class">
+                                    <div class="item-label"><i class="{{ $fieldIcons['serviceHistory'] ?? 'fas fa-circle-notch' }}"></i> Service History</div>
+                                </div>
+                                <div class="col-6 main-col-class">
+                                    <div class="item-value">{{ $reportInView->serviceHistory ?? 'N/A' }}</div>
+                                </div>
+                                <div class="col-6 main-col-class col-bg-class">
+                                    <div class="item-label"><i class="{{ $fieldIcons['noOfKeys'] ?? 'fas fa-circle-notch' }}"></i> No Of Keys</div>
+                                </div>
+                                <div class="col-6 main-col-class">
+                                    <div class="item-value">{{ $reportInView->noOfKeys ?? 'N/A' }}</div>
+                                </div>
+                                <div class="col-6 main-col-class col-bg-class">
+                                    <div class="item-label"><i class="{{ $fieldIcons['mortgage'] ?? 'fas fa-circle-notch' }}"></i> Mortgage</div>
+                                </div>
+                                <div class="col-6 main-col-class">
+                                    <div class="item-value">{{ $reportInView->mortgage ?? 'N/A' }}</div>
+                                </div>
+                                <div class="col-6 main-col-class col-bg-class">
+                                    <div class="item-label"><i class="{{ $fieldIcons['noOfCylinders'] ?? 'fas fa-circle-notch' }}"></i> No. of Cylinders</div>
+                                </div>
+                                <div class="col-6 main-col-class">
+                                    <div class="item-value">{{ $reportInView->noOfCylinders ?? 'N/A' }}</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="card-body">
-                @if($reportInView->damages->count())
-                <table class="details-table" style="width: 100%; border-collapse: collapse;">
-                    <thead>
-                        <tr style="background: #333; color: #fff;">
-                            <th style="padding: 8px; text-align: left;">#</th>
-                            <th style="padding: 8px; text-align: left;">Type</th>
-                            <th style="padding: 8px; text-align: left;">Body Part</th>
-                            <th style="padding: 8px; text-align: left;">Severity</th>
-                            <th style="padding: 8px; text-align: left;">Remarks</th>
+
+            @php
+            // These variables are now only needed for the hardcoded logic inside the template.
+            $columnsPerRow = 5;
+
+            // It's still helpful to have the icons in one place.
+            $fieldIcons = [
+            'paintCondition' => 'fa-solid fa-spray-can',
+            'convertible' => 'fa-solid fa-car',
+            'blindSpot' => 'fa-solid fa-car-on',
+            'sideSteps' => 'fa-solid fa-shoe-prints',
+            'wheelsType' => 'fa-solid fa-circle-dot',
+            'rimsSizeFront' => 'fa-solid fa-arrows-left-right',
+            'rimsSizeRear' => 'fa-solid fa-arrows-left-right',
+            'engineOil' => 'fa-solid fa-oil-can',
+            'gearOil' => 'fa-solid fa-gear',
+            'gearshifting' => 'fa-solid fa-gears',
+            'engineNoise' => 'fa-solid fa-volume-high',
+            'engineSmoke' => 'fa-solid fa-smog',
+            'fourWdSystemCondition' => 'fa-solid fa-car-side',
+            'obdError' => 'fa-solid fa-triangle-exclamation',
+            'remarks' => 'fa-solid fa-comment-dots',
+            'frontLeftTire' => 'fa-solid fa-circle-dot',
+            'frontRightTire' => 'fa-solid fa-circle-dot',
+            'rearLeftTire' => 'fa-solid fa-circle-dot',
+            'rearRightTire' => 'fa-solid fa-circle-dot',
+            'tiresSize' => 'fa-solid fa-ruler-combined',
+            'spareTire' => 'fa-solid fa-life-ring',
+            'commentTire' => 'fa-solid fa-comment',
+            'parkingSensors' => 'fa-solid fa-car-burst',
+            'keylessStart' => 'fa-solid fa-key',
+            'seats' => 'fa-solid fa-chair',
+            'cooledSeats' => 'fa-solid fa-snowflake',
+            'heatedSeats' => 'fa-solid fa-fire',
+            'powerSeats' => 'fa-solid fa-bolt',
+            'viveCamera' => 'fa-solid fa-camera-retro',
+            'sunroofType' => 'fa-solid fa-sun',
+            'drive' => 'fa-solid fa-road',
+            'headsDisplay' => 'fa-solid fa-desktop',
+            'premiumSound' => 'fa-solid fa-music',
+            'carbonFiber' => 'fa-solid fa-cubes',
+            'speedmeterCluster' => 'fa-solid fa-gauge-high',
+            'headLining' => 'fa-solid fa-arrow-up',
+            'seatControls' => 'fa-solid fa-toggle-on',
+            'seatsCondition' => 'fa-solid fa-check-double',
+            'centralLockOperation' => 'fa-solid fa-lock',
+            'sunroofCondition' => 'fa-solid fa-sun',
+            'windowsControl' => 'fa-solid fa-window-maximize',
+            'cruiseControl' => 'fa-solid fa-forward',
+            'acCooling' => 'fa-solid fa-wind',
+            'comment_section2' => 'fa-solid fa-comments',
+            'steeringOperation' => 'fa-solid fa-dharmachakra',
+            'wheelAlignment' => 'fa-solid fa-arrows-to-dot',
+            'brakePads' => 'fa-solid fa-compact-disc',
+            'suspension' => 'fa-solid fa-car-burst',
+            'brakeDiscs' => 'fa-solid fa-compact-disc',
+            'shockAbsorberOperation' => 'fa-solid fa-car-burst',
+            'comment_section1' => 'fa-solid fa-comments',
+            ];
+            @endphp
+
+
+            {{-- ==================================================================== --}}
+            {{-- == 1. Exterior Section                                            == --}}
+            {{-- ==================================================================== --}}
+            <div class="report-card" id="exterior">
+                <div class="card-header p-3"><i class="fa-solid fa-brush"></i>Exterior</div>
+                <div class="card-body p-3">
+                    <table class="">
+                        {{-- Special full-width row for Paint Condition --}}
+                        <tr>
+                            <td colspan="{{ $columnsPerRow }}">
+                                @php $field = 'paintCondition'; $data = $reportInView->{$field} ?? 'N/A'; $statusInfo = getStatusInfo($data); @endphp
+                                <div class="item-label"><i class="{{ $fieldIcons[$field] ?? 'fas fa-circle-notch' }}"></i> {{ Str::of($field)->kebab()->replace('-', ' ')->title() }}</div>
+                                @if(is_array($data)) <div class="item-value" style="text-align: left !important;">
+                                    <ul class="item-value-list">@foreach($data as $value)<li>{{ $value }}</li>@endforeach</ul>
+                                </div>
+                                @elseif($statusInfo['class'] !== 'item-value') <div class="status-pill {{ $statusInfo['class'] }}"><i class="{{ $statusInfo['icon'] }}"></i>{{ $data }}</div>
+                                @else <div class="item-value" style="text-align: left !important;">{{ $data }}</div> @endif
+                            </td>
                         </tr>
-                    </thead>
-                    <tbody>
-                        @foreach($reportInView->damages as $index => $damage)
-                        @php
-                        
-                        $typeInfo = $damageTypes[$damage->type] ?? ['name' => 'Unknown', 'color' => '#999'];
-                        $badgeColor = match(strtolower($damage->severity)) {
-                        'minor' => '#28a745',
-                        'moderate' => '#ffc107',
-                        'major', 'severe' => '#dc3545',
-                        default => '#17a2b8'
-                        };
-                        @endphp
-                        <tr style="border-bottom: 1px solid #ccc;">
-                            <td style="padding: 8px;">{{ $index + 1 }}</td>
-                            <td style="padding: 8px;">
-                                <span style="
+                        {{-- Row 1 of other fields --}}
+                        <tr>
+
+                        </tr>
+                        {{-- Row 2 of other fields --}}
+
+                    </table>
+                </div>
+            </div>
+
+
+            {{-- Damage Assessment Section --}}
+            <div class="report-card">
+                @if($reportInView->damage_file_path && file_exists(public_path(parse_url($reportInView->damage_file_path, PHP_URL_PATH))))
+                @php
+                $imageData = base64_encode(file_get_contents(public_path(parse_url($reportInView->damage_file_path, PHP_URL_PATH))));
+                $mimeType = mime_content_type(public_path(parse_url($reportInView->damage_file_path, PHP_URL_PATH)));
+                @endphp
+                <img src="data:{{ $mimeType }};base64,{{ $imageData }}" style="max-width: 100%; height: auto;">
+                @else
+                <div class="damage-assessment">
+                    <div class="status-pill status-good">
+                        <i class="fas fa-check-circle"></i>
+                        No Damage Reported or Image Not Found
+                    </div>
+                </div>
+                @endif
+
+            </div>
+            {{-- damage summery--}}
+            <div class="report-card">
+                <div class="card-header p-3">
+                    <i class="fa-solid fa-car-burst"></i> Damage Assessment Report
+                </div>
+                <div class="card-body p-3">
+                    @if($reportInView->damages->count())
+                    <table class="details-table" style="width: 100%; border-collapse: collapse;">
+                        <thead>
+                            <tr style="background:#c9da29; color: #fff;">
+                                <th style="padding: 8px; text-align: left;">#</th>
+                                <th style="padding: 8px; text-align: left;">Type</th>
+                                <th style="padding: 8px; text-align: left;">Body Part</th>
+                                <th style="padding: 8px; text-align: left;">Severity</th>
+                                <th style="padding: 8px; text-align: left;">Remarks</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach($reportInView->damages as $index => $damage)
+                            @php
+
+                            $typeInfo = $damageTypes[$damage->type] ?? ['name' => 'Unknown', 'color' => '#999'];
+                            $badgeColor = match(strtolower($damage->severity)) {
+                            'minor' => '#28a745',
+                            'moderate' => '#ffc107',
+                            'major', 'severe' => '#dc3545',
+                            default => '#17a2b8'
+                            };
+                            @endphp
+                            <tr style="border-bottom: 1px solid #ccc;">
+                                <td style="padding: 8px;">{{ $index + 1 }}</td>
+                                <td style="padding: 8px;">
+                                    <span style="
                                     display:inline-block;
                                     width:14px; height:14px;
                                     background:{{ $typeInfo['color'] }};
                                     border-radius:50%;
                                     margin-right:5px;
                                 "></span>
-                                <strong>{{ strtoupper($damage->type) }}</strong>
+                                    <strong>{{ strtoupper($damage->type) }}</strong>
 
-                            </td>
-                            <td style="padding: 8px;">{{ $damage->body_part }}</td>
-                            <td style="padding: 8px;">
-                                <span style="
+                                </td>
+                                <td style="padding: 8px;">{{ $damage->body_part }}</td>
+                                <td style="padding: 8px;">
+                                    <span style="
                                     background: {{ $badgeColor }};
                                     color: white;
                                     border-radius: 10px;
                                     padding: 4px 8px;
                                     font-size: 12px;
                                 ">
-                                    {{ ucfirst($damage->severity) }}
-                                </span>
-                            </td>
-                            <td style="padding: 8px;">{{ $damage->remark ?: 'N/A' }}</td>
-                        </tr>
-                        @endforeach
-                    </tbody>
-                </table>
-                @else
-                <div class="damage-assessment">
-                    <div class="status-pill status-good">
-                        <i class="fas fa-check-circle"></i>
-                        No Damages Recorded
+                                        {{ ucfirst($damage->severity) }}
+                                    </span>
+                                </td>
+                                <td style="padding: 8px;">{{ $damage->remark ?: 'N/A' }}</td>
+                            </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                    @else
+                    <div class="damage-assessment">
+                        <div class="status-pill status-good">
+                            <i class="fas fa-check-circle"></i>
+                            No Damages Recorded
+                        </div>
                     </div>
+                    @endif
                 </div>
-                @endif
             </div>
-        </div>
 
-        {{-- ==================================================================== --}}
-        {{-- == 3. Engine & Transmission Section                               == --}}
-        {{-- ==================================================================== --}}
-        <div class="report-card">
-            <div class="card-header p-3"><i class="fa-solid fa-gears"></i>Engine & Transmission</div>
-            <div class="card-body p-3">
-                <dive class="row p-md-4">
+    <div class="accordion" id="reportAccordion">
+    {{-- ==================================================================== --}}
+    {{-- == 3. Engine & Transmission Section (Accordion Item)                   --}}
+    {{-- ==================================================================== --}}
+    <!-- <div class="accordion-item report-card">
+        <h2 class="accordion-header" id="headingEngine">
+            <button class="accordion-button card-header p-3" type="button" data-bs-toggle="collapse" data-bs-target="#engineCollapse" aria-expanded="true" aria-controls="engineCollapse">
+                <i class="fa-solid fa-gears"></i>Engine & Transmission
+            </button>
+        </h2>
+        <div id="engineCollapse" class="accordion-collapse collapse show" aria-labelledby="headingEngine" data-bs-parent="#reportAccordion">
+            <div class="accordion-body card-body p-3">
+                <div class="row p-md-4">
                     <div class="col-md-6">
                         {{-- Row 1 --}}
                         <div class="row">
@@ -1012,145 +978,70 @@
                             </div>
                         </div>
                     </div>
-            </div>
-        </div>
-    </div>
-
-
-    {{-- ==================================================================== --}}
-    {{-- == 4. Tires Section                                               == --}}
-    {{-- ==================================================================== --}}
-    <div class="report-card">
-        <div class="card-header p-3"><i class="fa-solid fa-circle-dot"></i>Tires</div>
-        <div class="card-body p-3">
-            <div class="row p-md-3">
-                {{-- Row 1 --}}
-                <div class="col-md-6">
-                    <div class="row">
-                        @foreach(['frontLeftTire', 'frontRightTire', 'rearLeftTire', 'rearRightTire', 'tiresSize'] as $field)
-                        <div class="col-6">
-                            <div class="item-label"><i class="{{ $fieldIcons[$field] ?? 'fas fa-circle-notch' }}"></i> {{ Str::of($field)->kebab()->replace('-', ' ')->title() }}</div>
-                            @php $data = $reportInView->{$field} ?? 'N/A'; $statusInfo = getStatusInfo($data); @endphp
-                        </div>
-                        <div class="col-6">
-                            @if(is_array($data)) <div class="item-value">
-                                <ul class="item-value-list">@foreach($data as $value)<li>{{ $value }}</li>@endforeach</ul>
-                            </div>
-                            @elseif($statusInfo['class'] !== 'item-value') <div class="status-pill {{ $statusInfo['class'] }}"><i class="{{ $statusInfo['icon'] }}"></i>{{ $data }}</div>
-                            @else <div class="item-value">{{ $data }}</div> @endif
-                        </div>
-                        @endforeach
-                    </div>
-
-                </div>
-                {{-- Row 2 --}}
-                <div class="col-md-6">
-                    <div class="row">
-                        @foreach(['spareTire','wheelsType', 'rimsSizeFront','rimsSizeRear'] as $field)
-                        <div class="col-6">
-                            <div class="item-label"><i class="{{ $fieldIcons[$field] ?? 'fas fa-circle-notch' }}"></i> {{ Str::of($field)->kebab()->replace('-', ' ')->title() }}</div>
-                            @php $data = $reportInView->{$field} ?? 'N/A'; $statusInfo = getStatusInfo($data); @endphp
-                        </div>
-                        <div class="col-6">
-                            @if(is_array($data)) <div class="item-value">
-                                <ul class="item-value-list">@foreach($data as $value)<li>{{ $value }}</li>@endforeach</ul>
-                            </div>
-                            @elseif($statusInfo['class'] !== 'item-value') <div class="status-pill {{ $statusInfo['class'] }}"><i class="{{ $statusInfo['icon'] }}"></i>{{ $data }}</div>
-                            @else <div class="item-value">{{ $data }}</div> @endif
-                        </div>
-                        @endforeach
-                    </div>
-
-                </div>
-                {{-- Full-width row for Tire Comments --}}
-                <div class="col-12">
-
-                    @php $field = 'commentTire'; $data = $reportInView->{$field} ?? 'N/A'; $statusInfo = getStatusInfo($data); @endphp
-                    <div class="item-label"><i class="{{ $fieldIcons[$field] ?? 'fas fa-circle-notch' }}"></i> Comments</div>
-                    @if(is_array($data)) <div class="item-value">
-                        <ul class="item-value-list">@foreach($data as $value)<li>{{ $value }}</li>@endforeach</ul>
-                    </div>
-                    @elseif($statusInfo['class'] !== 'item-value') <div class="status-pill {{ $statusInfo['class'] }}" style="text-align: left !important;"><i class="{{ $statusInfo['icon'] }}"></i>{{ $data }}</div>
-                    @else <div class="item-value">{{ $data }}</div> @endif
                 </div>
             </div>
         </div>
-    </div>
+    </div> -->
 
 
     {{-- ==================================================================== --}}
-    {{-- == 5. Car Specs Section                                           == --}}
+    {{-- == 4. Tires Section (Accordion Item)                                 --}}
     {{-- ==================================================================== --}}
-    <div class="report-card">
-        <div class="card-header p-3"><i class="fa-solid fa-sliders"></i>Car Specs</div>
-        <div class="card-body p-3">
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="row">
-                        @foreach(['parkingSensors', 'keylessStart', 'seats', 'cooledSeats', 'heatedSeats'] as $field)
-                        <div class="col-6">
-                            <div class="item-label"><i class="{{ $fieldIcons[$field] ?? 'fas fa-circle-notch' }}"></i> {{ Str::of($field)->kebab()->replace('-', ' ')->title() }}</div>
-                            @php $data = $reportInView->{$field} ?? 'N/A'; $statusInfo = getStatusInfo($data); @endphp
-                        </div>
-                        <div class="col-6">
-                            @if(is_array($data)) <div class="item-value">
-                                <ul class="item-value-list">@foreach($data as $value)<li>{{ $value }}</li>@endforeach</ul>
+    <div class="accordion-item report-card">
+        <h2 class="accordion-header" id="headingTires">
+            <button class="accordion-button card-header p-3 collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#tiresCollapse" aria-expanded="false" aria-controls="tiresCollapse">
+                <i class="fa-solid fa-circle-dot"></i>Tires
+            </button>
+        </h2>
+        <div id="tiresCollapse" class="accordion-collapse collapse" aria-labelledby="headingTires" data-bs-parent="#reportAccordion">
+            <div class="accordion-body card-body p-3">
+                <div class="row p-md-3">
+                    {{-- Row 1 --}}
+                    <div class="col-md-6">
+                        <div class="row">
+                            @foreach(['frontLeftTire', 'frontRightTire', 'rearLeftTire', 'rearRightTire', 'tiresSize'] as $field)
+                            <div class="col-6">
+                                <div class="item-label"><i class="{{ $fieldIcons[$field] ?? 'fas fa-circle-notch' }}"></i> {{ Str::of($field)->kebab()->replace('-', ' ')->title() }}</div>
+                                @php $data = $reportInView->{$field} ?? 'N/A'; $statusInfo = getStatusInfo($data); @endphp
                             </div>
-                            @elseif($statusInfo['class'] !== 'item-value') <div class="status-pill {{ $statusInfo['class'] }}"><i class="{{ $statusInfo['icon'] }}"></i>{{ $data }}</div>
-                            @else <div class="item-value">{{ $data }}</div> @endif
+                            <div class="col-6">
+                                @if(is_array($data)) <div class="item-value">
+                                    <ul class="item-value-list">@foreach($data as $value)<li>{{ $value }}</li>@endforeach</ul>
+                                </div>
+                                @elseif($statusInfo['class'] !== 'item-value') <div class="status-pill {{ $statusInfo['class'] }}"><i class="{{ $statusInfo['icon'] }}"></i>{{ $data }}</div>
+                                @else <div class="item-value">{{ $data }}</div> @endif
+                            </div>
+                            @endforeach
                         </div>
-                        @endforeach
                     </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="row">
-                        @foreach(['powerSeats', 'viveCamera', 'sunroofType', 'drive','blindSpot'] as $field)
-                        <div class="col-6">
-                            <div class="item-label"><i class="{{ $fieldIcons[$field] ?? 'fas fa-circle-notch' }}"></i> {{ Str::of($field)->kebab()->replace('-', ' ')->title() }}</div>
-                            @php $data = $reportInView->{$field} ?? 'N/A'; $statusInfo = getStatusInfo($data); @endphp
-                        </div>
-                        <div class="col-6">
-                            @if(is_array($data)) <div class="item-value">
-                                <ul class="item-value-list">@foreach($data as $value)<li>{{ $value }}</li>@endforeach</ul>
+                    {{-- Row 2 --}}
+                    <div class="col-md-6">
+                        <div class="row">
+                            @foreach(['spareTire','wheelsType', 'rimsSizeFront','rimsSizeRear'] as $field)
+                            <div class="col-6">
+                                <div class="item-label"><i class="{{ $fieldIcons[$field] ?? 'fas fa-circle-notch' }}"></i> {{ Str::of($field)->kebab()->replace('-', ' ')->title() }}</div>
+                                @php $data = $reportInView->{$field} ?? 'N/A'; $statusInfo = getStatusInfo($data); @endphp
                             </div>
-                            @elseif($statusInfo['class'] !== 'item-value') <div class="status-pill {{ $statusInfo['class'] }}"><i class="{{ $statusInfo['icon'] }}"></i>{{ $data }}</div>
-                            @else <div class="item-value">{{ $data }}</div> @endif
+                            <div class="col-6">
+                                @if(is_array($data)) <div class="item-value">
+                                    <ul class="item-value-list">@foreach($data as $value)<li>{{ $value }}</li>@endforeach</ul>
+                                </div>
+                                @elseif($statusInfo['class'] !== 'item-value') <div class="status-pill {{ $statusInfo['class'] }}"><i class="{{ $statusInfo['icon'] }}"></i>{{ $data }}</div>
+                                @else <div class="item-value">{{ $data }}</div> @endif
+                            </div>
+                            @endforeach
                         </div>
-                        @endforeach
+
                     </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="row">
-                        @foreach(['headsDisplay','premiumSound','carbonFiber','convertible','sideSteps'] as $field)
-                        <div class="col-6">
-                            <div class="item-label"><i class="{{ $fieldIcons[$field] ?? 'fas fa-circle-notch' }}"></i> {{ Str::of($field)->kebab()->replace('-', ' ')->title() }}</div>
-                            @php $data = $reportInView->{$field} ?? 'N/A'; $statusInfo = getStatusInfo($data); @endphp
+                    {{-- Full-width row for Tire Comments --}}
+                    <div class="col-12">
+                        @php $field = 'commentTire'; $data = $reportInView->{$field} ?? 'N/A'; $statusInfo = getStatusInfo($data); @endphp
+                        <div class="item-label"><i class="{{ $fieldIcons[$field] ?? 'fas fa-circle-notch' }}"></i> Comments</div>
+                        @if(is_array($data)) <div class="item-value">
+                            <ul class="item-value-list">@foreach($data as $value)<li>{{ $value }}</li>@endforeach</ul>
                         </div>
-                        <div class="col-6">
-                            @if(is_array($data)) <div class="item-value">
-                                <ul class="item-value-list">@foreach($data as $value)<li>{{ $value }}</li>@endforeach</ul>
-                            </div>
-                            @elseif($statusInfo['class'] !== 'item-value') <div class="status-pill {{ $statusInfo['class'] }}"><i class="{{ $statusInfo['icon'] }}"></i>{{ $data }}</div>
-                            @else <div class="item-value">{{ $data }}</div> @endif
-                        </div>
-                        @endforeach
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="row">
-                        @foreach(['soft_door_closing'] as $field)
-                        <div class="col-6">
-                            <div class="item-label"><i class="{{ $fieldIcons[$field] ?? 'fas fa-door-closed' }} text-primary"></i> Soft Door Closing</div>
-                            @php $data = $reportInView->{$field} ?? 'N/A'; $statusInfo = getStatusInfo($data); @endphp
-                        </div>
-                        <div class="col-6">
-                            @if(is_array($data)) <div class="item-value">
-                                <ul class="item-value-list">@foreach($data as $value)<li>{{ $value }}</li>@endforeach</ul>
-                            </div>
-                            @elseif($statusInfo['class'] !== 'item-value') <div class="status-pill {{ $statusInfo['class'] }}"><i class="{{ $statusInfo['icon'] }}"></i>{{ $data }}</div>
-                            @else <div class="item-value">{{ $data }}</div> @endif
-                        </div>
-                        @endforeach
+                        @elseif($statusInfo['class'] !== 'item-value') <div class="status-pill {{ $statusInfo['class'] }}" style="text-align: left !important;"><i class="{{ $statusInfo['icon'] }}"></i>{{ $data }}</div>
+                        @else <div class="item-value">{{ $data }}</div> @endif
                     </div>
                 </div>
             </div>
@@ -1159,62 +1050,83 @@
 
 
     {{-- ==================================================================== --}}
-    {{-- == 6. Interior, Electrical & Air Conditioner Section              == --}}
+    {{-- == 5. Car Specs Section (Accordion Item)                             --}}
     {{-- ==================================================================== --}}
-    <div class="report-card">
-        <div class="card-header p-3"><i class="fa-solid fa-bolt"></i>Interior, Electrical & Air Conditioner</div>
-        <div class="card-body p-3">
-            <div class="row">
-                {{-- Row 1 --}}
-                <div class="col-md-6">
-                    <div class="row">
-                        @foreach(['speedmeterCluster', 'headLining', 'seatControls', 'seatsCondition', 'centralLockOperation'] as $field)
-                        <div class="col-6">
-                            <div class="item-label"><i class="{{ $fieldIcons[$field] ?? 'fas fa-circle-notch' }}"></i> {{ Str::of($field)->kebab()->replace('-', ' ')->title() }}</div>
-                            @php $data = $reportInView->{$field} ?? 'N/A'; $statusInfo = getStatusInfo($data); @endphp
-                        </div>
-                        <div class="col-6">
-                            @if(is_array($data)) <div class="item-value">
-                                <ul class="item-value-list">@foreach($data as $value)<li>{{ $value }}</li>@endforeach</ul>
+    <div class="accordion-item report-card" id="specs">
+        <h2 class="accordion-header" id="headingSpecs">
+            <button class="accordion-button card-header p-3 collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#specsCollapse" aria-expanded="false" aria-controls="specsCollapse">
+                <i class="fa-solid fa-sliders"></i>Car Specs
+            </button>
+        </h2>
+        <div id="specsCollapse" class="accordion-collapse collapse" aria-labelledby="headingSpecs" data-bs-parent="#reportAccordion">
+            <div class="accordion-body card-body p-3">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="row">
+                            @foreach(['parkingSensors', 'keylessStart', 'seats', 'cooledSeats', 'heatedSeats'] as $field)
+                            <div class="col-6">
+                                <div class="item-label"><i class="{{ $fieldIcons[$field] ?? 'fas fa-circle-notch' }}"></i> {{ Str::of($field)->kebab()->replace('-', ' ')->title() }}</div>
+                                @php $data = $reportInView->{$field} ?? 'N/A'; $statusInfo = getStatusInfo($data); @endphp
                             </div>
-                            @elseif($statusInfo['class'] !== 'item-value') <div class="status-pill {{ $statusInfo['class'] }}"><i class="{{ $statusInfo['icon'] }}"></i>{{ $data }}</div>
-                            @else <div class="item-value">{{ $data }}</div> @endif
+                            <div class="col-6">
+                                @if(is_array($data)) <div class="item-value">
+                                    <ul class="item-value-list">@foreach($data as $value)<li>{{ $value }}</li>@endforeach</ul>
+                                </div>
+                                @elseif($statusInfo['class'] !== 'item-value') <div class="status-pill {{ $statusInfo['class'] }}"><i class="{{ $statusInfo['icon'] }}"></i>{{ $data }}</div>
+                                @else <div class="item-value">{{ $data }}</div> @endif
+                            </div>
+                            @endforeach
                         </div>
-                        @endforeach
                     </div>
-                </div>
-                {{-- Row 2 --}}
-                <div class="col-md-6">
-                    <div class="row">
-                        @foreach(['sunroofCondition', 'windowsControl', 'cruiseControl', 'acCooling'] as $field)
-                        <div class="col-6">
-                            <div class="item-label"><i class="{{ $fieldIcons[$field] ?? 'fas fa-circle-notch' }}"></i> {{ Str::of($field)->kebab()->replace('-', ' ')->title() }}</div>
-                            @php $data = $reportInView->{$field} ?? 'N/A'; $statusInfo = getStatusInfo($data); @endphp
-                        </div>
-                        <div class="col-6">
-                            @if(is_array($data)) <div class="item-value">
-                                <ul class="item-value-list">@foreach($data as $value)<li>{{ $value }}</li>@endforeach</ul>
+                    <div class="col-md-6">
+                        <div class="row">
+                            @foreach(['powerSeats', 'viveCamera', 'sunroofType', 'drive','blindSpot'] as $field)
+                            <div class="col-6">
+                                <div class="item-label"><i class="{{ $fieldIcons[$field] ?? 'fas fa-circle-notch' }}"></i> {{ Str::of($field)->kebab()->replace('-', ' ')->title() }}</div>
+                                @php $data = $reportInView->{$field} ?? 'N/A'; $statusInfo = getStatusInfo($data); @endphp
                             </div>
-                            @elseif($statusInfo['class'] !== 'item-value') <div class="status-pill {{ $statusInfo['class'] }}"><i class="{{ $statusInfo['icon'] }}"></i>{{ $data }}</div>
-                            @else <div class="item-value">{{ $data }}</div> @endif
+                            <div class="col-6">
+                                @if(is_array($data)) <div class="item-value">
+                                    <ul class="item-value-list">@foreach($data as $value)<li>{{ $value }}</li>@endforeach</ul>
+                                </div>
+                                @elseif($statusInfo['class'] !== 'item-value') <div class="status-pill {{ $statusInfo['class'] }}"><i class="{{ $statusInfo['icon'] }}"></i>{{ $data }}</div>
+                                @else <div class="item-value">{{ $data }}</div> @endif
+                            </div>
+                            @endforeach
                         </div>
-                        @endforeach
                     </div>
-
-                </div>
-                {{-- Full-width row for Comments --}}
-                <div class="col-md-6">
-                    <div class="row">
-                        <div class="col-12" colspan="{{ $columnsPerRow }}">
-                            @php $field = 'comment_section2'; $data = $reportInView->{$field} ?? 'N/A'; $statusInfo = getStatusInfo($data); @endphp
-                            <div class="item-label"><i class="{{ $fieldIcons[$field] ?? 'fas fa-circle-notch' }}"></i> Comments</div>
-                        </div>
-                        <div class="col-12">
-                            @if(is_array($data)) <div class="item-value">
-                                <ul class="item-value-list">@foreach($data as $value)<li>{{ $value }}</li>@endforeach</ul>
+                    <div class="col-md-6">
+                        <div class="row">
+                            @foreach(['headsDisplay','premiumSound','carbonFiber','convertible','sideSteps'] as $field)
+                            <div class="col-6">
+                                <div class="item-label"><i class="{{ $fieldIcons[$field] ?? 'fas fa-circle-notch' }}"></i> {{ Str::of($field)->kebab()->replace('-', ' ')->title() }}</div>
+                                @php $data = $reportInView->{$field} ?? 'N/A'; $statusInfo = getStatusInfo($data); @endphp
                             </div>
-                            @elseif($statusInfo['class'] !== 'item-value') <div class="status-pill {{ $statusInfo['class'] }}"><i class="{{ $statusInfo['icon'] }}"></i>{{ $data }}</div>
-                            @else <div class="item-value">{{ $data }}</div> @endif
+                            <div class="col-6">
+                                @if(is_array($data)) <div class="item-value">
+                                    <ul class="item-value-list">@foreach($data as $value)<li>{{ $value }}</li>@endforeach</ul>
+                                </div>
+                                @elseif($statusInfo['class'] !== 'item-value') <div class="status-pill {{ $statusInfo['class'] }}"><i class="{{ $statusInfo['icon'] }}"></i>{{ $data }}</div>
+                                @else <div class="item-value">{{ $data }}</div> @endif
+                            </div>
+                            @endforeach
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="row">
+                            @foreach(['soft_door_closing'] as $field)
+                            <div class="col-6">
+                                <div class="item-label"><i class="{{ $fieldIcons[$field] ?? 'fas fa-door-closed' }} text-primary"></i> Soft Door Closing</div>
+                                @php $data = $reportInView->{$field} ?? 'N/A'; $statusInfo = getStatusInfo($data); @endphp
+                            </div>
+                            <div class="col-6">
+                                @if(is_array($data)) <div class="item-value">
+                                    <ul class="item-value-list">@foreach($data as $value)<li>{{ $value }}</li>@endforeach</ul>
+                                </div>
+                                @elseif($statusInfo['class'] !== 'item-value') <div class="status-pill {{ $statusInfo['class'] }}"><i class="{{ $statusInfo['icon'] }}"></i>{{ $data }}</div>
+                                @else <div class="item-value">{{ $data }}</div> @endif
+                            </div>
+                            @endforeach
                         </div>
                     </div>
                 </div>
@@ -1224,61 +1136,138 @@
 
 
     {{-- ==================================================================== --}}
-    {{-- == 7. Steering, Suspension & Brakes Section                       == --}}
+    {{-- == 6. Interior, Electrical & Air Conditioner Section (Accordion Item) --}}
     {{-- ==================================================================== --}}
-    <div class="report-card">
-        <div class="card-header p-3"><i class="fa-solid fa-car-burst"></i>Steering, Suspension & Brakes</div>
-        <div class="card-body">
-            <div class="row">
-                {{-- Row 1 --}}
-                <div class="col-md-6">
-                    <div class="row">
-                        @foreach(['steeringOperation', 'wheelAlignment', 'brakePads', 'suspension', 'brakeDiscs'] as $field)
-                        <div class="col-6">
-                            <div class="item-label"><i class="{{ $fieldIcons[$field] ?? 'fas fa-circle-notch' }}"></i> {{ Str::of($field)->kebab()->replace('-', ' ')->title() }}</div>
-                            @php $data = $reportInView->{$field} ?? 'N/A'; $statusInfo = getStatusInfo($data); @endphp
-                        </div>
-                        <div class="col-6">
-                            @if(is_array($data)) <div class="item-value">
-                                <ul class="item-value-list">@foreach($data as $value)<li>{{ $value }}</li>@endforeach</ul>
+    <div class="accordion-item report-card" id="interior">
+        <h2 class="accordion-header" id="headingInterior">
+            <button class="accordion-button card-header p-3 collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#interiorCollapse" aria-expanded="false" aria-controls="interiorCollapse">
+                <i class="fa-solid fa-bolt"></i>Interior, Electrical & Air Conditioner
+            </button>
+        </h2>
+        <div id="interiorCollapse" class="accordion-collapse collapse" aria-labelledby="headingInterior" data-bs-parent="#reportAccordion">
+            <div class="accordion-body card-body p-3">
+                <div class="row">
+                    {{-- Row 1 --}}
+                    <div class="col-md-6">
+                        <div class="row">
+                            @foreach(['speedmeterCluster', 'headLining', 'seatControls', 'seatsCondition', 'centralLockOperation'] as $field)
+                            <div class="col-6">
+                                <div class="item-label"><i class="{{ $fieldIcons[$field] ?? 'fas fa-circle-notch' }}"></i> {{ Str::of($field)->kebab()->replace('-', ' ')->title() }}</div>
+                                @php $data = $reportInView->{$field} ?? 'N/A'; $statusInfo = getStatusInfo($data); @endphp
                             </div>
-                            @elseif($statusInfo['class'] !== 'item-value') <div class="status-pill {{ $statusInfo['class'] }}"><i class="{{ $statusInfo['icon'] }}"></i>{{ $data }}</div>
-                            @else <div class="item-value">{{ $data }}</div> @endif
+                            <div class="col-6">
+                                @if(is_array($data)) <div class="item-value">
+                                    <ul class="item-value-list">@foreach($data as $value)<li>{{ $value }}</li>@endforeach</ul>
+                                </div>
+                                @elseif($statusInfo['class'] !== 'item-value') <div class="status-pill {{ $statusInfo['class'] }}"><i class="{{ $statusInfo['icon'] }}"></i>{{ $data }}</div>
+                                @else <div class="item-value">{{ $data }}</div> @endif
+                            </div>
+                            @endforeach
                         </div>
-                        @endforeach
+                    </div>
+                    {{-- Row 2 --}}
+                    <div class="col-md-6">
+                        <div class="row">
+                            @foreach(['sunroofCondition', 'windowsControl', 'cruiseControl', 'acCooling'] as $field)
+                            <div class="col-6">
+                                <div class="item-label"><i class="{{ $fieldIcons[$field] ?? 'fas fa-circle-notch' }}"></i> {{ Str::of($field)->kebab()->replace('-', ' ')->title() }}</div>
+                                @php $data = $reportInView->{$field} ?? 'N/A'; $statusInfo = getStatusInfo($data); @endphp
+                            </div>
+                            <div class="col-6">
+                                @if(is_array($data)) <div class="item-value">
+                                    <ul class="item-value-list">@foreach($data as $value)<li>{{ $value }}</li>@endforeach</ul>
+                                </div>
+                                @elseif($statusInfo['class'] !== 'item-value') <div class="status-pill {{ $statusInfo['class'] }}"><i class="{{ $statusInfo['icon'] }}"></i>{{ $data }}</div>
+                                @else <div class="item-value">{{ $data }}</div> @endif
+                            </div>
+                            @endforeach
+                        </div>
+
+                    </div>
+                    {{-- Full-width row for Comments --}}
+                    <div class="col-md-6">
+                        <div class="row">
+                            <div class="col-12">
+                                @php $field = 'comment_section2'; $data = $reportInView->{$field} ?? 'N/A'; $statusInfo = getStatusInfo($data); @endphp
+                                <div class="item-label"><i class="{{ $fieldIcons[$field] ?? 'fas fa-circle-notch' }}"></i> Comments</div>
+                            </div>
+                            <div class="col-12">
+                                @if(is_array($data)) <div class="item-value">
+                                    <ul class="item-value-list">@foreach($data as $value)<li>{{ $value }}</li>@endforeach</ul>
+                                </div>
+                                @elseif($statusInfo['class'] !== 'item-value') <div class="status-pill {{ $statusInfo['class'] }}"><i class="{{ $statusInfo['icon'] }}"></i>{{ $data }}</div>
+                                @else <div class="item-value">{{ $data }}</div> @endif
+                            </div>
+                        </div>
                     </div>
                 </div>
-                {{-- Row 2 --}}
-                <div class="col-md-6">
-                    <div class="row">
-                        @foreach(['shockAbsorberOperation'] as $field)
-                        <div class="col-6">
-                            <div class="item-label"><i class="{{ $fieldIcons[$field] ?? 'fas fa-circle-notch' }}"></i> {{ Str::of($field)->kebab()->replace('-', ' ')->title() }}</div>
-                            @php $data = $reportInView->{$field} ?? 'N/A'; $statusInfo = getStatusInfo($data); @endphp
-                        </div>
-                        <div class="col-6">
-                            @if(is_array($data)) <div class="item-value">
-                                <ul class="item-value-list">@foreach($data as $value)<li>{{ $value }}</li>@endforeach</ul>
+            </div>
+        </div>
+    </div>
+
+
+    {{-- ==================================================================== --}}
+    {{-- == 7. Steering, Suspension & Brakes Section (Accordion Item)         --}}
+    {{-- ==================================================================== --}}
+    <div class="accordion-item report-card">
+        <h2 class="accordion-header" id="headingSteering">
+            <button class="accordion-button card-header p-3 collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#steeringCollapse" aria-expanded="false" aria-controls="steeringCollapse">
+                <i class="fa-solid fa-car-burst"></i>Steering, Suspension & Brakes
+            </button>
+        </h2>
+        <div id="steeringCollapse" class="accordion-collapse collapse" aria-labelledby="headingSteering" data-bs-parent="#reportAccordion">
+            <div class="accordion-body card-body p-3">
+                <div class="row">
+                    {{-- Row 1 --}}
+                    <div class="col-md-6">
+                        <div class="row">
+                            @foreach(['steeringOperation', 'wheelAlignment', 'brakePads', 'suspension', 'brakeDiscs'] as $field)
+                            <div class="col-6">
+                                <div class="item-label"><i class="{{ $fieldIcons[$field] ?? 'fas fa-circle-notch' }}"></i> {{ Str::of($field)->kebab()->replace('-', ' ')->title() }}</div>
+                                @php $data = $reportInView->{$field} ?? 'N/A'; $statusInfo = getStatusInfo($data); @endphp
                             </div>
-                            @elseif($statusInfo['class'] !== 'item-value') <div class="status-pill {{ $statusInfo['class'] }}"><i class="{{ $statusInfo['icon'] }}"></i>{{ $data }}</div>
-                            @else <div class="item-value">{{ $data }}</div> @endif
+                            <div class="col-6">
+                                @if(is_array($data)) <div class="item-value">
+                                    <ul class="item-value-list">@foreach($data as $value)<li>{{ $value }}</li>@endforeach</ul>
+                                </div>
+                                @elseif($statusInfo['class'] !== 'item-value') <div class="status-pill {{ $statusInfo['class'] }}"><i class="{{ $statusInfo['icon'] }}"></i>{{ $data }}</div>
+                                @else <div class="item-value">{{ $data }}</div> @endif
+                            </div>
+                            @endforeach
                         </div>
-                        @endforeach
                     </div>
-                </div>
-                {{-- Full-width row for Comments --}}
-                <div class="col-md-6">
-                    <div class="row">
-                        <div class="col-12">
-                            @php $field = 'comment_section1'; $data = $reportInView->{$field} ?? 'N/A'; $statusInfo = getStatusInfo($data); @endphp
-                            <div class="item-label"><i class="{{ $fieldIcons[$field] ?? 'fas fa-circle-notch' }}"></i> Comments</div>
-                        </div>
-                        <div class="col-12">
-                            @if(is_array($data)) <div class="item-value">
-                                <ul class="item-value-list">@foreach($data as $value)<li>{{ $value }}</li>@endforeach</ul>
+                    {{-- Row 2 --}}
+                    <div class="col-md-6">
+                        <div class="row">
+                            @foreach(['shockAbsorberOperation'] as $field)
+                            <div class="col-6">
+                                <div class="item-label"><i class="{{ $fieldIcons[$field] ?? 'fas fa-circle-notch' }}"></i> {{ Str::of($field)->kebab()->replace('-', ' ')->title() }}</div>
+                                @php $data = $reportInView->{$field} ?? 'N/A'; $statusInfo = getStatusInfo($data); @endphp
                             </div>
-                            @elseif($statusInfo['class'] !== 'item-value') <div class="status-pill {{ $statusInfo['class'] }}"><i class="{{ $statusInfo['icon'] }}"></i>{{ $data }}</div>
-                            @else <div class="item-value">{{ $data }}</div> @endif
+                            <div class="col-6">
+                                @if(is_array($data)) <div class="item-value">
+                                    <ul class="item-value-list">@foreach($data as $value)<li>{{ $value }}</li>@endforeach</ul>
+                                </div>
+                                @elseif($statusInfo['class'] !== 'item-value') <div class="status-pill {{ $statusInfo['class'] }}"><i class="{{ $statusInfo['icon'] }}"></i>{{ $data }}</div>
+                                @else <div class="item-value">{{ $data }}</div> @endif
+                            </div>
+                            @endforeach
+                        </div>
+                    </div>
+                    {{-- Full-width row for Comments --}}
+                    <div class="col-md-6">
+                        <div class="row">
+                            <div class="col-12">
+                                @php $field = 'comment_section1'; $data = $reportInView->{$field} ?? 'N/A'; $statusInfo = getStatusInfo($data); @endphp
+                                <div class="item-label"><i class="{{ $fieldIcons[$field] ?? 'fas fa-circle-notch' }}"></i> Comments</div>
+                            </div>
+                            <div class="col-12">
+                                @if(is_array($data)) <div class="item-value">
+                                    <ul class="item-value-list">@foreach($data as $value)<li>{{ $value }}</li>@endforeach</ul>
+                                </div>
+                                @elseif($statusInfo['class'] !== 'item-value') <div class="status-pill {{ $statusInfo['class'] }}"><i class="{{ $statusInfo['icon'] }}"></i>{{ $data }}</div>
+                                @else <div class="item-value">{{ $data }}</div> @endif
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -1286,97 +1275,39 @@
         </div>
     </div>
     {{-- ==================================================================== --}}
-    {{-- == 5. Final Conclusion Section                                           == --}}
+    {{-- == 8. Final Conclusion Section (Accordion Item)                        --}}
     {{-- ==================================================================== --}}
-    <div class="report-card">
-        <div class="card-header p-3"><i class="fa-solid fa-clipboard"></i>Final Conclusion</div>
-        <div class="card-body p-3">
-            <table class="details-table">
-                <tr>
-                    <td colspan="{{ $columnsPerRow }}">
+    <div class="accordion-item report-card">
+        <h2 class="accordion-header" id="headingFinal">
+            {{-- Note the 'collapsed' class to ensure it's closed by default --}}
+            <button class="accordion-button card-header p-3 collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#finalCollapse" aria-expanded="false" aria-controls="finalCollapse">
+                <i class="fa-solid fa-clipboard"></i>Final Conclusion
+            </button>
+        </h2>
+        <div id="finalCollapse" class="accordion-collapse collapse" aria-labelledby="headingFinal" data-bs-parent="#reportAccordion">
+            <div class="accordion-body card-body p-3">
+                {{-- NOTE: We replaced the <table class="details-table"> structure with a standard <div> for cleaner Accordion content --}}
+                <div class="row">
+                    <div class="col-12">
                         @php $field = 'final_conclusion'; $data = $reportInView->{$field} ?? 'N/A'; $statusInfo = getStatusInfo($data); @endphp
-                        <div class="item-label"><i class="{{ $fieldIcons[$field] ?? 'fas fa-flag'  }} text-primary"></i> Final Conclusion</div>
+                        <div class="item-label"><i class="{{ $fieldIcons[$field] ?? 'fas fa-flag' }} "></i> Final Conclusion</div>
                         @if(is_array($data)) <div class="item-value">
                             <ul class="item-value-list">@foreach($data as $value)<li>{{ $value }}</li>@endforeach</ul>
                         </div>
                         @elseif($statusInfo['class'] !== 'item-value') <div class="status-pill {{ $statusInfo['class'] }}"><i class="{{ $statusInfo['icon'] }}"></i>{{ $data }}</div>
                         @else <div class="item-value">{{ $data }}</div> @endif
-                    </td>
-                </tr>
-            </table>
-        </div>
-    </div>
-    {{-- Premium Image Gallery Section --}}
-    <div class="report-card">
-        <div class="card-header p-3">
-            <i class="fa-solid fa-images"></i> Vehicle Images
-        </div>
-
-        @php
-        $vehicleImages = $reportInView->images ?? collect();
-        if (!($vehicleImages instanceof \Illuminate\Support\Collection)) {
-        $vehicleImages = collect($vehicleImages ?: []);
-        }
-        @endphp
-
-        <div class="card-body p-3">
-            <div class="container">
-                @if($vehicleImages->count())
-                <div class="row g-3">
-                    {{-- Main Large Image --}}
-                    <div class="col-12 col-md-8">
-                        @php $firstImage = $vehicleImages->first(); @endphp
-                        @if($firstImage)
-                        <img onclick="openImagesModal()"
-                            src="{{ asset('storage/' . $firstImage->path) }}"
-                            alt="Vehicle Image"
-                            class="img-fluid rounded shadow w-100"
-                            style="max-height: 600px;  cursor: pointer;">
-                        @endif
-                    </div>
-
-                    {{-- Side Images --}}
-                    <div class="col-12 col-md-4 d-flex flex-column gap-3">
-                        @foreach($vehicleImages->skip(1)->take(2) as $image)
-                        <img onclick="openImagesModal()"
-                            src="{{ asset('storage/' . $image->path) }}"
-                            alt="Vehicle Image"
-                            class="img-fluid rounded shadow w-100"
-                            style="height: 190px; object-fit: cover; cursor: pointer;">
-                        @endforeach
-
-                        {{-- Extra images counter overlay on last thumbnail --}}
-                        @if($vehicleImages->count() > 3)
-                        <div class="position-relative" onclick="openImagesModal()" style="cursor: pointer;">
-                            <img src="{{ asset('storage/' . $vehicleImages->skip(2)->first()->path) }}"
-                                alt="Vehicle Image"
-                                class="img-fluid rounded shadow w-100"
-                                style="height: 190px; object-fit: cover;">
-                            <div class="position-absolute bottom-0 d-flex align-items-center justify-content-center p-2 bg-dark bg-opacity-50 text-white fw-bold fs-5 rounded"
-                                style="pointer-events: none;">
-                                <i class="fa-solid fa-images mx-3"></i>
-                                {{ $vehicleImages->count() - 3 }} more
-                            </div>
-                        </div>
-                        @endif
                     </div>
                 </div>
-                @else
-                <div class="no-images text-center py-4">
-                    <i class="fas fa-image fa-2x text-muted mb-2"></i>
-                    <h5>No Images Available</h5>
-                    <p class="text-muted small">
-                        No vehicle images have been uploaded for this inspection report.
-                    </p>
-                </div>
-                @endif
             </div>
         </div>
     </div>
+</div>     
+      
 
 
 
-    <!-- disclaimer -->
+        <!-- disclaimer -->
+        {{--
     <div class="report-card">
         <!-- <div class="card-header"><i class="fa-solid fa-car"></i>Basic Vehicle Information</div> -->
         <div class="card-body">
@@ -1424,11 +1355,11 @@
                 </tr>
             </table>
         </div>
-    </div>
+    </div> --}}
 
-    <div class="footer">
-        <span class="footer-brand">Caartl</span> &copy; {{ date('Y') }} | Vehicle Inspection Report
-    </div>
+        <div class="footer">
+            <span class="footer-brand">Caartl</span> &copy; {{ date('Y') }} | Vehicle Inspection Report
+        </div>
     </div>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 
@@ -1513,7 +1444,47 @@
             carousel.to(index);
         }
     </script>
+    <script>
+    document.querySelectorAll('.details-table td').forEach((td, i) => {
+        const headers = ['#', 'Type', 'Body Part', 'Severity', 'Remarks'];
+        td.setAttribute('data-label', headers[i % 5]);
+    });
+</script>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const sections = {
+        summary: document.querySelector("#summary"),"car-details": document.querySelector("#car-details"),
+        exterior: document.querySelector(".report-card .card-header i.fa-brush")?.closest('.report-card'),
+        wheels: document.querySelector("#tiresCollapse"),
+        engine: document.querySelector("#engineCollapse"),
+        steering: document.querySelector("#steeringCollapse"),
+        interior: document.querySelector("#interiorCollapse"),
+        specs: document.querySelector("#specsCollapse")
+    };
 
+    const navItems = document.querySelectorAll(".dubizzle-nav-item");
+
+    function updateActive() {
+        let current = "summary";
+        const scrollPos = window.scrollY + 180;
+
+        Object.keys(sections).forEach(key => {
+            const el = sections[key];
+            if (el && scrollPos >= el.offsetTop - 100 && scrollPos < el.offsetTop + el.offsetHeight) {
+                current = key;
+            }
+        });
+
+        navItems.forEach(item => {
+            item.classList.toggle("active", item.getAttribute("data-section") === current);
+        });
+    }
+
+    window.addEventListener("scroll", updateActive);
+    updateActive();
+});
+</script>
+    </div>
 </body>
 
 </html>
