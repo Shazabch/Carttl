@@ -920,7 +920,7 @@ html { scroll-behavior: smooth; }
     {{-- ==================================================================== --}}
     {{-- == 3. Engine & Transmission Section (Accordion Item)                   --}}
     {{-- ==================================================================== --}}
-    <!-- <div class="accordion-item report-card">
+    <div class="accordion-item report-card">
         <h2 class="accordion-header" id="headingEngine">
             <button class="accordion-button card-header p-3" type="button" data-bs-toggle="collapse" data-bs-target="#engineCollapse" aria-expanded="true" aria-controls="engineCollapse">
                 <i class="fa-solid fa-gears"></i>Engine & Transmission
@@ -981,7 +981,7 @@ html { scroll-behavior: smooth; }
                 </div>
             </div>
         </div>
-    </div> -->
+    </div>
 
 
     {{-- ==================================================================== --}}
@@ -1454,12 +1454,12 @@ html { scroll-behavior: smooth; }
 document.addEventListener("DOMContentLoaded", function () {
     const sections = {
         summary: document.querySelector("#summary"),"car-details": document.querySelector("#car-details"),
-        exterior: document.querySelector(".report-card .card-header i.fa-brush")?.closest('.report-card'),
+        exterior: document.querySelector("#exterior"),
         wheels: document.querySelector("#tiresCollapse"),
         engine: document.querySelector("#engineCollapse"),
         steering: document.querySelector("#steeringCollapse"),
-        interior: document.querySelector("#interiorCollapse"),
-        specs: document.querySelector("#specsCollapse")
+        interior: document.querySelector("#interior"),
+        specs: document.querySelector("#specs")
     };
 
     const navItems = document.querySelectorAll(".dubizzle-nav-item");
