@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\Admin\ActivityLogController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\Admin\DashboardController;
@@ -41,7 +42,7 @@ Route::prefix('admin')
     ->middleware(['middleware' => 'auth:api'])
     ->group(function () {
         Route::get('/dashboard', [DashboardController::class, 'index']);
-
+        Route::get('/activity-logs', [ActivityLogController::class, 'index']);
         // Role and Permissions
         Route::controller(RolePermissionController::class)->group(function () {
             Route::get('/roles', 'index');
