@@ -618,6 +618,9 @@ class InspectionReportController extends Controller
 
     public function generatePdf($reportId)
     {
+        ini_set('memory_limit', '1024M');
+        set_time_limit(300);
+
         try {
             $reportInView = VehicleInspectionReport::findOrFail($reportId);
 
@@ -666,12 +669,26 @@ class InspectionReportController extends Controller
                 Storage::disk('public')->makeDirectory($directory);
             }
 
-            $pdf = Pdf::loadView('pdf.inspection.report-pdf-template', [
-                'reportInView'         => $reportInView,
+            $html = view('pdf.inspection.report-pdf-template', [
+                'reportInView' => $reportInView,
                 'damageAssessmentImage' => $damageAssessmentImage,
                 'damageTypes' => $damageTypes,
                 'damages' => $damages,
-            ])->setPaper('a4', 'portrait');
+            ])->render();
+
+            // ⚙️ Configure Dompdf with memory-safe options
+            $pdf = Pdf::loadHTML($html)
+                ->setPaper('a4', 'portrait')
+                ->setWarnings(false);
+
+            $pdf->getDomPDF()->set_option('isRemoteEnabled', true);
+            $pdf->getDomPDF()->set_option('isHtml5ParserEnabled', true);
+            $pdf->getDomPDF()->set_option('enable_php', true);
+            $pdf->getDomPDF()->set_option('enable_font_subsetting', true);
+            $pdf->getDomPDF()->set_option('isFontSubsettingEnabled', true);
+            $pdf->getDomPDF()->set_option('enable_javascript', false);
+
+
 
 
             $filename = 'inspection_' . $reportInView->id . '_' . now()->format('Ymd_His') . '.pdf';
