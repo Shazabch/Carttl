@@ -61,7 +61,7 @@ Route::prefix('admin')
             Route::get('/users', 'index');
             Route::get('/users/show/{id}', 'show');
             Route::post('/users/create', 'store');
-            Route::put('/users/update/{id}', 'update');
+            Route::post('/users/update/{id}', 'update');
             Route::patch('/users/toggle-approval/{id}', 'toggleApproval');
             Route::delete('/users/delete/{id}', 'destroy');
             Route::get('/users/roles', 'getRoles');

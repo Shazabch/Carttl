@@ -9,10 +9,11 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
 use Spatie\Permission\Models\Role;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 
 class UserManagementController extends Controller
 {
-    
+
     public function index(Request $request)
     {
         $search = $request->get('search', '');
@@ -21,7 +22,7 @@ class UserManagementController extends Controller
         $users = User::query()
             ->when($search, function ($query, $search) {
                 $query->where('name', 'like', "%{$search}%")
-                      ->orWhere('email', 'like', "%{$search}%");
+                    ->orWhere('email', 'like', "%{$search}%");
             })
             ->latest()
             ->paginate($perPage);
@@ -37,7 +38,7 @@ class UserManagementController extends Controller
         ]);
     }
 
-   
+
     public function show($id)
     {
         $user = User::with('roles')->findOrFail($id);
@@ -48,7 +49,9 @@ class UserManagementController extends Controller
         ]);
     }
 
-  
+
+
+
     public function store(Request $request)
     {
         $validated = $request->validate([
@@ -56,14 +59,23 @@ class UserManagementController extends Controller
             'email'    => 'required|email|max:255|unique:users,email',
             'role'     => 'required|string|exists:roles,name',
             'password' => 'required|string|min:8',
+            'photo'    => 'nullable|image', 
         ]);
 
+        $photoUrl = null;
+
+        if ($request->hasFile('photo')) {
+            $path = $request->file('photo')->store('user_photos', 'public');
+            $photoUrl = url('storage/' . $path);
+        }
+
         $user = User::create([
-            'name'     => $validated['name'],
-            'email'    => $validated['email'],
-            'password' => Hash::make($validated['password']),
-            'role'     => $validated['role'],
-            'is_approved' => false, 
+            'name'        => $validated['name'],
+            'email'       => $validated['email'],
+            'password'    => Hash::make($validated['password']),
+            'role'        => $validated['role'],
+            'is_approved' => false,
+            'photo'       => $photoUrl,
         ]);
 
         $user->syncRoles($validated['role']);
@@ -75,7 +87,7 @@ class UserManagementController extends Controller
         ]);
     }
 
-   
+
     public function update(Request $request, $id)
     {
         $user = User::findOrFail($id);
@@ -90,12 +102,40 @@ class UserManagementController extends Controller
             ],
             'role'     => 'required|string|exists:roles,name',
             'password' => 'nullable|string|min:8',
+            'photo'    => 'nullable|image',
+            'remove_photo' => 'nullable|boolean',
         ]);
+
+        
+        $photoUrl = $user->photo;
+        if ($request->boolean('remove_photo') && $photoUrl) {
+            if (str_contains($photoUrl, url('/'))) {
+                $relativePath = str_replace(url('storage') . '/', '', $photoUrl);
+                if (Storage::disk('public')->exists($relativePath)) {
+                    Storage::disk('public')->delete($relativePath);
+                }
+            }
+            $photoUrl = null;
+        }
+
+        
+        if ($request->hasFile('photo')) {
+            if ($photoUrl && str_contains($photoUrl, url('/'))) {
+                $relativePath = str_replace(url('storage') . '/', '', $photoUrl);
+                if (Storage::disk('public')->exists($relativePath)) {
+                    Storage::disk('public')->delete($relativePath);
+                }
+            }
+
+            $path = $request->file('photo')->store('user_photos', 'public');
+            $photoUrl = url('storage/' . $path);
+        }
 
         $data = [
             'name'  => $validated['name'],
             'email' => $validated['email'],
             'role'  => $validated['role'],
+            'photo' => $photoUrl,
         ];
 
         if (!empty($validated['password'])) {
@@ -112,7 +152,8 @@ class UserManagementController extends Controller
         ]);
     }
 
-    
+
+
     public function toggleApproval($id)
     {
         $user = User::findOrFail($id);
@@ -128,7 +169,7 @@ class UserManagementController extends Controller
         ]);
     }
 
-  
+
     public function destroy($id)
     {
         try {
@@ -148,7 +189,7 @@ class UserManagementController extends Controller
         }
     }
 
-   
+
     public function getRoles()
     {
         $roles = Role::where('guard_name', 'api')->pluck('name');
