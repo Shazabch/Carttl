@@ -7,9 +7,14 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\DB;
+use Spatie\Activitylog\Facades\Activity;
+
 
 class AgentManagementController extends Controller
 {
+
+
     public function index(Request $request)
     {
         $perPage = $request->get('per_page', 10);
@@ -23,22 +28,30 @@ class AgentManagementController extends Controller
                         ->orWhere('phone', 'like', "%{$search}%");
                 });
             })
-            ->withCount('Customers')
+            ->withCount('customers')
+            ->addSelect([
+                'target_achieved' => DB::table('vehicle_bids')
+                    ->join('users as customers', 'customers.id', '=', 'vehicle_bids.user_id')
+                    ->whereColumn('customers.agent_id', 'users.id')
+                    ->where('vehicle_bids.status', 'accepted')
+                    ->selectRaw('COUNT(vehicle_bids.id)')
+            ])
             ->orderBy('created_at', 'desc');
 
         $agents = $query->paginate($perPage);
 
         $agents->getCollection()->transform(function ($agent) {
             return [
-                'id'              => $agent->id,
-                'name'            => $agent->name,
-                'email'           => $agent->email,
-                'phone'           => $agent->phone,
-                'role'            => $agent->role,
-                'photo'           => $agent->photo,
+                'id'               => $agent->id,
+                'name'             => $agent->name,
+                'email'            => $agent->email,
+                'phone'            => $agent->phone,
+                'role'             => $agent->role,
+                'photo'            => $agent->photo,
                 'target'           => $agent->target,
-                'customers_count' => $agent->customers_count,
-                'created_at'      => $agent->created_at,
+                'customers_count'  => $agent->customers_count,
+                'target_achieved'  => (int) $agent->target_achieved,
+                'created_at'       => $agent->created_at,
             ];
         });
 
@@ -47,6 +60,8 @@ class AgentManagementController extends Controller
             'data'   => $agents,
         ]);
     }
+
+
 
     public function store(Request $request)
     {
@@ -63,7 +78,7 @@ class AgentManagementController extends Controller
 
         if ($request->hasFile('photo')) {
             $path = $request->file('photo')->store('agent_photos', 'public');
-            $photoUrl = url('storage/' . $path); // ✅ store full URL
+            $photoUrl = url('storage/' . $path);
         }
 
         $agent = User::create([
@@ -75,6 +90,14 @@ class AgentManagementController extends Controller
             'photo'    => $photoUrl,
             'target'    => $request->target,
         ]);
+        $admin = auth('api')->user();
+
+        if ($admin) {
+            Activity::causedBy($admin)
+                ->performedOn($agent)
+                ->event('created')
+                ->log("Admin ({$admin->name}) created new agent: {$agent->name}");
+        }
 
         return response()->json([
             'status'  => 'success',
@@ -105,22 +128,30 @@ class AgentManagementController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'name'      => 'required|string|max:255',
-            'email'     => 'required|email|unique:users,email,' . $id,
-            'phone'     => 'nullable|string',
-            'password'  => 'nullable|string|min:6',
-            'photo'     => 'nullable|image',
-            'target'     => 'nullable',
-            'customers' => 'nullable|array',
+            'name'        => 'required|string|max:255',
+            'email'       => 'required|email|unique:users,email,' . $id,
+            'phone'       => 'nullable|string',
+            'password'    => 'nullable|string|min:6',
+            'photo'       => 'nullable|image',
+            'target'      => 'nullable',
+            'customers'   => 'nullable|array',
+            'remove_image' => 'nullable|boolean',
         ]);
 
         $agent = User::where('role', 'agent')->findOrFail($id);
 
         $photoUrl = $agent->photo;
 
-        // Delete old photo if a new one is uploaded
+        if ($request->boolean('remove_image')) {
+            if ($photoUrl && str_contains($photoUrl, url('/'))) {
+                $relativePath = str_replace(url('storage') . '/', '', $photoUrl);
+                if (Storage::disk('public')->exists($relativePath)) {
+                    Storage::disk('public')->delete($relativePath);
+                }
+            }
+            $photoUrl = null;
+        }
         if ($request->hasFile('photo')) {
-            // Delete old if stored in our domain
             if ($photoUrl && str_contains($photoUrl, url('/'))) {
                 $relativePath = str_replace(url('storage') . '/', '', $photoUrl);
                 if (Storage::disk('public')->exists($relativePath)) {
@@ -140,12 +171,12 @@ class AgentManagementController extends Controller
                 ? Hash::make($request->password)
                 : $agent->password,
             'photo'    => $photoUrl,
-            'target'    => $request->target,
-
+            'target'   => $request->target,
         ]);
 
         if ($request->has('customers')) {
             $customerIds = $request->customers;
+
             User::where('role', 'customer')
                 ->where('agent_id', $agent->id)
                 ->whereNotIn('id', $customerIds)
@@ -155,6 +186,13 @@ class AgentManagementController extends Controller
                 ->whereIn('id', $customerIds)
                 ->update(['agent_id' => $agent->id]);
         }
+          $admin = auth('api')->user();
+        if ($admin) {
+            Activity::causedBy($admin)
+                ->performedOn($agent)
+                ->event('updated')
+                ->log("Admin ({$admin->name}) updated agent: {$agent->name}");
+        }
 
         return response()->json([
             'status'  => 'success',
@@ -162,11 +200,12 @@ class AgentManagementController extends Controller
             'data'    => $agent->load('customers'),
         ]);
     }
-      public function assignCustomers(Request $request, $agentId)
+
+    public function assignCustomers(Request $request, $agentId)
     {
         $request->validate([
-            'customer_ids'   => 'required|array|min:1',
-            'customer_ids.*' => 'exists:users,id',
+            'customer_ids'   => 'nullable',
+            'customer_ids.*' => 'nullable|exists:users,id',
         ]);
 
         $agent = User::where('role', 'agent')->findOrFail($agentId);
@@ -175,13 +214,19 @@ class AgentManagementController extends Controller
         User::where('agent_id', $agent->id)->update(['agent_id' => null]);
 
 
-        User::whereIn('id', $request->customer_ids)
+        User::whereIn('id', $request->customer_ids ?? [])
             ->update(['agent_id' => $agent->id]);
 
-        $assigned = User::whereIn('id', $request->customer_ids)
+        $assigned = User::whereIn('id', $request->customer_ids ?? [])
             ->select('id', 'name', 'email', 'agent_id')
             ->get();
-
+          $admin = auth('api')->user();
+        if ($admin) {
+            Activity::causedBy($admin)
+                ->performedOn($agent)
+                ->event('assigned_customers')
+                ->log("Admin ({$admin->name}) assigned customers to agent: {$agent->name}");
+        }
         return response()->json([
             'status'  => 'success',
             'message' => 'Customers assigned to agent successfully',
@@ -195,7 +240,6 @@ class AgentManagementController extends Controller
 
     public function customersByAgent(Request $request, $agentId)
     {
-        
         $user = auth('api')->user();
 
         if (!$user) {
@@ -205,7 +249,6 @@ class AgentManagementController extends Controller
             ], 401);
         }
 
-      
         $agent = User::where('role', 'agent')->find($agentId);
 
         if (!$agent) {
@@ -215,24 +258,32 @@ class AgentManagementController extends Controller
             ], 404);
         }
 
-        
+        // Assigned customers
         $assigned = User::where('role', 'customer')
             ->where('agent_id', $agentId)
             ->select('id', 'name', 'email', 'agent_id')
             ->get();
 
-       
+        // Search filter for unassigned customers
+        $search = $request->get('search');
+
         $unassigned = User::where('role', 'customer')
             ->whereNull('agent_id')
+            ->when($search, function ($query, $search) {
+                $query->where(function ($q) use ($search) {
+                    $q->where('name', 'like', "%{$search}%")
+                        ->orWhere('email', 'like', "%{$search}%");
+                });
+            })
             ->select('id', 'name', 'email', 'agent_id')
             ->get();
 
         return response()->json([
             'status' => 'success',
             'data'   => [
-                'agent'                 => $agent,
-                'assigned_customers'    => $assigned,
-                'unassigned_customers'  => $unassigned,
+                'agent'                => $agent,
+                'assigned_customers'   => $assigned,
+                'unassigned_customers' => $unassigned,
             ],
         ]);
     }
@@ -251,6 +302,12 @@ class AgentManagementController extends Controller
 
         User::where('agent_id', $agent->id)->update(['agent_id' => null]);
         $agent->delete();
+          $admin = auth('api')->user();
+        if ($admin) {
+            Activity::causedBy($admin)
+                ->event('deleted')
+                ->log("Admin ({$admin->name}) deleted agent: {$agent->name} and unlinked assigned customers");
+        }
 
         return response()->json([
             'status'  => 'success',

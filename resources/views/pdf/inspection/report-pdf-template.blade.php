@@ -1181,7 +1181,7 @@
             </div>
         </div>
 
-        {{-- Disclaimer Section --}}
+        {{-- Disclaimer Section 
         <div class="report-card">
             <div class="card-body">
                 <table class="details-table">
@@ -1227,7 +1227,7 @@
                     </tr>
                 </table>
             </div>
-        </div>
+        </div> --}}
 
         <div class="footer">
             <span class="footer-brand">Caartl</span> &copy; {{ date('Y') }} | Vehicle Inspection Report

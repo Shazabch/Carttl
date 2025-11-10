@@ -36,8 +36,21 @@ class SharedDocumentController extends Controller
     public function showPublicReport(VehicleInspectionReport $report)
     {
 
+        $damageTypes = [
+            'Scratch' => ['name' => 'Scratch',       'color' => '#FF0000'],
+            'Multiple Scratches' => ['name' => 'Multiple Scratches', 'color' => '#FF7F00'],
+            'Cosmetic Paint' => ['name' => 'Cosmetic Paint', 'color' => '#FFD700'],
+            'Chip' => ['name' => 'Chip',          'color' => '#00AA00'],
+            'Dent' => ['name' => 'Dent',          'color' => '#0000FF'],
+            'Repainted' => ['name' => 'Repainted',     'color' => '#4B0082'],
+            'Repaired' => ['name' => 'Repaired',      'color' => '#B87BD2'],
+            'Foiled Wrap' => ['name' => 'Foiled Wrap',   'color' => '#706C6E'],
+            'Full PPF' => ['name' => 'Full PPF',      'color' => '#D80881'],
+            'Rust' => ['name' => 'Rust',          'color' => '#6B5407'],
+        ];
         return view('admin.inspection.report-pdf-template-public', [
-            'reportInView' => $report
+            'reportInView' => $report,
+            'damageTypes' =>  $damageTypes
         ]);
     }
 

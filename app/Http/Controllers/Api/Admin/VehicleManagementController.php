@@ -11,6 +11,7 @@ use App\Models\Vehicle;
 use App\Models\VehicleImage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
@@ -124,14 +125,14 @@ class VehicleManagementController extends Controller
             'data' => $vehicles
         ]);
     }
-   public function auctions(Request $request)
+    public function auctions(Request $request)
     {
-        $type = $request->get('type', 'all'); 
+        $type = $request->get('type', 'all');
         $search = $request->get('search', '');
         $perPage = $request->get('per_page', 10);
 
         $query = Vehicle::query();
-         $query->where('is_auction', true);
+        $query->where('is_auction', true);
 
         if ($type === 'sold') {
             $query->where('status', 'sold');
@@ -165,7 +166,7 @@ class VehicleManagementController extends Controller
 
     public function show($id)
     {
-        $vehicle = Vehicle::with(['brand:id,name', 'images:id,vehicle_id,path','features', 'latestBid','bids','coverImage:id,vehicle_id,path','vehicleModel', 'fuelType', 'transmission', 'bodyType'])
+        $vehicle = Vehicle::with(['brand:id,name', 'images:id,vehicle_id,path,is_cover', 'features', 'latestBid', 'bids', 'coverImage:id,vehicle_id,path', 'vehicleModel', 'fuelType', 'transmission', 'bodyType'])
             ->find($id);
 
         if (!$vehicle) {
@@ -211,7 +212,7 @@ class VehicleManagementController extends Controller
             'is_featured' => 'boolean',
             'is_auction' => 'boolean',
             'features' => 'nullable|array',
-            'images.*' => 'nullable|file|image|max:5120'
+            'images.*' => 'nullable|file|image'
         ];
 
         $validated = $request->validate($rules);
@@ -262,35 +263,77 @@ class VehicleManagementController extends Controller
         $vehicle = Vehicle::findOrFail($vehicleId);
 
         $validated = $request->validate([
-            'images'        => 'required|array|min:1',
-            'images.*'      => 'file|image',
+            'image_ids'     => 'nullable|array',
+            'image_ids.*'   => 'integer|exists:vehicle_images,id',
+            'images'        => 'nullable|array',
+            'images.*'      => 'file|mimetypes:image/jpeg,image/png,image/jpg,image/gif,image/webp,image/bmp,image/svg+xml,image/x-icon,image/tiff,image/heic,image/heif,image/avif',
             'is_cover'      => 'nullable|array',
-            'is_cover.*'    => 'nullable|boolean',
+            'is_cover.*'    => 'boolean',
         ]);
 
+        $existingImages = $vehicle->images; 
+        $keepIds = $validated['image_ids'] ?? [];
+
+       
+        $deleteImages = $existingImages->whereNotIn('id', $keepIds);
+        foreach ($deleteImages as $image) {
+            // extract relative path if stored as full URL
+            $path = str_replace(asset('storage/') . '/', '', $image->path);
+            if (Storage::disk('public')->exists($path)) {
+                Storage::disk('public')->delete($path);
+            }
+            $image->delete();
+        }
+
         $uploaded = [];
+        $sortOrder = 1;
 
-        $images = $request->file('images');
-        $isCovers = $request->input('is_cover', []);
+        // Update kept images
+        foreach ($keepIds as $index => $id) {
+            $img = $vehicle->images()->find($id);
+            if ($img) {
+                $img->update([
+                    'sort_order' => $sortOrder++,
+                    'is_cover'   => $request->is_cover[$index] ?? $img->is_cover,
+                ]);
 
-        foreach ($images as $index => $file) {
-            $path = $file->store('vehicle_images', 'public');
-            $fullUrl = asset('storage/' . $path);
+                $uploaded[] = [
+                    'id'         => $img->id,
+                    'url'        => $img->path,
+                    'is_cover'   => $img->is_cover,
+                    'sort_order' => $img->sort_order,
+                ];
+            }
+        }
 
-            $image = $vehicle->images()->create([
-                'path'     => $fullUrl,
-                'is_cover' => isset($isCovers[$index]) ? (bool)$isCovers[$index] : false,
-            ]);
+        // Add new uploaded images
+        if ($request->hasFile('images')) {
+            foreach ($request->file('images') as $index => $file) {
+                $path = $file->store('vehicle_images', 'public');
+                $fullUrl = asset('storage/' . $path);
 
-            $uploaded[] = $image;
+                $newImage = $vehicle->images()->create([
+                    'path'       => $fullUrl,
+                    'is_cover'   => $request->is_cover[$index] ?? false,
+                    'sort_order' => $sortOrder++,
+                ]);
+
+                $uploaded[] = [
+                    'id'         => $newImage->id,
+                    'url'        => $newImage->path,
+                    'is_cover'   => $newImage->is_cover,
+                    'sort_order' => $newImage->sort_order,
+                ];
+            }
         }
 
         return response()->json([
             'status'  => 'success',
-            'message' => 'Images uploaded successfully.',
+            'message' => 'Images updated successfully — old removed, kept retained, and new added.',
             'data'    => $uploaded,
-        ], 201);
+        ], 200);
     }
+
 
 
     public function removeImages(Request $request)
@@ -348,7 +391,7 @@ class VehicleManagementController extends Controller
             'is_featured' => 'boolean',
             'is_auction' => 'boolean',
             'features' => 'nullable|array',
-            'images.*' => 'nullable|file|image|max:5120',
+             'images.*'=> 'file|mimetypes:image/jpeg,image/png,image/jpg,image/gif,image/webp,image/bmp,image/svg+xml,image/x-icon,image/tiff,image/heic,image/heif,image/avif',
         ];
 
         $validated = $request->validate($rules);
