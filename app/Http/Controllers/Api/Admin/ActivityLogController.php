@@ -57,5 +57,31 @@ class ActivityLogController extends Controller
         'data'   => $logs,
     ]);
 }
+public function bulkDelete(Request $request)
+{
+    $user = auth('api')->user();
+
+    // Only super admin can delete logs
+    if ($user->role !== 'super_admin') {
+        return response()->json([
+            'status'  => 'error',
+            'message' => 'Unauthorized to delete logs.',
+        ], 403);
+    }
+
+    $request->validate([
+        'ids'   => 'required|array',
+        'ids.*' => 'integer|exists:activity_log,id',
+    ]);
+
+    $ids = $request->ids;
+
+    Activity::whereIn('id', $ids)->delete();
+
+    return response()->json([
+        'status'  => 'success',
+        'message' => count($ids) . ' logs deleted successfully.',
+    ]);
+}
 
 }

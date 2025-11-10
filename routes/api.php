@@ -43,6 +43,7 @@ Route::prefix('admin')
     ->group(function () {
         Route::get('/dashboard', [DashboardController::class, 'index']);
         Route::get('/activity-logs', [ActivityLogController::class, 'index']);
+        Route::post('/activity-logs/delete', [ActivityLogController::class, 'bulkDelete']);
         // Role and Permissions
         Route::controller(RolePermissionController::class)->group(function () {
             Route::get('/roles', 'index');
