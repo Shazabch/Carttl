@@ -16,6 +16,7 @@
         "laravel/tinker": "^2.9",
         "livewire/livewire": "^3.6",
         "spatie/browsershot": "^5.0",
+        "spatie/laravel-activitylog": "^4.10",
         "spatie/laravel-permission": "^6.20",
         "tymon/jwt-auth": "^2.2"
     },

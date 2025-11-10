@@ -8,6 +8,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
+use Spatie\Activitylog\Facades\Activity;
+
 
 class AgentManagementController extends Controller
 {
@@ -88,6 +90,14 @@ class AgentManagementController extends Controller
             'photo'    => $photoUrl,
             'target'    => $request->target,
         ]);
+        $admin = auth('api')->user();
+
+        if ($admin) {
+            Activity::causedBy($admin)
+                ->performedOn($agent)
+                ->event('created')
+                ->log("Admin ({$admin->name}) created new agent: {$agent->name}");
+        }
 
         return response()->json([
             'status'  => 'success',
@@ -176,6 +186,13 @@ class AgentManagementController extends Controller
                 ->whereIn('id', $customerIds)
                 ->update(['agent_id' => $agent->id]);
         }
+          $admin = auth('api')->user();
+        if ($admin) {
+            Activity::causedBy($admin)
+                ->performedOn($agent)
+                ->event('updated')
+                ->log("Admin ({$admin->name}) updated agent: {$agent->name}");
+        }
 
         return response()->json([
             'status'  => 'success',
@@ -203,7 +220,13 @@ class AgentManagementController extends Controller
         $assigned = User::whereIn('id', $request->customer_ids ?? [])
             ->select('id', 'name', 'email', 'agent_id')
             ->get();
-
+          $admin = auth('api')->user();
+        if ($admin) {
+            Activity::causedBy($admin)
+                ->performedOn($agent)
+                ->event('assigned_customers')
+                ->log("Admin ({$admin->name}) assigned customers to agent: {$agent->name}");
+        }
         return response()->json([
             'status'  => 'success',
             'message' => 'Customers assigned to agent successfully',
@@ -279,6 +302,12 @@ class AgentManagementController extends Controller
 
         User::where('agent_id', $agent->id)->update(['agent_id' => null]);
         $agent->delete();
+          $admin = auth('api')->user();
+        if ($admin) {
+            Activity::causedBy($admin)
+                ->event('deleted')
+                ->log("Admin ({$admin->name}) deleted agent: {$agent->name} and unlinked assigned customers");
+        }
 
         return response()->json([
             'status'  => 'success',
