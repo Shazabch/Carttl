@@ -7,9 +7,12 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\DB;
 
 class AgentManagementController extends Controller
 {
+
+
     public function index(Request $request)
     {
         $perPage = $request->get('per_page', 10);
@@ -23,22 +26,30 @@ class AgentManagementController extends Controller
                         ->orWhere('phone', 'like', "%{$search}%");
                 });
             })
-            ->withCount('Customers')
+            ->withCount('customers')
+            ->addSelect([
+                'target_achieved' => DB::table('vehicle_bids')
+                    ->join('users as customers', 'customers.id', '=', 'vehicle_bids.user_id')
+                    ->whereColumn('customers.agent_id', 'users.id')
+                    ->where('vehicle_bids.status', 'accepted')
+                    ->selectRaw('COUNT(vehicle_bids.id)')
+            ])
             ->orderBy('created_at', 'desc');
 
         $agents = $query->paginate($perPage);
 
         $agents->getCollection()->transform(function ($agent) {
             return [
-                'id'              => $agent->id,
-                'name'            => $agent->name,
-                'email'           => $agent->email,
-                'phone'           => $agent->phone,
-                'role'            => $agent->role,
-                'photo'           => $agent->photo,
+                'id'               => $agent->id,
+                'name'             => $agent->name,
+                'email'            => $agent->email,
+                'phone'            => $agent->phone,
+                'role'             => $agent->role,
+                'photo'            => $agent->photo,
                 'target'           => $agent->target,
-                'customers_count' => $agent->customers_count,
-                'created_at'      => $agent->created_at,
+                'customers_count'  => $agent->customers_count,
+                'target_achieved'  => (int) $agent->target_achieved,
+                'created_at'       => $agent->created_at,
             ];
         });
 
@@ -47,6 +58,8 @@ class AgentManagementController extends Controller
             'data'   => $agents,
         ]);
     }
+
+
 
     public function store(Request $request)
     {
