@@ -52,22 +52,17 @@ class RolesAndPermissionsSeeder extends Seeder
             'dashboard-view',
         ];
 
-        // 2️⃣ Create/Update permissions for both guards (web + api)
+        // 2️⃣ Create/update permissions for API guard only
         foreach ($permissions as $permission) {
-            Permission::updateOrCreate(
-                ['name' => $permission, 'guard_name' => 'web'],
-                []
-            );
             Permission::updateOrCreate(
                 ['name' => $permission, 'guard_name' => 'api'],
                 []
             );
         }
 
-        // 3️⃣ Create/Update Roles for both guards
-
+        // 3️⃣ Create/update roles for API guard only
         $roles = [
-            'super-admin' => Permission::all()->pluck('name')->toArray(),
+            'super-admin' => Permission::where('guard_name', 'api')->pluck('name')->toArray(),
             'admin' => [
                 'dashboard-view', 'inspection-list', 'inspection-view', 'inspection-delete',
                 'inspection-approve', 'inspection-assign', 'vehicle-list', 'vehicle-view',
@@ -89,20 +84,12 @@ class RolesAndPermissionsSeeder extends Seeder
         ];
 
         foreach ($roles as $roleName => $rolePermissions) {
-            // Create for web guard
-            $roleWeb = Role::updateOrCreate(['name' => $roleName, 'guard_name' => 'web']);
-            if ($roleName === 'super-admin') {
-                $roleWeb->syncPermissions(Permission::where('guard_name', 'web')->get());
-            } else {
-                $roleWeb->syncPermissions(Permission::whereIn('name', $rolePermissions)->where('guard_name', 'web')->get());
-            }
+            $role = Role::updateOrCreate(['name' => $roleName, 'guard_name' => 'api']);
 
-            // Create for api guard
-            $roleApi = Role::updateOrCreate(['name' => $roleName, 'guard_name' => 'api']);
             if ($roleName === 'super-admin') {
-                $roleApi->syncPermissions(Permission::where('guard_name', 'api')->get());
+                $role->syncPermissions(Permission::where('guard_name', 'api')->get());
             } else {
-                $roleApi->syncPermissions(Permission::whereIn('name', $rolePermissions)->where('guard_name', 'api')->get());
+                $role->syncPermissions(Permission::whereIn('name', $rolePermissions)->where('guard_name', 'api')->get());
             }
         }
     }

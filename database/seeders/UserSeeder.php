@@ -8,49 +8,39 @@ use Illuminate\Support\Facades\Hash;
 
 class UserSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     *
-     * @return void
-     */
     public function run()
     {
-        // Create or update a Super-Admin User
+        // 1️⃣ Super Admin
         $superAdmin = User::updateOrCreate(
-            // Attributes to find the user by
             ['email' => 'shahzaib@majesticsofts.com'],
-            // Attributes to create or update the user with
             [
                 'name' => 'Super Admin',
                 'role' => 'admin',
-                'password' => Hash::make('password'), // Always reset password on seed
+                'password' => Hash::make('password'),
             ]
         );
-        // Ensure the user has ONLY the 'super-admin' role
-        $superAdmin->syncRoles('super-admin');
+        $superAdmin->syncRoles(['super-admin']); // API guard automatically used from User model
 
-
-        // Create or update an Admin User
+        // 2️⃣ Admin
         $admin = User::updateOrCreate(
             ['email' => 'admin@example.com'],
             [
                 'name' => 'Admin User',
-                 'role' => 'admin',
+                'role' => 'admin',
                 'password' => Hash::make('password'),
             ]
         );
-        $admin->syncRoles('admin');
+        $admin->syncRoles(['admin']);
 
-
-        // Create or update a Customer User
+        // 3️⃣ Customer
         $customer = User::updateOrCreate(
             ['email' => 'customer@example.com'],
             [
                 'name' => 'Test Customer',
-                 'role' => 'customer',
+                'role' => 'customer',
                 'password' => Hash::make('password'),
             ]
         );
-        $customer->syncRoles('customer');
+        $customer->syncRoles(['customer']);
     }
 }
