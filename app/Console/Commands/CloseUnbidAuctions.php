@@ -14,6 +14,7 @@ class CloseUnbidAuctions extends Command
 
     public function handle()
     {
+        Log::info('CloseUnbidAuctions command ran at '.now());
         $now = Carbon::now();
 
         $vehicles = Vehicle::where('is_auction', 1)
