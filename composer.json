@@ -12,6 +12,7 @@
         "barryvdh/laravel-dompdf": "^3.1",
         "barryvdh/laravel-snappy": "^1.0",
         "doctrine/dbal": "^4.3",
+        "intervention/image": "^3.11",
         "laravel/framework": "^11.9",
         "laravel/tinker": "^2.9",
         "livewire/livewire": "^3.6",
