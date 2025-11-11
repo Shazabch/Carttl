@@ -19,6 +19,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Str;
 use Symfony\Component\HttpFoundation\Response;
+use App\Services\ImageWatermarkService;
 
 class InspectionReportController extends Controller
 {
@@ -152,8 +153,7 @@ class InspectionReportController extends Controller
         ], 201);
     }
 
-
-    public function storeVehicleImages(Request $request)
+    public function storeVehicleImages(Request $request, ImageWatermarkService $watermarkService)
     {
         $validated = $request->validate([
             'vehicle_inspection_report_id' => 'required|exists:vehicle_inspection_reports,id',
@@ -165,11 +165,10 @@ class InspectionReportController extends Controller
             'is_cover.*'                   => 'boolean',
         ]);
 
-
         $reportId = $validated['vehicle_inspection_report_id'];
 
+        // Delete images not in keepIds
         $existingImages = VehicleInspectionImage::where('vehicle_inspection_report_id', $reportId)->get();
-
         $keepIds = $validated['image_ids'] ?? [];
         $deleteImages = $existingImages->whereNotIn('id', $keepIds);
 
@@ -183,6 +182,7 @@ class InspectionReportController extends Controller
         $uploaded = [];
         $sortOrder = 1;
 
+        // Update existing images
         foreach ($keepIds as $index => $id) {
             $img = VehicleInspectionImage::find($id);
             if ($img) {
@@ -200,10 +200,18 @@ class InspectionReportController extends Controller
             }
         }
 
+        // Process newly uploaded images
         if ($request->hasFile('images')) {
             foreach ($request->file('images') as $index => $file) {
-                $path = $file->store('inspection_images', 'public');
+                $originalPath = $file->getPathname();
+                $path = 'inspection_images/' . uniqid() . '.' . $file->getClientOriginalExtension();
+                $savePath = storage_path('app/public/' . $path);
 
+                // Add watermark
+                $logoPath = public_path('images/caartl.png'); // your watermark logo
+                $watermarkService->addLogoWatermark($originalPath, $logoPath, $savePath, 10);
+
+                // Save record in DB
                 $newImage = VehicleInspectionImage::create([
                     'vehicle_inspection_report_id' => $reportId,
                     'path'                         => $path,
@@ -222,9 +230,28 @@ class InspectionReportController extends Controller
 
         return response()->json([
             'status'  => 'success',
-            'message' => 'Images updated successfully — old removed, kept retained, and new added.',
+            'message' => 'Images updated successfully — old removed, kept retained, and new added with watermark.',
             'data'    => $uploaded,
         ], 200);
+    }
+
+
+
+    public function storeVehicleImagesCopy(Request $request, ImageWatermarkService $watermarkService)
+    {
+        $images = $request->file('images');
+
+        foreach ($images as $imageFile) {
+            $originalPath = $imageFile->getPathname();
+            $logoPath = public_path('images/caartl.png'); // your watermark logo
+            $savePath = public_path('uploads/' . $imageFile->getClientOriginalName());
+
+            $watermarkService->addLogoWatermark($originalPath, $logoPath, $savePath, 30);
+        }
+
+        return response()->json([
+            'message' => 'Images uploaded and watermarked successfully.'
+        ]);
     }
 
 
