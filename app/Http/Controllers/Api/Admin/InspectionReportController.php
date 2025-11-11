@@ -71,21 +71,29 @@ class InspectionReportController extends Controller
     }
 
 
-    public function show($id)
-    {
-        $report = VehicleInspectionReport::with(['vehicle', 'damages', 'inspector', 'images', 'brand:id,name', 'vehicleModel:id,name'])
-            ->findOrFail($id);
+  public function show($id)
+{
+    $report = VehicleInspectionReport::with([
+        'vehicle',
+        'damages',
+        'inspector',
+        'images',
+        'brand:id,name',
+        'vehicleModel:id,name',
+        'fields.images' 
+    ])->findOrFail($id);
 
-        $report->make_name = $report->brand->name ?? null;
-        $report->model_name = $report->vehicleModel->name ?? null;
+    $report->make_name = $report->brand->name ?? null;
+    $report->model_name = $report->vehicleModel->name ?? null;
 
-        unset($report->brand, $report->vehicleModel);
+    unset($report->brand, $report->vehicleModel);
 
-        return response()->json([
-            'status' => 'success',
-            'data'   => $report,
-        ]);
-    }
+    return response()->json([
+        'status' => 'success',
+        'data'   => $report,
+    ]);
+}
+
 
 
     public function store(Request $request)
