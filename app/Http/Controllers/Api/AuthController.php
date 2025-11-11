@@ -6,11 +6,12 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Auth;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
 class AuthController extends Controller
 {
-    
+
     public function register(Request $request)
     {
         $request->validate([
@@ -35,7 +36,7 @@ class AuthController extends Controller
         ]);
     }
 
-   
+
     public function login(Request $request)
     {
         $credentials = $request->only('email', 'password');
@@ -47,31 +48,47 @@ class AuthController extends Controller
         return $this->respondWithToken($token);
     }
 
-  
-   
 
-   
+
+
+
     public function logout()
     {
         auth('api')->logout();
         return response()->json(['status' => 'success', 'message' => 'Logged out successfully']);
     }
 
-    
+
     public function refresh()
     {
         return $this->respondWithToken(auth('api')->refresh());
     }
 
-    
+
     protected function respondWithToken($token)
     {
+        $user = Auth::guard('api')->user();
         return response()->json([
             'status' => 'success',
             'access_token' => $token,
             'token_type' => 'bearer',
             'expires_in' => auth('api')->factory()->getTTL() * 60,
-            'user' => auth('api')->user()
+            'user' => [
+                'id'            => $user->id,
+                'agent_id'      => $user->agent_id,
+                'is_approved'   => $user->is_approved,
+                'name'          => $user->name,
+                'email_verified_at'     => $user->email_verified_at,
+                'created_at'     => $user->created_at,
+                'updated_at'     => $user->updated_at,
+                'email'         => $user->email,
+                'target'         => $user->target,
+                'bio'         => $user->bio,
+                'phone'          => $user->phone,
+                'photo' => $user->photo ? asset('storage/' . $user->photo) : null,
+                'roles'         => $user->getRoleNames(),
+                'permissions'   => $user->getAllPermissions()->pluck('name'),
+            ],
         ]);
     }
 }
