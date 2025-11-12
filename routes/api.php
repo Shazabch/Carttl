@@ -31,11 +31,27 @@ use App\Http\Controllers\Api\Customer\InspectionController;
 use App\Http\Controllers\Api\Customer\SellCarController;
 use App\Http\Controllers\Api\Customer\UserDataController;
 use App\Models\Package;
+use App\Models\VehicleInspectionReport;
 
 //Auth routes
 Route::post('register', [AuthController::class, 'register']);
 Route::post('login', [AuthController::class, 'login']);
 Route::middleware('auth:api')->post('logout', [AuthController::class, 'logout']);
+
+use App\Models\InspectionField;
+
+Route::get('/inspection-field-images/{reportId}/{field}', function ($reportId, $field) {
+    $fieldData = InspectionField::with('images')
+        ->where('vehicle_inspection_report_id', $reportId)
+        ->where('name', $field)
+        ->latest()
+        ->first();
+
+    return response()->json([
+        'images' => $fieldData?->images ?? [],
+    ]);
+});
+
 
 // Admin Panel Routes
 Route::prefix('admin')
