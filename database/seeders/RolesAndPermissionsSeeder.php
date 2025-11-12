@@ -21,7 +21,16 @@ class RolesAndPermissionsSeeder extends Seeder
 
             // Vehicles
             'vehicle-list', 'vehicle-view', 'vehicle-create', 'vehicle-edit', 'vehicle-delete',
-
+             // Auctions
+            'auction-list', 'auction-view', 'auction-create', 'auction-edit', 'auction-delete',
+             // Bookings
+            'booking-list', 'booking-view', 'booking-create', 'booking-edit', 'booking-delete',
+             // Invoices
+            'invoice-list', 'invoice-view', 'invoice-create', 'invoice-edit', 'invoice-delete',
+             // Activity Logs
+            'activity-log-list', 'activity-log-view',  'activity-log-delete',
+             // Packages
+            'package-list', 'package-view', 'package-create', 'package-edit', 'package-delete',
             // Contact Inquiry
             'contact-inquiry-list', 'contact-inquiry-view', 'contact-inquiry-edit', 'contact-inquiry-delete',
 
@@ -36,10 +45,14 @@ class RolesAndPermissionsSeeder extends Seeder
 
             // Biddings
             'bidding-list', 'bidding-actions',
+            
 
             // Clients
             'client-list', 'client-create', 'client-edit', 'client-delete',
-
+             // Dre
+            'dre-list', 'dre-view', 'dre-manage',
+             // Appointments
+            'appointment-list', 'appointment-view', 'appointment-manage',
             // Reports
             'report-view', 'report-download', 'report-share', 'report-delete',
             'report-edit', 'report-create', 'report-generate-pdf',

@@ -12,7 +12,7 @@ class UserSeeder extends Seeder
     {
         // 1️⃣ Super Admin
         $superAdmin = User::updateOrCreate(
-            ['email' => 'shahzaib@majesticsofts.com'],
+            ['email' => 'superadmin@caartl.com'],
             [
                 'name' => 'Super Admin',
                 'role' => 'admin',
@@ -42,5 +42,6 @@ class UserSeeder extends Seeder
             ]
         );
         $customer->syncRoles(['customer']);
+        
     }
 }

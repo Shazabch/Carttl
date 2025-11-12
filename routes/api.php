@@ -47,8 +47,8 @@ Route::prefix('admin')
             ->middleware('permission:dashboard-view');
 
         // Activity Logs
-        Route::get('/activity-logs', [ActivityLogController::class, 'index']);
-        Route::post('/activity-logs/delete', [ActivityLogController::class, 'bulkDelete']);
+        Route::get('/activity-logs', [ActivityLogController::class, 'index'])->middleware('permission:activity-log-list');
+        Route::post('/activity-logs/delete', [ActivityLogController::class, 'bulkDelete'])->middleware('permission:activity-log-delete');
 
         // Role and Permissions
         Route::controller(RolePermissionController::class)->group(function () {
@@ -128,6 +128,7 @@ Route::prefix('admin')
             Route::patch('/bids/reject/{id}', 'reject')->middleware('permission:bidding-actions');
             Route::delete('/bids/delete/{id}', 'destroy')->middleware('permission:bidding-actions');
             Route::post('/bids/bulk-delete', 'bulkDelete')->middleware('permission:bidding-actions');
+             Route::get('/auction-filter', 'auctionVehiclesForFilter');
         });
 
         // Makes Management
@@ -194,23 +195,39 @@ Route::prefix('admin')
 
         // Agents
         Route::controller(AgentManagementController::class)->group(function () {
-            Route::get('/agents', 'index');
-            Route::post('/agents/create', 'store');
-            Route::get('/agents/show/{id}', 'show');
-            Route::post('/agents/update/{id}', 'update');
-            Route::post('/agents/assign-customers/{id}', 'assignCustomers');
-            Route::get('/unassigned-customers/{id}', 'customersByAgent');
-            Route::delete('/agents/delete/{id}', 'destroy');
+            Route::get('/agents', 'index')
+                ->middleware('permission:dre-list');
+            Route::post('/agents/create', 'store')
+                ->middleware('permission:dre-manage');
+            Route::get('/agents/show/{id}', 'show')
+                ->middleware('permission:dre-view');
+            Route::post('/agents/update/{id}', 'update')
+                ->middleware('permission:dre-manage');
+            Route::post('/agents/assign-customers/{id}', 'assignCustomers')
+                ->middleware('permission:dre-manage');
+            Route::get('/unassigned-customers/{id}', 'customersByAgent')
+                ->middleware('permission:dre-view');
+            Route::delete('/agents/delete/{id}', 'destroy')
+                ->middleware('permission:dre-manage');
         });
+
 
         // Packages
         Route::controller(PackageController::class)->group(function () {
-            Route::get('/packages', 'index');
-            Route::post('/packages/create', 'store');
-            Route::get('/packages/show/{id}', 'show');
-            Route::post('/packages/update/{id}', 'update');
-            Route::delete('/packages/delete/{id}', 'destroy');
+            Route::get('/packages', 'index')
+                ->middleware('permission:package-list');
+            Route::post('/packages/create', 'store')
+                ->middleware('permission:package-create');
+            Route::get('/packages/show/{id}', 'show')
+                ->middleware('permission:package-view');
+            Route::post('/packages/update/{id}', 'update')
+                ->middleware('permission:package-edit');
+            Route::delete('/packages/delete/{id}', 'destroy')
+                ->middleware('permission:package-delete');
         });
+
+
+       
 
         // Profile
         Route::controller(ProfileController::class)->group(function () {
