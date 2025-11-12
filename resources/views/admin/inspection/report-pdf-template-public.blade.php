@@ -1307,7 +1307,7 @@
                                     <div class="row">
                                         @foreach(['soft_door_closing'] as $field)
                                         <div class="col-6 field-clickable" data-field="{{ $field }}">
-                                            <div class="item-label"><i class="{{ $fieldIcons[$field] ?? 'fas fa-door-closed' }} text-primary"></i> Soft Door Closing</div>
+                                            <div class="item-label"><i class="{{ $fieldIcons[$field] ?? 'fas fa-door-closed' }} "></i> Soft Door Closing</div>
                                             @php $data = $reportInView->{$field} ?? 'N/A'; $statusInfo = getStatusInfo($data); @endphp
                                         </div>
                                         <div class="col-6 field-clickable" data-field="{{ $field }}">
@@ -1662,25 +1662,31 @@ document.addEventListener('DOMContentLoaded', function() {
                 const result = await response.json();
 
                 if (result.images && result.images.length > 0) {
-                    if (result.images.length > 3) {
-                        // Show carousel
+                    const isMobile = window.innerWidth <= 768; // mobile breakpoint
+
+                    if (isMobile || result.images.length > 3) {
+                        // Carousel for mobile OR >3 images
                         carousel.style.display = 'block';
                         result.images.forEach((img, index) => {
                             const activeClass = index === 0 ? 'active' : '';
                             carouselInner.innerHTML += `
                                 <div class="carousel-item ${activeClass}">
                                     <img src="${img.path}" loading="lazy" class="d-block mx-auto rounded" 
-                                         style="height:400px; object-fit:contain; width:auto;" 
+                                         style="max-height:${isMobile ? '200px' : '400px'}; 
+                                                width:auto; 
+                                                object-fit:contain;" 
                                          alt="Field Image">
                                 </div>`;
                         });
                     } else {
-                        // Show all images in row with same height
+                        // Static row for ≤3 images on desktop
                         staticImagesRow.style.display = 'flex';
+                        staticImagesRow.style.flexWrap = 'wrap';
+                        staticImagesRow.style.justifyContent = 'center';
                         result.images.forEach(img => {
                             staticImagesRow.innerHTML += `
                                 <img src="${img.path}" loading="lazy" class="rounded" 
-                                     style="height:200px; object-fit:contain; margin:0 5px;" 
+                                     style="height:200px; max-width:100%; object-fit:contain; margin:5px;" 
                                      alt="Field Image">`;
                         });
                     }
@@ -1697,8 +1703,17 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     });
+
+    // Optional: adjust carousel height on window resize
+    window.addEventListener('resize', () => {
+        document.querySelectorAll('#carouselInner img').forEach(img => {
+            img.style.maxHeight = window.innerWidth <= 768 ? '200px' : '400px';
+        });
+    });
 });
 </script>
+
+
 
 
 
