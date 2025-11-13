@@ -16,7 +16,7 @@ class BidConfirmation extends Notification
     public function __construct($bid)
     {
         $this->bid = $bid;
-        $this->url = url('car-detail/'.$bid->vehicle_id);
+        $this->url = url(''.$bid->vehicle_id);
     }
 
     public function via($notifiable): array
@@ -28,9 +28,9 @@ class BidConfirmation extends Notification
     public function toMail($notifiable)
     {
         return (new MailMessage)
-            ->subject('Your Bid Approved')
+            ->subject('Bid Approved')
             ->greeting('Hello ' . $this->bid->user->name)
-            ->line('Your bid has been approved.')
+            ->line('Your bid has been approved.Please Proceed')
             ->line('Amount :'.$this->bid->bid_amount)
             ->action('View', $this->url)
             ->line('Thank you!');

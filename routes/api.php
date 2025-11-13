@@ -254,7 +254,7 @@ Route::prefix('admin')
 
         Route::controller(BookingController::class)->group(function () {
 
-            Route::post('/bookings/listed', 'getListedBookings')
+            Route::get('/bookings/listed', 'listed')
                 ->middleware('permission:booking-list');
 
             Route::get('/bookings/pending-payments', 'pendingPayments')

@@ -60,6 +60,67 @@ class BookingController extends Controller
         ]);
     }
 
+   public function listed(Request $request)
+{
+    $perPage = $request->get('per_page', 10);
+    $search  = $request->get('search', '');
+
+    $vehiclesQuery = Vehicle::where('status', 'bid_approved')
+        ->when($search, function ($query, $search) {
+            $query->whereHas('brand', function ($q) use ($search) {
+                $q->where('name', 'like', "%{$search}%");
+            })
+            ->orWhereHas('vehicleModel', function ($q) use ($search) {
+                $q->where('name', 'like', "%{$search}%");
+            });
+        });
+
+    $vehicles = $vehiclesQuery
+        ->with([
+            'brand:id,name',
+            'vehicleModel:id,name'
+        ])
+        ->paginate($perPage)
+        ->through(function ($vehicle) {
+            $approvedBid = \App\Models\VehicleBid::where('vehicle_id', $vehicle->id)
+                ->where('status', 'accepted')
+                ->with('user:id,name,email')
+                ->orderBy('bid_amount', 'desc')
+                ->first();
+
+            return [
+                'vehicle' => [
+                    'id' => $vehicle->id,
+                    'title' => $vehicle->title ?? null,
+                    'status' => $vehicle->status,
+                ],
+                'brand' => $vehicle->brand ? [
+                    'id' => $vehicle->brand->id,
+                    'name' => $vehicle->brand->name,
+                ] : null,
+                'model' => $vehicle->vehicleModel ? [
+                    'id' => $vehicle->vehicleModel->id,
+                    'name' => $vehicle->vehicleModel->name,
+                ] : null,
+                'approved_bid' => $approvedBid ? [
+                    'id' => $approvedBid->id,
+                    'bid_amount' => $approvedBid->bid_amount,
+                    'user' => $approvedBid->user ? [
+                        'id' => $approvedBid->user->id,
+                        'name' => $approvedBid->user->name,
+                        'email' => $approvedBid->user->email,
+                    ] : null,
+                ] : null,
+            ];
+        });
+
+    return response()->json([
+        'success' => true,
+        'data' => $vehicles,
+    ]);
+}
+
+
     // In Transfer Vehicles
     public function inTransfers(Request $request)
     {
@@ -153,47 +214,34 @@ class BookingController extends Controller
             'data' => $vehicles,
         ]);
     }
-    public function showVehicleBooking($vehicleId)
-    {
+  
+    public function showBookingByVehicle($vehicleId)
+{
+    try {
+        $vehicle = Vehicle::with([
+            'brand:id,name',
+            'vehicleModel:id,name',
+            'images:id,vehicle_id,path' // load vehicle images
+        ])->findOrFail($vehicleId);
 
-        $vehicle = Vehicle::findOrFail($vehicleId);
-        $bookings = Booking::where('vehicle_id', $vehicleId)
-            ->where('status', 'pending_payment')
-            ->get();
-        $bids = VehicleBid::where('vehicle_id', $vehicleId)
-            ->orderBy('bid_amount', 'desc')
-            ->get();
+        $booking = Booking::where('vehicle_id', $vehicle->id)->first();
+
+        // Get accepted bid for the user who booked this vehicle
+        $userAcceptedBid = null;
+        if ($booking) {
+            $userAcceptedBid = VehicleBid::where('vehicle_id', $vehicle->id)
+                ->where('user_id', $booking->user_id)
+                ->where('status', 'accepted')
+                ->first();
+        }
 
         return response()->json([
             'success' => true,
             'data' => [
-                'vehicle' => $vehicle,
-                'bookings' => $bookings,
-                'bids' => $bids,
-            ],
-        ]);
-    }
-
-    public function showBookingByVehicle($vehicleId)
-    {
-        try {
-            $vehicle = Vehicle::with(['brand:id,name', 'vehicleModel:id,name'])
-                ->findOrFail($vehicleId);
-            $booking = Booking::where('vehicle_id', $vehicle->id)->first();
-
-            // Get accepted bid of the user who booked this vehicle
-            $userAcceptedBid = null;
-            if ($booking) {
-                $userAcceptedBid = VehicleBid::where('vehicle_id', $vehicle->id)
-                    ->where('user_id', $booking->user_id)
-                    ->where('status', 'accepted')
-                    ->first();
-            }
-
-            return response()->json([
-                'success' => true,
-                'data' => [
-                    'vehicle' => $vehicle,
+                'vehicle' => [
+                    'id' => $vehicle->id,
+                    'title' => $vehicle->title ?? null,
+                    'status' => $vehicle->status,
                     'brand' => $vehicle->brand ? [
                         'id' => $vehicle->brand->id,
                         'name' => $vehicle->brand->name,
@@ -202,39 +250,46 @@ class BookingController extends Controller
                         'id' => $vehicle->vehicleModel->id,
                         'name' => $vehicle->vehicleModel->name,
                     ] : null,
-                    'booking' => $booking ? [
-                        'id' => $booking->id,
-                        'user_id' => $booking->user_id,
-                        'receiver_name' => $booking->receiver_name,
-                        'receiver_email' => $booking->receiver_email,
-                        'delivery_type' => $booking->delivery_type,
-                        'status' => $booking->status,
-                        'total_amount' => $booking->total_amount,
-                        'services' => $booking->services ? json_decode($booking->services) : null,
-                        'fixed_fees' => $booking->fixed_fees ? json_decode($booking->fixed_fees) : null,
-                        'payment_screenshot' => $booking->payment_screenshot,
-                        'emirate_id_front' => $booking->emirate_id_front,
-                        'emirate_id_back' => $booking->emirate_id_back,
-                        'current_location' => $booking->current_location,
-                        'delivery_location' => $booking->delivery_location,
-                        'location' => $booking->location,
-                    ] : null,
-                    'accepted_bid' => $userAcceptedBid ? [
-                        'id' => $userAcceptedBid->id,
-                        'user_id' => $userAcceptedBid->user_id,
-                        'bid_amount' => $userAcceptedBid->bid_amount,
-                        'status' => $userAcceptedBid->status,
-                    ] : null,
+                    'images' => $vehicle->images->map(function ($image) {
+                        return [
+                            'id' => $image->id,
+                            'url' => $image->path, // already full URL
+                        ];
+                    }),
                 ],
-            ]);
-        } catch (\Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Vehicle or booking not found',
-                'error' => $e->getMessage(),
-            ], 404);
-        }
+                'booking' => $booking ? [
+                    'id' => $booking->id,
+                    'user_id' => $booking->user_id,
+                    'receiver_name' => $booking->receiver_name,
+                    'receiver_email' => $booking->receiver_email,
+                    'delivery_type' => $booking->delivery_type,
+                    'status' => $booking->status,
+                    'total_amount' => $booking->total_amount,
+                    'services' => $booking->services ? json_decode($booking->services) : null,
+                    'fixed_fees' => $booking->fixed_fees ? json_decode($booking->fixed_fees) : null,
+                    'payment_screenshot' => $booking->payment_screenshot,
+                    'emirate_id_front' => $booking->emirate_id_front,
+                    'emirate_id_back' => $booking->emirate_id_back,
+                    'current_location' => $booking->current_location,
+                    'delivery_location' => $booking->delivery_location,
+                    'location' => $booking->location,
+                ] : null,
+                'accepted_bid' => $userAcceptedBid ? [
+                    'id' => $userAcceptedBid->id,
+                    'user_id' => $userAcceptedBid->user_id,
+                    'bid_amount' => $userAcceptedBid->bid_amount,
+                    'status' => $userAcceptedBid->status,
+                ] : null,
+            ],
+        ]);
+    } catch (\Exception $e) {
+        return response()->json([
+            'success' => false,
+            'message' => 'Vehicle or booking not found',
+            'error' => $e->getMessage(),
+        ], 404);
     }
+}
 
 
     public function changeStatus(Request $request, $vehicleId)
