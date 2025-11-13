@@ -157,6 +157,7 @@ Route::prefix('admin')
             Route::post('/makes/update/{id}', 'update')->middleware('permission:make-actions');
             Route::delete('/makes/delete/{id}', 'destroy')->middleware('permission:make-actions');
             Route::delete('/model/delete/{id}', 'deleteModel')->middleware('permission:make-actions');
+            Route::post('/model/add/{makeId}', 'addModels')->middleware('permission:make-actions');
             Route::get('/make-models/{id}', 'modelsByMake');
         });
 

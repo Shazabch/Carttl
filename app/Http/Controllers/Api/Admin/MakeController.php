@@ -63,6 +63,53 @@ class MakeController extends Controller
             'data' => $make
         ]);
     }
+public function addModels(Request $request, $makeId)
+{
+    $brand = Brand::find($makeId);
+
+    if (!$brand) {
+        return response()->json([
+            'status' => 'error',
+            'message' => 'Make not found.'
+        ], 404);
+    }
+
+    $validated = $request->validate([
+        'models' => 'required|array',
+        'models.*' => 'required|string|max:255'
+    ]);
+
+    $added = [];
+    $skipped = [];
+
+    foreach ($validated['models'] as $modelName) {
+        // Check for duplicate (case-insensitive)
+        $exists = VehicleModel::where('brand_id', $makeId)
+            ->whereRaw('LOWER(name) = ?', [strtolower($modelName)])
+            ->exists();
+
+        if ($exists) {
+            $skipped[] = $modelName;
+            continue;
+        }
+
+        $newModel = VehicleModel::create([
+            'brand_id' => $makeId,
+            'name' => $modelName,
+        ]);
+
+        $added[] = $newModel;
+    }
+
+    return response()->json([
+        'status' => 'success',
+        'message' => 'Model(s) added successfully.',
+        'data' => [
+            'added' => $added,
+            'skipped' => $skipped,
+        ],
+    ]);
+}
 
 
    public function store(Request $request)
@@ -71,7 +118,7 @@ class MakeController extends Controller
         'name' => 'required|string|max:255|unique:brands,name',
         'image_source' => 'nullable|image|max:2048',
         'models' => 'required|array',       
-        'models.*' => 'required|string|max:255'
+        'models.*' => 'required'
     ]);
 
    
