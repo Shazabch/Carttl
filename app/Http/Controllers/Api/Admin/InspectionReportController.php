@@ -71,28 +71,28 @@ class InspectionReportController extends Controller
     }
 
 
-  public function show($id)
-{
-    $report = VehicleInspectionReport::with([
-        'vehicle',
-        'damages',
-        'inspector',
-        'images',
-        'brand:id,name',
-        'vehicleModel:id,name',
-        'fields.images' 
-    ])->findOrFail($id);
+    public function show($id)
+    {
+        $report = VehicleInspectionReport::with([
+            'vehicle',
+            'damages',
+            'inspector',
+            'images',
+            'brand:id,name',
+            'vehicleModel:id,name',
+            'fields.images'
+        ])->findOrFail($id);
 
-    $report->make_name = $report->brand->name ?? null;
-    $report->model_name = $report->vehicleModel->name ?? null;
+        $report->make_name = $report->brand->name ?? null;
+        $report->model_name = $report->vehicleModel->name ?? null;
 
-    unset($report->brand, $report->vehicleModel);
+        unset($report->brand, $report->vehicleModel);
 
-    return response()->json([
-        'status' => 'success',
-        'data'   => $report,
-    ]);
-}
+        return response()->json([
+            'status' => 'success',
+            'data'   => $report,
+        ]);
+    }
 
 
 
@@ -301,22 +301,24 @@ class InspectionReportController extends Controller
         $validated = $request->validate([
             'vehicle_inspection_report_id' => 'required|exists:vehicle_inspection_reports,id',
             'inspection_image_fields' => 'required|array',
-
         ]);
 
         $reportId = $validated['vehicle_inspection_report_id'];
-
         $responseData = [];
 
         foreach ($request->inspection_image_fields as $fieldName => $fieldImages) {
-            // Create inspection field
-            $field = InspectionField::create([
-                'vehicle_inspection_report_id' => $reportId,
-                'name' => $fieldName,
-            ]);
+            
+            $field = InspectionField::updateOrCreate(
+                [
+                    'vehicle_inspection_report_id' => $reportId,
+                    'name' => $fieldName,
+                ],
+                [] 
+            );
 
             $savedImages = [];
 
+           
             if (!empty($fieldImages)) {
                 foreach ($fieldImages as $imageFile) {
                     if ($imageFile instanceof \Illuminate\Http\UploadedFile) {
@@ -345,6 +347,7 @@ class InspectionReportController extends Controller
             'data'    => $responseData,
         ]);
     }
+
 
     public function removeInspectionFieldImages(Request $request)
     {
