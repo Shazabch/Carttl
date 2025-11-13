@@ -215,18 +215,18 @@ class BookingController extends Controller
         ]);
     }
   
-    public function showBookingByVehicle($vehicleId)
+  public function showBookingByVehicle($vehicleId)
 {
     try {
         $vehicle = Vehicle::with([
             'brand:id,name',
             'vehicleModel:id,name',
-            'images:id,vehicle_id,path' // load vehicle images
+            'images:id,vehicle_id,path'
         ])->findOrFail($vehicleId);
 
         $booking = Booking::where('vehicle_id', $vehicle->id)->first();
 
-        // Get accepted bid for the user who booked this vehicle
+        // Get accepted bid of the user who booked this vehicle
         $userAcceptedBid = null;
         if ($booking) {
             $userAcceptedBid = VehicleBid::where('vehicle_id', $vehicle->id)
@@ -238,25 +238,17 @@ class BookingController extends Controller
         return response()->json([
             'success' => true,
             'data' => [
-                'vehicle' => [
-                    'id' => $vehicle->id,
-                    'title' => $vehicle->title ?? null,
-                    'status' => $vehicle->status,
-                    'brand' => $vehicle->brand ? [
-                        'id' => $vehicle->brand->id,
-                        'name' => $vehicle->brand->name,
-                    ] : null,
-                    'model' => $vehicle->vehicleModel ? [
-                        'id' => $vehicle->vehicleModel->id,
-                        'name' => $vehicle->vehicleModel->name,
-                    ] : null,
-                    'images' => $vehicle->images->map(function ($image) {
-                        return [
-                            'id' => $image->id,
-                            'url' => $image->path, // already full URL
-                        ];
-                    }),
-                ],
+                'vehicle' => array_merge(
+                    $vehicle->toArray(), 
+                    [
+                        'images' => $vehicle->images->map(function ($image) {
+                            return [
+                                'id' => $image->id,
+                                'url' => $image->path, 
+                            ];
+                        }),
+                    ]
+                ),
                 'booking' => $booking ? [
                     'id' => $booking->id,
                     'user_id' => $booking->user_id,
