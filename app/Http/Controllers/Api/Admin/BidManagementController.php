@@ -90,26 +90,38 @@ class BidManagementController extends Controller
     }
 
 
-    public function toggleStatus($id)
+
+    public function approveBid($id)
     {
         $bid = VehicleBid::findOrFail($id);
 
-        if ($bid->status === 'accepted') {
-            $bid->status = 'pending';
-        } else {
+        // Only approve if not already accepted
+        if ($bid->status !== 'accepted') {
             $bid->status = 'accepted';
+            $bid->save();
 
-            // Send notification to user when accepted
+            // Find vehicle using vehicle_id from bid
+            $vehicle = Vehicle::find($bid->vehicle_id);
+            if ($vehicle) {
+                $vehicle->status = 'bid_approved';
+                $vehicle->save();
+            }
+
+            // Send notification to the user
             if ($bid->user) {
                 Notification::send($bid->user, new BidConfirmation($bid));
             }
+
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Bid approved successfully.',
+                'data' => $bid,
+            ]);
         }
 
-        $bid->save();
-
         return response()->json([
-            'status' => 'success',
-            'message' => 'Bid status updated successfully.',
+            'status' => 'info',
+            'message' => 'Bid is already approved.',
             'data' => $bid,
         ]);
     }

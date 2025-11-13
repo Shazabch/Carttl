@@ -17,6 +17,7 @@ use App\Http\Controllers\Api\Admin\UserManagementController;
 use App\Http\Controllers\Api\Admin\VehicleManagementController;
 use App\Http\Controllers\Api\Admin\InspectionReportController;
 use App\Http\Controllers\Api\Admin\AgentManagementController;
+use App\Http\Controllers\Api\Admin\BookingController;
 use App\Http\Controllers\Api\Admin\NotificationController;
 use App\Http\Controllers\Api\Admin\PackageController;
 use App\Http\Controllers\Api\Admin\ProfileController;
@@ -24,6 +25,7 @@ use App\Http\Controllers\Api\Customer\BlogController;
 use App\Http\Controllers\Api\Customer\TestimonialController;
 use App\Http\Controllers\Api\Customer\VehicleController;
 use App\Http\Controllers\Api\Customer\BiddingController;
+use App\Http\Controllers\Api\Customer\BookNowController;
 use App\Http\Controllers\Api\Customer\BuyCarController;
 use App\Http\Controllers\Api\Customer\ContactController;
 use App\Http\Controllers\Api\Customer\FavoriteController;
@@ -140,11 +142,11 @@ Route::prefix('admin')
         Route::controller(BidManagementController::class)->group(function () {
             Route::get('/bids', 'index')->middleware('permission:bidding-list');
             Route::get('/bids/show/{id}', 'show')->middleware('permission:bidding-list');
-            Route::patch('/bids/toggle-status/{id}', 'toggleStatus')->middleware('permission:bidding-actions');
+            Route::patch('/bids/toggle-status/{id}', 'approveBid')->middleware('permission:bidding-actions');
             Route::patch('/bids/reject/{id}', 'reject')->middleware('permission:bidding-actions');
             Route::delete('/bids/delete/{id}', 'destroy')->middleware('permission:bidding-actions');
             Route::post('/bids/bulk-delete', 'bulkDelete')->middleware('permission:bidding-actions');
-             Route::get('/auction-filter', 'auctionVehiclesForFilter');
+            Route::get('/auction-filter', 'auctionVehiclesForFilter');
         });
 
         // Makes Management
@@ -243,11 +245,35 @@ Route::prefix('admin')
         });
 
 
-       
+
 
         // Profile
         Route::controller(ProfileController::class)->group(function () {
             Route::get('/profile', 'index');
+        });
+
+        Route::controller(BookingController::class)->group(function () {
+
+            Route::post('/bookings/listed', 'getListedBookings')
+                ->middleware('permission:booking-list');
+
+            Route::get('/bookings/pending-payments', 'pendingPayments')
+                ->middleware('permission:booking-list');
+
+            Route::get('/bookings/intransfers', 'inTransfers')
+                ->middleware('permission:booking-list');
+
+            Route::get('/bookings/delivered', 'delivered')
+                ->middleware('permission:booking-list');
+
+            Route::get('/bookings/show/{id}', 'showBookingByVehicle')
+                ->middleware('permission:booking-view');
+
+            Route::post('/bookings/change-status/{id}', 'changeStatus')
+                ->middleware('permission:booking-edit');
+
+            Route::delete('/bookings/delete/{id}', 'deleteBooking')
+                ->middleware('permission:booking-delete');
         });
     });
 
@@ -306,7 +332,11 @@ Route::post('sell-car', [SellCarController::class, 'store'])->name('sell.car.sto
 //Buy Inquiry
 Route::post('buy-car', [BuyCarController::class, 'store']);
 
+
+
 Route::group(['middleware' => 'auth:api'], function () {
+    //Bookings
+    Route::post('bookings/book-now', [BookNowController::class, 'store']);
     Route::controller(FavoriteController::class)->group(function () {
         Route::get('favorites', 'index')->name('favorites.index');
         Route::post('favorites/toggle', 'toggle')->name('favorites.toggle');
