@@ -44,26 +44,41 @@ use App\Models\InspectionField;
 
 
 
+use Illuminate\Support\Facades\Storage;
+
 Route::get('/inspection-field-images/{reportId}/{field}', function ($reportId, $field) {
-    $fieldData = InspectionField::with('fields')
+    $fieldData = InspectionField::with('files')
         ->where('vehicle_inspection_report_id', $reportId)
         ->where('name', $field)
-        ->latest()
         ->first();
 
-    // Map images/videos properly
-    $files = $fieldData?->fields->map(function ($item) {
+    if (!$fieldData || $fieldData->files->isEmpty()) {
+        return response()->json(['images' => []]);
+    }
+
+    $files = $fieldData->files->map(function ($item) {
+        $path = $item->path;
+
+        // If path is already full URL → use it directly
+        // If path is relative (e.g. inspection_field_files/abc.jpg) → use Storage::url()
+        $url = str_starts_with($path, 'http') ? $path : Storage::url($path);
+
+        $thumbUrl = null;
+        if ($item->file_type === 'video') {
+            $thumbPath = preg_replace('/\.[^.]+$/', '_thumb.jpg', $path);
+            $thumbUrl = str_starts_with($thumbPath, 'http') ? $thumbPath : 
+                        (Storage::exists($thumbPath) ? Storage::url($thumbPath) : null);
+        }
+
         return [
-            'path' => $item->path,
-            'file_type' => $item->file_type, // should be 'image' or 'video'
+            'path'      => $url,
+            'thumb'     => $thumbUrl,
+            'file_type' => $item->file_type,
         ];
-    }) ?? [];
+    })->toArray();
 
-    return response()->json([
-        'images' => $files,
-    ]);
+    return response()->json(['images' => $files]);
 });
-
 
 // Admin Panel Routes
 Route::prefix('admin')

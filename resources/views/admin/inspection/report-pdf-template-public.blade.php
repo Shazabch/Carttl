@@ -1606,116 +1606,166 @@
         {{-- == Modal for Field Images                                           --}}
         {{-- ==================================================================== --}}
         <!-- Shared Image Modal -->
-<div class="modal fade" id="fieldImagesModal" tabindex="-1" aria-labelledby="fieldImagesModalLabel" aria-hidden="true">
+<div class="modal fade" id="fieldImagesModal" tabindex="-1"
+     aria-labelledby="fieldImagesModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="fieldImagesModalLabel">Field Images</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <h5 class="modal-title" id="fieldImagesModalLabel">Field Media</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
             </div>
-            <div class="modal-body text-center">
-                <!-- Carousel for more than 3 images -->
-                <div id="fieldImagesCarousel" class="carousel slide" data-bs-ride="carousel" style="display:none;">
+
+            <div class="modal-body text-center p-2">
+                <!-- Carousel (mobile OR >3 items) -->
+                <div id="fieldImagesCarousel" class="carousel slide"
+                     data-bs-ride="false" style="display:none;">
                     <div class="carousel-inner" id="carouselInner"></div>
-                    <button class="carousel-control-prev" type="button" data-bs-target="#fieldImagesCarousel" data-bs-slide="prev">
+
+                    <button class="carousel-control-prev" type="button"
+                            data-bs-target="#fieldImagesCarousel" data-bs-slide="prev">
                         <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                         <span class="visually-hidden">Previous</span>
                     </button>
-                    <button class="carousel-control-next" type="button" data-bs-target="#fieldImagesCarousel" data-bs-slide="next">
+                    <button class="carousel-control-next" type="button"
+                            data-bs-target="#fieldImagesCarousel" data-bs-slide="next">
                         <span class="carousel-control-next-icon" aria-hidden="true"></span>
                         <span class="visually-hidden">Next</span>
                     </button>
                 </div>
 
-                <!-- Row display for 3 or fewer images -->
-                <div id="staticImagesRow" class="d-flex justify-content-center flex-wrap gap-2" style="display:none;"></div>
+                <!-- Static row (≤3 items on desktop) -->
+                <div id="staticImagesRow"
+                     class="d-flex justify-content-center flex-wrap gap-3"
+                     style="display:none;"></div>
 
-                <p id="noImagesText" class="text-muted mt-3" style="display:none;">No images found for this field.</p>
+                <p id="noImagesText" class="text-muted mt-3" style="display:none;">
+                    No media found for this field.
+                </p>
             </div>
         </div>
     </div>
 </div>
-
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-    const modal = new bootstrap.Modal(document.getElementById('fieldImagesModal'));
+document.addEventListener('DOMContentLoaded', function () {
+    const modal         = new bootstrap.Modal('#fieldImagesModal');
     const carouselInner = document.getElementById('carouselInner');
-    const carousel = document.getElementById('fieldImagesCarousel');
-    const staticImagesRow = document.getElementById('staticImagesRow');
-    const noImagesText = document.getElementById('noImagesText');
-    const modalTitle = document.getElementById('fieldImagesModalLabel');
+    const carousel      = document.getElementById('fieldImagesCarousel');
+    const staticRow     = document.getElementById('staticImagesRow');
+    const noMediaText   = document.getElementById('noImagesText'); // ← FIXED
+    const modalTitle    = document.getElementById('fieldImagesModalLabel');
 
+    /* --------------------------------------------------------------
+       Render a single media item
+       -------------------------------------------------------------- */
+    function renderMedia(item, isCarousel = false) {
+        const {path, thumb, file_type} = item;
+        const isMobile = window.innerWidth <= 768;
+
+        if (file_type === 'image') {
+            const maxH = isCarousel ? (isMobile ? '250px' : '420px') : '250px';
+            return `<img src="${path}" loading="lazy"
+                         class="rounded ${isCarousel ? 'd-block mx-auto' : 'img-fluid'}"
+                         style="max-height:${maxH}; width:auto; object-fit:contain;"
+                         alt="Field image">`;
+        }
+
+        const videoH   = isMobile ? '220px' : '380px';
+        const ctrlPad  = isMobile ? '80px' : '90px';
+        const poster   = thumb ? `poster="${thumb}"` : '';
+
+        return `
+            <div style="position:relative; padding-bottom:${ctrlPad}; text-align:center;">
+                <video controls ${poster} preload="metadata" playsinline
+                       class="rounded shadow-sm"
+                       style="max-height:${videoH}; max-width:100%; object-fit:contain; display:block; margin:0 auto;"
+                       onclick="this.play();">
+                    <source src="${path}" type="video/mp4">
+                    Your browser does not support video.
+                </video>
+            </div>`;
+    }
+
+    /* --------------------------------------------------------------
+       Click handler
+       -------------------------------------------------------------- */
     document.querySelectorAll('.field-clickable').forEach(el => {
         el.addEventListener('click', async () => {
             const fieldName = el.getAttribute('data-field');
-            const reportId = "{{ $reportInView->id }}";
+            const reportId  = "{{ $reportInView->id }}";
 
-            modalTitle.textContent = `${fieldName} Images`;
+            modalTitle.textContent = `${fieldName} Media`;
             carouselInner.innerHTML = '';
-            staticImagesRow.innerHTML = '';
-            noImagesText.style.display = 'none';
-            carousel.style.display = 'none';
-            staticImagesRow.style.display = 'none';
+            staticRow.innerHTML     = '';
+            noMediaText.style.display = 'none';
+            carousel.style.display    = 'none';
+            staticRow.style.display   = 'none';
 
             try {
-                const response = await fetch(`/api/inspection-field-images/${reportId}/${fieldName}`);
-                const result = await response.json();
+                const resp = await fetch(`/api/inspection-field-images/${reportId}/${fieldName}`);
+                const {images: files} = await resp.json();
 
-                if (result.images && result.images.length > 0) {
-                    const isMobile = window.innerWidth <= 768; // mobile breakpoint
+                if (!files || files.length === 0) {
+                    noMediaText.style.display = 'block';
+                    modal.show();
+                    return;
+                }
 
-                    if (isMobile || result.images.length > 3) {
-                        // Carousel for mobile OR >3 images
-                        carousel.style.display = 'block';
-                        result.images.forEach((img, index) => {
-                            const activeClass = index === 0 ? 'active' : '';
-                            carouselInner.innerHTML += `
-                                <div class="carousel-item ${activeClass}">
-                                    <img src="${img.path}" loading="lazy" class="d-block mx-auto rounded" 
-                                         style="max-height:${isMobile ? '200px' : '400px'}; 
-                                                width:auto; 
-                                                object-fit:contain;" 
-                                         alt="Field Image">
-                                </div>`;
-                        });
-                    } else {
-                        // Static row for ≤3 images on desktop
-                        staticImagesRow.style.display = 'flex';
-                        staticImagesRow.style.flexWrap = 'wrap';
-                        staticImagesRow.style.justifyContent = 'center';
-                        result.images.forEach(img => {
-                            staticImagesRow.innerHTML += `
-                                <img src="${img.path}" loading="lazy" class="rounded" 
-                                     style="height:200px; max-width:100%; object-fit:contain; margin:5px;" 
-                                     alt="Field Image">`;
-                        });
-                    }
+                const isMobile    = window.innerWidth <= 768;
+                const useCarousel = isMobile || files.length > 3;
+
+                if (useCarousel) {
+                    carousel.style.display = 'block';
+                    carouselInner.style.padding = isMobile ? '0' : '';
+                    files.forEach((item, idx) => {
+                        const active = idx === 0 ? 'active' : '';
+                        carouselInner.insertAdjacentHTML(
+                            'beforeend',
+                            `<div class="carousel-item ${active} p-0">${renderMedia(item, true)}</div>`
+                        );
+                    });
                 } else {
-                    noImagesText.style.display = 'block';
+                    staticRow.style.display = 'flex';
+                    files.forEach(item => {
+                        staticRow.insertAdjacentHTML(
+                            'beforeend',
+                            `<div class="p-1">${renderMedia(item, false)}</div>`
+                        );
+                    });
                 }
 
                 modal.show();
-            } catch (error) {
-                console.error('Error loading images:', error);
-                noImagesText.textContent = 'Error loading images.';
-                noImagesText.style.display = 'block';
+            } catch (err) {
+                console.error(err);
+                noMediaText.textContent = 'Error loading media.';
+                noMediaText.style.display = 'block';
                 modal.show();
             }
         });
     });
 
-    // Optional: adjust carousel height on window resize
+    /* --------------------------------------------------------------
+       Resize – keep video height consistent
+       -------------------------------------------------------------- */
     window.addEventListener('resize', () => {
-        document.querySelectorAll('#carouselInner img').forEach(img => {
-            img.style.maxHeight = window.innerWidth <= 768 ? '200px' : '400px';
+        const isMobile = window.innerWidth <= 768;
+        const h = isMobile ? '220px' : '380px';
+        document.querySelectorAll('#carouselInner video').forEach(v => {
+            v.style.maxHeight = h;
+        });
+    });
+
+    /* --------------------------------------------------------------
+       STOP ALL VIDEOS WHEN MODAL IS CLOSED
+       -------------------------------------------------------------- */
+    document.getElementById('fieldImagesModal').addEventListener('hidden.bs.modal', function () {
+        document.querySelectorAll('video').forEach(video => {
+            video.pause();
+            video.currentTime = 0;
         });
     });
 });
 </script>
-
-
-
-
 
         <script>
             function openImagesModal(startIndex = 0) {
