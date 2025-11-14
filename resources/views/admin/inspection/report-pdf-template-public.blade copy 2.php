@@ -1207,7 +1207,7 @@
                                 </div>
 
                                 {{-- Full-width row for Tire Comments --}}
-                                <div class="col-12 col-md-6">
+                                <div class="col-12">
                                     @php
                                     $field = 'commentTire';
                                     $data = $reportInView->{$field} ?? 'N/A';
@@ -1226,10 +1226,10 @@
                                     </div>
                                     @elseif($statusInfo['class'] !== 'item-value')
                                     <div class="status-pill {{ $statusInfo['class'] }}" style="text-align: left !important;">
-                                        <i class="{{ $statusInfo['icon'] }}"></i>{!! nl2br(e(preg_replace('/\. ?/', ".\n", $data))) !!}
+                                        <i class="{{ $statusInfo['icon'] }}"></i>{{ $data }}
                                     </div>
                                     @else
-                                    <div class="item-value">{!! nl2br(e(preg_replace('/\. ?/', ".\n", $data))) !!}</div>
+                                    <div class="item-value">{{ $data }}</div>
                                     @endif
                                 </div>
                             </div>
@@ -1387,8 +1387,8 @@
                                             @if(is_array($data)) <div class="item-value">
                                                 <ul class="item-value-list">@foreach($data as $value)<li>{{ $value }}</li>@endforeach</ul>
                                             </div>
-                                            @elseif($statusInfo['class'] !== 'item-value') <div class="status-pill {{ $statusInfo['class'] }}"><i class="{{ $statusInfo['icon'] }}"></i>{!! nl2br(e(preg_replace('/\. ?/', ".\n", $data))) !!}</div>
-                                            @else <div class="item-value">{!! nl2br(e(preg_replace('/\. ?/', ".\n", $data))) !!}</div> @endif
+                                            @elseif($statusInfo['class'] !== 'item-value') <div class="status-pill {{ $statusInfo['class'] }}"><i class="{{ $statusInfo['icon'] }}"></i>{{ $data }}</div>
+                                            @else <div class="item-value">{{ $data }}</div> @endif
                                         </div>
                                     </div>
                                 </div>
@@ -1457,8 +1457,8 @@
                                             @if(is_array($data)) <div class="item-value">
                                                 <ul class="item-value-list">@foreach($data as $value)<li>{{ $value }}</li>@endforeach</ul>
                                             </div>
-                                            @elseif($statusInfo['class'] !== 'item-value') <div class="status-pill {{ $statusInfo['class'] }}"><i class="{{ $statusInfo['icon'] }}"></i>{!! nl2br(e(preg_replace('/\. ?/', ".\n", $data))) !!}</div>
-                                            @else <div class="item-value">{!! nl2br(e(preg_replace('/\. ?/', ".\n", $data))) !!}</div> @endif
+                                            @elseif($statusInfo['class'] !== 'item-value') <div class="status-pill {{ $statusInfo['class'] }}"><i class="{{ $statusInfo['icon'] }}"></i>{{ $data }}</div>
+                                            @else <div class="item-value">{{ $data }}</div> @endif
                                         </div>
                                     </div>
                                 </div>
@@ -1486,8 +1486,8 @@
                                     @if(is_array($data)) <div class="item-value">
                                         <ul class="item-value-list">@foreach($data as $value)<li>{{ $value }}</li>@endforeach</ul>
                                     </div>
-                                    @elseif($statusInfo['class'] !== 'item-value') <div class="status-pill {{ $statusInfo['class'] }}"><i class="{{ $statusInfo['icon'] }}"></i>{!! nl2br(e(preg_replace('/\. ?/', ".\n", $data))) !!}</div>
-                                    @else <div class="item-value">{!! nl2br(e(preg_replace('/\. ?/', ".\n", $data))) !!}</div> @endif
+                                    @elseif($statusInfo['class'] !== 'item-value') <div class="status-pill {{ $statusInfo['class'] }}"><i class="{{ $statusInfo['icon'] }}"></i>{{ $data }}</div>
+                                    @else <div class="item-value">{{ $data }}</div> @endif
                                 </div>
                             </div>
                         </div>
