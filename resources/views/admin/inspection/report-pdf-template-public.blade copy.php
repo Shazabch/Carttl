@@ -14,424 +14,564 @@
     <link rel="stylesheet" href="{{ asset('css/inspection.css') }}">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
-    /* --- Customizable CSS Variables --- */
-    :root {
-        --primary-color: #c9da29;
-        --primary-light: rgba(201, 218, 41, 0.15);
-        --primary-dark: #a8b622;
-        --font-family: 'Inter', 'Helvetica', sans-serif;
-        --border-color: #e0e0e0;
-        --background-light: #f9f9f9;
-        --text-dark: #222;
-        --text-muted: #666;
-        --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.05);
-        --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.05);
-
-        /* Enhanced Status Colors */
-        --status-excellent-bg: #e8f5e8;
-        --status-excellent-text: #2d5a2d;
-        --status-good-bg: #e6f7ee;
-        --status-good-text: #0a6e3d;
-        --status-warning-bg: #fff8e6;
-        --status-warning-text: #8a6d3b;
-        --status-danger-bg: #fde8e8;
-        --status-danger-text: #c53030;
-        --status-info-bg: #e6f3ff;
-        --status-info-text: #1a5490;
-        --status-na-bg: #f5f5f5;
-        --status-na-text: #888;
-    }
-
-    /* Accordion Open State - Lime Green */
-    .accordion-button:not(.collapsed) {
-        background-color: #c9da29 !important;
-        color: #000 !important;
-        box-shadow: none !important;
-    }
-    .accordion-button:not(.collapsed) i { color: #000 !important; }
-    .accordion-button:hover { filter: brightness(110%); }
-
-    body {
-        font-family: var(--font-family);
-        font-size: 13px;
-        color: var(--text-dark);
-        background-color: #fff;
-        line-height: 1.6;
-        -webkit-print-color-adjust: exact !important;
-        print-color-adjust: exact !important;
-    }
-
-    .container { 
-        padding: 0 15px; 
-        max-width: 1000px; 
-        margin: 0 auto; 
-    }
-
-    /* Header - Fully Responsive */
-    .header-table {
-        width: 100%;
-        border-collapse: collapse;
-        margin-bottom: 20px;
-        border-bottom: 1px solid var(--border-color);
-        position: relative;
-    }
-    .header-table::after {
-        content: '';
-        position: absolute;
-        bottom: -1px;
-        left: 0;
-        width: 100px;
-        height: 3px;
-        background: var(--primary-color);
-    }
-    .header-logo-img {
-        max-width: 160px;
-        height: auto;
-    }
-    .header-details-cell h1 {
-        font-size: 20px;
-        margin: 10px 0 5px;
-        font-weight: 700;
-    }
-    .header-meta {
-        font-size: 11px;
-        color: var(--text-muted);
-    }
-    .header-meta span {
-        display: inline-flex;
-        align-items: center;
-        gap: 5px;
-        margin-right: 12px;
-    }
-
-    /* Cards & Sections */
-    .report-card, .report-card-top {
-        margin-bottom: 20px;
-        border-radius: 12px;
-        overflow: hidden;
-        box-shadow: var(--shadow-md);
-        border: 1px solid var(--border-color);
-        page-break-inside: avoid;
-    }
-    .card-header, .card-header-top {
-        font-size: 17px;
-        font-weight: 700;
-        padding: 14px 18px;
-        background: var(--primary-color);
-        color: #000;
-    }
-    .card-header i { margin-right: 10px; font-size: 18px; }
-    .card-body, .card-body-top {
-        padding: 20px;
-    }
-
-    /* Responsive Grid for Info Cards */
-    .row > [class*="col-"] {
-        padding: 6px 10px;
-    }
-    .main-col-class {
-        border: 1px solid #dbd9d9;
-    }
-    .col-bg-class {
-        background-color: var(--background-light);
-    }
-    .item-label {
-        font-weight: 600;
-        font-size: 13px;
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        color: #444;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-    }
-    .item-label i {
-        color: var(--primary-color);
-        font-size: 14px;
-    }
-    .item-value {
-        font-size: 14px;
-        font-weight: 500;
-        text-align: right;
-        color: var(--text-dark);
-    }
-
-    /* Status Pills */
-    .status-pill {
-        display: inline-flex;
-        align-items: center;
-        gap: 6px;
-        padding: 6px 12px;
-        border-radius: 20px;
-        font-size: 12px;
-        font-weight: 700;
-        text-transform: uppercase;
-        float: right;
-        box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-    }
-    .status-excellent { background: var(--status-excellent-bg); color: var(--status-excellent-text); }
-    .status-good      { background: var(--status-good-bg);      color: var(--status-good-text); }
-    .status-warning   { background: var(--status-warning-bg);   color: var(--status-warning-text); }
-    .status-danger    { background: var(--status-danger-bg);    color: var(--status-danger-text); }
-    .status-info      { background: var(--status-info-bg);      color: var(--status-info-text); }
-    .status-na        { background: var(--status-na-bg);        color: var(--status-na-text); }
-
-    /* Vehicle Images - Mobile First */
-    .card-body-top .row {
-        margin: 0 -10px;
-    }
-    .card-body-top img {
-        border-radius: 12px;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-    }
-    .position-relative .position-absolute {
-        border-radius: 0 0 12px 12px;
-    }
-
-    /* Damage Image & Table */
-    .damage-assessment img {
-        border-radius: 12px;
-        box-shadow: var(--shadow-md);
-    }
-    .details-table {
-        width: 100%;
-        border-collapse: collapse;
-        font-size: 12px;
-    }
-    .details-table th {
-        background: #c9da29;
-        color: white;
-        padding: 10px 8px;
-        font-weight: 600;
-        text-align: left;
-    }
-    .details-table td {
-        padding: 10px 8px;
-        border-bottom: 1px solid #eee;
-    }
-
-    /* Footer */
-    .footer {
-        text-align: center;
-        padding: 20px 0;
-        font-size: 11px;
-        color: var(--text-muted);
-        border-top: 1px solid var(--border-color);
-        margin-top: 40px;
-    }
-    .footer-brand {
-        color: var(--primary-color);
-        font-weight: 700;
-    }
-
-    /* PDF Page Fix */
-    @page {
-        margin: 100px 20px 60px 20px;
-    }
-    header { position: fixed; top: -90px; left: 0; right: 0; height: 80px; }
-    footer { position: fixed; bottom: -50px; left: 0; right: 0; height: 40px; text-align: center; }
-
-    /* ======================================== */
-    /* RESPONSIVE BREAKPOINTS - MOBILE FIRST    */
-    /* ======================================== */
-    @media (max-width: 768px) {
-        .header-details-cell h1 { font-size: 18px; }
-        .header-logo-img { max-width: 130px; }
-
-        /* Stack vehicle info side-by-side → full width */
-        .row > [class*="col-"] {
-            flex: 0 0 100%;
-            max-width: 100%;
-        }
-        .main-col-class {
-            border-left: none !important;
-            border-right: none !important;
-            border-top: none !important;
-        }
-        .col-6.main-col-class { border-bottom: none; }
-
-        /* Image Gallery - Stack vertically */
-        .gallery-grid { grid-template-columns: 1fr !important; }
-        .card-body-top .col-md-8,
-        .card-body-top .col-md-4 { flex: 0 0 100%; max-width: 100%; }
-        .card-body-top .col-md-4 img { height: 150px !important; }
-
-        /* Accordion headers bigger tap area */
-        .accordion-button {
-            padding: 16px 18px !important;
-            font-size: 16px;
+        /* White arrows for dark background */
+        .carousel-control-prev-icon,
+        .carousel-control-next-icon {
+            background-size: 100% 100%;
+            width: 3rem;
+            height: 3rem;
         }
 
-        /* Status pills full width on mobile */
-        .status-pill {
-            float: none;
-            display: block;
-            text-align: center;
-            margin-top: 8px;
+        .carousel-control-prev-icon {
+            background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23ffffff' viewBox='0 0 16 16'%3E%3Cpath d='M11 1 3 8l8 7V1z'/%3E%3C/svg%3E");
         }
 
-        /* Table responsive */
-        .details-table,
-        .details-table thead,
-        .details-table tbody,
-        .details-table th,
-        .details-table td,
-        .details-table tr {
-            display: block;
+        .carousel-control-next-icon {
+            background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23ffffff' viewBox='0 0 16 16'%3E%3Cpath d='M5 1l8 7-8 7V1z'/%3E%3C/svg%3E");
         }
-        .details-table thead tr { position: absolute; top: -9999px; left: -9999px; }
-        .details-table tr { border: 1px solid #ccc; margin-bottom: 10px; border-radius: 8px; overflow: hidden; }
-        .details-table td {
-            border: none;
+    </style>
+
+    <style>
+        /* --- Customizable CSS Variables --- */
+        :root {
+            --primary-color: #c9da29;
+            --primary-light: rgba(201, 218, 41, 0.15);
+            --primary-dark: #a8b622;
+            --font-family: 'Inter', 'Helvetica', sans-serif;
+            --border-color: #e0e0e0;
+            --background-light: #f9f9f9;
+            --text-dark: #222;
+            --text-muted: #666;
+            --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.05);
+
+            /* Enhanced Status Colors */
+            --status-excellent-bg: #e8f5e8;
+            --status-excellent-text: #2d5a2d;
+            --status-good-bg: #e6f7ee;
+            --status-good-text: #0a6e3d;
+            --status-warning-bg: #fff8e6;
+            --status-warning-text: #8a6d3b;
+            --status-danger-bg: #fde8e8;
+            --status-danger-text: #c53030;
+            --status-info-bg: #e6f3ff;
+            --status-info-text: #1a5490;
+            --status-na-bg: #f5f5f5;
+            --status-na-text: #888;
+        }
+
+        /* Accordion Open State - Lime Green */
+        .accordion-button:not(.collapsed) {
+            background-color: #c9da29 !important;
+            color: #000 !important;
+            box-shadow: none !important;
+        }
+
+        .accordion-button:not(.collapsed) i {
+            color: #000 !important;
+        }
+
+        .accordion-button:hover {
+            filter: brightness(110%);
+        }
+
+        body {
+            font-family: var(--font-family);
+            font-size: 13px;
+            color: var(--text-dark);
+            background-color: #fff;
+            line-height: 1.6;
+            -webkit-print-color-adjust: exact !important;
+            print-color-adjust: exact !important;
+        }
+
+        .container {
+            padding: 0 15px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        /* Header - Fully Responsive */
+        .header-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+            border-bottom: 1px solid var(--border-color);
             position: relative;
-            padding-left: 50% !important;
-            text-align: right;
         }
-        .details-table td:before {
-            content: attr(data-label);
+
+        .header-table::after {
+            content: '';
             position: absolute;
-            left: 12px;
-            width: 45%;
-            font-weight: bold;
-            text-align: left;
-            color: var(--primary-color);
+            bottom: -1px;
+            left: 0;
+            width: 100px;
+            height: 3px;
+            background: var(--primary-color);
         }
-    }
 
-    @media (max-width: 480px) {
-        body { font-size: 12.5px; }
-        .card-header, .card-header-top { font-size: 16px; padding: 12px 15px; }
-        .item-label, .item-value { font-size: 13px; }
-        .status-pill { font-size: 11px; padding: 5px 10px; }
-    }
-    /* DUBIZZLE OFFICIAL MOBILE NAVBAR - EXACT COPY */
-.dubizzle-mobile-nav {
-    border-radius: 24px 24px 0 0;
-    overflow: hidden;
-    padding: 8px 4px 12px;
-    background: rgba(255,255,255,0.95) !important;
-}
+        .header-logo-img {
+            max-width: 160px;
+            height: auto;
+        }
 
-.dubizzle-nav-item {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    text-decoration: none;
-    color: #8c8c8c;
-    font-size: 10px;
-    font-weight: 600;
-    padding: 6px 2px;
-    border-radius: 16px;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    position: relative;
-    min-width: 0;
-}
+        .header-details-cell h1 {
+            font-size: 20px;
+            margin: 10px 0 5px;
+            font-weight: 700;
+        }
 
-.dubizzle-nav-item .icon {
-    width: 46px;
-    height: 46px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-bottom: 4px;
-    border-radius: 50%;
-    background: transparent;
-    transition: all 0.3s ease;
-    position: relative;
-}
+        .header-meta {
+            font-size: 11px;
+            color: var(--text-muted);
+        }
 
-.dubizzle-nav-item i {
-    font-size: 20px;
-    transition: transform 0.3s ease;
-}
+        .header-meta span {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            margin-right: 12px;
+        }
 
-/* ACTIVE STATE - DUBIZZLE ORANGE */
-.dubizzle-nav-item.active {
-    color: #ff6b00 !important;
-}
+        /* Cards & Sections */
+        .report-card,
+        .report-card-top {
+            margin-bottom: 20px;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--border-color);
+            page-break-inside: avoid;
+        }
 
-.dubizzle-nav-item.active .icon {
-    background: #fff2e6;
-    box-shadow: 0 4px 12px rgba(255, 107, 0, 0.25);
-    transform: scale(1.1);
-}
+        .card-header,
+        .card-header-top {
+            font-size: 17px;
+            font-weight: 700;
+            padding: 14px 18px;
+            background: var(--primary-color);
+            color: #000;
+        }
 
-.dubizzle-nav-item.active i {
-    transform: translateY(-2px);
-}
+        .card-header i {
+            margin-right: 10px;
+            font-size: 18px;
+        }
 
-/* Active indicator dot */
-.dubizzle-nav-item.active::after {
-    content: '';
-    position: absolute;
-    top: 4px;
-    width: 6px;
-    height: 6px;
-    background: #ff6b00;
-    border-radius: 50%;
-    box-shadow: 0 0 8px rgba(255, 107, 0, 0.6);
-}
+        .card-body,
+        .card-body-top {
+            padding: 20px;
+        }
 
-/* Hover */
-.dubizzle-nav-item:hover .icon {
-    background: #fff2e6;
-    transform: scale(1.05);
-}
+        /* Responsive Grid for Info Cards */
+        .row>[class*="col-"] {
+            padding: 6px 10px;
+        }
 
-/* Prevent content overlap */
-body { padding-bottom: 100px !important; }
-html { scroll-behavior: smooth; }
-</style>
+        .main-col-class {
+            border: 1px solid #dbd9d9;
+        }
+
+        .col-bg-class {
+            background-color: var(--background-light);
+        }
+
+        .item-label {
+            font-weight: 600;
+            font-size: 13px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #444;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .item-label i {
+            color: var(--primary-color);
+            font-size: 14px;
+        }
+
+        .item-value {
+            font-size: 14px;
+            font-weight: 500;
+            text-align: right;
+            color: var(--text-dark);
+        }
+
+        /* Status Pills */
+        .status-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            float: right;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .status-excellent {
+            background: var(--status-excellent-bg);
+            color: var(--status-excellent-text);
+        }
+
+        .status-good {
+            background: var(--status-good-bg);
+            color: var(--status-good-text);
+        }
+
+        .status-warning {
+            background: var(--status-warning-bg);
+            color: var(--status-warning-text);
+        }
+
+        .status-danger {
+            background: var(--status-danger-bg);
+            color: var(--status-danger-text);
+        }
+
+        .status-info {
+            background: var(--status-info-bg);
+            color: var(--status-info-text);
+        }
+
+        .status-na {
+            background: var(--status-na-bg);
+            color: var(--status-na-text);
+        }
+
+        /* Vehicle Images - Mobile First */
+        .card-body-top .row {
+            margin: 0 -10px;
+        }
+
+        .card-body-top img {
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .position-relative .position-absolute {
+            border-radius: 0 0 12px 12px;
+        }
+
+        /* Damage Image & Table */
+        .damage-assessment img {
+            border-radius: 12px;
+            box-shadow: var(--shadow-md);
+        }
+
+        .details-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 12px;
+        }
+
+        .details-table th {
+            background: #c9da29;
+            color: white;
+            padding: 10px 8px;
+            font-weight: 600;
+            text-align: left;
+        }
+
+        .details-table td {
+            padding: 10px 8px;
+            border-bottom: 1px solid #eee;
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 20px 0;
+            font-size: 11px;
+            color: var(--text-muted);
+            border-top: 1px solid var(--border-color);
+            margin-top: 40px;
+        }
+
+        .footer-brand {
+            color: var(--primary-color);
+            font-weight: 700;
+        }
+
+        /* PDF Page Fix */
+        @page {
+            margin: 100px 20px 60px 20px;
+        }
+
+        header {
+            position: fixed;
+            top: -90px;
+            left: 0;
+            right: 0;
+            height: 80px;
+        }
+
+        footer {
+            position: fixed;
+            bottom: -50px;
+            left: 0;
+            right: 0;
+            height: 40px;
+            text-align: center;
+        }
+
+        /* ======================================== */
+        /* RESPONSIVE BREAKPOINTS - MOBILE FIRST    */
+        /* ======================================== */
+        @media (max-width: 768px) {
+            .header-details-cell h1 {
+                font-size: 18px;
+            }
+
+            .header-logo-img {
+                max-width: 130px;
+            }
+
+            /* Stack vehicle info side-by-side → full width */
+            .row>[class*="col-"] {
+                flex: 0 0 100%;
+                max-width: 100%;
+            }
+
+            .main-col-class {
+                border-left: none !important;
+                border-right: none !important;
+                border-top: none !important;
+            }
+
+            .col-6.main-col-class {
+                border-bottom: none;
+            }
+
+            /* Image Gallery - Stack vertically */
+            .gallery-grid {
+                grid-template-columns: 1fr !important;
+            }
+
+            .card-body-top .col-md-8,
+            .card-body-top .col-md-4 {
+                flex: 0 0 100%;
+                max-width: 100%;
+            }
+
+            .card-body-top .col-md-4 img {
+                height: 150px !important;
+            }
+
+            /* Accordion headers bigger tap area */
+            .accordion-button {
+                padding: 16px 18px !important;
+                font-size: 16px;
+            }
+
+            /* Status pills full width on mobile */
+            .status-pill {
+                float: none;
+                display: block;
+                text-align: center;
+                margin-top: 8px;
+            }
+
+            /* Table responsive */
+            .details-table,
+            .details-table thead,
+            .details-table tbody,
+            .details-table th,
+            .details-table td,
+            .details-table tr {
+                display: block;
+            }
+
+            .details-table thead tr {
+                position: absolute;
+                top: -9999px;
+                left: -9999px;
+            }
+
+            .details-table tr {
+                border: 1px solid #ccc;
+                margin-bottom: 10px;
+                border-radius: 8px;
+                overflow: hidden;
+            }
+
+            .details-table td {
+                border: none;
+                position: relative;
+                padding-left: 50% !important;
+                text-align: right;
+            }
+
+            .details-table td:before {
+                content: attr(data-label);
+                position: absolute;
+                left: 12px;
+                width: 45%;
+                font-weight: bold;
+                text-align: left;
+                color: var(--primary-color);
+            }
+        }
+
+        @media (max-width: 480px) {
+            body {
+                font-size: 12.5px;
+            }
+
+            .card-header,
+            .card-header-top {
+                font-size: 16px;
+                padding: 12px 15px;
+            }
+
+            .item-label,
+            .item-value {
+                font-size: 13px;
+            }
+
+            .status-pill {
+                font-size: 11px;
+                padding: 5px 10px;
+            }
+        }
+
+        /* DUBIZZLE OFFICIAL MOBILE NAVBAR - EXACT COPY */
+        .dubizzle-mobile-nav {
+            border-radius: 24px 24px 0 0;
+            overflow: hidden;
+            padding: 8px 4px 12px;
+            background: rgba(255, 255, 255, 0.95) !important;
+        }
+
+        .dubizzle-nav-item {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            color: #8c8c8c;
+            font-size: 10px;
+            font-weight: 600;
+            padding: 6px 2px;
+            border-radius: 16px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            min-width: 0;
+        }
+
+        .dubizzle-nav-item .icon {
+            width: 46px;
+            height: 46px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 4px;
+            border-radius: 50%;
+            background: transparent;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .dubizzle-nav-item i {
+            font-size: 20px;
+            transition: transform 0.3s ease;
+        }
+
+        /* ACTIVE STATE - DUBIZZLE ORANGE */
+        .dubizzle-nav-item.active {
+            color: #ff6b00 !important;
+        }
+
+        .dubizzle-nav-item.active .icon {
+            background: #fff2e6;
+            box-shadow: 0 4px 12px rgba(255, 107, 0, 0.25);
+            transform: scale(1.1);
+        }
+
+        .dubizzle-nav-item.active i {
+            transform: translateY(-2px);
+        }
+
+        /* Active indicator dot */
+        .dubizzle-nav-item.active::after {
+            content: '';
+            position: absolute;
+            top: 4px;
+            width: 6px;
+            height: 6px;
+            background: #ff6b00;
+            border-radius: 50%;
+            box-shadow: 0 0 8px rgba(255, 107, 0, 0.6);
+        }
+
+        /* Hover */
+        .dubizzle-nav-item:hover .icon {
+            background: #fff2e6;
+            transform: scale(1.05);
+        }
+
+        /* Prevent content overlap */
+        body {
+            padding-bottom: 100px !important;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+    </style>
 </head>
 
 <body>
-<!-- DUBIZZLE OFFICIAL MOBILE BOTTOM NAVBAR - 100% MATCH -->
-<div id="mobileNav" class="d-block d-md-none position-fixed bottom-0 start-0 end-0" style="z-index: 9999; pointer-events: none;">
-    <div class="dubizzle-nav-wrapper" style="pointer-events: auto;">
-        <div class="dubizzle-mobile-nav bg-white" 
-             style="display: flex; height: 72px; border-top: 1px solid #e4e4e4; 
+    <!-- DUBIZZLE OFFICIAL MOBILE BOTTOM NAVBAR - 100% MATCH -->
+    <div id="mobileNav" class="d-block d-md-none position-fixed bottom-0 start-0 end-0" style="z-index: 9999; pointer-events: none;">
+        <div class="dubizzle-nav-wrapper" style="pointer-events: auto;">
+            <div class="dubizzle-mobile-nav bg-white"
+                style="display: flex; height: 72px; border-top: 1px solid #e4e4e4; 
                     box-shadow: 0 -2px 12px rgba(0,0,0,0.08);
                     backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);">
-            
-            <!-- <a href="#summary"     class="dubizzle-nav-item active" data-section="summary">
+
+                <!-- <a href="#summary"     class="dubizzle-nav-item active" data-section="summary">
                 <div class="icon"><i class="fas fa-home"></i></div>
                 <span>Summary</span>
             </a> -->
-            <a href="#car-details" class="dubizzle-nav-item" data-section="car-details">
-                <div class="icon"><i class="fas fa-car"></i></div>
-                <span>Car Details</span>
-            </a>
-            <a href="#exterior"    class="dubizzle-nav-item" data-section="exterior">
-                <div class="icon"><i class="fas fa-paint-roller"></i></div>
-                <span>Exterior</span>
-            </a>
-              <a href="#specs" class="dubizzle-nav-item" data-section="specs">
-                <div class="icon"><i class="fas fa-cogs"></i></div>
-                <span>Specs</span>
-            </a>
-            <!-- <a href="#wheels"      class="dubizzle-nav-item" data-section="wheels">
+                <a href="#car-details" class="dubizzle-nav-item" data-section="car-details">
+                    <div class="icon"><i class="fas fa-car"></i></div>
+                    <span>Car Details</span>
+                </a>
+                <a href="#exterior" class="dubizzle-nav-item" data-section="exterior">
+                    <div class="icon"><i class="fas fa-paint-roller"></i></div>
+                    <span>Exterior</span>
+                </a>
+                <a href="#specs" class="dubizzle-nav-item" data-section="specs">
+                    <div class="icon"><i class="fas fa-cogs"></i></div>
+                    <span>Specs</span>
+                </a>
+                <!-- <a href="#wheels"      class="dubizzle-nav-item" data-section="wheels">
                 <div class="icon"><i class="fas fa-tire"></i></div>
                 <span>Wheels & Tyres</span>
             </a> -->
-            <!-- <a href="#engine"      class="dubizzle-nav-item" data-section="engine">
+                <!-- <a href="#engine"      class="dubizzle-nav-item" data-section="engine">
                 <div class="icon"><i class="fas fa-engine"></i></div>
                 <span>Engine</span>
             </a> -->
-            <!-- <a href="#steering"    class="dubizzle-nav-item" data-section="steering">
+                <!-- <a href="#steering"    class="dubizzle-nav-item" data-section="steering">
                 <div class="icon"><i class="fas fa-steering-wheel"></i></div>
                 <span>Steering & Brakes</span>
             </a> -->
-           
-            <a href="#interior"    class="dubizzle-nav-item" data-section="interior">
-                <div class="icon"><i class="fas fa-chair"></i></div>
-                <span>Interior</span>
-            </a>
-           
+
+                <a href="#interior" class="dubizzle-nav-item" data-section="interior">
+                    <div class="icon"><i class="fas fa-chair"></i></div>
+                    <span>Interior</span>
+                </a>
+
+            </div>
         </div>
     </div>
-</div>
     <div class="container">
         <div class="">
             <!-- ==================================================================== -->
@@ -916,398 +1056,449 @@ html { scroll-behavior: smooth; }
                 </div>
             </div>
 
-    <div class="accordion" id="reportAccordion">
-    {{-- ==================================================================== --}}
-    {{-- == 3. Engine & Transmission Section (Accordion Item)                   --}}
-    {{-- ==================================================================== --}}
-    <div class="accordion-item report-card">
-        <h2 class="accordion-header" id="headingEngine">
-            <button class="accordion-button card-header p-3" type="button" data-bs-toggle="collapse" data-bs-target="#engineCollapse" aria-expanded="true" aria-controls="engineCollapse">
-                <i class="fa-solid fa-gears"></i>Engine & Transmission
-            </button>
-        </h2>
-        <div id="engineCollapse" class="accordion-collapse collapse show" aria-labelledby="headingEngine" data-bs-parent="#reportAccordion">
-            <div class="accordion-body card-body p-3">
-                <div class="row p-md-4">
-                    <div class="col-md-6">
-                        {{-- Row 1 --}}
-                        <div class="row">
-                            @foreach(['engineOil', 'gearOil', 'gearshifting', 'engineNoise', 'engineSmoke'] as $field)
-                            <div class="col-6">
-                                <div class="item-label"><i class="{{ $fieldIcons[$field] ?? 'fas fa-circle-notch' }}"></i> {{ Str::of($field)->kebab()->replace('-', ' ')->title() }}</div>
-                                @php $data = $reportInView->{$field} ?? 'N/A'; $statusInfo = getStatusInfo($data); @endphp
-                            </div>
-                            <div class="col-6">
-                                @if(is_array($data)) <div class="item-value">
-                                    <ul class="item-value-list">@foreach($data as $value)<li>{{ $value }}</li>@endforeach</ul>
+            <div class="accordion" id="reportAccordion">
+                {{-- ==================================================================== --}}
+                {{-- == 3. Engine & Transmission Section (Accordion Item)                   --}}
+                {{-- ==================================================================== --}}
+                <div class="accordion-item report-card">
+                    <h2 class="accordion-header" id="headingEngine">
+                        <button class="accordion-button card-header p-3" type="button" data-bs-toggle="collapse" data-bs-target="#engineCollapse" aria-expanded="true" aria-controls="engineCollapse">
+                            <i class="fa-solid fa-gears"></i>Engine & Transmission
+                        </button>
+                    </h2>
+                    <div id="engineCollapse" class="accordion-collapse collapse show" aria-labelledby="headingEngine" data-bs-parent="#reportAccordion">
+                        <div class="accordion-body card-body p-3">
+                            <div class="row p-md-4">
+                                <div class="col-md-6">
+                                    {{-- Row 1 --}}
+                                    <div class="row">
+                                        @foreach(['engineOil', 'gearOil', 'gearshifting', 'engineNoise', 'engineSmoke'] as $field)
+                                        <div class="col-6 field-clickable" data-field="{{ $field }}">
+                                            <div class="item-label"><i class="{{ $fieldIcons[$field] ?? 'fas fa-circle-notch' }}"></i> {{ Str::of($field)->kebab()->replace('-', ' ')->title() }}</div>
+                                            @php $data = $reportInView->{$field} ?? 'N/A'; $statusInfo = getStatusInfo($data); @endphp
+                                        </div>
+                                        <div class="col-6 field-clickable" data-field="{{ $field }}">
+                                            @if(is_array($data)) <div class="item-value">
+                                                <ul class="item-value-list">@foreach($data as $value)<li>{{ $value }}</li>@endforeach</ul>
+                                            </div>
+                                            @elseif($statusInfo['class'] !== 'item-value') <div class="status-pill {{ $statusInfo['class'] }}"><i class="{{ $statusInfo['icon'] }}"></i>{{ $data }}</div>
+                                            @else <div class="item-value">{{ $data }}</div> @endif
+                                        </div>
+                                        @endforeach
+                                    </div>
+                                    {{-- Row 2 --}}
                                 </div>
-                                @elseif($statusInfo['class'] !== 'item-value') <div class="status-pill {{ $statusInfo['class'] }}"><i class="{{ $statusInfo['icon'] }}"></i>{{ $data }}</div>
-                                @else <div class="item-value">{{ $data }}</div> @endif
+
+                                <div class="col-md-6">
+                                    <div class="row">
+                                        @foreach(['fourWdSystemCondition', 'obdError'] as $field)
+                                        <div class="col-6 field-clickable" data-field="{{ $field }}">
+                                            <div class="item-label"><i class="{{ $fieldIcons[$field] ?? 'fas fa-circle-notch' }}"></i> {{ Str::of($field)->kebab()->replace('-', ' ')->title() }}</div>
+                                            @php $data = $reportInView->{$field} ?? 'N/A'; $statusInfo = getStatusInfo($data); @endphp
+                                        </div>
+                                        <div class="col-6 field-clickable" data-field="{{ $field }}">
+                                            @if(is_array($data)) <div class="item-value">
+                                                <ul class="item-value-list">@foreach($data as $value)<li>{{ $value }}</li>@endforeach</ul>
+                                            </div>
+                                            @elseif($statusInfo['class'] !== 'item-value') <div class="status-pill {{ $statusInfo['class'] }}"><i class="{{ $statusInfo['icon'] }}"></i>{{ $data }}</div>
+                                            @else <div class="item-value">{{ $data }}</div> @endif
+                                        </div>
+                                        @endforeach
+
+                                        <div class="col-6 field-clickable" data-field="{{ $field }}">
+                                            @php $field = 'remarks'; $data = $reportInView->{$field} ?? 'N/A'; $statusInfo = getStatusInfo($data); @endphp
+                                            <div class="item-label"><i class="{{ $fieldIcons[$field] ?? 'fas fa-circle-notch' }}"></i> {{ Str::of($field)->kebab()->replace('-', ' ')->title() }}</div>
+                                        </div>
+                                        <div class="col-6 field-clickable" data-field="{{ $field }}">
+                                            @if(is_array($data)) <div class="item-value">
+                                                <ul class="item-value-list">@foreach($data as $value)<li>{{ $value }}</li>@endforeach</ul>
+                                            </div>
+                                            @elseif($statusInfo['class'] !== 'item-value') <div class="status-pill {{ $statusInfo['class'] }}"><i class="{{ $statusInfo['icon'] }}"></i>{{ $data }}</div>
+                                            @else <div class="item-value">{{ $data }}</div> @endif
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                            @endforeach
                         </div>
-                        {{-- Row 2 --}}
                     </div>
+                </div>
 
-                    <div class="col-md-6">
-                        <div class="row">
-                            @foreach(['fourWdSystemCondition', 'obdError'] as $field)
-                            <div class="col-6">
-                                <div class="item-label"><i class="{{ $fieldIcons[$field] ?? 'fas fa-circle-notch' }}"></i> {{ Str::of($field)->kebab()->replace('-', ' ')->title() }}</div>
-                                @php $data = $reportInView->{$field} ?? 'N/A'; $statusInfo = getStatusInfo($data); @endphp
-                            </div>
-                            <div class="col-6">
-                                @if(is_array($data)) <div class="item-value">
-                                    <ul class="item-value-list">@foreach($data as $value)<li>{{ $value }}</li>@endforeach</ul>
+                {{-- ==================================================================== --}}
+                {{-- == 4. Tires Section (Accordion Item)                                 --}}
+                {{-- ==================================================================== --}}
+                <div class="accordion-item report-card">
+                    <h2 class="accordion-header" id="headingTires">
+                        <button class="accordion-button card-header p-3 collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#tiresCollapse" aria-expanded="false" aria-controls="tiresCollapse">
+                            <i class="fa-solid fa-circle-dot"></i>Tires
+                        </button>
+                    </h2>
+                    <div id="tiresCollapse" class="accordion-collapse collapse" aria-labelledby="headingTires" data-bs-parent="#reportAccordion">
+                        <div class="accordion-body card-body p-3">
+                            <div class="row p-md-3">
+                                {{-- Row 1 --}}
+                                <div class="col-md-6">
+                                    <div class="row">
+                                        @foreach(['frontLeftTire', 'frontRightTire', 'rearLeftTire', 'rearRightTire', 'tiresSize'] as $field)
+                                        <div class="col-6">
+                                            <div class="item-label field-clickable" data-field="{{ $field }}" style="cursor:pointer;">
+                                                <i class="{{ $fieldIcons[$field] ?? 'fas fa-circle-notch' }}"></i>
+                                                {{ Str::of($field)->kebab()->replace('-', ' ')->title() }}
+                                            </div>
+                                            @php
+                                            $data = $reportInView->{$field} ?? 'N/A';
+                                            $statusInfo = getStatusInfo($data);
+                                            @endphp
+                                        </div>
+                                        <div class="col-6">
+                                            @if(is_array($data))
+                                            <div class="item-value">
+                                                <ul class="item-value-list">
+                                                    @foreach($data as $value)
+                                                    <li>{{ $value }}</li>
+                                                    @endforeach
+                                                </ul>
+                                            </div>
+                                            @elseif($statusInfo['class'] !== 'item-value')
+                                            <div class="status-pill {{ $statusInfo['class'] }}">
+                                                <i class="{{ $statusInfo['icon'] }}"></i>{{ $data }}
+                                            </div>
+                                            @else
+                                            <div class="item-value">{{ $data }}</div>
+                                            @endif
+                                        </div>
+                                        @endforeach
+                                    </div>
                                 </div>
-                                @elseif($statusInfo['class'] !== 'item-value') <div class="status-pill {{ $statusInfo['class'] }}"><i class="{{ $statusInfo['icon'] }}"></i>{{ $data }}</div>
-                                @else <div class="item-value">{{ $data }}</div> @endif
-                            </div>
-                            @endforeach
 
-                            <div class="col-6">
-                                @php $field = 'remarks'; $data = $reportInView->{$field} ?? 'N/A'; $statusInfo = getStatusInfo($data); @endphp
-                                <div class="item-label"><i class="{{ $fieldIcons[$field] ?? 'fas fa-circle-notch' }}"></i> {{ Str::of($field)->kebab()->replace('-', ' ')->title() }}</div>
-                            </div>
-                            <div class="col-6">
-                                @if(is_array($data)) <div class="item-value">
-                                    <ul class="item-value-list">@foreach($data as $value)<li>{{ $value }}</li>@endforeach</ul>
+                                {{-- Row 2 --}}
+                                <div class="col-md-6">
+                                    <div class="row">
+                                        @foreach(['spareTire','wheelsType', 'rimsSizeFront','rimsSizeRear'] as $field)
+                                        <div class="col-6">
+                                            <div class="item-label field-clickable" data-field="{{ $field }}" style="cursor:pointer;">
+                                                <i class="{{ $fieldIcons[$field] ?? 'fas fa-circle-notch' }}"></i>
+                                                {{ Str::of($field)->kebab()->replace('-', ' ')->title() }}
+                                            </div>
+                                            @php
+                                            $data = $reportInView->{$field} ?? 'N/A';
+                                            $statusInfo = getStatusInfo($data);
+                                            @endphp
+                                        </div>
+                                        <div class="col-6">
+                                            @if(is_array($data))
+                                            <div class="item-value">
+                                                <ul class="item-value-list">
+                                                    @foreach($data as $value)
+                                                    <li>{{ $value }}</li>
+                                                    @endforeach
+                                                </ul>
+                                            </div>
+                                            @elseif($statusInfo['class'] !== 'item-value')
+                                            <div class="status-pill {{ $statusInfo['class'] }}">
+                                                <i class="{{ $statusInfo['icon'] }}"></i>{{ $data }}
+                                            </div>
+                                            @else
+                                            <div class="item-value">{{ $data }}</div>
+                                            @endif
+                                        </div>
+                                        @endforeach
+                                    </div>
                                 </div>
-                                @elseif($statusInfo['class'] !== 'item-value') <div class="status-pill {{ $statusInfo['class'] }}"><i class="{{ $statusInfo['icon'] }}"></i>{{ $data }}</div>
-                                @else <div class="item-value">{{ $data }}</div> @endif
+
+                                {{-- Full-width row for Tire Comments --}}
+                                <div class="col-12">
+                                    @php
+                                    $field = 'commentTire';
+                                    $data = $reportInView->{$field} ?? 'N/A';
+                                    $statusInfo = getStatusInfo($data);
+                                    @endphp
+                                    <div class="item-label field-clickable" data-field="{{ $field }}" style="cursor:pointer;">
+                                        <i class="{{ $fieldIcons[$field] ?? 'fas fa-circle-notch' }}"></i> Comments
+                                    </div>
+                                    @if(is_array($data))
+                                    <div class="item-value">
+                                        <ul class="item-value-list">
+                                            @foreach($data as $value)
+                                            <li>{{ $value }}</li>
+                                            @endforeach
+                                        </ul>
+                                    </div>
+                                    @elseif($statusInfo['class'] !== 'item-value')
+                                    <div class="status-pill {{ $statusInfo['class'] }}" style="text-align: left !important;">
+                                        <i class="{{ $statusInfo['icon'] }}"></i>{{ $data }}
+                                    </div>
+                                    @else
+                                    <div class="item-value">{{ $data }}</div>
+                                    @endif
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+
+
+                {{-- ==================================================================== --}}
+                {{-- == 5. Car Specs Section (Accordion Item)                             --}}
+                {{-- ==================================================================== --}}
+                <div class="accordion-item report-card" id="specs">
+                    <h2 class="accordion-header" id="headingSpecs">
+                        <button class="accordion-button card-header p-3 collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#specsCollapse" aria-expanded="false" aria-controls="specsCollapse">
+                            <i class="fa-solid fa-sliders"></i>Car Specs
+                        </button>
+                    </h2>
+                    <div id="specsCollapse" class="accordion-collapse collapse" aria-labelledby="headingSpecs" data-bs-parent="#reportAccordion">
+                        <div class="accordion-body card-body p-3">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="row">
+                                        @foreach(['parkingSensors', 'keylessStart', 'seats', 'cooledSeats', 'heatedSeats'] as $field)
+                                        <div class="col-6 field-clickable" data-field="{{ $field }}">
+                                            <div class="item-label"><i class="{{ $fieldIcons[$field] ?? 'fas fa-circle-notch' }}"></i> {{ Str::of($field)->kebab()->replace('-', ' ')->title() }}</div>
+                                            @php $data = $reportInView->{$field} ?? 'N/A'; $statusInfo = getStatusInfo($data); @endphp
+                                        </div>
+                                        <div class="col-6 field-clickable" data-field="{{ $field }}">
+                                            @if(is_array($data)) <div class="item-value">
+                                                <ul class="item-value-list">@foreach($data as $value)<li>{{ $value }}</li>@endforeach</ul>
+                                            </div>
+                                            @elseif($statusInfo['class'] !== 'item-value') <div class="status-pill {{ $statusInfo['class'] }}"><i class="{{ $statusInfo['icon'] }}"></i>{{ $data }}</div>
+                                            @else <div class="item-value">{{ $data }}</div> @endif
+                                        </div>
+                                        @endforeach
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="row">
+                                        @foreach(['powerSeats', 'viveCamera', 'sunroofType', 'drive','blindSpot'] as $field)
+                                        <div class="col-6 field-clickable" data-field="{{ $field }}">
+                                            <div class="item-label"><i class="{{ $fieldIcons[$field] ?? 'fas fa-circle-notch' }}"></i> {{ Str::of($field)->kebab()->replace('-', ' ')->title() }}</div>
+                                            @php $data = $reportInView->{$field} ?? 'N/A'; $statusInfo = getStatusInfo($data); @endphp
+                                        </div>
+                                        <div class="col-6 field-clickable" data-field="{{ $field }}">
+                                            @if(is_array($data)) <div class="item-value">
+                                                <ul class="item-value-list">@foreach($data as $value)<li>{{ $value }}</li>@endforeach</ul>
+                                            </div>
+                                            @elseif($statusInfo['class'] !== 'item-value') <div class="status-pill {{ $statusInfo['class'] }}"><i class="{{ $statusInfo['icon'] }}"></i>{{ $data }}</div>
+                                            @else <div class="item-value">{{ $data }}</div> @endif
+                                        </div>
+                                        @endforeach
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="row">
+                                        @foreach(['headsDisplay','premiumSound','carbonFiber','convertible','sideSteps'] as $field)
+                                        <div class="col-6 field-clickable" data-field="{{ $field }}">
+                                            <div class="item-label"><i class="{{ $fieldIcons[$field] ?? 'fas fa-circle-notch' }}"></i> {{ Str::of($field)->kebab()->replace('-', ' ')->title() }}</div>
+                                            @php $data = $reportInView->{$field} ?? 'N/A'; $statusInfo = getStatusInfo($data); @endphp
+                                        </div>
+                                        <div class="col-6 field-clickable" data-field="{{ $field }}">
+                                            @if(is_array($data)) <div class="item-value">
+                                                <ul class="item-value-list">@foreach($data as $value)<li>{{ $value }}</li>@endforeach</ul>
+                                            </div>
+                                            @elseif($statusInfo['class'] !== 'item-value') <div class="status-pill {{ $statusInfo['class'] }}"><i class="{{ $statusInfo['icon'] }}"></i>{{ $data }}</div>
+                                            @else <div class="item-value">{{ $data }}</div> @endif
+                                        </div>
+                                        @endforeach
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="row">
+                                        @foreach(['soft_door_closing'] as $field)
+                                        <div class="col-6 field-clickable" data-field="{{ $field }}">
+                                            <div class="item-label"><i class="{{ $fieldIcons[$field] ?? 'fas fa-door-closed' }} "></i> Soft Door Closing</div>
+                                            @php $data = $reportInView->{$field} ?? 'N/A'; $statusInfo = getStatusInfo($data); @endphp
+                                        </div>
+                                        <div class="col-6 field-clickable" data-field="{{ $field }}">
+                                            @if(is_array($data)) <div class="item-value">
+                                                <ul class="item-value-list">@foreach($data as $value)<li>{{ $value }}</li>@endforeach</ul>
+                                            </div>
+                                            @elseif($statusInfo['class'] !== 'item-value') <div class="status-pill {{ $statusInfo['class'] }}"><i class="{{ $statusInfo['icon'] }}"></i>{{ $data }}</div>
+                                            @else <div class="item-value">{{ $data }}</div> @endif
+                                        </div>
+                                        @endforeach
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                {{-- ==================================================================== --}}
+                {{-- == 6. Interior, Electrical & Air Conditioner Section (Accordion Item) --}}
+                {{-- ==================================================================== --}}
+                <div class="accordion-item report-card" id="interior">
+                    <h2 class="accordion-header" id="headingInterior">
+                        <button class="accordion-button card-header p-3 collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#interiorCollapse" aria-expanded="false" aria-controls="interiorCollapse">
+                            <i class="fa-solid fa-bolt"></i>Interior, Electrical & Air Conditioner
+                        </button>
+                    </h2>
+                    <div id="interiorCollapse" class="accordion-collapse collapse" aria-labelledby="headingInterior" data-bs-parent="#reportAccordion">
+                        <div class="accordion-body card-body p-3">
+                            <div class="row">
+                                {{-- Row 1 --}}
+                                <div class="col-md-6">
+                                    <div class="row">
+                                        @foreach(['speedmeterCluster', 'headLining', 'seatControls', 'seatsCondition', 'centralLockOperation'] as $field)
+                                        <div class="col-6 field-clickable" data-field="{{ $field }}">
+                                            <div class="item-label"><i class="{{ $fieldIcons[$field] ?? 'fas fa-circle-notch' }}"></i> {{ Str::of($field)->kebab()->replace('-', ' ')->title() }}</div>
+                                            @php $data = $reportInView->{$field} ?? 'N/A'; $statusInfo = getStatusInfo($data); @endphp
+                                        </div>
+                                        <div class="col-6 field-clickable" data-field="{{ $field }}">
+                                            @if(is_array($data)) <div class="item-value">
+                                                <ul class="item-value-list">@foreach($data as $value)<li>{{ $value }}</li>@endforeach</ul>
+                                            </div>
+                                            @elseif($statusInfo['class'] !== 'item-value') <div class="status-pill {{ $statusInfo['class'] }}"><i class="{{ $statusInfo['icon'] }}"></i>{{ $data }}</div>
+                                            @else <div class="item-value">{{ $data }}</div> @endif
+                                        </div>
+                                        @endforeach
+                                    </div>
+                                </div>
+                                {{-- Row 2 --}}
+                                <div class="col-md-6">
+                                    <div class="row">
+                                        @foreach(['sunroofCondition', 'windowsControl', 'cruiseControl', 'acCooling'] as $field)
+                                        <div class="col-6 field-clickable" data-field="{{ $field }}">
+                                            <div class="item-label"><i class="{{ $fieldIcons[$field] ?? 'fas fa-circle-notch' }}"></i> {{ Str::of($field)->kebab()->replace('-', ' ')->title() }}</div>
+                                            @php $data = $reportInView->{$field} ?? 'N/A'; $statusInfo = getStatusInfo($data); @endphp
+                                        </div>
+                                        <div class="col-6 field-clickable" data-field="{{ $field }}">
+                                            @if(is_array($data)) <div class="item-value">
+                                                <ul class="item-value-list">@foreach($data as $value)<li>{{ $value }}</li>@endforeach</ul>
+                                            </div>
+                                            @elseif($statusInfo['class'] !== 'item-value') <div class="status-pill {{ $statusInfo['class'] }}"><i class="{{ $statusInfo['icon'] }}"></i>{{ $data }}</div>
+                                            @else <div class="item-value">{{ $data }}</div> @endif
+                                        </div>
+                                        @endforeach
+                                    </div>
+
+                                </div>
+                                {{-- Full-width row for Comments --}}
+                                <div class="col-md-6">
+                                    <div class="row">
+                                        <div class="col-12">
+                                            @php $field = 'comment_section2'; $data = $reportInView->{$field} ?? 'N/A'; $statusInfo = getStatusInfo($data); @endphp
+                                            <div class="item-label"><i class="{{ $fieldIcons[$field] ?? 'fas fa-circle-notch' }}"></i> Comments</div>
+                                        </div>
+                                        <div class="col-12">
+                                            @if(is_array($data)) <div class="item-value">
+                                                <ul class="item-value-list">@foreach($data as $value)<li>{{ $value }}</li>@endforeach</ul>
+                                            </div>
+                                            @elseif($statusInfo['class'] !== 'item-value') <div class="status-pill {{ $statusInfo['class'] }}"><i class="{{ $statusInfo['icon'] }}"></i>{{ $data }}</div>
+                                            @else <div class="item-value">{{ $data }}</div> @endif
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                {{-- ==================================================================== --}}
+                {{-- == 7. Steering, Suspension & Brakes Section (Accordion Item)         --}}
+                {{-- ==================================================================== --}}
+                <div class="accordion-item report-card">
+                    <h2 class="accordion-header" id="headingSteering">
+                        <button class="accordion-button card-header p-3 collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#steeringCollapse" aria-expanded="false" aria-controls="steeringCollapse">
+                            <i class="fa-solid fa-car-burst"></i>Steering, Suspension & Brakes
+                        </button>
+                    </h2>
+                    <div id="steeringCollapse" class="accordion-collapse collapse" aria-labelledby="headingSteering" data-bs-parent="#reportAccordion">
+                        <div class="accordion-body card-body p-3">
+                            <div class="row">
+                                {{-- Row 1 --}}
+                                <div class="col-md-6">
+                                    <div class="row">
+                                        @foreach(['steeringOperation', 'wheelAlignment', 'brakePads', 'suspension', 'brakeDiscs'] as $field)
+                                        <div class="col-6 field-clickable" data-field="{{ $field }}">
+                                            <div class="item-label"><i class="{{ $fieldIcons[$field] ?? 'fas fa-circle-notch' }}"></i> {{ Str::of($field)->kebab()->replace('-', ' ')->title() }}</div>
+                                            @php $data = $reportInView->{$field} ?? 'N/A'; $statusInfo = getStatusInfo($data); @endphp
+                                        </div>
+                                        <div class="col-6 field-clickable" data-field="{{ $field }}">
+                                            @if(is_array($data)) <div class="item-value">
+                                                <ul class="item-value-list">@foreach($data as $value)<li>{{ $value }}</li>@endforeach</ul>
+                                            </div>
+                                            @elseif($statusInfo['class'] !== 'item-value') <div class="status-pill {{ $statusInfo['class'] }}"><i class="{{ $statusInfo['icon'] }}"></i>{{ $data }}</div>
+                                            @else <div class="item-value">{{ $data }}</div> @endif
+                                        </div>
+                                        @endforeach
+                                    </div>
+                                </div>
+                                {{-- Row 2 --}}
+                                <div class="col-md-6">
+                                    <div class="row">
+                                        @foreach(['shockAbsorberOperation'] as $field)
+                                        <div class="col-6 field-clickable" data-field="{{ $field }}">
+                                            <div class="item-label"><i class="{{ $fieldIcons[$field] ?? 'fas fa-circle-notch' }}"></i> {{ Str::of($field)->kebab()->replace('-', ' ')->title() }}</div>
+                                            @php $data = $reportInView->{$field} ?? 'N/A'; $statusInfo = getStatusInfo($data); @endphp
+                                        </div>
+                                        <div class="col-6 field-clickable" data-field="{{ $field }}">
+                                            @if(is_array($data)) <div class="item-value">
+                                                <ul class="item-value-list">@foreach($data as $value)<li>{{ $value }}</li>@endforeach</ul>
+                                            </div>
+                                            @elseif($statusInfo['class'] !== 'item-value') <div class="status-pill {{ $statusInfo['class'] }}"><i class="{{ $statusInfo['icon'] }}"></i>{{ $data }}</div>
+                                            @else <div class="item-value">{{ $data }}</div> @endif
+                                        </div>
+                                        @endforeach
+                                    </div>
+                                </div>
+                                {{-- Full-width row for Comments --}}
+                                <div class="col-md-6">
+                                    <div class="row">
+                                        <div class="col-12">
+                                            @php $field = 'comment_section1'; $data = $reportInView->{$field} ?? 'N/A'; $statusInfo = getStatusInfo($data); @endphp
+                                            <div class="item-label"><i class="{{ $fieldIcons[$field] ?? 'fas fa-circle-notch' }}"></i> Comments</div>
+                                        </div>
+                                        <div class="col-12">
+                                            @if(is_array($data)) <div class="item-value">
+                                                <ul class="item-value-list">@foreach($data as $value)<li>{{ $value }}</li>@endforeach</ul>
+                                            </div>
+                                            @elseif($statusInfo['class'] !== 'item-value') <div class="status-pill {{ $statusInfo['class'] }}"><i class="{{ $statusInfo['icon'] }}"></i>{{ $data }}</div>
+                                            @else <div class="item-value">{{ $data }}</div> @endif
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {{-- ==================================================================== --}}
+                {{-- == 8. Final Conclusion Section (Accordion Item)                        --}}
+                {{-- ==================================================================== --}}
+                <div class="accordion-item report-card">
+                    <h2 class="accordion-header" id="headingFinal">
+                        {{-- Note the 'collapsed' class to ensure it's closed by default --}}
+                        <button class="accordion-button card-header p-3 collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#finalCollapse" aria-expanded="false" aria-controls="finalCollapse">
+                            <i class="fa-solid fa-clipboard"></i>Final Conclusion
+                        </button>
+                    </h2>
+                    <div id="finalCollapse" class="accordion-collapse collapse" aria-labelledby="headingFinal" data-bs-parent="#reportAccordion">
+                        <div class="accordion-body card-body p-3">
+                            {{-- NOTE: We replaced the <table class="details-table"> structure with a standard <div> for cleaner Accordion content --}}
+                            <div class="row">
+                                <div class="col-12">
+                                    @php $field = 'final_conclusion'; $data = $reportInView->{$field} ?? 'N/A'; $statusInfo = getStatusInfo($data); @endphp
+                                    <div class="item-label"><i class="{{ $fieldIcons[$field] ?? 'fas fa-flag' }} "></i> Final Conclusion</div>
+                                    @if(is_array($data)) <div class="item-value">
+                                        <ul class="item-value-list">@foreach($data as $value)<li>{{ $value }}</li>@endforeach</ul>
+                                    </div>
+                                    @elseif($statusInfo['class'] !== 'item-value') <div class="status-pill {{ $statusInfo['class'] }}"><i class="{{ $statusInfo['icon'] }}"></i>{{ $data }}</div>
+                                    @else <div class="item-value">{{ $data }}</div> @endif
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
-
-
-    {{-- ==================================================================== --}}
-    {{-- == 4. Tires Section (Accordion Item)                                 --}}
-    {{-- ==================================================================== --}}
-    <div class="accordion-item report-card">
-        <h2 class="accordion-header" id="headingTires">
-            <button class="accordion-button card-header p-3 collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#tiresCollapse" aria-expanded="false" aria-controls="tiresCollapse">
-                <i class="fa-solid fa-circle-dot"></i>Tires
-            </button>
-        </h2>
-        <div id="tiresCollapse" class="accordion-collapse collapse" aria-labelledby="headingTires" data-bs-parent="#reportAccordion">
-            <div class="accordion-body card-body p-3">
-                <div class="row p-md-3">
-                    {{-- Row 1 --}}
-                    <div class="col-md-6">
-                        <div class="row">
-                            @foreach(['frontLeftTire', 'frontRightTire', 'rearLeftTire', 'rearRightTire', 'tiresSize'] as $field)
-                            <div class="col-6">
-                                <div class="item-label"><i class="{{ $fieldIcons[$field] ?? 'fas fa-circle-notch' }}"></i> {{ Str::of($field)->kebab()->replace('-', ' ')->title() }}</div>
-                                @php $data = $reportInView->{$field} ?? 'N/A'; $statusInfo = getStatusInfo($data); @endphp
-                            </div>
-                            <div class="col-6">
-                                @if(is_array($data)) <div class="item-value">
-                                    <ul class="item-value-list">@foreach($data as $value)<li>{{ $value }}</li>@endforeach</ul>
-                                </div>
-                                @elseif($statusInfo['class'] !== 'item-value') <div class="status-pill {{ $statusInfo['class'] }}"><i class="{{ $statusInfo['icon'] }}"></i>{{ $data }}</div>
-                                @else <div class="item-value">{{ $data }}</div> @endif
-                            </div>
-                            @endforeach
-                        </div>
-                    </div>
-                    {{-- Row 2 --}}
-                    <div class="col-md-6">
-                        <div class="row">
-                            @foreach(['spareTire','wheelsType', 'rimsSizeFront','rimsSizeRear'] as $field)
-                            <div class="col-6">
-                                <div class="item-label"><i class="{{ $fieldIcons[$field] ?? 'fas fa-circle-notch' }}"></i> {{ Str::of($field)->kebab()->replace('-', ' ')->title() }}</div>
-                                @php $data = $reportInView->{$field} ?? 'N/A'; $statusInfo = getStatusInfo($data); @endphp
-                            </div>
-                            <div class="col-6">
-                                @if(is_array($data)) <div class="item-value">
-                                    <ul class="item-value-list">@foreach($data as $value)<li>{{ $value }}</li>@endforeach</ul>
-                                </div>
-                                @elseif($statusInfo['class'] !== 'item-value') <div class="status-pill {{ $statusInfo['class'] }}"><i class="{{ $statusInfo['icon'] }}"></i>{{ $data }}</div>
-                                @else <div class="item-value">{{ $data }}</div> @endif
-                            </div>
-                            @endforeach
-                        </div>
-
-                    </div>
-                    {{-- Full-width row for Tire Comments --}}
-                    <div class="col-12">
-                        @php $field = 'commentTire'; $data = $reportInView->{$field} ?? 'N/A'; $statusInfo = getStatusInfo($data); @endphp
-                        <div class="item-label"><i class="{{ $fieldIcons[$field] ?? 'fas fa-circle-notch' }}"></i> Comments</div>
-                        @if(is_array($data)) <div class="item-value">
-                            <ul class="item-value-list">@foreach($data as $value)<li>{{ $value }}</li>@endforeach</ul>
-                        </div>
-                        @elseif($statusInfo['class'] !== 'item-value') <div class="status-pill {{ $statusInfo['class'] }}" style="text-align: left !important;"><i class="{{ $statusInfo['icon'] }}"></i>{{ $data }}</div>
-                        @else <div class="item-value">{{ $data }}</div> @endif
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-
-    {{-- ==================================================================== --}}
-    {{-- == 5. Car Specs Section (Accordion Item)                             --}}
-    {{-- ==================================================================== --}}
-    <div class="accordion-item report-card" id="specs">
-        <h2 class="accordion-header" id="headingSpecs">
-            <button class="accordion-button card-header p-3 collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#specsCollapse" aria-expanded="false" aria-controls="specsCollapse">
-                <i class="fa-solid fa-sliders"></i>Car Specs
-            </button>
-        </h2>
-        <div id="specsCollapse" class="accordion-collapse collapse" aria-labelledby="headingSpecs" data-bs-parent="#reportAccordion">
-            <div class="accordion-body card-body p-3">
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="row">
-                            @foreach(['parkingSensors', 'keylessStart', 'seats', 'cooledSeats', 'heatedSeats'] as $field)
-                            <div class="col-6">
-                                <div class="item-label"><i class="{{ $fieldIcons[$field] ?? 'fas fa-circle-notch' }}"></i> {{ Str::of($field)->kebab()->replace('-', ' ')->title() }}</div>
-                                @php $data = $reportInView->{$field} ?? 'N/A'; $statusInfo = getStatusInfo($data); @endphp
-                            </div>
-                            <div class="col-6">
-                                @if(is_array($data)) <div class="item-value">
-                                    <ul class="item-value-list">@foreach($data as $value)<li>{{ $value }}</li>@endforeach</ul>
-                                </div>
-                                @elseif($statusInfo['class'] !== 'item-value') <div class="status-pill {{ $statusInfo['class'] }}"><i class="{{ $statusInfo['icon'] }}"></i>{{ $data }}</div>
-                                @else <div class="item-value">{{ $data }}</div> @endif
-                            </div>
-                            @endforeach
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="row">
-                            @foreach(['powerSeats', 'viveCamera', 'sunroofType', 'drive','blindSpot'] as $field)
-                            <div class="col-6">
-                                <div class="item-label"><i class="{{ $fieldIcons[$field] ?? 'fas fa-circle-notch' }}"></i> {{ Str::of($field)->kebab()->replace('-', ' ')->title() }}</div>
-                                @php $data = $reportInView->{$field} ?? 'N/A'; $statusInfo = getStatusInfo($data); @endphp
-                            </div>
-                            <div class="col-6">
-                                @if(is_array($data)) <div class="item-value">
-                                    <ul class="item-value-list">@foreach($data as $value)<li>{{ $value }}</li>@endforeach</ul>
-                                </div>
-                                @elseif($statusInfo['class'] !== 'item-value') <div class="status-pill {{ $statusInfo['class'] }}"><i class="{{ $statusInfo['icon'] }}"></i>{{ $data }}</div>
-                                @else <div class="item-value">{{ $data }}</div> @endif
-                            </div>
-                            @endforeach
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="row">
-                            @foreach(['headsDisplay','premiumSound','carbonFiber','convertible','sideSteps'] as $field)
-                            <div class="col-6">
-                                <div class="item-label"><i class="{{ $fieldIcons[$field] ?? 'fas fa-circle-notch' }}"></i> {{ Str::of($field)->kebab()->replace('-', ' ')->title() }}</div>
-                                @php $data = $reportInView->{$field} ?? 'N/A'; $statusInfo = getStatusInfo($data); @endphp
-                            </div>
-                            <div class="col-6">
-                                @if(is_array($data)) <div class="item-value">
-                                    <ul class="item-value-list">@foreach($data as $value)<li>{{ $value }}</li>@endforeach</ul>
-                                </div>
-                                @elseif($statusInfo['class'] !== 'item-value') <div class="status-pill {{ $statusInfo['class'] }}"><i class="{{ $statusInfo['icon'] }}"></i>{{ $data }}</div>
-                                @else <div class="item-value">{{ $data }}</div> @endif
-                            </div>
-                            @endforeach
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="row">
-                            @foreach(['soft_door_closing'] as $field)
-                            <div class="col-6">
-                                <div class="item-label"><i class="{{ $fieldIcons[$field] ?? 'fas fa-door-closed' }} text-primary"></i> Soft Door Closing</div>
-                                @php $data = $reportInView->{$field} ?? 'N/A'; $statusInfo = getStatusInfo($data); @endphp
-                            </div>
-                            <div class="col-6">
-                                @if(is_array($data)) <div class="item-value">
-                                    <ul class="item-value-list">@foreach($data as $value)<li>{{ $value }}</li>@endforeach</ul>
-                                </div>
-                                @elseif($statusInfo['class'] !== 'item-value') <div class="status-pill {{ $statusInfo['class'] }}"><i class="{{ $statusInfo['icon'] }}"></i>{{ $data }}</div>
-                                @else <div class="item-value">{{ $data }}</div> @endif
-                            </div>
-                            @endforeach
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-
-    {{-- ==================================================================== --}}
-    {{-- == 6. Interior, Electrical & Air Conditioner Section (Accordion Item) --}}
-    {{-- ==================================================================== --}}
-    <div class="accordion-item report-card" id="interior">
-        <h2 class="accordion-header" id="headingInterior">
-            <button class="accordion-button card-header p-3 collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#interiorCollapse" aria-expanded="false" aria-controls="interiorCollapse">
-                <i class="fa-solid fa-bolt"></i>Interior, Electrical & Air Conditioner
-            </button>
-        </h2>
-        <div id="interiorCollapse" class="accordion-collapse collapse" aria-labelledby="headingInterior" data-bs-parent="#reportAccordion">
-            <div class="accordion-body card-body p-3">
-                <div class="row">
-                    {{-- Row 1 --}}
-                    <div class="col-md-6">
-                        <div class="row">
-                            @foreach(['speedmeterCluster', 'headLining', 'seatControls', 'seatsCondition', 'centralLockOperation'] as $field)
-                            <div class="col-6">
-                                <div class="item-label"><i class="{{ $fieldIcons[$field] ?? 'fas fa-circle-notch' }}"></i> {{ Str::of($field)->kebab()->replace('-', ' ')->title() }}</div>
-                                @php $data = $reportInView->{$field} ?? 'N/A'; $statusInfo = getStatusInfo($data); @endphp
-                            </div>
-                            <div class="col-6">
-                                @if(is_array($data)) <div class="item-value">
-                                    <ul class="item-value-list">@foreach($data as $value)<li>{{ $value }}</li>@endforeach</ul>
-                                </div>
-                                @elseif($statusInfo['class'] !== 'item-value') <div class="status-pill {{ $statusInfo['class'] }}"><i class="{{ $statusInfo['icon'] }}"></i>{{ $data }}</div>
-                                @else <div class="item-value">{{ $data }}</div> @endif
-                            </div>
-                            @endforeach
-                        </div>
-                    </div>
-                    {{-- Row 2 --}}
-                    <div class="col-md-6">
-                        <div class="row">
-                            @foreach(['sunroofCondition', 'windowsControl', 'cruiseControl', 'acCooling'] as $field)
-                            <div class="col-6">
-                                <div class="item-label"><i class="{{ $fieldIcons[$field] ?? 'fas fa-circle-notch' }}"></i> {{ Str::of($field)->kebab()->replace('-', ' ')->title() }}</div>
-                                @php $data = $reportInView->{$field} ?? 'N/A'; $statusInfo = getStatusInfo($data); @endphp
-                            </div>
-                            <div class="col-6">
-                                @if(is_array($data)) <div class="item-value">
-                                    <ul class="item-value-list">@foreach($data as $value)<li>{{ $value }}</li>@endforeach</ul>
-                                </div>
-                                @elseif($statusInfo['class'] !== 'item-value') <div class="status-pill {{ $statusInfo['class'] }}"><i class="{{ $statusInfo['icon'] }}"></i>{{ $data }}</div>
-                                @else <div class="item-value">{{ $data }}</div> @endif
-                            </div>
-                            @endforeach
-                        </div>
-
-                    </div>
-                    {{-- Full-width row for Comments --}}
-                    <div class="col-md-6">
-                        <div class="row">
-                            <div class="col-12">
-                                @php $field = 'comment_section2'; $data = $reportInView->{$field} ?? 'N/A'; $statusInfo = getStatusInfo($data); @endphp
-                                <div class="item-label"><i class="{{ $fieldIcons[$field] ?? 'fas fa-circle-notch' }}"></i> Comments</div>
-                            </div>
-                            <div class="col-12">
-                                @if(is_array($data)) <div class="item-value">
-                                    <ul class="item-value-list">@foreach($data as $value)<li>{{ $value }}</li>@endforeach</ul>
-                                </div>
-                                @elseif($statusInfo['class'] !== 'item-value') <div class="status-pill {{ $statusInfo['class'] }}"><i class="{{ $statusInfo['icon'] }}"></i>{{ $data }}</div>
-                                @else <div class="item-value">{{ $data }}</div> @endif
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-
-    {{-- ==================================================================== --}}
-    {{-- == 7. Steering, Suspension & Brakes Section (Accordion Item)         --}}
-    {{-- ==================================================================== --}}
-    <div class="accordion-item report-card">
-        <h2 class="accordion-header" id="headingSteering">
-            <button class="accordion-button card-header p-3 collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#steeringCollapse" aria-expanded="false" aria-controls="steeringCollapse">
-                <i class="fa-solid fa-car-burst"></i>Steering, Suspension & Brakes
-            </button>
-        </h2>
-        <div id="steeringCollapse" class="accordion-collapse collapse" aria-labelledby="headingSteering" data-bs-parent="#reportAccordion">
-            <div class="accordion-body card-body p-3">
-                <div class="row">
-                    {{-- Row 1 --}}
-                    <div class="col-md-6">
-                        <div class="row">
-                            @foreach(['steeringOperation', 'wheelAlignment', 'brakePads', 'suspension', 'brakeDiscs'] as $field)
-                            <div class="col-6">
-                                <div class="item-label"><i class="{{ $fieldIcons[$field] ?? 'fas fa-circle-notch' }}"></i> {{ Str::of($field)->kebab()->replace('-', ' ')->title() }}</div>
-                                @php $data = $reportInView->{$field} ?? 'N/A'; $statusInfo = getStatusInfo($data); @endphp
-                            </div>
-                            <div class="col-6">
-                                @if(is_array($data)) <div class="item-value">
-                                    <ul class="item-value-list">@foreach($data as $value)<li>{{ $value }}</li>@endforeach</ul>
-                                </div>
-                                @elseif($statusInfo['class'] !== 'item-value') <div class="status-pill {{ $statusInfo['class'] }}"><i class="{{ $statusInfo['icon'] }}"></i>{{ $data }}</div>
-                                @else <div class="item-value">{{ $data }}</div> @endif
-                            </div>
-                            @endforeach
-                        </div>
-                    </div>
-                    {{-- Row 2 --}}
-                    <div class="col-md-6">
-                        <div class="row">
-                            @foreach(['shockAbsorberOperation'] as $field)
-                            <div class="col-6">
-                                <div class="item-label"><i class="{{ $fieldIcons[$field] ?? 'fas fa-circle-notch' }}"></i> {{ Str::of($field)->kebab()->replace('-', ' ')->title() }}</div>
-                                @php $data = $reportInView->{$field} ?? 'N/A'; $statusInfo = getStatusInfo($data); @endphp
-                            </div>
-                            <div class="col-6">
-                                @if(is_array($data)) <div class="item-value">
-                                    <ul class="item-value-list">@foreach($data as $value)<li>{{ $value }}</li>@endforeach</ul>
-                                </div>
-                                @elseif($statusInfo['class'] !== 'item-value') <div class="status-pill {{ $statusInfo['class'] }}"><i class="{{ $statusInfo['icon'] }}"></i>{{ $data }}</div>
-                                @else <div class="item-value">{{ $data }}</div> @endif
-                            </div>
-                            @endforeach
-                        </div>
-                    </div>
-                    {{-- Full-width row for Comments --}}
-                    <div class="col-md-6">
-                        <div class="row">
-                            <div class="col-12">
-                                @php $field = 'comment_section1'; $data = $reportInView->{$field} ?? 'N/A'; $statusInfo = getStatusInfo($data); @endphp
-                                <div class="item-label"><i class="{{ $fieldIcons[$field] ?? 'fas fa-circle-notch' }}"></i> Comments</div>
-                            </div>
-                            <div class="col-12">
-                                @if(is_array($data)) <div class="item-value">
-                                    <ul class="item-value-list">@foreach($data as $value)<li>{{ $value }}</li>@endforeach</ul>
-                                </div>
-                                @elseif($statusInfo['class'] !== 'item-value') <div class="status-pill {{ $statusInfo['class'] }}"><i class="{{ $statusInfo['icon'] }}"></i>{{ $data }}</div>
-                                @else <div class="item-value">{{ $data }}</div> @endif
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    {{-- ==================================================================== --}}
-    {{-- == 8. Final Conclusion Section (Accordion Item)                        --}}
-    {{-- ==================================================================== --}}
-    <div class="accordion-item report-card">
-        <h2 class="accordion-header" id="headingFinal">
-            {{-- Note the 'collapsed' class to ensure it's closed by default --}}
-            <button class="accordion-button card-header p-3 collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#finalCollapse" aria-expanded="false" aria-controls="finalCollapse">
-                <i class="fa-solid fa-clipboard"></i>Final Conclusion
-            </button>
-        </h2>
-        <div id="finalCollapse" class="accordion-collapse collapse" aria-labelledby="headingFinal" data-bs-parent="#reportAccordion">
-            <div class="accordion-body card-body p-3">
-                {{-- NOTE: We replaced the <table class="details-table"> structure with a standard <div> for cleaner Accordion content --}}
-                <div class="row">
-                    <div class="col-12">
-                        @php $field = 'final_conclusion'; $data = $reportInView->{$field} ?? 'N/A'; $statusInfo = getStatusInfo($data); @endphp
-                        <div class="item-label"><i class="{{ $fieldIcons[$field] ?? 'fas fa-flag' }} "></i> Final Conclusion</div>
-                        @if(is_array($data)) <div class="item-value">
-                            <ul class="item-value-list">@foreach($data as $value)<li>{{ $value }}</li>@endforeach</ul>
-                        </div>
-                        @elseif($statusInfo['class'] !== 'item-value') <div class="status-pill {{ $statusInfo['class'] }}"><i class="{{ $statusInfo['icon'] }}"></i>{{ $data }}</div>
-                        @else <div class="item-value">{{ $data }}</div> @endif
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>     
-      
 
 
 
-        <!-- disclaimer -->
-        {{--
+
+            <!-- disclaimer -->
+            {{--
     <div class="report-card">
         <!-- <div class="card-header"><i class="fa-solid fa-car"></i>Basic Vehicle Information</div> -->
         <div class="card-body">
@@ -1357,133 +1548,230 @@ html { scroll-behavior: smooth; }
         </div>
     </div> --}}
 
-        <div class="footer">
-            <span class="footer-brand">Caartl</span> &copy; {{ date('Y') }} | Vehicle Inspection Report
+            <div class="footer">
+                <span class="footer-brand">Caartl</span> &copy; {{ date('Y') }} | Vehicle Inspection Report
+            </div>
         </div>
-    </div>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 
-    <!-- Bootstrap 5 Bundle with Popper -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+        <!-- Bootstrap 5 Bundle with Popper -->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
-    {{-- Fullscreen Modal with Carousel --}}
-    <div class="modal fade" id="imageSliderModal" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog modal-fullscreen">
-            <div class="modal-content bg-black">
-                <div class="modal-header border-0">
-                    <button type="button" class="btn-close btn-close-white ms-auto" data-bs-dismiss="modal"></button>
-                </div>
-                <div class="modal-body ">
+        {{-- Fullscreen Modal with Carousel --}}
+        <div class="modal fade" id="imageSliderModal" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-fullscreen">
+                <div class="modal-content bg-black">
+                    <div class="modal-header border-0">
+                        <button type="button" class="btn-close btn-close-white ms-auto" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body ">
 
-                    {{-- Main Carousel --}}
-                    <div id="vehicleImagesCarousel" class="carousel slide w-100 mb-4" data-bs-ride="false">
-                        <div class="carousel-inner text-center">
-                            @foreach($vehicleImages as $i => $image)
-                            <div class="carousel-item {{ $i == 0 ? 'active' : '' }}">
-                                <img src="{{ asset('storage/' . $image->path) }}"
-                                    class="d-block mx-auto img-fluid"
-                                    style="max-height: 75vh; object-fit: contain; padding:20px; border-radius:12px;">
+                        {{-- Main Carousel --}}
+                        <div id="vehicleImagesCarousel" class="carousel slide w-100 mb-4" data-bs-ride="false">
+                            <div class="carousel-inner text-center">
+                                @foreach($vehicleImages as $i => $image)
+                                <div class="carousel-item {{ $i == 0 ? 'active' : '' }}">
+                                    <img src="{{ asset('storage/' . $image->path) }}"
+                                        class="d-block mx-auto img-fluid"
+                                        style="max-height: 75vh; object-fit: contain; padding:20px; border-radius:12px;">
+                                </div>
+                                @endforeach
                             </div>
+
+                            {{-- Navigation arrows --}}
+                            <button class="carousel-control-prev" type="button" data-bs-target="#vehicleImagesCarousel" data-bs-slide="prev">
+                                <span class="carousel-control-prev-icon"></span>
+                            </button>
+                            <button class="carousel-control-next" type="button" data-bs-target="#vehicleImagesCarousel" data-bs-slide="next">
+                                <span class="carousel-control-next-icon"></span>
+                            </button>
+                        </div>
+
+                        <div class="" style="overflow: auto;display:flex;">
+                            @foreach($vehicleImages as $i => $image)
+                            <img src="{{ asset('storage/' . $image->path) }}"
+                                onclick="jumpToImage({{ $i }})"
+                                class="img-thumbnail"
+                                style="width:100px; height:70px; object-fit:cover; cursor:pointer; border:2px solid #444; border-radius:6px;">
                             @endforeach
                         </div>
 
-                        {{-- Navigation arrows --}}
-                        <button class="carousel-control-prev" type="button" data-bs-target="#vehicleImagesCarousel" data-bs-slide="prev">
-                            <span class="carousel-control-prev-icon"></span>
-                        </button>
-                        <button class="carousel-control-next" type="button" data-bs-target="#vehicleImagesCarousel" data-bs-slide="next">
-                            <span class="carousel-control-next-icon"></span>
-                        </button>
-                    </div>
 
-                    <div class="" style="overflow: auto;display:flex;">
-                        @foreach($vehicleImages as $i => $image)
-                        <img src="{{ asset('storage/' . $image->path) }}"
-                            onclick="jumpToImage({{ $i }})"
-                            class="img-thumbnail"
-                            style="width:100px; height:70px; object-fit:cover; cursor:pointer; border:2px solid #444; border-radius:6px;">
-                        @endforeach
                     </div>
-
 
                 </div>
+            </div>
+        </div>
+        {{-- ==================================================================== --}}
+        {{-- == Modal for Field Images                                           --}}
+        {{-- ==================================================================== --}}
+        <!-- Shared Image Modal -->
+<div class="modal fade" id="fieldImagesModal" tabindex="-1" aria-labelledby="fieldImagesModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="fieldImagesModalLabel">Field Images</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-center">
+                <!-- Carousel for more than 3 images -->
+                <div id="fieldImagesCarousel" class="carousel slide" data-bs-ride="carousel" style="display:none;">
+                    <div class="carousel-inner" id="carouselInner"></div>
+                    <button class="carousel-control-prev" type="button" data-bs-target="#fieldImagesCarousel" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Previous</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#fieldImagesCarousel" data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Next</span>
+                    </button>
+                </div>
 
+                <!-- Row display for 3 or fewer images -->
+                <div id="staticImagesRow" class="d-flex justify-content-center flex-wrap gap-2" style="display:none;"></div>
+
+                <p id="noImagesText" class="text-muted mt-3" style="display:none;">No images found for this field.</p>
             </div>
         </div>
     </div>
+</div>
 
-    <style>
-        /* White arrows for dark background */
-        .carousel-control-prev-icon,
-        .carousel-control-next-icon {
-            background-size: 100% 100%;
-            width: 3rem;
-            height: 3rem;
-        }
-
-        .carousel-control-prev-icon {
-            background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23ffffff' viewBox='0 0 16 16'%3E%3Cpath d='M11 1 3 8l8 7V1z'/%3E%3C/svg%3E");
-        }
-
-        .carousel-control-next-icon {
-            background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23ffffff' viewBox='0 0 16 16'%3E%3Cpath d='M5 1l8 7-8 7V1z'/%3E%3C/svg%3E");
-        }
-    </style>
-
-    <script>
-        function openImagesModal(startIndex = 0) {
-            var myModal = new bootstrap.Modal(document.getElementById('imageSliderModal'));
-            myModal.show();
-
-            var carousel = bootstrap.Carousel.getOrCreateInstance(document.getElementById('vehicleImagesCarousel'));
-            carousel.to(startIndex);
-        }
-
-        function jumpToImage(index) {
-            var carousel = bootstrap.Carousel.getOrCreateInstance(document.getElementById('vehicleImagesCarousel'));
-            carousel.to(index);
-        }
-    </script>
-    <script>
-    document.querySelectorAll('.details-table td').forEach((td, i) => {
-        const headers = ['#', 'Type', 'Body Part', 'Severity', 'Remarks'];
-        td.setAttribute('data-label', headers[i % 5]);
-    });
-</script>
 <script>
-document.addEventListener("DOMContentLoaded", function () {
-    const sections = {
-        summary: document.querySelector("#summary"),"car-details": document.querySelector("#car-details"),
-        exterior: document.querySelector("#exterior"),
-        wheels: document.querySelector("#tiresCollapse"),
-        engine: document.querySelector("#engineCollapse"),
-        steering: document.querySelector("#steeringCollapse"),
-        interior: document.querySelector("#interior"),
-        specs: document.querySelector("#specs")
-    };
+document.addEventListener('DOMContentLoaded', function() {
+    const modal = new bootstrap.Modal(document.getElementById('fieldImagesModal'));
+    const carouselInner = document.getElementById('carouselInner');
+    const carousel = document.getElementById('fieldImagesCarousel');
+    const staticImagesRow = document.getElementById('staticImagesRow');
+    const noImagesText = document.getElementById('noImagesText');
+    const modalTitle = document.getElementById('fieldImagesModalLabel');
 
-    const navItems = document.querySelectorAll(".dubizzle-nav-item");
+    document.querySelectorAll('.field-clickable').forEach(el => {
+        el.addEventListener('click', async () => {
+            const fieldName = el.getAttribute('data-field');
+            const reportId = "{{ $reportInView->id }}";
 
-    function updateActive() {
-        let current = "summary";
-        const scrollPos = window.scrollY + 180;
+            modalTitle.textContent = `${fieldName} Images`;
+            carouselInner.innerHTML = '';
+            staticImagesRow.innerHTML = '';
+            noImagesText.style.display = 'none';
+            carousel.style.display = 'none';
+            staticImagesRow.style.display = 'none';
 
-        Object.keys(sections).forEach(key => {
-            const el = sections[key];
-            if (el && scrollPos >= el.offsetTop - 100 && scrollPos < el.offsetTop + el.offsetHeight) {
-                current = key;
+            try {
+                const response = await fetch(`/api/inspection-field-images/${reportId}/${fieldName}`);
+                const result = await response.json();
+
+                if (result.images && result.images.length > 0) {
+                    const isMobile = window.innerWidth <= 768; // mobile breakpoint
+
+                    if (isMobile || result.images.length > 3) {
+                        // Carousel for mobile OR >3 images
+                        carousel.style.display = 'block';
+                        result.images.forEach((img, index) => {
+                            const activeClass = index === 0 ? 'active' : '';
+                            carouselInner.innerHTML += `
+                                <div class="carousel-item ${activeClass}">
+                                    <img src="${img.path}" loading="lazy" class="d-block mx-auto rounded" 
+                                         style="max-height:${isMobile ? '200px' : '400px'}; 
+                                                width:auto; 
+                                                object-fit:contain;" 
+                                         alt="Field Image">
+                                </div>`;
+                        });
+                    } else {
+                        // Static row for ≤3 images on desktop
+                        staticImagesRow.style.display = 'flex';
+                        staticImagesRow.style.flexWrap = 'wrap';
+                        staticImagesRow.style.justifyContent = 'center';
+                        result.images.forEach(img => {
+                            staticImagesRow.innerHTML += `
+                                <img src="${img.path}" loading="lazy" class="rounded" 
+                                     style="height:200px; max-width:100%; object-fit:contain; margin:5px;" 
+                                     alt="Field Image">`;
+                        });
+                    }
+                } else {
+                    noImagesText.style.display = 'block';
+                }
+
+                modal.show();
+            } catch (error) {
+                console.error('Error loading images:', error);
+                noImagesText.textContent = 'Error loading images.';
+                noImagesText.style.display = 'block';
+                modal.show();
             }
         });
+    });
 
-        navItems.forEach(item => {
-            item.classList.toggle("active", item.getAttribute("data-section") === current);
+    // Optional: adjust carousel height on window resize
+    window.addEventListener('resize', () => {
+        document.querySelectorAll('#carouselInner img').forEach(img => {
+            img.style.maxHeight = window.innerWidth <= 768 ? '200px' : '400px';
         });
-    }
-
-    window.addEventListener("scroll", updateActive);
-    updateActive();
+    });
 });
 </script>
+
+
+
+
+
+        <script>
+            function openImagesModal(startIndex = 0) {
+                var myModal = new bootstrap.Modal(document.getElementById('imageSliderModal'));
+                myModal.show();
+
+                var carousel = bootstrap.Carousel.getOrCreateInstance(document.getElementById('vehicleImagesCarousel'));
+                carousel.to(startIndex);
+            }
+
+            function jumpToImage(index) {
+                var carousel = bootstrap.Carousel.getOrCreateInstance(document.getElementById('vehicleImagesCarousel'));
+                carousel.to(index);
+            }
+        </script>
+        <script>
+            document.querySelectorAll('.details-table td').forEach((td, i) => {
+                const headers = ['#', 'Type', 'Body Part', 'Severity', 'Remarks'];
+                td.setAttribute('data-label', headers[i % 5]);
+            });
+        </script>
+        <script>
+            document.addEventListener("DOMContentLoaded", function() {
+                const sections = {
+                    summary: document.querySelector("#summary"),
+                    "car-details": document.querySelector("#car-details"),
+                    exterior: document.querySelector("#exterior"),
+                    wheels: document.querySelector("#tiresCollapse"),
+                    engine: document.querySelector("#engineCollapse"),
+                    steering: document.querySelector("#steeringCollapse"),
+                    interior: document.querySelector("#interior"),
+                    specs: document.querySelector("#specs")
+                };
+
+                const navItems = document.querySelectorAll(".dubizzle-nav-item");
+
+                function updateActive() {
+                    let current = "summary";
+                    const scrollPos = window.scrollY + 180;
+
+                    Object.keys(sections).forEach(key => {
+                        const el = sections[key];
+                        if (el && scrollPos >= el.offsetTop - 100 && scrollPos < el.offsetTop + el.offsetHeight) {
+                            current = key;
+                        }
+                    });
+
+                    navItems.forEach(item => {
+                        item.classList.toggle("active", item.getAttribute("data-section") === current);
+                    });
+                }
+
+                window.addEventListener("scroll", updateActive);
+                updateActive();
+            });
+        </script>
     </div>
 </body>
 

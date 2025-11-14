@@ -12,7 +12,7 @@ class InspectionField extends Model
         return $this->belongsTo(VehicleInspectionReport::class, 'vehicle_inspection_report_id');
     }
 
-    public function images()
+    public function files()
     {
         return $this->hasMany(InspectionFieldImage::class, 'inspection_field_id');
     }

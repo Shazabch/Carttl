@@ -42,15 +42,25 @@ Route::middleware('auth:api')->post('logout', [AuthController::class, 'logout'])
 
 use App\Models\InspectionField;
 
+
+
 Route::get('/inspection-field-images/{reportId}/{field}', function ($reportId, $field) {
-    $fieldData = InspectionField::with('images')
+    $fieldData = InspectionField::with('fields')
         ->where('vehicle_inspection_report_id', $reportId)
         ->where('name', $field)
         ->latest()
         ->first();
 
+    // Map images/videos properly
+    $files = $fieldData?->fields->map(function ($item) {
+        return [
+            'path' => $item->path,
+            'file_type' => $item->file_type, // should be 'image' or 'video'
+        ];
+    }) ?? [];
+
     return response()->json([
-        'images' => $fieldData?->images ?? [],
+        'images' => $files,
     ]);
 });
 
