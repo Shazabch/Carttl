@@ -9,6 +9,7 @@ use App\Models\FuelType;
 use App\Models\Transmission;
 use App\Models\Vehicle;
 use App\Models\VehicleImage;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -125,30 +126,118 @@ class VehicleManagementController extends Controller
             'data' => $vehicles
         ]);
     }
-   public function auctions(Request $request)
-{
-    $perPage = $request->get('per_page', 10);
-    $search  = $request->get('search', '');
+    public function auctions(Request $request)
+    {
+        $perPage = $request->get('per_page', 10);
+        $search  = $request->get('search', '');
 
-    $query = Vehicle::where('is_auction', true)
-                    ->where('status', 'published'); // only published
+        $query = Vehicle::where('is_auction', true)
+            ->where('status', 'published'); // only published
 
-    if (!empty($search)) {
-        $query->where(function ($q) use ($search) {
-            $q->where('title', 'like', "%{$search}%")
-              ->orWhere('vin', 'like', "%{$search}%");
-        });
+        if (!empty($search)) {
+            $query->where(function ($q) use ($search) {
+                $q->where('title', 'like', "%{$search}%")
+                    ->orWhere('vin', 'like', "%{$search}%");
+            });
+        }
+
+        $vehicles = $query->with(['brand:id,name', 'vehicleModel:id,name'])
+            ->orderBy('created_at', 'desc')
+            ->paginate($perPage);
+
+        return response()->json([
+            'status' => 'success',
+            'data'   => $vehicles
+        ]);
     }
 
-    $vehicles = $query->with(['brand:id,name', 'vehicleModel:id,name'])
-                      ->orderBy('created_at', 'desc')
-                      ->paginate($perPage);
 
-    return response()->json([
-        'status' => 'success',
-        'data'   => $vehicles
-    ]);
-}
+    public function upcomingAuctions(Request $request)
+    {
+        $perPage = $request->get('per_page', 10);
+        $search  = $request->get('search', '');
+
+        $today = Carbon::now();
+        $nextWeek = Carbon::now()->addDays(7);
+
+        $query = Vehicle::where('is_auction', true)
+            ->where('status', 'published')
+            ->whereBetween('auction_start_date', [$today, $nextWeek]); // upcoming 7 days
+
+        if (!empty($search)) {
+            $query->where(function ($q) use ($search) {
+                $q->where('title', 'like', "%{$search}%")
+                    ->orWhere('vin', 'like', "%{$search}%");
+            });
+        }
+
+        $vehicles = $query->with(['brand:id,name', 'vehicleModel:id,name'])
+            ->orderBy('auction_start_date', 'asc')
+            ->paginate($perPage);
+
+        return response()->json([
+            'status' => 'success',
+            'data'   => $vehicles
+        ]);
+    }
+
+
+
+    public function liveAuctions(Request $request)
+    {
+        $perPage = $request->get('per_page', 10);
+        $search  = $request->get('search', '');
+
+        $now = Carbon::now();
+
+        $query = Vehicle::where('is_auction', true)
+            ->where('status', 'published')
+            ->where('auction_start_date', '<=', $now)
+            ->where('auction_end_date', '>=', $now);
+
+        if (!empty($search)) {
+            $query->where(function ($q) use ($search) {
+                $q->where('title', 'like', "%{$search}%")
+                    ->orWhere('vin', 'like', "%{$search}%");
+            });
+        }
+
+        $vehicles = $query->with(['brand:id,name', 'vehicleModel:id,name'])
+            ->orderBy('auction_end_date', 'asc')
+            ->paginate($perPage);
+
+        return response()->json([
+            'status' => 'success',
+            'data'   => $vehicles
+        ]);
+    }
+
+
+    public function expiredAuctions(Request $request)
+    {
+        $perPage = $request->get('per_page', 10);
+        $search  = $request->get('search', '');
+
+        $query = Vehicle::where('is_auction', true)
+            ->where('status', 'published')
+            ->where('auction_end_date', '<', Carbon::now()); 
+
+        if (!empty($search)) {
+            $query->where(function ($q) use ($search) {
+                $q->where('title', 'like', "%{$search}%")
+                    ->orWhere('vin', 'like', "%{$search}%");
+            });
+        }
+
+        $vehicles = $query->with(['brand:id,name', 'vehicleModel:id,name'])
+            ->orderBy('auction_end_date', 'desc')
+            ->paginate($perPage);
+
+        return response()->json([
+            'status' => 'success',
+            'data'   => $vehicles
+        ]);
+    }
 
 
 
@@ -259,10 +348,10 @@ class VehicleManagementController extends Controller
             'is_cover.*'    => 'boolean',
         ]);
 
-        $existingImages = $vehicle->images; 
+        $existingImages = $vehicle->images;
         $keepIds = $validated['image_ids'] ?? [];
 
-       
+
         $deleteImages = $existingImages->whereNotIn('id', $keepIds);
         foreach ($deleteImages as $image) {
             // extract relative path if stored as full URL
@@ -379,7 +468,7 @@ class VehicleManagementController extends Controller
             'is_featured' => 'boolean',
             'is_auction' => 'boolean',
             'features' => 'nullable|array',
-             'images.*'=> 'file|mimetypes:image/jpeg,image/png,image/jpg,image/gif,image/webp,image/bmp,image/svg+xml,image/x-icon,image/tiff,image/heic,image/heif,image/avif',
+            'images.*' => 'file|mimetypes:image/jpeg,image/png,image/jpg,image/gif,image/webp,image/bmp,image/svg+xml,image/x-icon,image/tiff,image/heic,image/heif,image/avif',
         ];
 
         $validated = $request->validate($rules);

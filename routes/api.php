@@ -41,9 +41,6 @@ Route::post('login', [AuthController::class, 'login']);
 Route::middleware('auth:api')->post('logout', [AuthController::class, 'logout']);
 
 use App\Models\InspectionField;
-
-
-
 use Illuminate\Support\Facades\Storage;
 
 Route::get('/inspection-field-images/{reportId}/{field}', function ($reportId, $field) {
@@ -205,6 +202,9 @@ Route::prefix('admin')
         });
         Route::controller(VehicleManagementController::class)->group(function () {
             Route::get('/auctions', 'auctions');
+            Route::get('/upcoming-auctions', 'upcomingAuctions');
+            Route::get('/live-auctions', 'liveAuctions');
+            Route::get('/expired-auctions', 'expiredAuctions');
         });
 
         // Inspection Report Management
