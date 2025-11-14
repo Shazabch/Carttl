@@ -125,43 +125,31 @@ class VehicleManagementController extends Controller
             'data' => $vehicles
         ]);
     }
-    public function auctions(Request $request)
-    {
-        $type = $request->get('type', 'all');
-        $search = $request->get('search', '');
-        $perPage = $request->get('per_page', 10);
+   public function auctions(Request $request)
+{
+    $perPage = $request->get('per_page', 10);
+    $search  = $request->get('search', '');
 
-        $query = Vehicle::query();
-        $query->where('is_auction', true);
+    $query = Vehicle::where('is_auction', true)
+                    ->where('status', 'published'); // only published
 
-        if ($type === 'sold') {
-            $query->where('status', 'sold');
-        } elseif ($type === 'listed') {
-            $query->where('status', 'published');
-        } elseif ($type === 'pending') {
-            $query->where('status', 'pending');
-        } elseif ($type === 'draft') {
-            $query->where('status', 'draft');
-        }
-
-
-        if (!empty($search)) {
-            $query->where(function ($q) use ($search) {
-                $q->where('title', 'like', "%{$search}%")
-                    ->orWhere('vin', 'like', "%{$search}%");
-            });
-        }
-
-
-        $vehicles = $query->with(['brand:id,name', 'vehicleModel:id,name'])
-            ->orderBy('created_at', 'desc')
-            ->paginate($perPage);
-
-        return response()->json([
-            'status' => 'success',
-            'data' => $vehicles
-        ]);
+    if (!empty($search)) {
+        $query->where(function ($q) use ($search) {
+            $q->where('title', 'like', "%{$search}%")
+              ->orWhere('vin', 'like', "%{$search}%");
+        });
     }
+
+    $vehicles = $query->with(['brand:id,name', 'vehicleModel:id,name'])
+                      ->orderBy('created_at', 'desc')
+                      ->paginate($perPage);
+
+    return response()->json([
+        'status' => 'success',
+        'data'   => $vehicles
+    ]);
+}
+
 
 
     public function show($id)
