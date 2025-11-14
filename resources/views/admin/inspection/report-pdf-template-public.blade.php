@@ -439,15 +439,15 @@
             }
         }
 
-        /* DUBIZZLE OFFICIAL MOBILE NAVBAR - EXACT COPY */
-        .dubizzle-mobile-nav {
+        /* dex OFFICIAL MOBILE NAVBAR - EXACT COPY */
+        .dex-mobile-nav {
             border-radius: 24px 24px 0 0;
             overflow: hidden;
             padding: 8px 4px 12px;
             background: rgba(255, 255, 255, 0.95) !important;
         }
 
-        .dubizzle-nav-item {
+        .dex-nav-item {
             flex: 1;
             display: flex;
             flex-direction: column;
@@ -464,7 +464,7 @@
             min-width: 0;
         }
 
-        .dubizzle-nav-item .icon {
+        .dex-nav-item .icon {
             width: 46px;
             height: 46px;
             display: flex;
@@ -477,28 +477,28 @@
             position: relative;
         }
 
-        .dubizzle-nav-item i {
+        .dex-nav-item i {
             font-size: 20px;
             transition: transform 0.3s ease;
         }
 
-        /* ACTIVE STATE - DUBIZZLE ORANGE */
-        .dubizzle-nav-item.active {
+        /* ACTIVE STATE - dex ORANGE */
+        .dex-nav-item.active {
             color: #ff6b00 !important;
         }
 
-        .dubizzle-nav-item.active .icon {
+        .dex-nav-item.active .icon {
             background: #fff2e6;
             box-shadow: 0 4px 12px rgba(255, 107, 0, 0.25);
             transform: scale(1.1);
         }
 
-        .dubizzle-nav-item.active i {
+        .dex-nav-item.active i {
             transform: translateY(-2px);
         }
 
         /* Active indicator dot */
-        .dubizzle-nav-item.active::after {
+        .dex-nav-item.active::after {
             content: '';
             position: absolute;
             top: 4px;
@@ -510,7 +510,7 @@
         }
 
         /* Hover */
-        .dubizzle-nav-item:hover .icon {
+        .dex-nav-item:hover .icon {
             background: #fff2e6;
             transform: scale(1.05);
         }
@@ -523,48 +523,49 @@
         html {
             scroll-behavior: smooth;
         }
+        
     </style>
 </head>
 
 <body>
-    <!-- DUBIZZLE OFFICIAL MOBILE BOTTOM NAVBAR - 100% MATCH -->
+    <!-- dex OFFICIAL MOBILE BOTTOM NAVBAR - 100% MATCH -->
     <div id="mobileNav" class="d-block d-md-none position-fixed bottom-0 start-0 end-0" style="z-index: 9999; pointer-events: none;">
-        <div class="dubizzle-nav-wrapper" style="pointer-events: auto;">
-            <div class="dubizzle-mobile-nav bg-white"
+        <div class="dex-nav-wrapper" style="pointer-events: auto;">
+            <div class="dex-mobile-nav bg-white"
                 style="display: flex; height: 72px; border-top: 1px solid #e4e4e4; 
                     box-shadow: 0 -2px 12px rgba(0,0,0,0.08);
                     backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);">
 
-                <!-- <a href="#summary"     class="dubizzle-nav-item active" data-section="summary">
+                <!-- <a href="#summary"     class="dex-nav-item active" data-section="summary">
                 <div class="icon"><i class="fas fa-home"></i></div>
                 <span>Summary</span>
             </a> -->
-                <a href="#car-details" class="dubizzle-nav-item" data-section="car-details">
+                <a href="#car-details" class="dex-nav-item" data-section="car-details">
                     <div class="icon"><i class="fas fa-car"></i></div>
                     <span>Car Details</span>
                 </a>
-                <a href="#exterior" class="dubizzle-nav-item" data-section="exterior">
+                <a href="#exterior" class="dex-nav-item" data-section="exterior">
                     <div class="icon"><i class="fas fa-paint-roller"></i></div>
                     <span>Exterior</span>
                 </a>
-                <a href="#specs" class="dubizzle-nav-item" data-section="specs">
+                <a href="#specs" class="dex-nav-item" data-section="specs">
                     <div class="icon"><i class="fas fa-cogs"></i></div>
                     <span>Specs</span>
                 </a>
-                <!-- <a href="#wheels"      class="dubizzle-nav-item" data-section="wheels">
+                <!-- <a href="#wheels"      class="dex-nav-item" data-section="wheels">
                 <div class="icon"><i class="fas fa-tire"></i></div>
                 <span>Wheels & Tyres</span>
             </a> -->
-                <!-- <a href="#engine"      class="dubizzle-nav-item" data-section="engine">
+                <!-- <a href="#engine"      class="dex-nav-item" data-section="engine">
                 <div class="icon"><i class="fas fa-engine"></i></div>
                 <span>Engine</span>
             </a> -->
-                <!-- <a href="#steering"    class="dubizzle-nav-item" data-section="steering">
+                <!-- <a href="#steering"    class="dex-nav-item" data-section="steering">
                 <div class="icon"><i class="fas fa-steering-wheel"></i></div>
                 <span>Steering & Brakes</span>
             </a> -->
 
-                <a href="#interior" class="dubizzle-nav-item" data-section="interior">
+                <a href="#interior" class="dex-nav-item" data-section="interior">
                     <div class="icon"><i class="fas fa-chair"></i></div>
                     <span>Interior</span>
                 </a>
@@ -1800,7 +1801,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     specs: document.querySelector("#specs")
                 };
 
-                const navItems = document.querySelectorAll(".dubizzle-nav-item");
+                const navItems = document.querySelectorAll(".dex-nav-item");
 
                 function updateActive() {
                     let current = "summary";

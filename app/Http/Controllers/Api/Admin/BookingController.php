@@ -188,7 +188,7 @@ class BookingController extends Controller
             ->paginate($perPage)
             ->through(function ($vehicle) {
                 $booking = Booking::where('vehicle_id', $vehicle->id)
-                    ->where('status', 'delive') // confirm spelling
+                    ->where('status', 'delivered') // confirm spelling
                     ->first();
 
                 return [
