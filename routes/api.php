@@ -40,42 +40,11 @@ Route::post('register', [AuthController::class, 'register']);
 Route::post('login', [AuthController::class, 'login']);
 Route::middleware('auth:api')->post('logout', [AuthController::class, 'logout']);
 
-// routes/api.php  (recommended – no CSRF)
-use App\Models\InspectionField;
-use Illuminate\Support\Facades\Storage;
 
-Route::get('/inspection-field-images/{reportId}/{field}', function ($reportId, $field) {
-    $fieldData = InspectionField::with('files')
-        ->where('vehicle_inspection_report_id', $reportId)
-        ->where('name', $field)
-        ->first();
 
-    if (!$fieldData || $fieldData->files->isEmpty()) {
-        return response()->json(['images' => []]);
-    }
-
-    $files = $fieldData->files->map(function ($item) {
-        $path = $item->path;
-        $url  = str_starts_with($path, 'http') ? $path : Storage::url($path);
-
-        $thumbUrl = null;
-        if ($item->file_type === 'video') {
-            $thumbPath = preg_replace('/\.[^.]+$/', '_thumb.jpg', $path);
-            $thumbUrl = str_starts_with($thumbPath, 'http')
-                ? $thumbPath
-                : (Storage::exists($thumbPath) ? Storage::url($thumbPath) : null);
-        }
-
-        return [
-            'path'      => $url,
-            'thumb'     => $thumbUrl,
-            'file_type' => $item->file_type,
-        ];
-    })->toArray();
-
-    return response()->json(['images' => $files]);
-})->name('api.inspection.field.images');
-
+        Route::get('/inspection-field-images/{reportId}/{field}', [InspectionReportController::class, 'getFieldImages'])
+            ->name('api.inspection.field.images');
+    
 // Admin Panel Routes
 Route::prefix('admin')
     ->middleware(['middleware' => 'auth:api'])

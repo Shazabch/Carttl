@@ -69,7 +69,38 @@ class InspectionReportController extends Controller
             'data' => $reports,
         ]);
     }
+  public function getFieldImages($reportId, $field)
+    {
+        $fieldData = InspectionField::with('files')
+            ->where('vehicle_inspection_report_id', $reportId)
+            ->where('name', $field)
+            ->first();
 
+        if (!$fieldData || $fieldData->files->isEmpty()) {
+            return response()->json(['images' => []]);
+        }
+
+        $files = $fieldData->files->map(function ($item) {
+            $path = $item->path;
+            $url  = str_starts_with($path, 'http') ? $path : Storage::url($path);
+
+            $thumbUrl = null;
+            if ($item->file_type === 'video') {
+                $thumbPath = preg_replace('/\.[^.]+$/', '_thumb.jpg', $path);
+                $thumbUrl = str_starts_with($thumbPath, 'http')
+                    ? $thumbPath
+                    : (Storage::exists($thumbPath) ? Storage::url($thumbPath) : null);
+            }
+
+            return [
+                'path'      => $url,
+                'thumb'     => $thumbUrl,
+                'file_type' => $item->file_type,
+            ];
+        })->toArray();
+
+        return response()->json(['images' => $files]);
+    }
 
   public function show($id)
 {
