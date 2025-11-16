@@ -566,6 +566,9 @@
         ->kebab()
         ->replace('-', ' ')
         ->title();
+        if($field == 'comment_section2' || $field == 'comment_section1'){
+            $label='Comments';
+        }
 
         $html = '<div class="item-label">';
             $html .= '<i class="'.$icon.'"></i> '.$label;
