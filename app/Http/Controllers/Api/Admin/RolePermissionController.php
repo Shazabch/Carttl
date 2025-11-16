@@ -94,13 +94,13 @@ class RolePermissionController extends Controller
     public function update(Request $request, $id)
     {
         $role = Role::where('guard_name', 'api')->findOrFail($id);
-
+        
         $validated = $request->validate([
             'name'          => [
                 'required',
                 'string',
                 'max:255',
-                Rule::unique('roles', 'name')->ignore($role->id),
+                Rule::unique('roles', 'name')->where('guard_name', 'api')->ignore($role->id),
             ],
             'permissions'   => 'nullable|array',
             'permissions.*' => 'exists:permissions,name',

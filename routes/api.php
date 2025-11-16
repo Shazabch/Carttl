@@ -40,6 +40,7 @@ Route::post('register', [AuthController::class, 'register']);
 Route::post('login', [AuthController::class, 'login']);
 Route::middleware('auth:api')->post('logout', [AuthController::class, 'logout']);
 
+// routes/api.php  (recommended – no CSRF)
 use App\Models\InspectionField;
 use Illuminate\Support\Facades\Storage;
 
@@ -55,16 +56,14 @@ Route::get('/inspection-field-images/{reportId}/{field}', function ($reportId, $
 
     $files = $fieldData->files->map(function ($item) {
         $path = $item->path;
-
-        // If path is already full URL → use it directly
-        // If path is relative (e.g. inspection_field_files/abc.jpg) → use Storage::url()
-        $url = str_starts_with($path, 'http') ? $path : Storage::url($path);
+        $url  = str_starts_with($path, 'http') ? $path : Storage::url($path);
 
         $thumbUrl = null;
         if ($item->file_type === 'video') {
             $thumbPath = preg_replace('/\.[^.]+$/', '_thumb.jpg', $path);
-            $thumbUrl = str_starts_with($thumbPath, 'http') ? $thumbPath : 
-                        (Storage::exists($thumbPath) ? Storage::url($thumbPath) : null);
+            $thumbUrl = str_starts_with($thumbPath, 'http')
+                ? $thumbPath
+                : (Storage::exists($thumbPath) ? Storage::url($thumbPath) : null);
         }
 
         return [
@@ -75,7 +74,7 @@ Route::get('/inspection-field-images/{reportId}/{field}', function ($reportId, $
     })->toArray();
 
     return response()->json(['images' => $files]);
-});
+})->name('api.inspection.field.images');
 
 // Admin Panel Routes
 Route::prefix('admin')

@@ -1,4 +1,5 @@
 <?php
+use App\Models\InspectionField;
 
 if (!function_exists('format_currency')) {
     function format_currency($amount, $currency = 'AED')
@@ -76,5 +77,24 @@ if (!function_exists('getStatusInfo')) {
 
         // Default info status
         return ['class' => 'status-info', 'icon' => 'fas fa-info-circle'];
+    }
+}
+
+if (! function_exists('inspectionFieldFileCount')) {
+    /**
+     * Count the number of files for a given inspection field
+     *
+     * @param int $reportId
+     * @param string $fieldName
+     * @return int
+     */
+    function inspectionFieldFileCount(int $reportId, string $fieldName): int
+    {
+        $field = InspectionField::with('files')
+            ->where('vehicle_inspection_report_id', $reportId)
+            ->where('name', $fieldName)
+            ->first();
+
+        return $field ? $field->files->count() : 0;
     }
 }
