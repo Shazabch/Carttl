@@ -109,9 +109,9 @@ Route::prefix('admin')
 
         // Inspection Inquiries
         Route::controller(InspectionEnquiryController::class)->group(function () {
-            Route::get('/inspection-enquiries', 'index')->middleware('permission:inspection-list');
-            Route::get('/inspection-enquiries/show/{id}', 'show')->middleware('permission:inspection-view');
-            Route::delete('/inspection-enquiries/delete/{id}', 'destroy')->middleware('permission:inspection-delete');
+            Route::get('/inspection-enquiries', 'index')->middleware('permission:inspection-inquiry-list');
+            Route::get('/inspection-enquiries/show/{id}', 'show')->middleware('permission:inspection-inquiry-view');
+            Route::delete('/inspection-enquiries/delete/{id}', 'destroy')->middleware('permission:inspection-inquiry-delete');
         });
 
         // Purchase Inquiries
@@ -160,13 +160,13 @@ Route::prefix('admin')
             Route::get('features/exterior', 'getExteriorFeatures');
             Route::get('features/interior', 'getInteriorFeatures');
             Route::get('tags', 'getTags');
-            Route::get('/', 'index')->middleware('permission:vehicle-list');
-            Route::get('show/{id}', 'show')->middleware('permission:vehicle-view');
-            Route::post('create', 'store')->middleware('permission:vehicle-create');
-            Route::post('update/{id}', 'update')->middleware('permission:vehicle-edit');
+            Route::get('/', 'index')->middleware('permission:auction-list');
+            Route::get('show/{id}', 'show')->middleware('permission:auction-view');
+            Route::post('create', 'store')->middleware('permission:auction-create');
+            Route::post('update/{id}', 'update')->middleware('permission:auction-edit');
             Route::post('images/add/{id}', 'addImages');
             Route::post('images/remove/{id}', 'removeImages');
-            Route::delete('delete/{id}', 'destroy')->middleware('permission:vehicle-delete');
+            Route::delete('delete/{id}', 'destroy')->middleware('permission:auction-delete');
         });
         Route::controller(VehicleManagementController::class)->group(function () {
             Route::get('/auctions', 'auctions');
@@ -177,21 +177,21 @@ Route::prefix('admin')
 
         // Inspection Report Management
         Route::controller(InspectionReportController::class)->group(function () {
-            Route::get('/inspection-reports', 'index')->middleware('permission:inspection-list');
-            Route::get('/inspection-reports/show/{id}', 'show')->middleware('permission:report-view');
-            Route::post('/inspection-reports/create', 'store')->middleware('permission:report-create');
-            Route::post('/inspection-reports/upload-images', 'storeVehicleImages')->middleware('permission:report-create');
-            Route::post('/inspection-reports/remove-images', 'removeVehicleImages')->middleware('permission:report-create');
-            Route::post('/inspection-reports/field-images/add', 'storeInspectionFields')->middleware('permission:report-create');
-            Route::post('/inspection-reports/field-images/remove', 'removeInspectionFieldImages')->middleware('permission:report-create');
+            Route::get('/inspection-reports', 'index')->middleware('permission:inspection-report-list');
+            Route::get('/inspection-reports/show/{id}', 'show')->middleware('permission:inspection-report-view');
+            Route::post('/inspection-reports/create', 'store')->middleware('permission:inspection-report-create');
+            Route::post('/inspection-reports/upload-images', 'storeVehicleImages')->middleware('permission:inspection-report-create');
+            Route::post('/inspection-reports/remove-images', 'removeVehicleImages')->middleware('permission:inspection-report-create');
+            Route::post('/inspection-reports/field-images/add', 'storeInspectionFields')->middleware('permission:inspection-report-create');
+            Route::post('/inspection-reports/field-images/remove', 'removeInspectionFieldImages')->middleware('permission:inspection-report-create');
             Route::get('/inspection-reports/damage-types', 'getDamageTypes');
-            Route::post('/inspection-reports/damage/add', 'addDamage')->middleware('permission:report-create');
-            Route::post('/inspection-reports/damage/remove', 'removeDamage')->middleware('permission:report-create');
-            Route::post('/inspection-reports/update/{id}', 'update')->middleware('permission:report-edit');
-            Route::delete('/inspection-reports/delete/{id}', 'destroy')->middleware('permission:report-delete');
-            Route::post('/inspection-reports/generate-pdf/{id}', 'generatePdf')->middleware('permission:report-generate-pdf');
-            Route::post('/inspection-reports/share-link/{id}', 'share')->middleware('permission:report-share');
-            Route::get('/inspection-reports/download/{id}', 'downloadReport')->middleware('permission:report-download');
+            Route::post('/inspection-reports/damage/add', 'addDamage')->middleware('permission:inspection-report-create');
+            Route::post('/inspection-reports/damage/remove', 'removeDamage')->middleware('permission:inspection-report-create');
+            Route::post('/inspection-reports/update/{id}', 'update')->middleware('permission:inspection-report-edit');
+            Route::delete('/inspection-reports/delete/{id}', 'destroy')->middleware('permission:inspection-report-delete');
+            Route::post('/inspection-reports/generate-pdf/{id}', 'generatePdf')->middleware('permission:inspection-report-generate-pdf');
+            Route::post('/inspection-reports/share-link/{id}', 'share')->middleware('permission:inspection-report-share');
+            Route::get('/inspection-reports/download/{id}', 'downloadReport')->middleware('permission:inspection-report-download');
         });
 
         // Notifications

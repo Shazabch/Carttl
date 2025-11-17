@@ -13,86 +13,219 @@ class RolesAndPermissionsSeeder extends Seeder
         // Reset cached roles and permissions
         app()[\Spatie\Permission\PermissionRegistrar::class]->forgetCachedPermissions();
 
-        // 1️⃣ All defined permissions
+        // 1️⃣ Final Permissions List
         $permissions = [
-            // Inspections
-            'inspection-list', 'inspection-view', 'inspection-create', 'inspection-edit', 'inspection-delete',
-            'inspection-approve', 'inspection-assign',
+            'dashboard-view',
 
-            // Vehicles
-            'vehicle-list', 'vehicle-view', 'vehicle-create', 'vehicle-edit', 'vehicle-delete',
-             // Auctions
-            'auction-list', 'auction-view', 'auction-create', 'auction-edit', 'auction-delete',
-             // Bookings
-            'booking-list', 'booking-view', 'booking-create', 'booking-edit', 'booking-delete',
-             // Invoices
-            'invoice-list', 'invoice-view', 'invoice-create', 'invoice-edit', 'invoice-delete',
-             // Activity Logs
-            'activity-log-list', 'activity-log-view',  'activity-log-delete',
-             // Packages
-            'package-list', 'package-view', 'package-create', 'package-edit', 'package-delete',
-            // Contact Inquiry
-            'contact-inquiry-list', 'contact-inquiry-view', 'contact-inquiry-edit', 'contact-inquiry-delete',
+            // Activity Logs
+            'activity-log-list',
+            'activity-log-view',
+            'activity-log-delete',
 
-            // Purchase Inquiry
-            'purchase-inquiry-list', 'purchase-inquiry-view', 'purchase-inquiry-edit', 'purchase-inquiry-delete',
+            // Roles & Permissions
+            'role-list',
+            'role-manage',
 
-            // Sale Inquiry
-            'sale-inquiry-list', 'sale-inquiry-view', 'sale-inquiry-edit', 'sale-inquiry-delete',
+            // Users
+            'user-list',
+            'user-manage',
+
+            // Contact Inquiries
+            'contact-inquiry-list',
+            'contact-inquiry-view',
+            'contact-inquiry-delete',
+
+            // Inspection Inquiries
+            'inspection-inquiry-list',
+            'inspection-inquiry-view',
+            'inspection-inquiry-delete',
+
+            // Purchase Inquiries
+            'purchase-inquiry-list',
+            'purchase-inquiry-view',
+            'purchase-inquiry-delete',
+
+            // Sale Inquiries
+            'sale-inquiry-list',
+            'sale-inquiry-view',
+            'sale-inquiry-delete',
+
+            // Bids
+            'bidding-list',
+            'bidding-actions',
 
             // Makes
-            'make-list', 'make-actions',
+            'make-list',
+            'make-actions',
 
-            // Biddings
-            'bidding-list', 'bidding-actions',
-            
+            // Auctions
+            'auction-list',
+            'auction-view',
+            'auction-create',
+            'auction-edit',
+            'auction-delete',
 
-            // Clients
-            'client-list', 'client-create', 'client-edit', 'client-delete',
-             // Dre
-            'dre-list', 'dre-view', 'dre-manage',
-             // Appointments
-            'appointment-list', 'appointment-view', 'appointment-manage',
-            // Reports
-            'report-view', 'report-download', 'report-share', 'report-delete',
-            'report-edit', 'report-create', 'report-generate-pdf',
+            // Inspection Reports
+            'inspection-report-list',
+            'inspection-report-view',
+            'inspection-report-create',
+            'inspection-report-edit',
+            'inspection-report-delete',
+            'inspection-report-generate-pdf',
+            'inspection-report-share',
+            'inspection-report-download',
 
-            // System & User Management
-            'user-list', 'system-settings', 'user-manage',
-            'role-list', 'role-manage',
-            'blog-list', 'blog-manage',
-            'testimonial-list', 'testimonial-manage',
-            'dashboard-view',
+            // Agents
+            'dre-list',
+            'dre-view',
+            'dre-manage',
+
+            // Packages
+            'package-list',
+            'package-create',
+            'package-view',
+            'package-edit',
+            'package-delete',
+
+            // Bookings
+            'booking-list',
+            'booking-view',
+            'booking-edit',
+            'booking-delete',
+
+            // Invoices
+            'invoice-list',
+            'invoice-view',
+            'invoice-create',
+            'invoice-edit',
+            'invoice-delete',
+
+            // Appointments
+            'appointment-list',
+            'appointment-view',
+            'appointment-manage',
         ];
 
-        // 2️⃣ Create/update permissions for API guard only
-        foreach ($permissions as $permission) {
+        // 2️⃣ Create permissions for API guard
+        foreach ($permissions as $p) {
             Permission::updateOrCreate(
-                ['name' => $permission, 'guard_name' => 'api'],
+                ['name' => $p, 'guard_name' => 'api'],
                 []
             );
         }
 
-        // 3️⃣ Create/update roles for API guard only
+        // 3️⃣ Roles
         $roles = [
             'super-admin' => Permission::where('guard_name', 'api')->pluck('name')->toArray(),
+
+            // Customize these if needed
             'admin' => [
-                'dashboard-view', 'inspection-list', 'inspection-view', 'inspection-delete',
-                'inspection-approve', 'inspection-assign', 'vehicle-list', 'vehicle-view',
-                'vehicle-create', 'vehicle-edit', 'vehicle-delete', 'client-list', 'client-create',
-                'client-edit', 'client-delete', 'report-view', 'report-download', 'report-share',
-                'report-delete', 'report-edit', 'report-create', 'report-generate-pdf',
-                'user-list', 'user-manage', 'bidding-list', 'bidding-actions',
-                'make-list', 'make-actions', 'role-list',
+                'dashboard-view',
+
+                // Activity Logs
+                'activity-log-list',
+                'activity-log-view',
+                'activity-log-delete',
+
+                // Roles & Permissions
+                'role-list',
+                'role-manage',
+
+                // Users
+                'user-list',
+                'user-manage',
+
+                // Contact Inquiries
+                'contact-inquiry-list',
+                'contact-inquiry-view',
+                'contact-inquiry-delete',
+
+                // Inspection Inquiries
+                'inspection-inquiry-list',
+                'inspection-inquiry-view',
+                'inspection-inquiry-delete',
+
+                // Purchase Inquiries
+                'purchase-inquiry-list',
+                'purchase-inquiry-view',
+                'purchase-inquiry-delete',
+
+                // Sale Inquiries
+                'sale-inquiry-list',
+                'sale-inquiry-view',
+                'sale-inquiry-delete',
+
+                // Bids
+                'bidding-list',
+                'bidding-actions',
+
+                // Makes
+                'make-list',
+                'make-actions',
+
+                // Auctions
+                'auction-list',
+                'auction-view',
+                'auction-create',
+                'auction-edit',
+                'auction-delete',
+
+                // Inspection Reports
+                'inspection-report-list',
+                'inspection-report-view',
+                'inspection-report-create',
+                'inspection-report-edit',
+                'inspection-report-delete',
+                'inspection-report-generate-pdf',
+                'inspection-report-share',
+                'inspection-report-download',
+
+                // Agents
+                'dre-list',
+                'dre-view',
+                'dre-manage',
+
+                // Packages
+                'package-list',
+                'package-create',
+                'package-view',
+                'package-edit',
+                'package-delete',
+
+                // Bookings
+                'booking-list',
+                'booking-view',
+                'booking-edit',
+                'booking-delete',
+
+                // Invoices
+                'invoice-list',
+                'invoice-view',
+                'invoice-create',
+                'invoice-edit',
+                'invoice-delete',
+
+                // Appointments
+                'appointment-list',
+                'appointment-view',
+                'appointment-manage',
             ],
+
+
             'inspector' => [
-                'dashboard-view', 'inspection-list', 'inspection-view', 'inspection-create',
-                'inspection-edit', 'inspection-delete', 'vehicle-list', 'vehicle-view',
-                'report-view', 'report-download',
+                'dashboard-view',
+                'inspection-report-list',
+                'inspection-report-view',
+                'inspection-report-edit',
+                'inspection-report-create',
+                'inspection-report-generate-pdf',
+                'auction-list',
+                'auction-view',
             ],
+
             'customer' => [
-                'dashboard-view', 'inspection-list', 'inspection-view',
-                'report-view', 'report-download',
+                'dashboard-view',
+
             ],
         ];
 
