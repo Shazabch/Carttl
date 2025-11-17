@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use DateTimeInterface;
 
 class VehicleInspectionReport extends Model
 {
@@ -36,9 +37,26 @@ class VehicleInspectionReport extends Model
         'shockAbsorberOperation' => 'array',
     ];
 
+
+
+    protected function serializeDate(DateTimeInterface $date)
+    {
+        // Force all dates to Dubai timezone when returning JSON
+        return $date->timezone(config('app.timezone'))->format('Y-m-d H:i:s');
+    }
+
     /**
      * Get the vehicle that this inspection report belongs to.
      */
+    protected static function booted()
+    {
+        static::creating(function ($model) {
+            if (!$model->inspected_at) {
+                $model->inspected_at = now(); // uses app timezone
+            }
+        });
+    }
+
     public function vehicle()
     {
         return $this->belongsTo(Vehicle::class);
@@ -81,11 +99,9 @@ class VehicleInspectionReport extends Model
     {
         return $this->hasMany(CarDamage::class, 'inspection_id');
     }
- 
+
     public function fields()
     {
         return $this->hasMany(InspectionField::class, 'vehicle_inspection_report_id');
     }
-
-
 }
