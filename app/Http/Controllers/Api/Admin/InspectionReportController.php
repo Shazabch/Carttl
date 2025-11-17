@@ -69,7 +69,7 @@ class InspectionReportController extends Controller
             'data' => $reports,
         ]);
     }
-  public function getFieldImages($reportId, $field)
+    public function getFieldImages($reportId, $field)
     {
         $fieldData = InspectionField::with('files')
             ->where('vehicle_inspection_report_id', $reportId)
@@ -102,28 +102,84 @@ class InspectionReportController extends Controller
         return response()->json(['images' => $files]);
     }
 
-  public function show($id)
-{
-    $report = VehicleInspectionReport::with([
-        'vehicle',
-        'damages',
-        'inspector',
-        'images',
-        'brand:id,name',
-        'vehicleModel:id,name',
-        'fields.files' 
-    ])->findOrFail($id);
+    public function show($id)
+    {
+        $report = VehicleInspectionReport::with([
+            'vehicle',
+            'damages',
+            'inspector',
+            'images',
+            'brand:id,name',
+            'vehicleModel:id,name',
+            'fields.files'
+        ])->findOrFail($id);
 
-    $report->make_name = $report->brand->name ?? null;
-    $report->model_name = $report->vehicleModel->name ?? null;
+        $report->make_name = $report->brand->name ?? null;
+        $report->model_name = $report->vehicleModel->name ?? null;
 
-    unset($report->brand, $report->vehicleModel);
+        unset($report->brand, $report->vehicleModel);
 
-    return response()->json([
-        'status' => 'success',
-        'data'   => $report,
-    ]);
-}
+        return response()->json([
+            'status' => 'success',
+            'data'   => $report,
+        ]);
+    }
+
+    public function generateShareableLink(Request $request, $id)
+    {
+        $request->validate([
+            'expires_at' => [
+                'required',
+                'date_format:Y-m-d H:i',
+                'after_or_equal:now'   // ⬅ ensure not in past
+            ]
+        ]);
+
+        $report = VehicleInspectionReport::findOrFail($id);
+
+        // Convert to Dubai timezone
+        $expiresAt = Carbon::parse($request->expires_at, 'Asia/Dubai');
+
+        $signedUrl = URL::temporarySignedRoute(
+            'inspection-reports.shareable.access',
+            $expiresAt,
+            ['id' => $report->id]
+        );
+
+        $report->shared_link = $signedUrl;
+        $report->shared_link_expires_at = $expiresAt;
+        $report->save();
+
+        return response()->json([
+            'status' => 'success',
+            'link' => $signedUrl,
+            'expires_at' => $expiresAt->format('Y-m-d H:i:s'),
+        ]);
+    }
+
+    public function accessSharedReport(Request $request, $id)
+    {
+        $report = VehicleInspectionReport::with([
+            'vehicle',
+            'damages',
+            'inspector',
+            'images',
+            'fields.files'
+        ])->findOrFail($id);
+
+        // Check manual expiry (extra protection)
+        if ($report->shared_link_expires_at && now('Asia/Dubai')->greaterThan($report->shared_link_expires_at)) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'This link has expired.',
+            ], 410); // 410 Gone
+        }
+
+        return response()->json([
+            'status' => 'success',
+            'data' => $report,
+        ]);
+    }
 
 
 
@@ -327,73 +383,73 @@ class InspectionReportController extends Controller
         ], 200);
     }
 
-  public function storeInspectionFields(Request $request)
-{
-    $validated = $request->validate([
-        'vehicle_inspection_report_id' => 'required|exists:vehicle_inspection_reports,id',
-        'inspection_image_fields'      => 'required|array',
-    ]);
+    public function storeInspectionFields(Request $request)
+    {
+        $validated = $request->validate([
+            'vehicle_inspection_report_id' => 'required|exists:vehicle_inspection_reports,id',
+            'inspection_image_fields'      => 'required|array',
+        ]);
 
-    $reportId = $validated['vehicle_inspection_report_id'];
-    $responseData = [];
+        $reportId = $validated['vehicle_inspection_report_id'];
+        $responseData = [];
 
-    foreach ($request->inspection_image_fields as $fieldName => $files) {
-        
-        $field = InspectionField::updateOrCreate(
-            [
-                'vehicle_inspection_report_id' => $reportId,
-                'name' => $fieldName,
-            ],
-            []
-        );
+        foreach ($request->inspection_image_fields as $fieldName => $files) {
 
-        $savedFiles = [];
+            $field = InspectionField::updateOrCreate(
+                [
+                    'vehicle_inspection_report_id' => $reportId,
+                    'name' => $fieldName,
+                ],
+                []
+            );
 
-        if (!empty($files)) {
+            $savedFiles = [];
 
-            foreach ($files as $file) {
+            if (!empty($files)) {
 
-                if ($file instanceof \Illuminate\Http\UploadedFile) {
+                foreach ($files as $file) {
 
-                    $mime = $file->getMimeType();
+                    if ($file instanceof \Illuminate\Http\UploadedFile) {
 
-                    // Detect file type
-                    $isImage = str_starts_with($mime, 'image/');
-                    $isVideo = str_starts_with($mime, 'video/');
+                        $mime = $file->getMimeType();
 
-                    // Allow only images or videos
-                    if (!($isImage || $isVideo)) {
-                        continue;
+                        // Detect file type
+                        $isImage = str_starts_with($mime, 'image/');
+                        $isVideo = str_starts_with($mime, 'video/');
+
+                        // Allow only images or videos
+                        if (!($isImage || $isVideo)) {
+                            continue;
+                        }
+
+                        // Store in same folder
+                        $path = $file->store('inspection_field_files', 'public');
+
+                        $fileType = $isImage ? 'image' : 'video';
+
+                        $fullPath = asset('storage/' . $path);
+
+                        $savedFiles[] = InspectionFieldImage::create([
+                            'inspection_field_id' => $field->id,
+                            'path'               => $fullPath,
+                            'file_type'          => $fileType,
+                        ]);
                     }
-
-                    // Store in same folder
-                    $path = $file->store('inspection_field_files', 'public');
-
-                    $fileType = $isImage ? 'image' : 'video';
-
-                    $fullPath = asset('storage/' . $path);
-
-                    $savedFiles[] = InspectionFieldImage::create([
-                        'inspection_field_id' => $field->id,
-                        'path'               => $fullPath,
-                        'file_type'          => $fileType,
-                    ]);
                 }
             }
+
+            $responseData[] = [
+                'field' => $field,
+                'files' => $savedFiles,
+            ];
         }
 
-        $responseData[] = [
-            'field' => $field,
-            'files' => $savedFiles,
-        ];
+        return response()->json([
+            'status'  => 'success',
+            'message' => 'Fields, images, and videos saved successfully.',
+            'data'    => $responseData,
+        ]);
     }
-
-    return response()->json([
-        'status'  => 'success',
-        'message' => 'Fields, images, and videos saved successfully.',
-        'data'    => $responseData,
-    ]);
-}
 
 
 

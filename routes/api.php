@@ -32,6 +32,7 @@ use App\Http\Controllers\Api\Customer\FavoriteController;
 use App\Http\Controllers\Api\Customer\InspectionController;
 use App\Http\Controllers\Api\Customer\SellCarController;
 use App\Http\Controllers\Api\Customer\UserDataController;
+use App\Http\Controllers\Api\PushNotificationsController;
 use App\Models\Package;
 use App\Models\VehicleInspectionReport;
 
@@ -39,12 +40,19 @@ use App\Models\VehicleInspectionReport;
 Route::post('register', [AuthController::class, 'register']);
 Route::post('login', [AuthController::class, 'login']);
 Route::middleware('auth:api')->post('logout', [AuthController::class, 'logout']);
+Route::get('/inspection-field-images/{reportId}/{field}', [InspectionReportController::class, 'getFieldImages'])
+    ->name('api.inspection.field.images');
+// push notifications
+Route::prefix('notifications')->group(function () {
+    Route::controller(PushNotificationsController::class)->group(function () {
+        Route::post('/save-token', 'saveToken');            // Save device token
+        Route::post('/send', 'sendNotification');          // Send to single device
+        Route::post('/send-all', 'sendToAll');            // Send to all devices
+    });
+});
+Route::get('/inspection-reports/access/{id}', [InspectionReportController::class, 'accessSharedReport'])
+    ->name('inspection-reports.shareable.access');
 
-
-
-        Route::get('/inspection-field-images/{reportId}/{field}', [InspectionReportController::class, 'getFieldImages'])
-            ->name('api.inspection.field.images');
-    
 // Admin Panel Routes
 Route::prefix('admin')
     ->middleware(['middleware' => 'auth:api'])
@@ -109,9 +117,9 @@ Route::prefix('admin')
 
         // Inspection Inquiries
         Route::controller(InspectionEnquiryController::class)->group(function () {
-            Route::get('/inspection-enquiries', 'index')->middleware('permission:inspection-inquiry-list');
-            Route::get('/inspection-enquiries/show/{id}', 'show')->middleware('permission:inspection-inquiry-view');
-            Route::delete('/inspection-enquiries/delete/{id}', 'destroy')->middleware('permission:inspection-inquiry-delete');
+            Route::get('/inspection-enquiries', 'index')->middleware('permission:appointment-list');
+            Route::get('/inspection-enquiries/show/{id}', 'show')->middleware('permission:appointment-view');
+            Route::delete('/inspection-enquiries/delete/{id}', 'destroy')->middleware('permission:appointment-manage');
         });
 
         // Purchase Inquiries
@@ -179,6 +187,7 @@ Route::prefix('admin')
         Route::controller(InspectionReportController::class)->group(function () {
             Route::get('/inspection-reports', 'index')->middleware('permission:inspection-report-list');
             Route::get('/inspection-reports/show/{id}', 'show')->middleware('permission:inspection-report-view');
+            Route::post('/inspection-reports/shareable/{id}', 'generateShareableLink')->middleware('permission:inspection-report-share');
             Route::post('/inspection-reports/create', 'store')->middleware('permission:inspection-report-create');
             Route::post('/inspection-reports/upload-images', 'storeVehicleImages')->middleware('permission:inspection-report-create');
             Route::post('/inspection-reports/remove-images', 'removeVehicleImages')->middleware('permission:inspection-report-create');
