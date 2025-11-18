@@ -50,9 +50,8 @@ Route::prefix('notifications')->group(function () {
         Route::post('/send-all', 'sendToAll');            // Send to all devices
     });
 });
-Route::get('/inspection-reports/access/{id}', [InspectionReportController::class, 'accessSharedReport'])
-    ->name('inspection-reports.shareable.access');
-
+Route::get('/inspection-reports/show-shared/{token}', [InspectionReportController::class, 'showShared']);
+   
 // Admin Panel Routes
 Route::prefix('admin')
     ->middleware(['middleware' => 'auth:api'])

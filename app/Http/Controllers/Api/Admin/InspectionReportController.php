@@ -20,6 +20,7 @@ use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Str;
 use Symfony\Component\HttpFoundation\Response;
 use App\Services\ImageWatermarkService;
+use Illuminate\Support\Facades\Crypt;
 
 class InspectionReportController extends Controller
 {
@@ -124,8 +125,8 @@ class InspectionReportController extends Controller
             'data'   => $report,
         ]);
     }
-
-    public function generateShareableLink(Request $request, $id)
+    ///old start
+    public function generateShareableLink2(Request $request, $id)
     {
         $request->validate([
             'expires_at' => [
@@ -180,7 +181,75 @@ class InspectionReportController extends Controller
             'data' => $report,
         ]);
     }
+    ///old end
+    public function showShared($token)
+    {
+        try {
+            // Decrypt token
+            $decrypted = Crypt::decrypt($token);
+            $reportId = $decrypted['report_id'];
+            $expiresAt = $decrypted['expires_at'] ?? null;
 
+            // Check expiration
+            if ($expiresAt && now()->gt($expiresAt)) {
+                return response()->json([
+                    'success' => false,
+                    'error' => 'Link has expired'
+                ], 410);
+            }
+
+            // Fetch report
+
+            $report = VehicleInspectionReport::with([
+                'vehicle',
+                'damages',
+                'inspector',
+                'images',
+                'fields.files'
+            ])->find($reportId);
+
+            if (!$report) {
+                return response()->json([
+                    'success' => false,
+                    'error' => 'Report not found'
+                ], 404);
+            }
+
+            return response()->json([
+                'success' => true,
+                'data' => $report
+            ]);
+        } catch (\Illuminate\Contracts\Encryption\DecryptException $e) {
+            return response()->json([
+                'success' => false,
+                'error' => 'Invalid link'
+            ], 401);
+        }
+    }
+
+    public function generateShareableLink(Request $request)
+    {
+        $request->validate([
+            'report_id' => 'required|exists:vehicle_inspection_reports,id',
+            'expires_at' => 'required|date|after:now'
+        ]);
+
+        $payload = [
+            'report_id' => $request->report_id,
+            'expires_at' => $request->expires_at,
+            'created_at' => now()
+        ];
+
+        $token = Crypt::encrypt($payload);
+
+        $frontendUrl = config('app.frontend_url') . '/shared/' . $token;
+
+        return response()->json([
+            'success' => true,
+            'shareable_url' => $frontendUrl,
+            'expires_at' => $request->expires_at
+        ]);
+    }
 
 
     public function store(Request $request)
