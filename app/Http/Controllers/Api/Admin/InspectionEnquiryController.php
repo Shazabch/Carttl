@@ -16,7 +16,6 @@ class InspectionEnquiryController extends Controller
         $sortBy = $request->get('sort_by', 'created_at');
         $sortDir = $request->get('sort_dir', 'DESC');
         $perPage = $request->get('per_page', 10);
-
         $enquiries = InspectionEnquiry::query()
             ->with(['brand:id,name', 'vehicleModel:id,name'])
             ->when($user->role === 'inspector', function ($query) use ($user) {

@@ -145,19 +145,19 @@ class InspectionReportController extends Controller
             // Fetch report
 
             $report = VehicleInspectionReport::with([
-                'vehicle' => function ($query) {
-                    $query->with([
-                        'brand:id,name',
-                        'vehicleModel:id,name'
-                    ]);
-                },
+                'vehicle',
                 'damages',
                 'inspector',
                 'images',
+                'brand:id,name',
+                'vehicleModel:id,name',
                 'fields.files'
-            ])->find($reportId);
+            ])->findOrFail($reportId);
 
+            $report->make_name = $report->brand->name ?? null;
+            $report->model_name = $report->vehicleModel->name ?? null;
 
+            unset($report->brand, $report->vehicleModel);
             if (!$report) {
                 return response()->json([
                     'success' => false,
