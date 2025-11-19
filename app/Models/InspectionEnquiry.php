@@ -9,21 +9,26 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class InspectionEnquiry extends Model
 {
-       protected $guarded = [];
-        public function vehicleModel(): BelongsTo
+    protected $guarded = [];
+    public function vehicleModel(): BelongsTo
     {
         return $this->belongsTo(VehicleModel::class, 'model');
     }
-     public function brand(): BelongsTo
+    public function brand(): BelongsTo
     {
-        return $this->belongsTo(Brand::class, 'make' );
+        return $this->belongsTo(Brand::class, 'make');
     }
-      public function user()
-     {
-          return $this->belongsTo(User::class);
-     }
-     public function inspectionReport(): HasOne
+    public function user()
     {
-        return $this->hasOne(VehicleInspectionReport::class,'inspection_enquiry_id');
+        return $this->belongsTo(User::class);
+    }
+    public function inspectionReport(): HasOne
+    {
+        return $this->hasOne(VehicleInspectionReport::class, 'inspection_enquiry_id');
+    }
+    
+    public function inspector(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'inspector_id');
     }
 }

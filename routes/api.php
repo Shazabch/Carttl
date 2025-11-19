@@ -115,7 +115,9 @@ Route::prefix('admin')
         // Inspection Inquiries
         Route::controller(InspectionEnquiryController::class)->group(function () {
             Route::get('/inspection-enquiries', 'index')->middleware('permission:appointment-list');
+            Route::get('/inspection-enquiries/inspectors', 'allInspectors');
             Route::get('/inspection-enquiries/show/{id}', 'show')->middleware('permission:appointment-view');
+            Route::post('/inspection-enquiries/assign-inspector', 'assignInspector')->middleware('permission:appointment-manage');
             Route::delete('/inspection-enquiries/delete/{id}', 'destroy')->middleware('permission:appointment-manage');
         });
 

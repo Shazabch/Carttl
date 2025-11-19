@@ -22,7 +22,7 @@ class AccountCreatedConfirmation extends Notification
     {
         $this->user = $user;
         $this->tempPassword = $tempPassword;
-        $this->loginUrl = 'login';
+        $this->loginUrl = 'URL';
     }
 
     /**
