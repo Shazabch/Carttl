@@ -99,6 +99,31 @@ class InspectionEnquiryController extends Controller
             'data' => $enquiry->load('inspector')
         ]);
     }
+    public function unassignInspector(Request $request)
+{
+    $request->validate([
+        'enquiry_id' => 'required|exists:inspection_enquiries,id',
+    ]);
+
+    $enquiry = InspectionEnquiry::find($request->enquiry_id);
+
+    if (!$enquiry->inspector_id) {
+        return response()->json([
+            'status'  => 'error',
+            'message' => 'No inspector is assigned to this enquiry.',
+        ], 422);
+    }
+
+    // Unassign inspector
+    $enquiry->inspector_id = null;
+    $enquiry->save();
+
+    return response()->json([
+        'status'  => 'success',
+        'message' => 'Inspector unassigned successfully.',
+        'data'    => $enquiry->load('inspector'),
+    ]);
+}
 
     public function destroy($id)
     {
