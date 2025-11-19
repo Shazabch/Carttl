@@ -21,7 +21,7 @@ class InspectionEnquiryController extends Controller
         ->with([
             'brand:id,name',
             'vehicleModel:id,name',
-            'inspector:id,name,email,phone' // 👈 Added inspector details
+            'inspector:id,name,email,phone' 
         ])
         ->when($user->role === 'inspector', function ($query) use ($user) {
             $query->where('inspector_id', $user->id);
@@ -42,6 +42,50 @@ class InspectionEnquiryController extends Controller
     ]);
 }
 
+   public function create(Request $request)
+{
+    $validated = $request->validate([
+        'type'      => 'required|string',
+        'location'  => 'required|string|max:255',
+        'year'      => 'required|string|max:4',
+        'make'      => 'required|integer|exists:brands,id',
+        'model'     => 'required|integer|exists:vehicle_models,id',
+    ]);
+
+    try {
+
+        $admin = auth('api')->user(); // Logged in admin
+
+        // Auto-fill fields using admin credentials
+        $validated['name']  = $admin->name;
+        $validated['phone'] = $admin->phone ?? 'N/A';
+        $validated['email'] = $admin->email;
+
+        // Auto-set date & time
+        $validated['date'] = now()->toDateString();
+        $validated['time'] = now()->format('H:i');
+
+        $validated['user_id'] = $admin->id;
+        $validated['type'] = 'inspection';
+
+        // Create enquiry
+        $enquiry = InspectionEnquiry::create($validated);
+
+   
+
+        return response()->json([
+            'status'  => 'success',
+            'message' => 'Inspection enquiry submitted successfully.',
+            'data'    => $enquiry,
+        ], 201);
+
+    } catch (\Exception $e) {
+        return response()->json([
+            'status'  => 'error',
+            'message' => 'Something went wrong: ' . $e->getMessage(),
+        ], 500);
+    }
+}
 
 
 
