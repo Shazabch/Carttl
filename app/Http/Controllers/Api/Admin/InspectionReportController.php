@@ -192,7 +192,13 @@ class InspectionReportController extends Controller
 
         $token = Crypt::encrypt($payload);
 
-        $frontendUrl = config('app.frontend_url') . '/shared/' . $token;
+        $env = env('APP_ENV', 'local'); // get current environment
+
+        $frontendUrl = $env === 'production'
+            ? config('app.frontend_url_live')
+            : config('app.frontend_url_local');
+
+        $frontendUrl .= '/shared/' . $token;
 
         return response()->json([
             'success' => true,

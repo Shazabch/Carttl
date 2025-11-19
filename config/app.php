@@ -53,7 +53,8 @@ return [
     */
 
     'url' => env('APP_URL', 'http://localhost'),
-    'frontend_url' => env('FRONT_END_URL', 'http://localhost:8080'),
+    'frontend_url_live' => env('FRONT_END_URL_LIVE', 'http://crm.caartl.com'),
+    'frontend_url_local' => env('FRONT_END_URL_LOCAL', 'http://localhost:8080'),
 
     /*
     |--------------------------------------------------------------------------
