@@ -118,6 +118,7 @@ Route::prefix('admin')
         Route::controller(InspectionEnquiryController::class)->group(function () {
             Route::get('/inspection-enquiries', 'index')->middleware('permission:appointment-list');
             Route::get('/inspection-enquiries/inspectors', 'allInspectors');
+            Route::get('/inspection-enquiries/customers', 'getCustomers');
             Route::get('/inspection-enquiries/show/{id}', 'show')->middleware('permission:appointment-view');
             Route::post('/inspection-enquiries/create', 'create')->middleware('permission:appointment-manage');
             Route::post('/inspection-enquiries/assign-inspector', 'assignInspector')->middleware('permission:appointment-manage');
