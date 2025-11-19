@@ -48,6 +48,8 @@ Route::prefix('notifications')->group(function () {
         Route::post('/send-all', 'sendToAll');            // Send to all devices
     });
 });
+Route::get('admin/inspection-reports/damage-types', [InspectionReportController::class, 'getDamageTypes']);
+
 Route::get('/inspection-reports/show-shared/{token}', [InspectionReportController::class, 'showShared']);
 
 // Admin Panel Routes
@@ -192,7 +194,6 @@ Route::prefix('admin')
             Route::post('/inspection-reports/remove-images', 'removeVehicleImages')->middleware('permission:inspection-report-create');
             Route::post('/inspection-reports/field-images/add', 'storeInspectionFields')->middleware('permission:inspection-report-create');
             Route::post('/inspection-reports/field-images/remove', 'removeInspectionFieldImages')->middleware('permission:inspection-report-create');
-            Route::get('/inspection-reports/damage-types', 'getDamageTypes');
             Route::post('/inspection-reports/damage/add', 'addDamage')->middleware('permission:inspection-report-create');
             Route::post('/inspection-reports/damage/remove', 'removeDamage')->middleware('permission:inspection-report-create');
             Route::post('/inspection-reports/update/{id}', 'update')->middleware('permission:inspection-report-edit');
