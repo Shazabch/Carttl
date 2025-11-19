@@ -9,39 +9,45 @@ use App\Models\User;
 
 class InspectionEnquiryController extends Controller
 {
-    public function index(Request $request)
-    {
-        $user = auth('api')->user();
-        $search = $request->get('search', '');
-        $sortBy = $request->get('sort_by', 'created_at');
-        $sortDir = $request->get('sort_dir', 'DESC');
-        $perPage = $request->get('per_page', 10);
-        $enquiries = InspectionEnquiry::query()
-            ->with(['brand:id,name', 'vehicleModel:id,name'])
-            ->when($user->role === 'inspector', function ($query) use ($user) {
-                $query->where('inspector_id', $user->id);
-            })
-            ->when($search, function ($query) use ($search) {
-                $query->where(function ($q) use ($search) {
-                    $q->where('name', 'like', "%{$search}%")
-                        ->orWhere('phone', 'like', "%{$search}%")
-                        ->orWhere('email', 'like', "%{$search}%");
-                });
-            })
-            ->orderBy($sortBy, $sortDir)
-            ->paginate($perPage);
+   public function index(Request $request)
+{
+    $user = auth('api')->user();
+    $search = $request->get('search', '');
+    $sortBy = $request->get('sort_by', 'created_at');
+    $sortDir = $request->get('sort_dir', 'DESC');
+    $perPage = $request->get('per_page', 10);
 
-        return response()->json([
-            'status' => 'success',
-            'data' => $enquiries,
-        ]);
-    }
+    $enquiries = InspectionEnquiry::query()
+        ->with([
+            'brand:id,name',
+            'vehicleModel:id,name',
+            'inspector:id,name,email,phone' // 👈 Added inspector details
+        ])
+        ->when($user->role === 'inspector', function ($query) use ($user) {
+            $query->where('inspector_id', $user->id);
+        })
+        ->when($search, function ($query) use ($search) {
+            $query->where(function ($q) use ($search) {
+                $q->where('name', 'like', "%{$search}%")
+                    ->orWhere('phone', 'like', "%{$search}%")
+                    ->orWhere('email', 'like', "%{$search}%");
+            });
+        })
+        ->orderBy($sortBy, $sortDir)
+        ->paginate($perPage);
+
+    return response()->json([
+        'status' => 'success',
+        'data' => $enquiries,
+    ]);
+}
+
 
 
 
     public function show($id)
     {
-        $enquiry = InspectionEnquiry::with(['brand:id,name', 'vehicleModel:id,name'])->findOrFail($id);
+        $enquiry = InspectionEnquiry::with(['brand:id,name', 'vehicleModel:id,name', 'inspector'])->findOrFail($id);
 
         return response()->json([
             'status' => 'success',
