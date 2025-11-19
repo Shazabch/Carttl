@@ -28,24 +28,30 @@ class MakeController extends Controller
         ]);
     }
 
-    public function ModelsByMake($makeId)
-    {
-        $models = VehicleModel::where('brand_id', $makeId)
-            ->select('id', 'name')
-            ->get();
+  public function ModelsByMake($makeId, Request $request)
+{
+    $search = $request->input('search');
 
-        if ($models->isEmpty()) {
-            return response()->json([
-                'status' => 'error',
-                'message' => 'No models found for this make.',
-            ], 404);
-        }
+    $models = VehicleModel::where('brand_id', $makeId)
+        ->when($search, function ($query) use ($search) {
+            $query->where('name', 'like', "%{$search}%");
+        })
+        ->select('id', 'name')
+        ->get();
 
+    if ($models->isEmpty()) {
         return response()->json([
-            'status' => 'success',
-            'data' => $models,
-        ]);
+            'status' => 'error',
+            'message' => 'No models found.',
+        ], 404);
     }
+
+    return response()->json([
+        'status' => 'success',
+        'data' => $models,
+    ]);
+}
+
 
     public function show($id)
     {

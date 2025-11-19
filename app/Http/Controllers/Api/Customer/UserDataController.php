@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\Customer;
 
 use App\Http\Controllers\Controller;
+use App\Models\ContactSubmission;
 use App\Models\InspectionEnquiry;
 use App\Models\VehicleBid;
 use App\Models\VehicleEnquiry;
@@ -137,6 +138,36 @@ class UserDataController extends Controller
                 });
             })
             ->with(['brand:id,name,image_source', 'vehicleModel:id,name'])
+            ->paginate($perPage);
+
+        return response()->json([
+            'status' => 'success',
+            'data' => $enquiries,
+        ]);
+    }
+    public function getContactEnquiries(Request $request)
+    {
+        $user = Auth::guard('api')->user();
+
+        if (!$user) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Unauthenticated user.'
+            ], 401);
+        }
+
+        $email = $user->email;
+        $search = $request->input('search');
+        $perPage = $request->input('per_page', 10);
+
+        $enquiries = ContactSubmission::where('email', $email)
+            ->when($search, function ($query) use ($search) {
+                $query->where('first_name', 'like', "%{$search}%")
+                    ->orWhere('last_name', 'like', "%{$search}%")
+                    ->orWhere('phone', 'like', "%{$search}%")
+                    ->orWhere('message', 'like', "%{$search}%");
+            })
+            ->orderBy('created_at', 'desc')
             ->paginate($perPage);
 
         return response()->json([

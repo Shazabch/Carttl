@@ -1,7 +1,7 @@
 <?php
 
-use App\Http\Controllers\Api\Admin\ActivityLogController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Api\Admin\ActivityLogController;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\Admin\DashboardController;
 use App\Http\Controllers\Api\Admin\BidManagementController;
@@ -33,8 +33,6 @@ use App\Http\Controllers\Api\Customer\InspectionController;
 use App\Http\Controllers\Api\Customer\SellCarController;
 use App\Http\Controllers\Api\Customer\UserDataController;
 use App\Http\Controllers\Api\PushNotificationsController;
-use App\Models\Package;
-use App\Models\VehicleInspectionReport;
 
 //Auth routes
 Route::post('register', [AuthController::class, 'register']);
@@ -51,7 +49,7 @@ Route::prefix('notifications')->group(function () {
     });
 });
 Route::get('/inspection-reports/show-shared/{token}', [InspectionReportController::class, 'showShared']);
-   
+
 // Admin Panel Routes
 Route::prefix('admin')
     ->middleware(['middleware' => 'auth:api'])
@@ -351,6 +349,7 @@ Route::group(['middleware' => 'auth:api'], function () {
         Route::get('user/biddings', 'getUserBiddings')->name('user.biddings');
         Route::get('user/enquiries/purchase', 'getPurchaseEnquiries')->name('user.enquiries.purchase');
         Route::get('user/enquiries/sale', 'getSaleEnquiries')->name('user.enquiries.sale');
+        Route::get('user/enquiries/contact', 'getContactEnquiries')->name('user.enquiries.contact');
         Route::get('user/inspection-reports', 'getInspectionReports')->name('user.inspection.reports');
     });
     Route::controller(BiddingController::class)->group(function () {

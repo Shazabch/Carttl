@@ -16,7 +16,7 @@ class BidConfirmation extends Notification
     public function __construct($bid)
     {
         $this->bid = $bid;
-        $this->url = url(''.$bid->vehicle_id);
+        $this->url = 'URL';
     }
 
     public function via($notifiable): array

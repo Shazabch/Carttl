@@ -29,9 +29,12 @@ Route::get('/test-email', function () {
         return '❌ Email sending failed: ' . $e->getMessage();
     }
 });
+// Create a temp route:
+Route::get('/phpinfo', function() { phpinfo(); });
 
 Route::redirect('/', 'https://caartl.com');
 Route::view('/home', 'home')->name('home');
+Route::view('/fire', 'fire')->name('fire');
 
 Route::get('/blog/{slug}', [BlogController::class, 'blogDetails'])->name('get-blog');
 

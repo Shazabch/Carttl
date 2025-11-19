@@ -46,7 +46,7 @@ class InspectionReportController extends Controller
             $query->where(function ($q) use ($s) {
                 $q->where('vin', 'like', "%{$s}%")
                     ->orWhereHas('brand', fn($b) => $b->where('name', 'like', "%{$s}%"))
-                    ->orWhereHas('model', fn($m) => $m->where('name', 'like', "%{$s}%"));
+                    ->orWhereHas('vehicleModel', fn($m) => $m->where('name', 'like', "%{$s}%"));
             });
         }
 
@@ -125,63 +125,7 @@ class InspectionReportController extends Controller
             'data'   => $report,
         ]);
     }
-    ///old start
-    public function generateShareableLink2(Request $request, $id)
-    {
-        $request->validate([
-            'expires_at' => [
-                'required',
-                'date_format:Y-m-d H:i',
-                'after_or_equal:now'   // ⬅ ensure not in past
-            ]
-        ]);
-
-        $report = VehicleInspectionReport::findOrFail($id);
-
-        // Convert to Dubai timezone
-        $expiresAt = Carbon::parse($request->expires_at, 'Asia/Dubai');
-
-        $signedUrl = URL::temporarySignedRoute(
-            'inspection-reports.shareable.access',
-            $expiresAt,
-            ['id' => $report->id]
-        );
-
-        $report->shared_link = $signedUrl;
-        $report->shared_link_expires_at = $expiresAt;
-        $report->save();
-
-        return response()->json([
-            'status' => 'success',
-            'link' => $signedUrl,
-            'expires_at' => $expiresAt->format('Y-m-d H:i:s'),
-        ]);
-    }
-
-    public function accessSharedReport(Request $request, $id)
-    {
-        $report = VehicleInspectionReport::with([
-            'vehicle',
-            'damages',
-            'inspector',
-            'images',
-            'fields.files'
-        ])->findOrFail($id);
-
-        // Check manual expiry (extra protection)
-        if ($report->shared_link_expires_at && now('Asia/Dubai')->greaterThan($report->shared_link_expires_at)) {
-            return response()->json([
-                'status' => 'error',
-                'message' => 'This link has expired.',
-            ], 410); // 410 Gone
-        }
-
-        return response()->json([
-            'status' => 'success',
-            'data' => $report,
-        ]);
-    }
-    ///old end
+  
     public function showShared($token)
     {
         try {

@@ -20,11 +20,8 @@ class VehicleEnquiryReceivedConfirmation extends Notification
     public function __construct($enquiry)
     {
         $this->enquiry = $enquiry;
-        if ($this->enquiry->type == 'sale') {
-            $this->url = url('car-enquiries');
-        } else {
-            $this->url = url('car-enquiries');
-        }
+        $this->url = 'URL';
+       
     }
 
     /**

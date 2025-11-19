@@ -43,7 +43,7 @@ class EnquirySubmitNotification extends Notification
             'name' => $this->enquiry->first_name . ' ' . $this->enquiry->last_name,
             'email' => $this->enquiry->email,
             'message' => $this->enquiry->message,
-            'link' => url('admin/submissions'),
+            'link' => 'URL',
             'created_at' => now(),
 
         ];

@@ -60,7 +60,7 @@ class BuyCarController extends Controller
         ]);
 
        
-        $admins = User::role(['admin', 'super-admin'], 'web')->get();
+        $admins = User::role(['admin', 'super-admin'], 'api')->get();
         Notification::send($admins, new VehicleEnquiryNotification($enquiry));
 
        

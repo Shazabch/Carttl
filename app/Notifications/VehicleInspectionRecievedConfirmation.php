@@ -16,7 +16,8 @@ class VehicleInspectionRecievedConfirmation extends Notification
     public function __construct($enquiry)
     {
         $this->enquiry = $enquiry;
-        $this->url = url('car-appointments');
+         $this->url = 'URL';
+       
     }
 
     public function via($notifiable): array

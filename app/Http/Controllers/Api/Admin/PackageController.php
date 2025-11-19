@@ -10,16 +10,24 @@ use Illuminate\Support\Facades\Auth;
 class PackageController extends Controller
 {
 
-    public function index()
-    {
-        $packages = Package::latest()->paginate(10);
+  public function index(Request $request)
+{
+    $search = $request->input('search');
 
-        return response()->json([
-            'status'  => 'success',
-            'message' => 'Packages fetched successfully.',
-            'data'    => $packages
-        ]);
-    }
+    $packages = Package::when($search, function ($query) use ($search) {
+            $query->where('name', 'like', "%{$search}%")
+                  ->orWhere('description', 'like', "%{$search}%");
+        })
+        ->latest()
+        ->paginate(10);
+
+    return response()->json([
+        'status'  => 'success',
+        'message' => 'Packages fetched successfully.',
+        'data'    => $packages
+    ]);
+}
+
 
 
     public function store(Request $request)

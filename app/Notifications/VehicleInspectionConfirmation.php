@@ -23,7 +23,8 @@ class VehicleInspectionConfirmation extends Notification
     {
         $this->enquiry = $enquiry;
         $this->report_id = $enquiry->id;
-        $this->url= url('car-appointments');
+        $this->url = 'URL';
+       
 
     }
 

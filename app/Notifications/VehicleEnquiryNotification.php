@@ -17,15 +17,9 @@ class VehicleEnquiryNotification extends Notification
     {
         $this->enquiry = $enquiry;
 
-        if ($this->enquiry->type == 'sale') {
-            $this->url = url('admin/sell-car-lsiting');
-        }
-        if ($this->enquiry->type == 'inspection') {
-            $this->url = url('admin/inspection-enquiries');
-        }
-        if ($this->enquiry->type == 'purchase') {
-            $this->url = url('admin/purchase-car-lsiting');
-        }
+      
+            $this->url = 'URL';
+       
     }
 
     public function via($notifiable): array

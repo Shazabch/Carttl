@@ -90,7 +90,7 @@ if ($request->hasFile('images')) {
 
 
       
-        $recipients = User::role(['admin', 'super-admin'], 'web')->get();
+        $recipients = User::role(['admin', 'super-admin'], 'api')->get();
         Notification::send($recipients, new VehicleEnquiryNotification($enquiry));
 
         if ($user) {
