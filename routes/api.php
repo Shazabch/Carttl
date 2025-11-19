@@ -186,7 +186,7 @@ Route::prefix('admin')
         Route::controller(InspectionReportController::class)->group(function () {
             Route::get('/inspection-reports', 'index')->middleware('permission:inspection-report-list');
             Route::get('/inspection-reports/show/{id}', 'show')->middleware('permission:inspection-report-view');
-            Route::post('/inspection-reports/shareable/{id}', 'generateShareableLink')->middleware('permission:inspection-report-share');
+            Route::post('/inspection-reports/shareable', 'generateShareableLink')->middleware('permission:inspection-report-share');
             Route::post('/inspection-reports/create', 'store')->middleware('permission:inspection-report-create');
             Route::post('/inspection-reports/upload-images', 'storeVehicleImages')->middleware('permission:inspection-report-create');
             Route::post('/inspection-reports/remove-images', 'removeVehicleImages')->middleware('permission:inspection-report-create');
