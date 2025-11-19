@@ -11,6 +11,7 @@ class InspectionEnquiryController extends Controller
 {
     public function index(Request $request)
     {
+        $user = auth('api')->user();
         $search = $request->get('search', '');
         $sortBy = $request->get('sort_by', 'created_at');
         $sortDir = $request->get('sort_dir', 'DESC');
@@ -18,10 +19,15 @@ class InspectionEnquiryController extends Controller
 
         $enquiries = InspectionEnquiry::query()
             ->with(['brand:id,name', 'vehicleModel:id,name'])
+            ->when($user->role === 'inspector', function ($query) use ($user) {
+                $query->where('inspector_id', $user->id);
+            })
             ->when($search, function ($query) use ($search) {
-                $query->where('name', 'like', "%{$search}%")
-                    ->orWhere('phone', 'like', "%{$search}%")
-                    ->orWhere('email', 'like', "%{$search}%");
+                $query->where(function ($q) use ($search) {
+                    $q->where('name', 'like', "%{$search}%")
+                        ->orWhere('phone', 'like', "%{$search}%")
+                        ->orWhere('email', 'like', "%{$search}%");
+                });
             })
             ->orderBy($sortBy, $sortDir)
             ->paginate($perPage);
@@ -31,6 +37,7 @@ class InspectionEnquiryController extends Controller
             'data' => $enquiries,
         ]);
     }
+
 
 
     public function show($id)
@@ -46,7 +53,7 @@ class InspectionEnquiryController extends Controller
     {
         $query = User::where('role', 'inspector');
 
-       
+
         if ($request->has('search') && !empty($request->search)) {
             $search = $request->search;
             $query->where(function ($q) use ($search) {
@@ -69,9 +76,9 @@ class InspectionEnquiryController extends Controller
             'inspector_id' => 'required|exists:users,id',
         ]);
 
-       $enquiry = InspectionEnquiry::find($request->enquiry_id);
+        $enquiry = InspectionEnquiry::find($request->enquiry_id);
 
-       
+
         $inspector = User::where('id', $request->inspector_id)
             ->where('role', 'inspector')
             ->first();
@@ -83,7 +90,7 @@ class InspectionEnquiryController extends Controller
             ], 422);
         }
 
-       
+
         $enquiry->inspector()->associate($inspector);
         $enquiry->save();
 

@@ -125,7 +125,7 @@ class InspectionReportController extends Controller
             'data'   => $report,
         ]);
     }
-  
+
     public function showShared($token)
     {
         try {
@@ -145,12 +145,18 @@ class InspectionReportController extends Controller
             // Fetch report
 
             $report = VehicleInspectionReport::with([
-                'vehicle',
+                'vehicle' => function ($query) {
+                    $query->with([
+                        'brand:id,name',
+                        'vehicleModel:id,name'
+                    ]);
+                },
                 'damages',
                 'inspector',
                 'images',
                 'fields.files'
             ])->find($reportId);
+
 
             if (!$report) {
                 return response()->json([
