@@ -11,9 +11,11 @@ use Illuminate\Support\Facades\Log;
 
 class BiddingController extends Controller
 {
-    const BID_INCREMENT = 500;
+
     public function getVehicleBids($vehicleId)
     {
+
+
         $vehicle = Vehicle::findOrFail($vehicleId);
 
         $totalBids = VehicleBid::where('vehicle_id', $vehicle->id)->count();
@@ -25,8 +27,12 @@ class BiddingController extends Controller
             ->take(3)
             ->get();
 
+        $increment = ($vehicle->bid_control > 0)
+            ? $vehicle->bid_control
+            : 1;
+
         $minimumNextBid = $highestBid > 0
-            ? $highestBid + self::BID_INCREMENT
+            ? $highestBid + $increment
             : $vehicle->starting_bid_amount ?? 0;
 
         return response()->json([
@@ -41,9 +47,10 @@ class BiddingController extends Controller
         ]);
     }
 
-   
+
     public function placeBid(Request $request, $vehicleId)
     {
+
         $request->validate([
             'current_bid' => 'required|numeric|min:1',
             'max_bid' => 'required|numeric|min:1',
@@ -52,9 +59,15 @@ class BiddingController extends Controller
         $vehicle = Vehicle::findOrFail($vehicleId);
 
         $highestBid = VehicleBid::where('vehicle_id', $vehicle->id)->max('bid_amount') ?? 0;
+        $increment = ($vehicle->bid_control > 0)
+            ? $vehicle->bid_control
+            : 1;
+
+
         $minimumNextBid = $highestBid > 0
-            ? $highestBid + self::BID_INCREMENT
+            ? $highestBid + $increment
             : $vehicle->starting_bid_amount ?? 0;
+
 
         if ($request->current_bid < $minimumNextBid) {
             return response()->json([
@@ -76,7 +89,6 @@ class BiddingController extends Controller
                 'message' => 'Bid placed successfully.',
                 'data' => $bid,
             ]);
-
         } catch (\Exception $e) {
             Log::error('Bid placement failed: ' . $e->getMessage());
             return response()->json([
@@ -85,7 +97,7 @@ class BiddingController extends Controller
             ], 500);
         }
     }
-     public function getBidHistory($vehicleId)
+    public function getBidHistory($vehicleId)
     {
         $bids = VehicleBid::with('user:id,name')
             ->where('vehicle_id', $vehicleId)
