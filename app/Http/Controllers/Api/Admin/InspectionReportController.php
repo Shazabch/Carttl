@@ -326,7 +326,7 @@ class InspectionReportController extends Controller
 
                 // Add watermark
                 $logoPath = public_path('images/caartl.png'); // your watermark logo
-                $watermarkService->addLogoWatermark($originalPath, $logoPath, $savePath, 10);
+                $watermarkService->addLogoWatermark($originalPath, $logoPath, $savePath, 30);
 
                 // Save record in DB
                 $newImage = VehicleInspectionImage::create([

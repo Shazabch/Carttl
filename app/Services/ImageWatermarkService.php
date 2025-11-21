@@ -21,6 +21,7 @@ class ImageWatermarkService
         if (!file_exists($dir)) {
             mkdir($dir, 0755, true);
         }
+
         // Load main image
         $img = imagecreatefromstring(file_get_contents($imagePath));
 
@@ -30,23 +31,55 @@ class ImageWatermarkService
         // Get dimensions
         $imgWidth = imagesx($img);
         $imgHeight = imagesy($img);
+
+        // -------------------------------
+        // 🔥 Resize Logo (Increase Size)
+        // -------------------------------
+        $scale = 0.50; // = 40% of image width (increase this to make bigger)
+        $newLogoWidth  = intval($imgWidth * $scale);
+        $newLogoHeight = intval($newLogoWidth * (imagesy($logo) / imagesx($logo)));
+
+        // Create resized logo
+        $resizedLogo = imagecreatetruecolor($newLogoWidth, $newLogoHeight);
+        imagesavealpha($resizedLogo, true);
+        $transColour = imagecolorallocatealpha($resizedLogo, 0, 0, 0, 127);
+        imagefill($resizedLogo, 0, 0, $transColour);
+
+        imagecopyresampled(
+            $resizedLogo,
+            $logo,
+            0,
+            0,
+            0,
+            0,
+            $newLogoWidth,
+            $newLogoHeight,
+            imagesx($logo),
+            imagesy($logo)
+        );
+
+        imagedestroy($logo);
+        $logo = $resizedLogo;
+        // -------------------------------
+
         $logoWidth = imagesx($logo);
         $logoHeight = imagesy($logo);
 
-        // Calculate center position
+        // Center position
         $x = ($imgWidth - $logoWidth) / 2;
         $y = ($imgHeight - $logoHeight) / 2;
 
         // Merge logo with opacity
         $this->imagecopymerge_alpha($img, $logo, $x, $y, 0, 0, $logoWidth, $logoHeight, $opacity);
 
-        // Save the final image
+        // Save final
         imagejpeg($img, $savePath, 90);
 
         // Free memory
         imagedestroy($img);
         imagedestroy($logo);
     }
+
 
     /**
      * Copy merge with alpha support
