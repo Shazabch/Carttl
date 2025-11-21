@@ -30,6 +30,7 @@ use App\Http\Controllers\Api\Customer\BuyCarController;
 use App\Http\Controllers\Api\Customer\ContactController;
 use App\Http\Controllers\Api\Customer\FavoriteController;
 use App\Http\Controllers\Api\Customer\InspectionController;
+use App\Http\Controllers\Api\Customer\PackageController as CustomerPackageController;
 use App\Http\Controllers\Api\Customer\SellCarController;
 use App\Http\Controllers\Api\Customer\UserDataController;
 use App\Http\Controllers\Api\PushNotificationsController;
@@ -321,6 +322,10 @@ Route::controller(BlogController::class)->group(function () {
 // Testimonials
 Route::controller(TestimonialController::class)->group(function () {
     Route::get('testimonials', 'getAllTestimonials')->name('testimonials');
+});
+
+Route::controller(CustomerPackageController::class)->group(function () {
+    Route::get('packages', 'index')->name('packages');
 });
 
 // contact
