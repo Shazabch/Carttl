@@ -29,7 +29,7 @@ class DashboardController extends Controller
         ->where('auction_end_date', '>=', now())
         ->count();
         $nextAuction = Vehicle::where('is_auction', true)
-        ->where('status', '!=', 'sold')
+        ->where('status','published')
         ->where('auction_start_date', '>', now())
         ->orderBy('auction_start_date', 'asc')
         ->select('id', 'title', 'auction_start_date', 'auction_end_date')
