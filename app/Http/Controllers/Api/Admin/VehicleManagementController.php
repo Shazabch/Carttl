@@ -9,6 +9,7 @@ use App\Models\FuelType;
 use App\Models\Transmission;
 use App\Models\Vehicle;
 use App\Models\VehicleImage;
+use App\Services\ImageWatermarkService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -220,7 +221,7 @@ class VehicleManagementController extends Controller
 
         $query = Vehicle::where('is_auction', true)
             ->where('status', 'published')
-            ->where('auction_end_date', '<', Carbon::now()); 
+            ->where('auction_end_date', '<', Carbon::now());
 
         if (!empty($search)) {
             $query->where(function ($q) use ($search) {
@@ -336,7 +337,7 @@ class VehicleManagementController extends Controller
     }
 
 
-    public function addImages(Request $request, $vehicleId)
+    public function addImages(Request $request, $vehicleId, ImageWatermarkService $watermarkService)
     {
         $vehicle = Vehicle::findOrFail($vehicleId);
 
@@ -352,10 +353,8 @@ class VehicleManagementController extends Controller
         $existingImages = $vehicle->images;
         $keepIds = $validated['image_ids'] ?? [];
 
-
         $deleteImages = $existingImages->whereNotIn('id', $keepIds);
         foreach ($deleteImages as $image) {
-            // extract relative path if stored as full URL
             $path = str_replace(asset('storage/') . '/', '', $image->path);
             if (Storage::disk('public')->exists($path)) {
                 Storage::disk('public')->delete($path);
@@ -366,7 +365,6 @@ class VehicleManagementController extends Controller
         $uploaded = [];
         $sortOrder = 1;
 
-        // Update kept images
         foreach ($keepIds as $index => $id) {
             $img = $vehicle->images()->find($id);
             if ($img) {
@@ -384,11 +382,17 @@ class VehicleManagementController extends Controller
             }
         }
 
-        // Add new uploaded images
         if ($request->hasFile('images')) {
             foreach ($request->file('images') as $index => $file) {
-                $path = $file->store('vehicle_images', 'public');
-                $fullUrl = asset('storage/' . $path);
+
+                // CHANGE START
+                $originalPath = $file->getPathname();
+                $relativePath = 'vehicle_images/' . uniqid() . '.' . $file->getClientOriginalExtension();
+                $savePath = storage_path('app/public/' . $relativePath);
+                $logoPath = public_path('images/caartl.png');
+                $watermarkService->addLogoWatermark($originalPath, $logoPath, $savePath, 30);
+                $fullUrl = asset('storage/' . $relativePath);
+                // CHANGE END
 
                 $newImage = $vehicle->images()->create([
                     'path'       => $fullUrl,
@@ -411,6 +415,7 @@ class VehicleManagementController extends Controller
             'data'    => $uploaded,
         ], 200);
     }
+
 
 
 
