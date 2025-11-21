@@ -291,7 +291,6 @@ Route::prefix('admin')
 // Customer Panel Routes
 Route::controller(VehicleController::class)->group(function () {
     //Vehicles
-
     Route::get('featured-vehicles', 'featuredVehicles')->name('featured.vehicles');
     Route::get('vehicles', 'getBuyVehicles')->name('vehicles');
     Route::get('sold-vehicles', 'getSoldVehicles')->name('sold.vehicles');
@@ -299,6 +298,7 @@ Route::controller(VehicleController::class)->group(function () {
 
     //Auctions
     Route::get('auctions', 'getAuctionVehicles')->name('auctions-list');
+    Route::get('auctions/show/{id}', 'detail');
     Route::get('featured-auctions', 'featuredAuctions')->name('featured.auctions');
 
     //Makes
@@ -330,7 +330,7 @@ Route::controller(ContactController::class)->group(function () {
 
 //Book inspection
 Route::controller(InspectionController::class)->group(function () {
-    Route::post('/inspection/submit', 'saveInspection')->name('inspection.submit');
+    Route::post('/appointment/submit', 'saveInspection')->name('inspection.submit');
 });
 
 //Sell Inquiry

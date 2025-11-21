@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\CarDamage;
 use App\Models\InspectionEnquiry;
 use App\Models\VehicleDocument;
+use App\Models\ReportShare;
 use App\Models\VehicleInspectionImage;
 use App\Models\VehicleInspectionReport;
 use App\Models\InspectionField;
@@ -126,44 +127,33 @@ class InspectionReportController extends Controller
         ]);
     }
 
-    public function showShared($token)
+    public function showShared($uuid)
     {
         try {
-            // Decrypt token
-            $decrypted = Crypt::decrypt($token);
-            $reportId = $decrypted['report_id'];
-            $expiresAt = $decrypted['expires_at'] ?? null;
+            $share = ReportShare::findOrFail($uuid);
 
-            // Check expiration
-            if ($expiresAt && now()->gt($expiresAt)) {
+            if ($share->expires_at && now()->gt($share->expires_at)) {
                 return response()->json([
                     'success' => false,
                     'error' => 'Link has expired'
                 ], 410);
             }
 
-            // Fetch report
+            $decrypted = Crypt::decrypt($share->token);
+            $reportId = $decrypted['report_id'];
 
-            $report = VehicleInspectionReport::with([
+            $report = \App\Models\VehicleInspectionReport::with([
                 'vehicle',
+                'brand',
+                'vehicleModel',
                 'damages',
-                'inspector',
                 'images',
-                'brand:id,name',
-                'vehicleModel:id,name',
-                'fields.files'
+                'inspector',
+                'fields'
             ])->findOrFail($reportId);
-
             $report->make_name = $report->brand->name ?? null;
             $report->model_name = $report->vehicleModel->name ?? null;
-
             unset($report->brand, $report->vehicleModel);
-            if (!$report) {
-                return response()->json([
-                    'success' => false,
-                    'error' => 'Report not found'
-                ], 404);
-            }
 
             return response()->json([
                 'success' => true,
@@ -191,14 +181,21 @@ class InspectionReportController extends Controller
         ];
 
         $token = Crypt::encrypt($payload);
+        $uuid = Str::uuid()->toString();
 
-        $env = env('APP_ENV', 'local'); // get current environment
+        // Store in DB using model
+        ReportShare::create([
+            'id' => $uuid,
+            'report_id' => $request->report_id,
+            'token' => $token,
+            'expires_at' => $request->expires_at,
+        ]);
 
-        $frontendUrl = $env === 'production'
+        $frontendUrl = (env('APP_ENV') === 'production')
             ? config('app.frontend_url_live')
             : config('app.frontend_url_local');
 
-        $frontendUrl .= '/shared/' . $token;
+        $frontendUrl .= '/shared/' . $uuid;
 
         return response()->json([
             'success' => true,
