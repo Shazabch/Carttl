@@ -152,7 +152,9 @@ class VehicleController extends Controller
 
     public function detail($id)
     {
-        $vehicle = Vehicle::with(['features:id,name,type', 'images', 'brand:id,name,image_source', 'vehicleModel:id,name'])
+        $vehicle =
+            Vehicle::with(['features:id,name,type', 'images', 'brand:id,name,image_source', 'vehicleModel:id,name'])
+            ->with('inspectionReport:id,vehicle_id,report_data')
             ->find($id);
 
         if (!$vehicle) {
