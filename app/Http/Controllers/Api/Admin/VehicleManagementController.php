@@ -143,6 +143,7 @@ class VehicleManagementController extends Controller
         }
 
         $vehicles = $query->with(['brand:id,name', 'vehicleModel:id,name'])
+            ->withCount('bids')       // <-- Add this line
             ->orderBy('created_at', 'desc')
             ->paginate($perPage);
 
@@ -151,6 +152,7 @@ class VehicleManagementController extends Controller
             'data'   => $vehicles
         ]);
     }
+
 
 
     public function upcomingAuctions(Request $request)
