@@ -584,16 +584,16 @@ class InspectionReportController extends Controller
     public function getDamageTypes()
     {
         $damageTypes = [
-            'a' => ['name' => 'Scratch', 'color' => '#FF0000'],
-            'b' => ['name' => 'Multiple Scratches', 'color' => '#FF7F00'],
-            'c' => ['name' => 'Cosmetic Paint', 'color' => '#FFD700'],
-            'd' => ['name' => 'Chip', 'color' => '#00AA00'],
-            'e' => ['name' => 'Dent', 'color' => '#0000FF'],
-            'f' => ['name' => 'Repainted', 'color' => '#4B0082'],
-            'g' => ['name' => 'Repaired', 'color' => '#b87bd2ff'],
-            'h' => ['name' => 'Foiled Wrap', 'color' => '#706c6eff'],
-            'i' => ['name' => 'Full PPF', 'color' => '#d80881ff'],
-            'j' => ['name' => 'Rust', 'color' => '#6b5407ff'],
+            'a' => ['name' => 'Scratch', 'color' => '#FFC0CB'],          // Pink
+            'b' => ['name' => 'Multiple Scratches', 'color' => '#FFFF00'], // Yellow
+            'c' => ['name' => 'Cosmetic Paint', 'color' => '#008000'],    // Green
+            'd' => ['name' => 'Chip', 'color' => '#00AA00'],              // unchanged
+            'e' => ['name' => 'Dent', 'color' => '#0000FF'],             // Blue
+            'f' => ['name' => 'Repainted', 'color' => '#FF0000'],        // Red
+            'g' => ['name' => 'Repaired', 'color' => '#800080'],         // Purple
+            'h' => ['name' => 'Foiled Wrap', 'color' => '#FFA500'],      // Orange
+            'i' => ['name' => 'Full PPF', 'color' => '#d80881ff'],       // unchanged
+            'j' => ['name' => 'Rust', 'color' => '#6b5407ff'],           // unchanged
         ];
 
         $formatted = collect($damageTypes)->map(function ($item, $key) {
@@ -610,6 +610,7 @@ class InspectionReportController extends Controller
             'data'    => $formatted,
         ]);
     }
+
 
     public function addDamage(Request $request)
     {
