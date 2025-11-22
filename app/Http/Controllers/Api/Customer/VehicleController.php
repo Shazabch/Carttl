@@ -154,7 +154,6 @@ class VehicleController extends Controller
     {
         $vehicle =
             Vehicle::with(['features:id,name,type', 'images', 'brand:id,name,image_source', 'vehicleModel:id,name'])
-            ->with('inspections')
             ->find($id);
 
         if (!$vehicle) {
