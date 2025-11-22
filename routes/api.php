@@ -240,8 +240,7 @@ Route::prefix('admin')
 
         // Packages
         Route::controller(PackageController::class)->group(function () {
-            Route::get('/packages', 'index')
-                ->middleware('permission:package-list');
+
             Route::post('/packages/create', 'store')
                 ->middleware('permission:package-create');
             Route::get('/packages/show/{id}', 'show')
@@ -369,4 +368,11 @@ Route::group(['middleware' => 'auth:api'], function () {
         Route::post('/place-bid/{vehicleId}', 'placeBid');
         Route::get('/bid-history/{vehicleId}', 'getBidHistory');
     });
+});
+
+
+//unautheticated packages route
+
+Route::controller(PackageController::class)->group(function () {
+    Route::get('admin/packages', 'index');
 });
