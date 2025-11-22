@@ -14,21 +14,21 @@ class VehicleController extends Controller
 {
 
     //Makes
-   public function getAllMakes(Request $request)
-{
-    $search = $request->get('search'); 
+    public function getAllMakes(Request $request)
+    {
+        $search = $request->get('search');
 
-    $makes = Brand::whereHas('vehicleModels')
-        ->when($search, function ($query, $search) {
-            $query->where('name', 'like', '%' . $search . '%');
-        })
-         ->get(['id', 'name', 'slug', 'image_source']);
+        $makes = Brand::whereHas('vehicleModels')
+            ->when($search, function ($query, $search) {
+                $query->where('name', 'like', '%' . $search . '%');
+            })
+            ->get(['id', 'name', 'slug', 'image_source']);
 
-    return response()->json([
-        'status' => 'success',
-        'data' => $makes,
-    ]);
-}
+        return response()->json([
+            'status' => 'success',
+            'data' => $makes,
+        ]);
+    }
 
 
     public function featuredMakes()
@@ -148,7 +148,7 @@ class VehicleController extends Controller
             'data' => $sold_vehicles,
         ]);
     }
-  
+
 
     public function detail($id)
     {
@@ -203,13 +203,14 @@ class VehicleController extends Controller
 
 
     //Auctions
-     public function getAuctionVehicles(Request $request)
+    public function getAuctionVehicles(Request $request)
     {
         $search = $request->input('search');
         $perPage = $request->input('per_page', 10);
 
         $auctions = Vehicle::where('is_auction', 1)
             ->where('status', 'published')
+            ->withCount('bids')
             ->with([
                 'brand:id,name,image_source',
                 'vehicleModel:id,name'
