@@ -110,13 +110,19 @@ class VehicleManagementController extends Controller
         }
 
 
+
         if (!empty($search)) {
             $query->where(function ($q) use ($search) {
                 $q->where('title', 'like', "%{$search}%")
-                    ->orWhere('vin', 'like', "%{$search}%");
+                    ->orWhere('vin', 'like', "%{$search}%")
+                    ->orWhereHas('brand', function ($b) use ($search) {
+                        $b->where('name', 'like', "%{$search}%");
+                    })
+                    ->orWhereHas('vehicleModel', function ($m) use ($search) {
+                        $m->where('name', 'like', "%{$search}%");
+                    });
             });
         }
-
 
         $vehicles = $query->with(['brand:id,name', 'vehicleModel:id,name'])
             ->orderBy('created_at', 'desc')
@@ -135,10 +141,17 @@ class VehicleManagementController extends Controller
         $query = Vehicle::where('is_auction', true)
             ->where('status', 'published'); // only published
 
+
         if (!empty($search)) {
             $query->where(function ($q) use ($search) {
                 $q->where('title', 'like', "%{$search}%")
-                    ->orWhere('vin', 'like', "%{$search}%");
+                    ->orWhere('vin', 'like', "%{$search}%")
+                    ->orWhereHas('brand', function ($b) use ($search) {
+                        $b->where('name', 'like', "%{$search}%");
+                    })
+                    ->orWhereHas('vehicleModel', function ($m) use ($search) {
+                        $m->where('name', 'like', "%{$search}%");
+                    });
             });
         }
 
@@ -167,13 +180,19 @@ class VehicleManagementController extends Controller
             ->where('status', 'published')
             ->whereBetween('auction_start_date', [$today, $nextWeek]); // upcoming 7 days
 
+
         if (!empty($search)) {
             $query->where(function ($q) use ($search) {
                 $q->where('title', 'like', "%{$search}%")
-                    ->orWhere('vin', 'like', "%{$search}%");
+                    ->orWhere('vin', 'like', "%{$search}%")
+                    ->orWhereHas('brand', function ($b) use ($search) {
+                        $b->where('name', 'like', "%{$search}%");
+                    })
+                    ->orWhereHas('vehicleModel', function ($m) use ($search) {
+                        $m->where('name', 'like', "%{$search}%");
+                    });
             });
         }
-
         $vehicles = $query->with(['brand:id,name', 'vehicleModel:id,name'])
             ->orderBy('auction_start_date', 'asc')
             ->paginate($perPage);
@@ -198,10 +217,17 @@ class VehicleManagementController extends Controller
             ->where('auction_start_date', '<=', $now)
             ->where('auction_end_date', '>=', $now);
 
+
         if (!empty($search)) {
             $query->where(function ($q) use ($search) {
                 $q->where('title', 'like', "%{$search}%")
-                    ->orWhere('vin', 'like', "%{$search}%");
+                    ->orWhere('vin', 'like', "%{$search}%")
+                    ->orWhereHas('brand', function ($b) use ($search) {
+                        $b->where('name', 'like', "%{$search}%");
+                    })
+                    ->orWhereHas('vehicleModel', function ($m) use ($search) {
+                        $m->where('name', 'like', "%{$search}%");
+                    });
             });
         }
 
@@ -225,10 +251,17 @@ class VehicleManagementController extends Controller
             ->where('status', 'published')
             ->where('auction_end_date', '<', Carbon::now());
 
+
         if (!empty($search)) {
             $query->where(function ($q) use ($search) {
                 $q->where('title', 'like', "%{$search}%")
-                    ->orWhere('vin', 'like', "%{$search}%");
+                    ->orWhere('vin', 'like', "%{$search}%")
+                    ->orWhereHas('brand', function ($b) use ($search) {
+                        $b->where('name', 'like', "%{$search}%");
+                    })
+                    ->orWhereHas('vehicleModel', function ($m) use ($search) {
+                        $m->where('name', 'like', "%{$search}%");
+                    });
             });
         }
 
