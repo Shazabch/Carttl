@@ -792,17 +792,18 @@ class InspectionReportController extends Controller
 
 
             $damageTypes = [
-                'Scratch' => ['name' => 'Scratch',       'color' => '#FF0000'],
-                'Multiple Scratches' => ['name' => 'Multiple Scratches', 'color' => '#FF7F00'],
-                'Cosmetic Paint' => ['name' => 'Cosmetic Paint', 'color' => '#FFD700'],
-                'Chip' => ['name' => 'Chip',          'color' => '#00AA00'],
-                'Dent' => ['name' => 'Dent',          'color' => '#0000FF'],
-                'Repainted' => ['name' => 'Repainted',     'color' => '#4B0082'],
-                'Repaired' => ['name' => 'Repaired',      'color' => '#B87BD2'],
-                'Foiled Wrap' => ['name' => 'Foiled Wrap',   'color' => '#706C6E'],
-                'Full PPF' => ['name' => 'Full PPF',      'color' => '#D80881'],
-                'Rust' => ['name' => 'Rust',          'color' => '#6B5407'],
+                'Scratch'           => ['name' => 'Scratch',       'color' => '#FFC0CB'], // Pink
+                'Multiple Scratches' => ['name' => 'Multiple Scratches', 'color' => '#FFFF00'], // Yellow
+                'Cosmetic Paint'     => ['name' => 'Cosmetic Paint', 'color' => '#00AA00'], // Green
+                'Chip'               => ['name' => 'Chip',          'color' => '#00AA00'], // unchanged (Green?)
+                'Dent'               => ['name' => 'Dent',          'color' => '#0000FF'], // Blue
+                'Repainted'          => ['name' => 'Repainted',     'color' => '#FF0000'], // Red
+                'Repaired'           => ['name' => 'Repaired',      'color' => '#800080'], // Purple
+                'Foiled Wrap'        => ['name' => 'Foiled Wrap',   'color' => '#FFA500'], // Orange
+                'Full PPF'           => ['name' => 'Full PPF',      'color' => '#D80881'], // unchanged
+                'Rust'               => ['name' => 'Rust',          'color' => '#6B5407'], // unchanged
             ];
+
 
             $damages = CarDamage::where('inspection_id', $reportInView->id)->get();
 
