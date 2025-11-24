@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\Customer;
 
 use App\Http\Controllers\Controller;
+use App\Models\Booking;
 use App\Models\ContactSubmission;
 use App\Models\InspectionEnquiry;
 use App\Models\VehicleBid;
@@ -238,6 +239,40 @@ class UserDataController extends Controller
         return response()->json([
             'status' => 'success',
             'data' => $inspections,
+        ]);
+    }
+    public function getUserBookings(Request $request)
+    {
+        $user = Auth::guard('api')->user();
+
+        if (!$user) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Unauthenticated user.'
+            ], 401);
+        }
+
+        $search  = $request->input('search');
+        $perPage = $request->input('per_page', 10);
+
+        $bookings = Booking::where('user_id', $user->id)
+            ->when($search, function ($query) use ($search) {
+                $query->where('reference_no', 'like', "%{$search}%")
+                    ->orWhereHas('vehicle', function ($v) use ($search) {
+                        $v->where('title', 'like', "%{$search}%")
+                            ->orWhere('brand', 'like', "%{$search}%")
+                            ->orWhere('model', 'like', "%{$search}%");
+                    });
+            })
+            ->with([
+                'vehicle:id,title,brand,model,year,main_image'
+            ])
+            ->latest()
+            ->paginate($perPage);
+
+        return response()->json([
+            'status' => 'success',
+            'data' => $bookings,
         ]);
     }
 }
