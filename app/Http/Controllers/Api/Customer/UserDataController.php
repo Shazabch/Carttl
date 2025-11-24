@@ -209,6 +209,41 @@ class UserDataController extends Controller
             'data' => $enquiries,
         ]);
     }
+    public function getInspectionAppointments(Request $request)
+    {
+        $user = Auth::guard('api')->user();
+
+        if (!$user) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Unauthenticated user.'
+            ], 401);
+        }
+
+        $search  = $request->input('search');
+        $perPage = $request->input('per_page', 10);
+
+        $appointments = InspectionEnquiry::where('user_id', $user->id)
+            ->when($search, function ($query) use ($search) {
+                $query->whereHas('brand', function ($q) use ($search) {
+                    $q->where('name', 'like', "%{$search}%");
+                })->orWhereHas('vehicleModel', function ($q) use ($search) {
+                    $q->where('name', 'like', "%{$search}%");
+                });
+            })
+            ->with([
+                'brand:id,name,image_source',
+                'vehicleModel:id,name'
+            ])
+            ->orderBy('created_at', 'desc')
+            ->paginate($perPage);
+
+        return response()->json([
+            'status' => 'success',
+            'data' => $appointments,
+        ]);
+    }
+
 
 
     public function getInspectionReports(Request $request)
@@ -257,15 +292,19 @@ class UserDataController extends Controller
 
         $bookings = Booking::where('user_id', $user->id)
             ->when($search, function ($query) use ($search) {
-                $query->where('reference_no', 'like', "%{$search}%")
-                    ->orWhereHas('vehicle', function ($v) use ($search) {
-                        $v->where('title', 'like', "%{$search}%")
-                            ->orWhere('brand', 'like', "%{$search}%")
-                            ->orWhere('model', 'like', "%{$search}%");
+                $query->whereHas('vehicle', function ($v) use ($search) {
+                    $v->whereHas('brand', function ($b) use ($search) {
+                        $b->where('name', 'like', "%{$search}%");
+                    })->orWhereHas('vehicleModel', function ($m) use ($search) {
+                        $m->where('name', 'like', "%{$search}%");
                     });
+                });
             })
             ->with([
-                'vehicle:id,title,brand,model,year,main_image'
+                'vehicle:id,title,year,brand_id,vehicle_model_id',
+                'vehicle.brand:id,name,image_source',
+                'vehicle.vehicleModel:id,name',
+                'vehicle.images:id,path'
             ])
             ->latest()
             ->paginate($perPage);

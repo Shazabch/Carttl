@@ -45,9 +45,14 @@ class VehicleController extends Controller
 
 
     //Models
-    public function getModelsByMake($makeId)
+    public function getModelsByMake(Request $request, $makeId)
     {
+        $search = $request->input('search');
+
         $models = VehicleModel::where('brand_id', $makeId)
+            ->when($search, function ($query, $search) {
+                $query->where('name', 'like', "%{$search}%");
+            })
             ->select('id', 'name')
             ->get();
 
@@ -63,6 +68,7 @@ class VehicleController extends Controller
             'data' => $models,
         ]);
     }
+
 
     //Years
     public function getYears()

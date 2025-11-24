@@ -7,6 +7,11 @@ use Illuminate\Database\Eloquent\Model;
 class Booking extends Model
 {
     protected $guarded = [];
+    protected $casts = [
+    'services' => 'array',
+    'fixed_fees' => 'array',
+];
+
     public function vehicle()
 {
     return $this->belongsTo(Vehicle::class, 'vehicle_id');
