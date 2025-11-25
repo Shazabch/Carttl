@@ -19,7 +19,7 @@ class BookingController extends Controller
         $perPage = $request->get('per_page', 10);
         $search  = $request->get('search', '');
 
-        $vehiclesQuery = Vehicle::where('status', 'pending_payment')
+        $vehiclesQuery = Vehicle::where('status', 'pending_payment')->where('is_auction',true)
             ->when($search, function ($query, $search) {
                 $query->whereHas('brand', function ($q) use ($search) {
                     $q->where('name', 'like', "%{$search}%");
@@ -65,7 +65,7 @@ class BookingController extends Controller
         $perPage = $request->get('per_page', 10);
         $search  = $request->get('search', '');
 
-        $vehiclesQuery = Vehicle::where('status', 'bid_approved')
+        $vehiclesQuery = Vehicle::where('status', 'bid_approved')->where('is_auction',true)
             ->when($search, function ($query, $search) {
                 $query->whereHas('brand', function ($q) use ($search) {
                     $q->where('name', 'like', "%{$search}%");
@@ -127,7 +127,7 @@ class BookingController extends Controller
         $perPage = $request->get('per_page', 10);
         $search  = $request->get('search', '');
 
-        $vehiclesQuery = Vehicle::where('status', 'intransfer')
+        $vehiclesQuery = Vehicle::where('status', 'intransfer')->where('is_auction',true)
             ->when($search, function ($query, $search) {
                 $query->whereHas('brand', function ($q) use ($search) {
                     $q->where('name', 'like', "%{$search}%");
@@ -174,7 +174,7 @@ class BookingController extends Controller
         $perPage = $request->get('per_page', 10);
         $search  = $request->get('search', '');
 
-        $vehiclesQuery = Vehicle::where('status', 'delivered')
+        $vehiclesQuery = Vehicle::where('status', 'delivered')->where('is_auction',true)
             ->when($search, function ($query, $search) {
                 $query->whereHas('brand', function ($q) use ($search) {
                     $q->where('name', 'like', "%{$search}%");
