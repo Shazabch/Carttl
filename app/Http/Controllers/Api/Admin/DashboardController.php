@@ -20,7 +20,7 @@ class DashboardController extends Controller
         $purchaseEnquiryCount = VehicleEnquiry::where('type', 'purchase')->count();
         $sellEnquiryCount     = VehicleEnquiry::where('type', 'sale')->count();
         $now = now();
-        dd( $now);
+       
 
         $upcomingCount = Vehicle::where('status', 'published')
             ->where('is_auction', true)
