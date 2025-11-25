@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Controllers\Api\Admin;
 
 use App\Http\Controllers\Controller;
@@ -6,34 +7,79 @@ use App\Models\InspectionEnquiry;
 use App\Models\Vehicle;
 use App\Models\VehicleEnquiry;
 use App\Models\VehicleBid;
+use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 
 class DashboardController extends Controller
 {
     public function index(): JsonResponse
     {
-        $vehicleCount         = Vehicle::count();
-        $inspectionCount      = InspectionEnquiry::count();
-        $listingCount         = Vehicle::where('status', 'published')->where('is_auction', false)->count();
-        $verifiedCount        = Vehicle::where('status', 'published')->where('is_auction', false)->count();
-        $pendingCount         = Vehicle::where('status', 'pending')->where('is_auction', false)->count();
-        $rejectedCount        = Vehicle::where('status', 'rejected')->where('is_auction', false)->count();
-        $auctionCount         = Vehicle::where('is_auction', true)->where('status', '!=', 'sold')->count();
-        $soldVehicleCount     = Vehicle::where('status', 'sold')->count();
+
+        $appointmentCount      = InspectionEnquiry::count();
+        $auctionCount         = Vehicle::where('is_auction', true)->where('status', 'published')->count();
         $purchaseEnquiryCount = VehicleEnquiry::where('type', 'purchase')->count();
         $sellEnquiryCount     = VehicleEnquiry::where('type', 'sale')->count();
+        $now = now();
 
-         $activeauctionCount = Vehicle::where('is_auction', true)
-        ->where('status', '!=', 'sold')
-        ->where('auction_start_date', '<=', now())
-        ->where('auction_end_date', '>=', now())
-        ->count();
+        $upcomingCount = Vehicle::where('status', 'published')
+            ->where('is_auction', true)
+            ->where('auction_start_date', '>', $now) // auction not started yet
+            ->count();
+
+        $liveCount = Vehicle::where('status', 'published')
+            ->where('is_auction', true)
+            ->where('auction_start_date', '<=', $now)
+            ->where('auction_end_date', '>=', $now) // currently ongoing
+            ->count();
+
+        $expiredCount = Vehicle::where('status', 'published')
+            ->where('is_auction', true)
+            ->where('auction_end_date', '<', $now) // already ended
+            ->count();
+
+        $listedThisMonthCount = Vehicle::where('status', 'published')
+            ->where('is_auction', true)
+            ->whereMonth('auction_end_date', $now->month)
+            ->whereYear('auction_end_date', $now->year)
+            ->where('auction_end_date', '<', $now) // ensure expired
+            ->count();
+
+        $paymentProcessing = Vehicle::where('status', 'pending_payment')
+            ->where('is_auction', true)
+            ->with(['brand:id,name', 'vehicleModel:id,name'])
+            ->latest()
+            ->take(3)
+            ->get();
+
+        $intransfer = Vehicle::where('status', 'intransfer')
+            ->where('is_auction', true)
+            ->with(['brand:id,name', 'vehicleModel:id,name'])
+            ->latest()
+            ->take(3)
+            ->get();
+
+        $deliveredCount = Vehicle::where('status', 'delivered')
+            ->where('is_auction', true)
+            ->whereBetween('updated_at', [now()->startOfWeek(Carbon::SUNDAY), now()])
+            ->count();
+        $latestDelivered = Vehicle::where('status', 'delivered')
+            ->where('is_auction', true)
+            ->whereBetween('updated_at', [now()->startOfWeek(Carbon::SUNDAY), now()])
+            ->with(['brand:id,name', 'vehicleModel:id,name']) // optional
+            ->orderBy('updated_at', 'desc')
+            ->take(3)
+            ->get();
+
+
+
+
+
         $nextAuction = Vehicle::where('is_auction', true)
-        ->where('status','published')
-        ->where('auction_start_date', '>', now())
-        ->orderBy('auction_start_date', 'asc')
-        ->select('id', 'title', 'auction_start_date', 'auction_end_date')
-        ->first();
+            ->where('status', 'published')
+            ->where('auction_start_date', '>', now())
+            ->orderBy('auction_start_date', 'asc')
+            ->select('id', 'title', 'auction_start_date', 'auction_end_date')
+            ->first();
 
         $user = auth('api')->user();
         if (!$user) {
@@ -49,47 +95,54 @@ class DashboardController extends Controller
             'role' => $user->role ?? 'Admin',
             'created_at' => $user->created_at,
         ];
-         $topBids = VehicleBid::with([
+        $topBids = VehicleBid::with([
             'vehicle' => function ($query) {
                 $query->select('id', 'title', 'brand_id', 'vehicle_model_id', 'year', 'status', 'price')
-                      ->with([
-                          'brand:id,name',
-                          'vehicleModel:id,name'
-                      ]);
+                    ->with([
+                        'brand:id,name',
+                        'vehicleModel:id,name'
+                    ]);
             }
         ])
-        ->orderByDesc('bid_amount')
-        ->take(3)
-        ->get(['id', 'vehicle_id', 'bid_amount', 'created_at']);
-         $recentListings = Vehicle::with([
+            ->orderByDesc('bid_amount')
+            ->take(3)
+            ->get(['id', 'vehicle_id', 'bid_amount', 'created_at']);
+        $recentListings = Vehicle::with([
             'brand:id,name',
             'vehicleModel:id,name'
         ])
-        ->where('status', 'published')
-        ->where('is_auction', false)
-        ->orderByDesc('created_at')
-        ->take(3)
-        ->get(['id', 'title', 'brand_id', 'vehicle_model_id', 'year', 'price', 'status', 'created_at']);
+            ->where('status', 'published')
+            ->where('is_auction', true)
+            ->orderByDesc('created_at')
+            ->take(3)
+            ->get(['id', 'title', 'brand_id', 'vehicle_model_id', 'year', 'price', 'status', 'created_at']);
 
         return response()->json([
             'status'  => 'success',
             'message' => 'Dashboard statistics fetched successfully.',
             'data'    => [
-                'total_vehicles'     => $vehicleCount,
-                'vehicles'           => $listingCount,
-                'sold_vehicles'      => $soldVehicleCount,
-                'verified_listings'  => $verifiedCount,
-                'pending_listings'   => $pendingCount,
-                'rejected_listings'  => $rejectedCount,
-                'auctions'           => $auctionCount,
-                'active_auctions'    => $activeauctionCount,
+
+                'upcoming_count'  => $upcomingCount,
+                'listed_count'   => $expiredCount,
+                'live_count'  => $liveCount,
+
+                'auction_count'           => $auctionCount,
+                'delivered_this_week_count'           => $deliveredCount,
+                'delivered_this_week'           => $latestDelivered,
+                'listed_this_month'   => $listedThisMonthCount,
                 'next_auction'       => $nextAuction,
-                'inspections_enquiries'   => $inspectionCount,
+                'profile'     => $profile,
+
+                'recent_listings'       => $recentListings,
+                'top_bids'     => $topBids,
+                'payment_processing'           => $paymentProcessing,
+                'intransfer'           => $intransfer,
+
+                'appointment_count'   => $appointmentCount,
                 'purchase_enquiries' => $purchaseEnquiryCount,
                 'sell_enquiries'     => $sellEnquiryCount,
-                'profile'     => $profile,
-                'top_bids'     => $topBids,
-                 'recent_listings'       => $recentListings,
+
+
             ],
         ]);
     }
