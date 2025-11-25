@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\InspectionEnquiry;
+use App\Models\User;
 use App\Models\Vehicle;
 use App\Models\VehicleEnquiry;
 use App\Models\VehicleBid;
@@ -20,7 +21,7 @@ class DashboardController extends Controller
         $purchaseEnquiryCount = VehicleEnquiry::where('type', 'purchase')->count();
         $sellEnquiryCount     = VehicleEnquiry::where('type', 'sale')->count();
         $now = now();
-       
+
 
         $upcomingCount = Vehicle::where('status', 'published')
             ->where('is_auction', true)
@@ -117,7 +118,10 @@ class DashboardController extends Controller
             ->orderByDesc('created_at')
             ->take(3)
             ->get(['id', 'title', 'brand_id', 'vehicle_model_id', 'year', 'price', 'status', 'created_at']);
-
+        $latestAgents = User::where('role', 'agent')
+            ->orderByDesc('created_at')
+            ->take(5)
+            ->get();
         return response()->json([
             'status'  => 'success',
             'message' => 'Dashboard statistics fetched successfully.',
@@ -142,6 +146,8 @@ class DashboardController extends Controller
                 'appointment_count'   => $appointmentCount,
                 'purchase_enquiries' => $purchaseEnquiryCount,
                 'sell_enquiries'     => $sellEnquiryCount,
+                'latest_drees' => $latestAgents,
+
 
 
             ],
