@@ -14,46 +14,37 @@ class DashboardController extends Controller
 {
     public function index(): JsonResponse
     {
-        // Dubai timezone now
-        $nowDubai = Carbon::now('Asia/Dubai');
-        $startOfWeekDubai = $nowDubai->copy()->startOfWeek(Carbon::SUNDAY);
 
-        // Convert to UTC for DB queries (DB stores timestamps in UTC)
-        $nowUTC = $nowDubai->copy()->setTimezone('UTC');
-        $startOfWeekUTC = $startOfWeekDubai->copy()->setTimezone('UTC');
-
-        // Counts
         $appointmentCount      = InspectionEnquiry::count();
-        $auctionCount          = Vehicle::where('is_auction', true)
-                                       ->where('status', 'published')
-                                       ->count();
-        $purchaseEnquiryCount  = VehicleEnquiry::where('type', 'purchase')->count();
-        $sellEnquiryCount      = VehicleEnquiry::where('type', 'sale')->count();
+        $auctionCount         = Vehicle::where('is_auction', true)->where('status', 'published')->count();
+        $purchaseEnquiryCount = VehicleEnquiry::where('type', 'purchase')->count();
+        $sellEnquiryCount     = VehicleEnquiry::where('type', 'sale')->count();
+        $now = now();
+        dd( $now);
 
         $upcomingCount = Vehicle::where('status', 'published')
             ->where('is_auction', true)
-            ->where('auction_start_date', '>', $nowUTC)
+            ->where('auction_start_date', '>', $now) // auction not started yet
             ->count();
 
         $liveCount = Vehicle::where('status', 'published')
             ->where('is_auction', true)
-            ->where('auction_start_date', '<=', $nowUTC)
-            ->where('auction_end_date', '>=', $nowUTC)
+            ->where('auction_start_date', '<=', $now)
+            ->where('auction_end_date', '>=', $now) // currently ongoing
             ->count();
 
         $expiredCount = Vehicle::where('status', 'published')
             ->where('is_auction', true)
-            ->where('auction_end_date', '<', $nowUTC)
+            ->where('auction_end_date', '<', $now) // already ended
             ->count();
 
         $listedThisMonthCount = Vehicle::where('status', 'published')
             ->where('is_auction', true)
-            ->whereMonth('auction_end_date', $nowDubai->month)
-            ->whereYear('auction_end_date', $nowDubai->year)
-            ->where('auction_end_date', '<', $nowUTC)
+            ->whereMonth('auction_end_date', $now->month)
+            ->whereYear('auction_end_date', $now->year)
+            ->where('auction_end_date', '<', $now) // ensure expired
             ->count();
 
-        // Payment processing vehicles
         $paymentProcessing = Vehicle::where('status', 'pending_payment')
             ->where('is_auction', true)
             ->with(['brand:id,name', 'vehicleModel:id,name'])
@@ -68,29 +59,29 @@ class DashboardController extends Controller
             ->take(3)
             ->get();
 
-        // Delivered this week
         $deliveredCount = Vehicle::where('status', 'delivered')
             ->where('is_auction', true)
-            ->whereBetween('updated_at', [$startOfWeekUTC, $nowUTC])
+            ->whereBetween('updated_at', [now()->startOfWeek(Carbon::SUNDAY), now()])
             ->count();
-
         $latestDelivered = Vehicle::where('status', 'delivered')
             ->where('is_auction', true)
-            ->whereBetween('updated_at', [$startOfWeekUTC, $nowUTC])
-            ->with(['brand:id,name', 'vehicleModel:id,name'])
+            ->whereBetween('updated_at', [now()->startOfWeek(Carbon::SUNDAY), now()])
+            ->with(['brand:id,name', 'vehicleModel:id,name']) // optional
             ->orderBy('updated_at', 'desc')
             ->take(3)
             ->get();
 
-        // Next auction
+
+
+
+
         $nextAuction = Vehicle::where('is_auction', true)
             ->where('status', 'published')
-            ->where('auction_start_date', '>', $nowUTC)
+            ->where('auction_start_date', '>', now())
             ->orderBy('auction_start_date', 'asc')
             ->select('id', 'title', 'auction_start_date', 'auction_end_date')
             ->first();
 
-        // Authenticated user profile
         $user = auth('api')->user();
         if (!$user) {
             return response()->json([
@@ -98,7 +89,6 @@ class DashboardController extends Controller
                 'message' => 'Unauthorized access',
             ], 401);
         }
-
         $profile = [
             'id' => $user->id,
             'name' => $user->name,
@@ -106,20 +96,22 @@ class DashboardController extends Controller
             'role' => $user->role ?? 'Admin',
             'created_at' => $user->created_at,
         ];
-
-        // Top bids
         $topBids = VehicleBid::with([
             'vehicle' => function ($query) {
                 $query->select('id', 'title', 'brand_id', 'vehicle_model_id', 'year', 'status', 'price')
-                    ->with(['brand:id,name', 'vehicleModel:id,name']);
+                    ->with([
+                        'brand:id,name',
+                        'vehicleModel:id,name'
+                    ]);
             }
         ])
-        ->orderByDesc('bid_amount')
-        ->take(3)
-        ->get(['id', 'vehicle_id', 'bid_amount', 'created_at']);
-
-        // Recent listings
-        $recentListings = Vehicle::with(['brand:id,name', 'vehicleModel:id,name'])
+            ->orderByDesc('bid_amount')
+            ->take(3)
+            ->get(['id', 'vehicle_id', 'bid_amount', 'created_at']);
+        $recentListings = Vehicle::with([
+            'brand:id,name',
+            'vehicleModel:id,name'
+        ])
             ->where('status', 'published')
             ->where('is_auction', true)
             ->orderByDesc('created_at')
@@ -130,22 +122,28 @@ class DashboardController extends Controller
             'status'  => 'success',
             'message' => 'Dashboard statistics fetched successfully.',
             'data'    => [
-                'upcoming_count'            => $upcomingCount,
-                'listed_count'              => $expiredCount,
-                'live_count'                => $liveCount,
-                'auction_count'             => $auctionCount,
-                'delivered_this_week_count' => $deliveredCount,
-                'delivered_this_week'       => $latestDelivered,
-                'listed_this_month'         => $listedThisMonthCount,
-                'next_auction'              => $nextAuction,
-                'profile'                   => $profile,
-                'recent_listings'           => $recentListings,
-                'top_bids'                  => $topBids,
-                'payment_processing'        => $paymentProcessing,
-                'intransfer'                => $intransfer,
-                'appointment_count'         => $appointmentCount,
-                'purchase_enquiries'        => $purchaseEnquiryCount,
-                'sell_enquiries'            => $sellEnquiryCount,
+
+                'upcoming_count'  => $upcomingCount,
+                'listed_count'   => $expiredCount,
+                'live_count'  => $liveCount,
+
+                'auction_count'           => $auctionCount,
+                'delivered_this_week_count'           => $deliveredCount,
+                'delivered_this_week'           => $latestDelivered,
+                'listed_this_month'   => $listedThisMonthCount,
+                'next_auction'       => $nextAuction,
+                'profile'     => $profile,
+
+                'recent_listings'       => $recentListings,
+                'top_bids'     => $topBids,
+                'payment_processing'           => $paymentProcessing,
+                'intransfer'           => $intransfer,
+
+                'appointment_count'   => $appointmentCount,
+                'purchase_enquiries' => $purchaseEnquiryCount,
+                'sell_enquiries'     => $sellEnquiryCount,
+
+
             ],
         ]);
     }
