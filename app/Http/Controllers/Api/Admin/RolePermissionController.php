@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Controllers\Api\Admin;
 
 use App\Http\Controllers\Controller;
@@ -70,7 +71,12 @@ class RolePermissionController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'name'          => 'required|string|max:255|unique:roles,name',
+            'name' => [
+                'required',
+                'string',
+                'max:255',
+                Rule::unique('roles', 'name')->where('guard_name', 'api'),
+            ],
             'permissions'   => 'nullable|array',
             'permissions.*' => 'exists:permissions,name',
         ]);
@@ -94,7 +100,7 @@ class RolePermissionController extends Controller
     public function update(Request $request, $id)
     {
         $role = Role::where('guard_name', 'api')->findOrFail($id);
-        
+
         $validated = $request->validate([
             'name'          => [
                 'required',
@@ -106,13 +112,13 @@ class RolePermissionController extends Controller
             'permissions.*' => 'exists:permissions,name',
         ]);
 
-       
+
         $role->update(['name' => $validated['name']]);
 
-                                    
-        $role->syncPermissions([]); 
 
-        
+        $role->syncPermissions([]);
+
+
         if (! empty($validated['permissions'])) {
             $newPermissions = Permission::whereIn('name', $validated['permissions'])
                 ->where('guard_name', 'api')
