@@ -149,7 +149,7 @@ class InspectionReportController extends Controller
                 'damages',
                 'images',
                 'inspector',
-                'fields'
+                'fields.files'
             ])->findOrFail($reportId);
             $report->make_name = $report->brand->name ?? null;
             $report->model_name = $report->vehicleModel->name ?? null;
