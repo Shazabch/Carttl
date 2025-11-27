@@ -588,7 +588,7 @@
         'cooledSeats' => 'fas fa-snowflake',
         'heatedSeats' => 'fas fa-fire',
         'powerSeats' => 'fas fa-bolt',
-        'viveCamera' => 'fas fa-camera',
+        'viewCamera' => 'fas fa-camera',
         'sunroofType' => 'fas fa-sun',
         'drive' => 'fas fa-road',
         // Brakes
@@ -947,7 +947,7 @@
                         @endforeach
                     </tr>
                     <tr>
-                        @foreach(['powerSeats', 'viveCamera', 'sunroofType', 'drive','blindSpot'] as $field)
+                        @foreach(['powerSeats', 'viewCamera', 'sunroofType', 'drive','blindSpot'] as $field)
                         <td>
                             <div class="item-label"><i class="{{ $fieldIcons[$field] ?? 'fas fa-circle-notch' }}"></i> {{ Str::of($field)->kebab()->replace('-', ' ')->title() }}</div>
                             @php $data = $reportInView->{$field} ?? 'N/A'; $statusInfo = getStatusInfo($data); @endphp
