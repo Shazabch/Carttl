@@ -588,7 +588,7 @@
         'cooledSeats' => 'fas fa-snowflake',
         'heatedSeats' => 'fas fa-fire',
         'powerSeats' => 'fas fa-bolt',
-        'viewCamera' => 'fas fa-camera',
+        'viveCamera' => 'fas fa-camera',
         'sunroofType' => 'fas fa-sun',
         'drive' => 'fas fa-road',
         // Brakes
@@ -947,9 +947,13 @@
                         @endforeach
                     </tr>
                     <tr>
-                        @foreach(['powerSeats', 'viewCamera', 'sunroofType', 'drive','blindSpot'] as $field)
+                        @foreach(['powerSeats', 'viveCamera', 'sunroofType', 'drive','blindSpot'] as $field)
                         <td>
-                            <div class="item-label"><i class="{{ $fieldIcons[$field] ?? 'fas fa-circle-notch' }}"></i> {{ Str::of($field)->kebab()->replace('-', ' ')->title() }}</div>
+                            <div class="item-label"><i class="{{ $fieldIcons[$field] ?? 'fas fa-circle-notch' }}"></i>
+                            @if($field === 'viveCamera') View Camera @else
+                            {{ Str::of($field)->kebab()->replace('-', ' ')->title() }}
+                            @endif
+                           </div>
                             @php $data = $reportInView->{$field} ?? 'N/A'; $statusInfo = getStatusInfo($data); @endphp
                             @if(is_array($data)) <div class="item-value">
                                 <ul class="item-value-list">@foreach($data as $value)<li>{{ $value }}</li>@endforeach</ul>
