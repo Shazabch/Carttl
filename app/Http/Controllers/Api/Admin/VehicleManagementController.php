@@ -279,7 +279,23 @@ class VehicleManagementController extends Controller
 
     public function show($id)
     {
-        $vehicle = Vehicle::with(['brand:id,name', 'images:id,vehicle_id,path,is_cover', 'features', 'latestBid', 'bids', 'coverImage:id,vehicle_id,path', 'vehicleModel', 'fuelType', 'transmission', 'bodyType'])
+        $vehicle = Vehicle::with([
+            'brand:id,name',
+            'images:id,vehicle_id,path,is_cover',
+            'features',
+            'latestBid',
+            'bids',
+            'coverImage:id,vehicle_id,path',
+            'vehicleModel',
+            'fuelType',
+            'transmission',
+            'bodyType',
+
+            // Only inspections + brand + model
+            'inspections:id,vehicle_id,make,model,inspector_id,created_at',
+            'inspections.brand:id,name',
+            'inspections.vehicleModel:id,name',
+        ])
             ->find($id);
 
         if (!$vehicle) {
@@ -294,6 +310,7 @@ class VehicleManagementController extends Controller
             'data' => $vehicle
         ]);
     }
+
 
     public function store(Request $request)
     {

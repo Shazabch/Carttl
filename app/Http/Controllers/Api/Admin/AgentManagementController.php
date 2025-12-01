@@ -96,12 +96,12 @@ class AgentManagementController extends Controller
             Activity::causedBy($admin)
                 ->performedOn($agent)
                 ->event('created')
-                ->log("Admin ({$admin->name}) created new agent: {$agent->name}");
+                ->log("Admin ({$admin->name}) created new Dree: {$agent->name}");
         }
 
         return response()->json([
             'status'  => 'success',
-            'message' => 'Agent created successfully',
+            'message' => 'Dree created successfully',
             'data'    => $agent,
         ], 201);
     }
@@ -191,7 +191,7 @@ class AgentManagementController extends Controller
             Activity::causedBy($admin)
                 ->performedOn($agent)
                 ->event('updated')
-                ->log("Admin ({$admin->name}) updated agent: {$agent->name}");
+                ->log("Admin ({$admin->name}) updated Dree: {$agent->name}");
         }
 
         return response()->json([
@@ -225,7 +225,7 @@ class AgentManagementController extends Controller
             Activity::causedBy($admin)
                 ->performedOn($agent)
                 ->event('assigned_customers')
-                ->log("Admin ({$admin->name}) assigned customers to agent: {$agent->name}");
+                ->log("Admin ({$admin->name}) assigned customers to Dree: {$agent->name}");
         }
         return response()->json([
             'status'  => 'success',
@@ -306,7 +306,7 @@ class AgentManagementController extends Controller
         if ($admin) {
             Activity::causedBy($admin)
                 ->event('deleted')
-                ->log("Admin ({$admin->name}) deleted agent: {$agent->name} and unlinked assigned customers");
+                ->log("Admin ({$admin->name}) deleted Dree: {$agent->name} and unlinked assigned customers");
         }
 
         return response()->json([

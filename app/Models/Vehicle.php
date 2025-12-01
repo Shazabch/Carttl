@@ -40,7 +40,7 @@ class Vehicle extends Model
         'is_auction' => 'boolean',
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
-      
+
 
     ];
 
@@ -137,10 +137,11 @@ class Vehicle extends Model
     /**
      * Get all inspection records for this vehicle.
      */
-    public function inspections(): HasMany
+    public function inspections()
     {
-        return $this->hasMany(VehicleInspectionReport::class);
+        return $this->hasMany(VehicleInspectionReport::class, 'vehicle_id');
     }
+
 
     /**
      * Get all images for this vehicle.
