@@ -81,6 +81,7 @@ class InspectionEnquiryController extends Controller
         'comment'       => 'nullable|string',
         'comment_initial'=> 'nullable|string',
         'asking_price'  => 'nullable|numeric',
+        'offer_price'  => 'nullable|numeric',
     ]);
 
     try {
@@ -138,6 +139,7 @@ class InspectionEnquiryController extends Controller
         'comment'        => 'nullable|string|max:500',
         'comment_initial'=> 'nullable|string|max:500',
         'asking_price'   => 'nullable|numeric',
+         'offer_price'  => 'nullable|numeric',
     ]);
 
     try {

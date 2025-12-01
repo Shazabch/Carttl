@@ -11,14 +11,15 @@ return new class extends Migration
             $table->string('status')->nullable()->after('inspector_id');
             $table->text('comment')->nullable()->after('status');
             $table->text('comment_initial')->nullable()->after('comment');
-            $table->decimal('asking_price', 12, 2)->nullable()->after('comment_initial');
+            $table->decimal('asking_price')->nullable()->after('comment_initial');
+            $table->decimal('offer_price')->nullable()->after('comment_initial');
         });
     }
 
     public function down(): void
     {
         Schema::table('inspection_enquiries', function (Blueprint $table) {
-            $table->dropColumn(['status', 'comment', 'comment_initial', 'asking_price']);
+            $table->dropColumn(['status', 'comment', 'comment_initial', 'asking_price','offer_price']);
         });
     }
 };
