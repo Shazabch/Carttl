@@ -66,103 +66,114 @@ class InspectionEnquiryController extends Controller
             'data' => $users
         ]);
     }
-    public function create(Request $request)
-    {
-        $validated = $request->validate([
-            'type'         => 'required|string',
-            'location'     => 'required|string|max:255',
-            'year'         => 'required|string|max:4',
-            'make'         => 'required|integer|exists:brands,id',
-            'model'        => 'required|integer|exists:vehicle_models,id',
-            'user_id'      => 'required|integer|exists:users,id',      // customer
-            'inspector_id' => 'nullable|integer|exists:users,id',      // inspector
-        ]);
+   public function create(Request $request)
+{
+    $validated = $request->validate([
+        'type'          => 'required|string',
+        'location'      => 'required|string|max:255',
+        'year'          => 'required|string|max:4',
+        'make'          => 'required|integer|exists:brands,id',
+        'model'         => 'required|integer|exists:vehicle_models,id',
+        'user_id'       => 'required|integer|exists:users,id',      // customer
+        'inspector_id'  => 'nullable|integer|exists:users,id',      // inspector
+        // new fields
+        'status'        => 'nullable|string|max:50',
+        'comment'       => 'nullable|string',
+        'comment_initial'=> 'nullable|string',
+        'asking_price'  => 'nullable|numeric',
+    ]);
 
-        try {
+    try {
+        // Fetch customer
+        $customer = User::findOrFail($request->user_id);
 
-            // Fetch customer
-            $customer = User::findOrFail($request->user_id);
+        // Auto-fill enquiry fields using customer details
+        $validated['name']  = $customer->name;
+        $validated['phone'] = $customer->phone;
+        $validated['email'] = $customer->email;
 
-            // Auto-fill enquiry fields using customer details
-            $validated['name']  = $customer->name;
-            $validated['phone'] = $customer->phone;
-            $validated['email'] = $customer->email;
+        // Auto set date & time
+        $validated['date'] = now()->toDateString();
+        $validated['time'] = now()->format('H:i');
 
-            // Auto set date & time
-            $validated['date'] = now()->toDateString();
-            $validated['time'] = now()->format('H:i');
+        // Keep the type from request
+        $validated['type'] = $request->type;
 
-            // Replace type with fixed 'inspection'
-            $validated['type'] = $request->type;
+        // Assign inspector
+        $validated['inspector_id'] = $request->inspector_id;
 
-            // Assign inspector
-            $validated['inspector_id'] = $request->inspector_id;
+        // Save customer_id separately
+        $validated['user_id'] = $customer->id;
 
-            // Save customer_id separately if required in DB
-            $validated['user_id'] = $customer->id;
+        // Create enquiry
+        $enquiry = InspectionEnquiry::create($validated);
 
-            // Create enquiry
-            $enquiry = InspectionEnquiry::create($validated);
-
-            return response()->json([
-                'status'  => 'success',
-                'message' => 'Inspection enquiry submitted successfully.',
-                'data'    => $enquiry,
-            ], 201);
-        } catch (\Exception $e) {
-            return response()->json([
-                'status'  => 'error',
-                'message' => 'Something went wrong: ' . $e->getMessage(),
-            ], 500);
-        }
+        return response()->json([
+            'status'  => 'success',
+            'message' => 'Inspection enquiry submitted successfully.',
+            'data'    => $enquiry,
+        ], 201);
+    } catch (\Exception $e) {
+        return response()->json([
+            'status'  => 'error',
+            'message' => 'Something went wrong: ' . $e->getMessage(),
+        ], 500);
     }
+}
 
 
     public function update(Request $request, $id)
-    {
-        $enquiry = InspectionEnquiry::findOrFail($id);
+{
+    $enquiry = InspectionEnquiry::findOrFail($id);
 
-        $validated = $request->validate([
-            'type'     => 'nullable|string|max:255',
-            'location'     => 'nullable|string|max:255',
-            'year'         => 'nullable|string|max:4',
-            'make'         => 'nullable|integer|exists:brands,id',
-            'model'        => 'nullable|integer|exists:vehicle_models,id',
-            'user_id'      => 'nullable|integer|exists:users,id',
-            'inspector_id' => 'nullable|integer|exists:users,id',
-        ]);
+    $validated = $request->validate([
+        'type'           => 'nullable|string|max:255',
+        'location'       => 'nullable|string|max:255',
+        'year'           => 'nullable|string|max:4',
+        'make'           => 'nullable|integer|exists:brands,id',
+        'model'          => 'nullable|integer|exists:vehicle_models,id',
+        'user_id'        => 'nullable|integer|exists:users,id',
+        'inspector_id'   => 'nullable|integer|exists:users,id',
+        'status'         => 'nullable|string|max:50',
+        'comment'        => 'nullable|string|max:500',
+        'comment_initial'=> 'nullable|string|max:500',
+        'asking_price'   => 'nullable|numeric',
+    ]);
 
-        try {
+    try {
+        if ($request->has('user_id')) {
+            $customer = User::findOrFail($request->user_id);
 
-            if ($request->has('user_id')) {
-                $customer = User::findOrFail($request->user_id);
-
-                $validated['name']  = $customer->name;
-                $validated['phone'] = $customer->phone;
-                $validated['email'] = $customer->email;
-                $validated['user_id'] = $customer->id;
-            }
-
-            if ($request->has('inspector_id')) {
-                $validated['inspector_id'] = $request->inspector_id;
-            }
-
-           
-            $validated['type'] = $request->type;
-            $enquiry->update($validated);
-
-            return response()->json([
-                'status'  => 'success',
-                'message' => 'Inspection enquiry updated successfully.',
-                'data'    => $enquiry,
-            ]);
-        } catch (\Exception $e) {
-            return response()->json([
-                'status'  => 'error',
-                'message' => 'Something went wrong: ' . $e->getMessage(),
-            ], 500);
+            $validated['name']  = $customer->name;
+            $validated['phone'] = $customer->phone;
+            $validated['email'] = $customer->email;
+            $validated['user_id'] = $customer->id;
         }
+
+        if ($request->has('inspector_id')) {
+            $validated['inspector_id'] = $request->inspector_id;
+        }
+
+        // Preserve type if provided
+        if ($request->has('type')) {
+            $validated['type'] = $request->type;
+        }
+
+        $enquiry->update($validated);
+
+        return response()->json([
+            'status'  => 'success',
+            'message' => 'Inspection enquiry updated successfully.',
+            'data'    => $enquiry,
+        ]);
+    } catch (\Exception $e) {
+        return response()->json([
+            'status'  => 'error',
+            'message' => 'Something went wrong: ' . $e->getMessage(),
+        ], 500);
     }
+}
+
 
 
 
