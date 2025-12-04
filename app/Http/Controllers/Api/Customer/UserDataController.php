@@ -8,6 +8,7 @@ use App\Models\ContactSubmission;
 use App\Models\InspectionEnquiry;
 use App\Models\VehicleBid;
 use App\Models\VehicleEnquiry;
+use App\Models\VehicleInspectionReport;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -243,6 +244,73 @@ class UserDataController extends Controller
             'data' => $appointments,
         ]);
     }
+
+    public function getInspectionReportByEnquiry(Request $request, $inspectionEnquiryId)
+    {
+        $report = VehicleInspectionReport::where('inspection_enquiry_id', $inspectionEnquiryId)
+            ->with([
+                'vehicle',
+                'damages',
+                'inspector',
+                'images',
+                'brand:id,name',
+                'vehicleModel:id,name',
+                'fields.files'
+            ])
+            ->first();
+
+        if (!$report) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Inspection report not found for this enquiry.'
+            ], 404);
+        }
+
+        // Add make_name and model_name like in show()
+        $report->make_name = $report->brand->name ?? null;
+        $report->model_name = $report->vehicleModel->name ?? null;
+
+        unset($report->brand, $report->vehicleModel);
+
+        return response()->json([
+            'status' => 'success',
+            'data'   => $report,
+        ]);
+    }
+
+
+public function getInspectionReportByVehicle(Request $request, $vehicleId)
+{
+    $report = VehicleInspectionReport::where('vehicle_id', $vehicleId)
+        ->with([
+            'vehicle',
+            'damages',
+            'inspector',
+            'images',
+            'brand:id,name',
+            'vehicleModel:id,name',
+            'fields.files'
+        ])
+        ->first();
+
+    if (!$report) {
+        return response()->json([
+            'status' => 'error',
+            'message' => 'Inspection report not found for this vehicle.'
+        ], 404);
+    }
+
+    // Add make_name and model_name for convenience
+    $report->make_name = $report->brand->name ?? null;
+    $report->model_name = $report->vehicleModel->name ?? null;
+
+    unset($report->brand, $report->vehicleModel);
+
+    return response()->json([
+        'status' => 'success',
+        'data' => $report,
+    ]);
+}
 
 
 

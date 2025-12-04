@@ -362,7 +362,8 @@ Route::group(['middleware' => 'auth:api'], function () {
         Route::get('user/enquiries/sale', 'getSaleEnquiries')->name('user.enquiries.sale');
         Route::get('user/enquiries/contact', 'getContactEnquiries')->name('user.enquiries.contact');
         Route::get('user/appointments', 'getInspectionAppointments')->name('user.appointments');
-        Route::get('user/inspection-reports', 'getInspectionReports')->name('user.inspection.reports');
+        Route::get('user/inspection-appointment/reports/{id}', 'getInspectionReportByEnquiry')->name('user.inspection.reports');
+        Route::get('user/inspection-auction/reports/{id}', 'getInspectionReportByVehicle')->name('user.inspection.auction.reports');
         Route::get('user/bookings', 'getUserBookings')->name('user.bookings');
 
     });

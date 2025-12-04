@@ -127,6 +127,8 @@ class InspectionReportController extends Controller
         ]);
     }
 
+    
+
     public function showShared($uuid)
     {
         try {
