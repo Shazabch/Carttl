@@ -234,16 +234,41 @@ class UserDataController extends Controller
             })
             ->with([
                 'brand:id,name,image_source',
-                'vehicleModel:id,name'
+                'vehicleModel:id,name',
+                'inspectionReports' => function ($q) {
+                    $q->with([
+                        'vehicle',
+                        'damages',
+                        'inspector',
+                        'images',
+                        'brand:id,name',
+                        'vehicleModel:id,name',
+                        'fields.files'
+                    ]);
+                }
             ])
             ->orderBy('created_at', 'desc')
             ->paginate($perPage);
+
+        // Add make_name and model_name for each report
+        $appointments->getCollection()->transform(function ($appointment) {
+            if ($appointment->inspectionReports) {
+                $appointment->inspectionReports->transform(function ($report) {
+                    $report->make_name = $report->brand->name ?? null;
+                    $report->model_name = $report->vehicleModel->name ?? null;
+                    unset($report->brand, $report->vehicleModel);
+                    return $report;
+                });
+            }
+            return $appointment;
+        });
 
         return response()->json([
             'status' => 'success',
             'data' => $appointments,
         ]);
     }
+
 
     public function getInspectionReportByEnquiry(Request $request, $inspectionEnquiryId)
     {
@@ -279,71 +304,42 @@ class UserDataController extends Controller
     }
 
 
-public function getInspectionReportByVehicle(Request $request, $vehicleId)
-{
-    $report = VehicleInspectionReport::where('vehicle_id', $vehicleId)
-        ->with([
-            'vehicle',
-            'damages',
-            'inspector',
-            'images',
-            'brand:id,name',
-            'vehicleModel:id,name',
-            'fields.files'
-        ])
-        ->first();
-
-    if (!$report) {
-        return response()->json([
-            'status' => 'error',
-            'message' => 'Inspection report not found for this vehicle.'
-        ], 404);
-    }
-
-    // Add make_name and model_name for convenience
-    $report->make_name = $report->brand->name ?? null;
-    $report->model_name = $report->vehicleModel->name ?? null;
-
-    unset($report->brand, $report->vehicleModel);
-
-    return response()->json([
-        'status' => 'success',
-        'data' => $report,
-    ]);
-}
-
-
-
-    public function getInspectionReports(Request $request)
+    public function getInspectionReportByVehicle(Request $request, $vehicleId)
     {
-        $user = Auth::guard('api')->user();
+        $report = VehicleInspectionReport::where('vehicle_id', $vehicleId)
+            ->with([
+                'vehicle',
+                'damages',
+                'inspector',
+                'images',
+                'brand:id,name',
+                'vehicleModel:id,name',
+                'fields.files'
+            ])
+            ->first();
 
-        if (!$user) {
+        if (!$report) {
             return response()->json([
                 'status' => 'error',
-                'message' => 'Unauthenticated user.'
-            ], 401);
+                'message' => 'Inspection report not found for this vehicle.'
+            ], 404);
         }
 
-        $search = $request->input('search');
-        $perPage = $request->input('per_page', 10);
+        // Add make_name and model_name for convenience
+        $report->make_name = $report->brand->name ?? null;
+        $report->model_name = $report->vehicleModel->name ?? null;
 
-        $inspections = InspectionEnquiry::where('user_id', $user->id)
-            ->when($search, function ($query) use ($search) {
-                $query->whereHas('brand', function ($q) use ($search) {
-                    $q->where('name', 'like', "%{$search}%");
-                })->orWhereHas('vehicleModel', function ($q) use ($search) {
-                    $q->where('name', 'like', "%{$search}%");
-                });
-            })
-            ->with(['brand:id,name,image_source', 'vehicleModel:id,name'])
-            ->paginate($perPage);
+        unset($report->brand, $report->vehicleModel);
 
         return response()->json([
             'status' => 'success',
-            'data' => $inspections,
+            'data' => $report,
         ]);
     }
+
+
+
+
     public function getUserBookings(Request $request)
     {
         $user = Auth::guard('api')->user();

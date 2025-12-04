@@ -15,5 +15,7 @@ public function imageSet(): HasOne
     {
         return $this->hasOne(VehicleImage::class, 'vehicle_id');
     }
+
+    
     protected $guarded=[];
 }

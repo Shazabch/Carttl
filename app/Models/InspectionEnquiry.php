@@ -26,6 +26,11 @@ class InspectionEnquiry extends Model
     {
         return $this->hasOne(VehicleInspectionReport::class, 'inspection_enquiry_id');
     }
+    public function inspectionReports()
+{
+    return $this->hasMany(VehicleInspectionReport::class, 'inspection_enquiry_id', 'id');
+}
+
     
     public function inspector(): BelongsTo
     {
