@@ -211,35 +211,47 @@ class VehicleController extends Controller
 
 
     //Auctions
-    public function getAuctionVehicles(Request $request)
-    {
-        $perPage = $request->input('per_page', 10);
+  public function getAuctionVehicles(Request $request)
+{
+    $perPage = $request->input('per_page', 10);
 
-        $auctions = Vehicle::where('is_auction', 1)
-            ->where('status', 'published')
-            ->withCount('bids')
-            ->with([
-                'brand:id,name,image_source',
-                'vehicleModel:id,name'
-            ])
-            ->when($request->input('search'), function ($query, $search) {
-                $query->where('title', 'like', "%{$search}%")
-                    ->orWhere('vin', 'like', "%{$search}%")
-                    ->orWhereHas('brand', fn($q) => $q->where('name', 'like', "%{$search}%"))
-                    ->orWhereHas('vehicleModel', fn($q) => $q->where('name', 'like', "%{$search}%"));
-            })
-            ->when($request->input('make'), fn($q, $make) => $q->whereHas('brand', fn($q2) => $q2->where('name', $make)))
-            ->when($request->input('model'), fn($q, $model) => $q->whereHas('vehicleModel', fn($q2) => $q2->where('name', $model)))
-            ->when($request->input('price_min'), fn($q, $min) => $q->where('price', '>=', $min))
-            ->when($request->input('price_max'), fn($q, $max) => $q->where('price', '<=', $max))
-            ->when($request->input('condition'), fn($q, $condition) => $q->where('condition', $condition))
-            ->paginate($perPage);
+    $auctions = Vehicle::where('is_auction', 1)
+        ->where('status', 'published')
+        ->withCount('bids')
+        ->with([
+            'brand:id,name,image_source',
+            'vehicleModel:id,name',
+            'images:id,vehicle_id,is_cover,path'  // <-- ADD THIS
+        ])
+        ->when($request->input('search'), function ($query, $search) {
+            $query->where('title', 'like', "%{$search}%")
+                ->orWhere('vin', 'like', "%{$search}%")
+                ->orWhereHas('brand', fn($q) => $q->where('name', 'like', "%{$search}%"))
+                ->orWhereHas('vehicleModel', fn($q) => $q->where('name', 'like', "%{$search}%"));
+        })
+        ->when($request->input('make'), fn($q, $make) => 
+            $q->whereHas('brand', fn($q2) => $q2->where('name', $make))
+        )
+        ->when($request->input('model'), fn($q, $model) => 
+            $q->whereHas('vehicleModel', fn($q2) => $q2->where('name', $model))
+        )
+        ->when($request->input('price_min'), fn($q, $min) => 
+            $q->where('price', '>=', $min)
+        )
+        ->when($request->input('price_max'), fn($q, $max) => 
+            $q->where('price', '<=', $max)
+        )
+        ->when($request->input('condition'), fn($q, $condition) => 
+            $q->where('condition', $condition)
+        )
+        ->paginate($perPage);
 
-        return response()->json([
-            'status' => 'success',
-            'data' => $auctions,
-        ]);
-    }
+    return response()->json([
+        'status' => 'success',
+        'data' => $auctions,
+    ]);
+}
+
 
     public function featuredAuctions()
     {
