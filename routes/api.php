@@ -122,6 +122,7 @@ Route::prefix('admin')
             Route::get('/inspection-enquiries/customers', 'getCustomers');
             Route::get('/inspection-enquiries/show/{id}', 'show')->middleware('permission:appointment-view');
             Route::post('/inspection-enquiries/create', 'create')->middleware('permission:appointment-manage');
+            Route::post('/inspection-enquiries/change-status', 'changeStatus')->middleware('permission:appointment-manage');
             Route::post('/inspection-enquiries/update/{id}', 'update')->middleware('permission:appointment-manage');
             Route::post('/inspection-enquiries/assign-inspector', 'assignInspector')->middleware('permission:appointment-manage');
             Route::post('/inspection-enquiries/unassign-inspector', 'unassignInspector')->middleware('permission:appointment-manage');

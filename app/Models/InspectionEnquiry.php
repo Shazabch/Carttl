@@ -14,6 +14,11 @@ class InspectionEnquiry extends Model
     {
         return $this->belongsTo(VehicleModel::class, 'model');
     }
+    public function statusHistories()
+{
+    return $this->hasMany(AppointmentStatusHistory::class, 'appointment_id');
+}
+
     public function brand(): BelongsTo
     {
         return $this->belongsTo(Brand::class, 'make');

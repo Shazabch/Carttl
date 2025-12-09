@@ -67,174 +67,182 @@ class InspectionEnquiryController extends Controller
             'data' => $users
         ]);
     }
- public function create(Request $request)
-{
-    $validated = $request->validate([
-        'type'           => 'required|string',
-        'location'       => 'required|string|max:255',
-        'year'           => 'required|string|max:4',
-        'make'           => 'required|integer|exists:brands,id',
-        'model'          => 'required|integer|exists:vehicle_models,id',
-        'user_id'        => 'required|integer|exists:users,id',
-        'inspector_id'   => 'nullable|integer|exists:users,id',
+    public function create(Request $request)
+    {
+        $validated = $request->validate([
+            'type'           => 'required|string',
+            'location'       => 'required|string|max:255',
+            'year'           => 'required|string|max:4',
+            'make'           => 'required|integer|exists:brands,id',
+            'model'          => 'required|integer|exists:vehicle_models,id',
+            'user_id'        => 'required|integer|exists:users,id',
+            'inspector_id'   => 'nullable|integer|exists:users,id',
 
-        // status history fields
-        'status'         => 'nullable|string|max:50',
-        'comment'        => 'nullable|string',
-        'comment_status'        => 'nullable|string',
+            // status history fields
+            'status'         => 'nullable|string|max:50',
+            'comment'        => 'nullable|string',
+            
 
-        // other fields
-        'comment_initial'=> 'nullable|string',
-        'asking_price'   => 'nullable|numeric',
-        'offer_price'    => 'nullable|numeric',
-    ]);
-
-    try {
-        // Get customer
-        $customer = User::findOrFail($request->user_id);
-
-        // Auto-fill fields from customer
-        $validated['name']  = $customer->name;
-        $validated['phone'] = $customer->phone;
-        $validated['email'] = $customer->email;
-
-        // Auto date & time
-        $validated['date'] = now()->toDateString();
-        $validated['time'] = now()->format('H:i');
-
-        // Assign inspector
-        $validated['inspector_id'] = $request->inspector_id;
-
-        // Create enquiry
-        $enquiry = InspectionEnquiry::create($validated);
-
-        // Save status history
-        AppointmentStatusHistory::create([
-            'appointment_id' => $enquiry->id,
-            'status'         => $request->status,
-            'comment'       => $request->comment_status,
-            'creator'        => auth('api')->id(),
+            // other fields
+            'comment_initial' => 'nullable|string',
+            'asking_price'   => 'nullable|numeric',
+            'offer_price'    => 'nullable|numeric',
         ]);
 
-        return response()->json([
-            'status'  => 'success',
-            'message' => 'Inspection enquiry submitted successfully.',
-            'data'    => $enquiry,
-        ], 201);
+        try {
+            // Get customer
+            $customer = User::findOrFail($request->user_id);
 
-    } catch (\Exception $e) {
-        return response()->json([
-            'status'  => 'error',
-            'message' => 'Something went wrong: ' . $e->getMessage(),
-        ], 500);
+            // Auto-fill fields from customer
+            $validated['name']  = $customer->name;
+            $validated['phone'] = $customer->phone;
+            $validated['email'] = $customer->email;
+
+            // Auto date & time
+            $validated['date'] = now()->toDateString();
+            $validated['time'] = now()->format('H:i');
+
+            // Assign inspector
+            $validated['inspector_id'] = $request->inspector_id;
+
+            // Create enquiry
+            $enquiry = InspectionEnquiry::create($validated);
+
+            // Save status history
+
+            AppointmentStatusHistory::create([
+                'appointment_id' => $enquiry->id,
+                'status'         => $request->status,
+                'comment'       => $request->comment,
+                'creator'        => auth('api')->id(),
+            ]);
+
+            return response()->json([
+                'status'  => 'success',
+                'message' => 'Inspection enquiry submitted successfully.',
+                'data'    => $enquiry,
+            ], 201);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status'  => 'error',
+                'message' => 'Something went wrong: ' . $e->getMessage(),
+            ], 500);
+        }
     }
-}
 
 
 
     public function update(Request $request, $id)
-{
-    $enquiry = InspectionEnquiry::findOrFail($id);
-
-    $validated = $request->validate([
-        'type'           => 'nullable|string|max:255',
-        'location'       => 'nullable|string|max:255',
-        'year'           => 'nullable|string|max:4',
-        'make'           => 'nullable|integer|exists:brands,id',
-        'model'          => 'nullable|integer|exists:vehicle_models,id',
-        'user_id'        => 'nullable|integer|exists:users,id',
-        'inspector_id'   => 'nullable|integer|exists:users,id',
-        'status'         => 'nullable|string|max:50',
-        'comment'        => 'nullable|string|max:500',
-        'comment_initial'=> 'nullable|string|max:500',
-        'asking_price'   => 'nullable|numeric',
-         'offer_price'  => 'nullable|numeric',
-    ]);
-
-    try {
-        if ($request->has('user_id')) {
-            $customer = User::findOrFail($request->user_id);
-
-            $validated['name']  = $customer->name;
-            $validated['phone'] = $customer->phone;
-            $validated['email'] = $customer->email;
-            $validated['user_id'] = $customer->id;
-        }
-
-        if ($request->has('inspector_id')) {
-            $validated['inspector_id'] = $request->inspector_id;
-        }
-
-        // Preserve type if provided
-        if ($request->has('type')) {
-            $validated['type'] = $request->type;
-        }
-
-        $enquiry->update($validated);
-
-        return response()->json([
-            'status'  => 'success',
-            'message' => 'Inspection enquiry updated successfully.',
-            'data'    => $enquiry,
-        ]);
-    } catch (\Exception $e) {
-        return response()->json([
-            'status'  => 'error',
-            'message' => 'Something went wrong: ' . $e->getMessage(),
-        ], 500);
-    }
-}
-
-
-
-
-public function changeStatus(Request $request)
-{
-    $validated = $request->validate([
-        'enquiry_id'  => 'required|exists:inspection_enquiries,id',
-        'status'      => 'required|string|max:50',
-        'comment'     => 'nullable|string',
-    ]);
-
-    try {
-        $enquiry = InspectionEnquiry::findOrFail($request->enquiry_id);
-
-        // Update status in enquiry
-        $enquiry->status = $request->status;
-        $enquiry->save();
-
-        // Insert into status history
-        AppointmentStatusHistory::create([
-            'appointment_id' => $enquiry->id,
-            'status'         => $request->status,
-            'commentt'       => $request->comment,
-            'creator'        => auth('api')->id(),
-        ]);
-
-        return response()->json([
-            'status'  => 'success',
-            'message' => 'Status updated successfully.',
-            'data'    => $enquiry
-        ]);
-
-    } catch (\Exception $e) {
-        return response()->json([
-            'status'  => 'error',
-            'message' => 'Something went wrong: ' . $e->getMessage(),
-        ], 500);
-    }
-}
-
-
-    public function show($id)
     {
-        $enquiry = InspectionEnquiry::with(['brand:id,name', 'vehicleModel:id,name', 'inspector'])->findOrFail($id);
+        $enquiry = InspectionEnquiry::findOrFail($id);
 
-        return response()->json([
-            'status' => 'success',
-            'data' => $enquiry,
+        $validated = $request->validate([
+            'type'           => 'nullable|string|max:255',
+            'location'       => 'nullable|string|max:255',
+            'year'           => 'nullable|string|max:4',
+            'make'           => 'nullable|integer|exists:brands,id',
+            'model'          => 'nullable|integer|exists:vehicle_models,id',
+            'user_id'        => 'nullable|integer|exists:users,id',
+            'inspector_id'   => 'nullable|integer|exists:users,id',
+            'status'         => 'nullable|string|max:50',
+            'comment'        => 'nullable|string|max:500',
+            'comment_initial' => 'nullable|string|max:500',
+            'asking_price'   => 'nullable|numeric',
+            'offer_price'  => 'nullable|numeric',
         ]);
+
+        try {
+            if ($request->has('user_id')) {
+                $customer = User::findOrFail($request->user_id);
+
+                $validated['name']  = $customer->name;
+                $validated['phone'] = $customer->phone;
+                $validated['email'] = $customer->email;
+                $validated['user_id'] = $customer->id;
+            }
+
+            if ($request->has('inspector_id')) {
+                $validated['inspector_id'] = $request->inspector_id;
+            }
+
+            // Preserve type if provided
+            if ($request->has('type')) {
+                $validated['type'] = $request->type;
+            }
+
+            $enquiry->update($validated);
+
+            return response()->json([
+                'status'  => 'success',
+                'message' => 'Inspection enquiry updated successfully.',
+                'data'    => $enquiry,
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status'  => 'error',
+                'message' => 'Something went wrong: ' . $e->getMessage(),
+            ], 500);
+        }
     }
+
+
+
+
+    public function changeStatus(Request $request)
+    {
+        $validated = $request->validate([
+            'enquiry_id'  => 'required|exists:inspection_enquiries,id',
+            'status'      => 'required|string|max:50',
+            'comment'     => 'nullable|string',
+        ]);
+
+        try {
+            $enquiry = InspectionEnquiry::findOrFail($request->enquiry_id);
+
+            // Update status in enquiry
+            $enquiry->status = $request->status;
+            $enquiry->save();
+
+            // Insert into status history
+            AppointmentStatusHistory::create([
+                'appointment_id' => $enquiry->id,
+                'status'         => $request->status,
+                'comment'       => $request->comment,
+                'creator'        => auth('api')->id(),
+            ]);
+
+            return response()->json([
+                'status'  => 'success',
+                'message' => 'Status updated successfully.',
+                'data'    => $enquiry
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status'  => 'error',
+                'message' => 'Something went wrong: ' . $e->getMessage(),
+            ], 500);
+        }
+    }
+
+
+   public function show($id)
+{
+    $enquiry = InspectionEnquiry::with([
+        'brand:id,name',
+        'vehicleModel:id,name',
+        'inspector',
+        'statusHistories' => function ($q) {
+            $q->select('id', 'appointment_id', 'status', 'comment', 'creator', 'created_at')
+              ->with('creatorUser:id,name'); // to show creator name
+        }
+    ])->findOrFail($id);
+
+    return response()->json([
+        'status' => 'success',
+        'data' => $enquiry,
+    ]);
+}
+
     public function allInspectors(Request $request)
     {
         $query = User::where('role', 'inspector');
