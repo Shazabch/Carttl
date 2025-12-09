@@ -7,6 +7,7 @@ use App\Models\Brand;
 use App\Models\Feature;
 use App\Models\User;
 use App\Models\Vehicle;
+use App\Models\VehicleInspectionReport;
 use App\Models\VehicleModel;
 use Illuminate\Http\Request;
 
@@ -157,10 +158,45 @@ class VehicleController extends Controller
     }
 
 
+
+      public function showInspection($id)
+    {
+        $report = VehicleInspectionReport::with([
+            'vehicle',
+            'damages',
+            'inspector',
+            'images',
+            'brand:id,name',
+            'vehicleModel:id,name',
+            'fields.files'
+        ])->findOrFail($id);
+
+        $report->make_name = $report->brand->name ?? null;
+        $report->model_name = $report->vehicleModel->name ?? null;
+
+        unset($report->brand, $report->vehicleModel);
+
+        return response()->json([
+            'status' => 'success',
+            'data'   => $report,
+        ]);
+    }
+
+
     public function detail($id)
     {
-        $vehicle =
-            Vehicle::with(['features:id,name,type', 'images', 'brand:id,name,image_source', 'vehicleModel:id,name'])
+        $vehicle = Vehicle::with([
+            'features:id,name,type',
+            'images',
+            'brand:id,name,image_source',
+            'vehicleModel:id,name',
+
+            // ADD inspections from show() API
+            'inspections:id,vehicle_id,make,model,inspector_id,created_at',
+            'inspections.brand:id,name',
+            'inspections.images',
+            'inspections.vehicleModel:id,name',
+        ])
             ->find($id);
 
         if (!$vehicle) {
@@ -170,10 +206,9 @@ class VehicleController extends Controller
             ], 404);
         }
 
-
+        // Feature groups
         $allExterior = Feature::where('type', 'exterior')->get(['id', 'name']);
         $allInterior = Feature::where('type', 'interior')->get(['id', 'name']);
-
 
         $interiorFeatures = $vehicle->features
             ->where('type', 'interior')
@@ -190,7 +225,6 @@ class VehicleController extends Controller
             ->map(fn($f) => ['id' => $f->id, 'name' => $f->name])
             ->values();
 
-
         $mainImage = optional($vehicle->coverImage)->path ?? null;
 
         return response()->json([
@@ -203,6 +237,9 @@ class VehicleController extends Controller
                 'interior_features' => $interiorFeatures,
                 'all_exterior_features' => $allExterior,
                 'all_interior_features' => $allInterior,
+
+                // ADD inspections in the detail API response
+                'inspections' => $vehicle->inspections,
             ],
         ]);
     }
@@ -211,47 +248,92 @@ class VehicleController extends Controller
 
 
     //Auctions
-  public function getAuctionVehicles(Request $request)
-{
-    $perPage = $request->input('per_page', 10);
+    public function getAuctionVehicles(Request $request)
+    {
+        $perPage = $request->input('per_page', 10);
 
-    $auctions = Vehicle::where('is_auction', 1)
-        ->where('status', 'published')
-        ->withCount('bids')
-        ->with([
-            'brand:id,name,image_source',
-            'vehicleModel:id,name',
-            'images:id,vehicle_id,is_cover,path'  // <-- ADD THIS
+        $auctions = Vehicle::where('is_auction', 1)
+            ->where('status', 'published')
+            ->withCount('bids')
+            ->with([
+                'brand:id,name,image_source',
+                'vehicleModel:id,name',
+                'images:id,vehicle_id,is_cover,path'  // <-- ADD THIS
+            ])
+            ->when($request->input('search'), function ($query, $search) {
+                $query->where('title', 'like', "%{$search}%")
+                    ->orWhere('vin', 'like', "%{$search}%")
+                    ->orWhereHas('brand', fn($q) => $q->where('name', 'like', "%{$search}%"))
+                    ->orWhereHas('vehicleModel', fn($q) => $q->where('name', 'like', "%{$search}%"));
+            })
+            ->when(
+                $request->input('make'),
+                fn($q, $make) =>
+                $q->whereHas('brand', fn($q2) => $q2->where('name', $make))
+            )
+            ->when(
+                $request->input('model'),
+                fn($q, $model) =>
+                $q->whereHas('vehicleModel', fn($q2) => $q2->where('name', $model))
+            )
+            ->when(
+                $request->input('price_min'),
+                fn($q, $min) =>
+                $q->where('price', '>=', $min)
+            )
+            ->when(
+                $request->input('price_max'),
+                fn($q, $max) =>
+                $q->where('price', '<=', $max)
+            )
+            ->when(
+                $request->input('condition'),
+                fn($q, $condition) =>
+                $q->where('condition', $condition)
+            )
+            ->paginate($perPage);
+
+        return response()->json([
+            'status' => 'success',
+            'data' => $auctions,
+        ]);
+    }
+
+
+
+    public function show($id)
+    {
+        $vehicle = Vehicle::with([
+            'brand:id,name',
+            'images:id,vehicle_id,path,is_cover',
+            'features',
+            'latestBid',
+            'bids',
+            'coverImage:id,vehicle_id,path',
+            'vehicleModel',
+            'fuelType',
+            'transmission',
+            'bodyType',
+
+            // Only inspections + brand + model
+            'inspections:id,vehicle_id,make,model,inspector_id,created_at',
+            'inspections.brand:id,name',
+            'inspections.vehicleModel:id,name',
         ])
-        ->when($request->input('search'), function ($query, $search) {
-            $query->where('title', 'like', "%{$search}%")
-                ->orWhere('vin', 'like', "%{$search}%")
-                ->orWhereHas('brand', fn($q) => $q->where('name', 'like', "%{$search}%"))
-                ->orWhereHas('vehicleModel', fn($q) => $q->where('name', 'like', "%{$search}%"));
-        })
-        ->when($request->input('make'), fn($q, $make) => 
-            $q->whereHas('brand', fn($q2) => $q2->where('name', $make))
-        )
-        ->when($request->input('model'), fn($q, $model) => 
-            $q->whereHas('vehicleModel', fn($q2) => $q2->where('name', $model))
-        )
-        ->when($request->input('price_min'), fn($q, $min) => 
-            $q->where('price', '>=', $min)
-        )
-        ->when($request->input('price_max'), fn($q, $max) => 
-            $q->where('price', '<=', $max)
-        )
-        ->when($request->input('condition'), fn($q, $condition) => 
-            $q->where('condition', $condition)
-        )
-        ->paginate($perPage);
+            ->find($id);
 
-    return response()->json([
-        'status' => 'success',
-        'data' => $auctions,
-    ]);
-}
+        if (!$vehicle) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Vehicle not found.'
+            ], 404);
+        }
 
+        return response()->json([
+            'status' => 'success',
+            'data' => $vehicle
+        ]);
+    }
 
     public function featuredAuctions()
     {

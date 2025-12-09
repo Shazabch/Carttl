@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\AppointmentStatusHistory;
 use Illuminate\Http\Request;
 use App\Models\InspectionEnquiry;
 use App\Models\User;
@@ -66,54 +67,61 @@ class InspectionEnquiryController extends Controller
             'data' => $users
         ]);
     }
-   public function create(Request $request)
+ public function create(Request $request)
 {
     $validated = $request->validate([
-        'type'          => 'required|string',
-        'location'      => 'required|string|max:255',
-        'year'          => 'required|string|max:4',
-        'make'          => 'required|integer|exists:brands,id',
-        'model'         => 'required|integer|exists:vehicle_models,id',
-        'user_id'       => 'required|integer|exists:users,id',      // customer
-        'inspector_id'  => 'nullable|integer|exists:users,id',      // inspector
-        // new fields
-        'status'        => 'nullable|string|max:50',
-        'comment'       => 'nullable|string',
+        'type'           => 'required|string',
+        'location'       => 'required|string|max:255',
+        'year'           => 'required|string|max:4',
+        'make'           => 'required|integer|exists:brands,id',
+        'model'          => 'required|integer|exists:vehicle_models,id',
+        'user_id'        => 'required|integer|exists:users,id',
+        'inspector_id'   => 'nullable|integer|exists:users,id',
+
+        // status history fields
+        'status'         => 'nullable|string|max:50',
+        'comment'        => 'nullable|string',
+        'comment_status'        => 'nullable|string',
+
+        // other fields
         'comment_initial'=> 'nullable|string',
-        'asking_price'  => 'nullable|numeric',
-        'offer_price'  => 'nullable|numeric',
+        'asking_price'   => 'nullable|numeric',
+        'offer_price'    => 'nullable|numeric',
     ]);
 
     try {
-        // Fetch customer
+        // Get customer
         $customer = User::findOrFail($request->user_id);
 
-        // Auto-fill enquiry fields using customer details
+        // Auto-fill fields from customer
         $validated['name']  = $customer->name;
         $validated['phone'] = $customer->phone;
         $validated['email'] = $customer->email;
 
-        // Auto set date & time
+        // Auto date & time
         $validated['date'] = now()->toDateString();
         $validated['time'] = now()->format('H:i');
-
-        // Keep the type from request
-        $validated['type'] = $request->type;
 
         // Assign inspector
         $validated['inspector_id'] = $request->inspector_id;
 
-        // Save customer_id separately
-        $validated['user_id'] = $customer->id;
-
         // Create enquiry
         $enquiry = InspectionEnquiry::create($validated);
+
+        // Save status history
+        AppointmentStatusHistory::create([
+            'appointment_id' => $enquiry->id,
+            'status'         => $request->status,
+            'comment'       => $request->comment_status,
+            'creator'        => auth('api')->id(),
+        ]);
 
         return response()->json([
             'status'  => 'success',
             'message' => 'Inspection enquiry submitted successfully.',
             'data'    => $enquiry,
         ], 201);
+
     } catch (\Exception $e) {
         return response()->json([
             'status'  => 'error',
@@ -121,6 +129,7 @@ class InspectionEnquiryController extends Controller
         ], 500);
     }
 }
+
 
 
     public function update(Request $request, $id)
@@ -179,6 +188,42 @@ class InspectionEnquiryController extends Controller
 
 
 
+public function changeStatus(Request $request)
+{
+    $validated = $request->validate([
+        'enquiry_id'  => 'required|exists:inspection_enquiries,id',
+        'status'      => 'required|string|max:50',
+        'comment'     => 'nullable|string',
+    ]);
+
+    try {
+        $enquiry = InspectionEnquiry::findOrFail($request->enquiry_id);
+
+        // Update status in enquiry
+        $enquiry->status = $request->status;
+        $enquiry->save();
+
+        // Insert into status history
+        AppointmentStatusHistory::create([
+            'appointment_id' => $enquiry->id,
+            'status'         => $request->status,
+            'commentt'       => $request->comment,
+            'creator'        => auth('api')->id(),
+        ]);
+
+        return response()->json([
+            'status'  => 'success',
+            'message' => 'Status updated successfully.',
+            'data'    => $enquiry
+        ]);
+
+    } catch (\Exception $e) {
+        return response()->json([
+            'status'  => 'error',
+            'message' => 'Something went wrong: ' . $e->getMessage(),
+        ], 500);
+    }
+}
 
 
     public function show($id)

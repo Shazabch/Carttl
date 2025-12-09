@@ -299,6 +299,7 @@ Route::controller(VehicleController::class)->group(function () {
     //Auctions
     Route::get('auctions', 'getAuctionVehicles')->name('auctions-list');
     Route::get('auctions/show/{id}', 'detail');
+    Route::get('inspection/show/{id}', 'showInspection');
     Route::get('featured-auctions', 'featuredAuctions')->name('featured.auctions');
 
     //Makes
