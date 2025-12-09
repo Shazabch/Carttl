@@ -104,6 +104,7 @@ class InspectionEnquiryController extends Controller
 
             // Assign inspector
             $validated['inspector_id'] = $request->inspector_id;
+            $validated['source'] = "admin";
 
             // Create enquiry
             $enquiry = InspectionEnquiry::create($validated);

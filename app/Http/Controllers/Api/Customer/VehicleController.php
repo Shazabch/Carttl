@@ -192,7 +192,7 @@ class VehicleController extends Controller
             'vehicleModel:id,name',
 
             // ADD inspections from show() API
-            'inspections:id,vehicle_id,make,model,inspector_id,created_at',
+            'inspections',
             'inspections.brand:id,name',
             'inspections.images',
             'inspections.vehicleModel:id,name',
