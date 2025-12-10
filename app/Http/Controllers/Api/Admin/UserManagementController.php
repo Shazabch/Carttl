@@ -14,29 +14,36 @@ use Illuminate\Support\Facades\Storage;
 class UserManagementController extends Controller
 {
 
-    public function index(Request $request)
-    {
-        $search = $request->get('search', '');
-        $perPage = $request->get('per_page', 10);
+   public function index(Request $request)
+{
+    $search = $request->get('search', '');
+    $perPage = $request->get('per_page', 10);
+    $role = $request->get('role'); // role filter
 
-        $users = User::query()
-            ->when($search, function ($query, $search) {
-                $query->where('name', 'like', "%{$search}%")
-                    ->orWhere('email', 'like', "%{$search}%");
-            })
-            ->latest()
-            ->paginate($perPage);
+    $users = User::query()
+        ->when($search, function ($query, $search) {
+            $query->where('name', 'like', "%{$search}%")
+                  ->orWhere('email', 'like', "%{$search}%");
+        })
+        ->when($role, function ($query, $role) {
+            $query->whereHas('roles', function ($q) use ($role) {
+                $q->where('name', $role);
+            });
+        })
+        ->latest()
+        ->paginate($perPage);
 
-        $roles = Role::where('guard_name', 'api')->pluck('name');
+    $roles = Role::where('guard_name', 'api')->pluck('name');
 
-        return response()->json([
-            'status' => 'success',
-            'data' => [
-                'users' => $users,
-                'roles' => $roles,
-            ],
-        ]);
-    }
+    return response()->json([
+        'status' => 'success',
+        'data' => [
+            'users' => $users,
+            'roles' => $roles,
+        ],
+    ]);
+}
+
 
 
     public function show($id)
