@@ -14,20 +14,23 @@ use Illuminate\Support\Facades\Storage;
 class UserManagementController extends Controller
 {
 
-   public function index(Request $request)
+public function index(Request $request)
 {
-    $search = $request->get('search', '');
     $perPage = $request->get('per_page', 10);
-    $role = $request->get('role'); // role filter
 
     $users = User::query()
-        ->when($search, function ($query, $search) {
-            $query->where('name', 'like', "%{$search}%")
-                  ->orWhere('email', 'like', "%{$search}%");
+        // Filter by role if provided
+        ->when($request->filled('role'), function ($query) use ($request) {
+            $query->whereHas('roles', function ($q) use ($request) {
+                $q->where('name', $request->role);
+            });
         })
-        ->when($role, function ($query, $role) {
-            $query->whereHas('roles', function ($q) use ($role) {
-                $q->where('name', $role);
+        // Filter by search if provided
+        ->when($request->filled('search'), function ($query) use ($request) {
+            $search = $request->search;
+            $query->where(function ($q) use ($search) {
+                $q->where('name', 'like', "%{$search}%")
+                  ->orWhere('email', 'like', "%{$search}%");
             });
         })
         ->latest()
@@ -43,6 +46,7 @@ class UserManagementController extends Controller
         ],
     ]);
 }
+
 
 
 
