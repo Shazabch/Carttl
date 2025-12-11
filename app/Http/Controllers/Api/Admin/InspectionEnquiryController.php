@@ -14,6 +14,7 @@ class InspectionEnquiryController extends Controller
     {
         $user = auth('api')->user();
         $search = $request->get('search', '');
+        $date = $request->get('date', '');
         $sortBy = $request->get('sort_by', 'created_at');
         $sortDir = $request->get('sort_dir', 'DESC');
         $perPage = $request->get('per_page', 10);
@@ -24,6 +25,9 @@ class InspectionEnquiryController extends Controller
                 'vehicleModel:id,name',
                 'inspector:id,name,email,phone'
             ])
+            ->when($date, function ($query) use ($date) {
+                $query->whereDate('created_at', $date);
+            })
             ->when($user->role === 'inspector', function ($query) use ($user) {
                 $query->where('inspector_id', $user->id);
             })
