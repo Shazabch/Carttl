@@ -195,6 +195,9 @@ class VehicleController extends Controller
             'inspections',
             'inspections.brand:id,name',
             'inspections.images',
+            'inspections.inspector',
+            'inspections.damages',
+            'inspections.fields.files',
             'inspections.vehicleModel:id,name',
         ])
             ->find($id);
