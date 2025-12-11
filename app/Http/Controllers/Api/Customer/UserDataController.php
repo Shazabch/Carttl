@@ -85,35 +85,41 @@ class UserDataController extends Controller
         ]);
     }
 
-    public function getUserBiddings(Request $request)
-    {
-        $user = Auth::guard('api')->user();
+   public function getUserBiddings(Request $request)
+{
+    $user = Auth::guard('api')->user();
 
-        if (!$user) {
-            return response()->json([
-                'status' => 'error',
-                'message' => 'Unauthenticated user.'
-            ], 401);
-        }
-
-        $search = $request->input('search');
-        $perPage = $request->input('per_page', 1);
-
-        $bids = VehicleBid::where('user_id', $user->id)
-            ->when($search, function ($query) use ($search) {
-                $query->whereHas('vehicle', function ($q) use ($search) {
-                    $q->where('name', 'like', "%{$search}%")
-                        ->orWhere('vin', 'like', "%{$search}%");
-                });
-            })
-            ->with(['vehicle.brand:id,name,image_source', 'vehicle.vehicleModel:id,name'])
-            ->paginate($perPage);
-
+    if (!$user) {
         return response()->json([
-            'status' => 'success',
-            'data' => $bids,
-        ]);
+            'status' => 'error',
+            'message' => 'Unauthenticated user.'
+        ], 401);
     }
+    $status = $request->input('status'); // nullable
+    $search = $request->input('search');
+    $perPage = $request->input('per_page'); // nullable
+
+    $query = VehicleBid::where('user_id', $user->id)
+        ->when($status, function ($query) use ($status) {
+            $query->where('status', $status);
+        })
+        ->when($search, function ($query) use ($search) {
+            $query->whereHas('vehicle', function ($q) use ($search) {
+                $q->where('name', 'like', "%{$search}%")
+                  ->orWhere('vin', 'like', "%{$search}%");
+            });
+        })
+        ->with(['vehicle.brand:id,name,image_source', 'vehicle.vehicleModel:id,name']);
+
+    // Return paginated results if per_page is set, else return all
+    $bids = $perPage ? $query->paginate($perPage) : $query->get();
+
+    return response()->json([
+        'status' => 'success',
+        'data' => $bids,
+    ]);
+}
+
 
 
     public function getPurchaseEnquiries(Request $request)
