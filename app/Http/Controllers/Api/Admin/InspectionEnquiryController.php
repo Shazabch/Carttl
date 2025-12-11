@@ -10,42 +10,57 @@ use App\Models\User;
 
 class InspectionEnquiryController extends Controller
 {
-    public function index(Request $request)
-    {
-        $user = auth('api')->user();
-        $search = $request->get('search', '');
-        $date = $request->get('date', '');
-        $sortBy = $request->get('sort_by', 'created_at');
-        $sortDir = $request->get('sort_dir', 'DESC');
-        $perPage = $request->get('per_page', 10);
+ public function index(Request $request)
+{
+    $user = auth('api')->user();
+    $search = $request->get('search', '');
+    
+    // Accept both snake_case and camelCase
+    $dateFrom = $request->get('date_from', $request->get('dateFrom'));
+    $dateTo   = $request->get('date_to', $request->get('dateTo'));
 
-        $enquiries = InspectionEnquiry::query()
-            ->with([
-                'brand:id,name',
-                'vehicleModel:id,name',
-                'inspector:id,name,email,phone'
-            ])
-            ->when($date, function ($query) use ($date) {
-                $query->whereDate('created_at', $date);
-            })
-            ->when($user->role === 'inspector', function ($query) use ($user) {
-                $query->where('inspector_id', $user->id);
-            })
-            ->when($search, function ($query) use ($search) {
-                $query->where(function ($q) use ($search) {
-                    $q->where('name', 'like', "%{$search}%")
-                        ->orWhere('phone', 'like', "%{$search}%")
-                        ->orWhere('email', 'like', "%{$search}%");
-                });
-            })
-            ->orderBy($sortBy, $sortDir)
-            ->paginate($perPage);
+    $sortBy = $request->get('sort_by', 'created_at');
+    $sortDir = $request->get('sort_dir', 'DESC');
+    $perPage = $request->get('per_page', 10);
 
-        return response()->json([
-            'status' => 'success',
-            'data' => $enquiries,
-        ]);
-    }
+    $enquiries = InspectionEnquiry::query()
+        ->with([
+            'brand:id,name',
+            'vehicleModel:id,name',
+            'inspector:id,name,email,phone'
+        ])
+        // Inclusive date filter
+        ->when($dateFrom && $dateTo, function ($query) use ($dateFrom, $dateTo) {
+            $query->whereBetween('created_at', [
+                $dateFrom . ' 00:00:00', // start of the day
+                $dateTo . ' 23:59:59'    // end of the day
+            ]);
+        })
+        ->when($dateFrom && !$dateTo, function ($query) use ($dateFrom) {
+            $query->where('created_at', '>=', $dateFrom . ' 00:00:00');
+        })
+        ->when(!$dateFrom && $dateTo, function ($query) use ($dateTo) {
+            $query->where('created_at', '<=', $dateTo . ' 23:59:59');
+        })
+        ->when($user->role === 'inspector', function ($query) use ($user) {
+            $query->where('inspector_id', $user->id);
+        })
+        ->when($search, function ($query) use ($search) {
+            $query->where(function ($q) use ($search) {
+                $q->where('name', 'like', "%{$search}%")
+                  ->orWhere('phone', 'like', "%{$search}%")
+                  ->orWhere('email', 'like', "%{$search}%");
+            });
+        })
+        ->orderBy($sortBy, $sortDir)
+        ->paginate($perPage);
+
+    return response()->json([
+        'status' => 'success',
+        'data' => $enquiries,
+    ]);
+}
+
 
 
     public function getCustomers(Request $request)
