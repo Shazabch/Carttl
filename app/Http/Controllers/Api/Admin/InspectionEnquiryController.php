@@ -158,7 +158,7 @@ class InspectionEnquiryController extends Controller
             'model'          => 'required|integer|exists:vehicle_models,id',
             'user_id'        => 'required|integer|exists:users,id',
             'inspector_id'   => 'nullable|integer|exists:users,id',
-
+            'date'           => 'nullable|date',
             // status history fields
             'status'         => 'nullable|string|max:50',
             'comment'        => 'nullable|string',
@@ -180,7 +180,8 @@ class InspectionEnquiryController extends Controller
             $validated['email'] = $customer->email;
 
             // Auto date & time
-            $validated['date'] = now()->toDateString();
+            $validated['date'] = $request->date    ? $request->date
+                                    : now()->format('Y-m-d');
             $validated['time'] = now()->format('H:i');
 
             // Assign inspector
@@ -231,6 +232,7 @@ class InspectionEnquiryController extends Controller
             'comment_initial' => 'nullable|string|max:500',
             'asking_price'   => 'nullable|numeric',
             'offer_price'  => 'nullable|numeric',
+            'date'           => 'nullable|date',
         ]);
 
         try {
@@ -242,7 +244,9 @@ class InspectionEnquiryController extends Controller
                 $validated['email'] = $customer->email;
                 $validated['user_id'] = $customer->id;
             }
-
+            if ($request->has('date')) {
+                $validated['date'] = $request->date;
+            }
             if ($request->has('inspector_id')) {
                 $validated['inspector_id'] = $request->inspector_id;
             }

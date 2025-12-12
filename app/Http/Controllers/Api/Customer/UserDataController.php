@@ -85,7 +85,7 @@ class UserDataController extends Controller
         ]);
     }
 
-   public function getUserBiddings(Request $request)
+public function getUserBiddings(Request $request)
 {
     $user = Auth::guard('api')->user();
 
@@ -95,13 +95,18 @@ class UserDataController extends Controller
             'message' => 'Unauthenticated user.'
         ], 401);
     }
+
     $status = $request->input('status'); // nullable
-    $search = $request->input('search');
+    $search = $request->input('search'); // nullable
+    $vehicleId = $request->input('vehicle_id'); // optional filter
     $perPage = $request->input('per_page'); // nullable
 
     $query = VehicleBid::where('user_id', $user->id)
         ->when($status, function ($query) use ($status) {
             $query->where('status', $status);
+        })
+        ->when($vehicleId, function ($query) use ($vehicleId) {
+            $query->where('vehicle_id', $vehicleId);
         })
         ->when($search, function ($query) use ($search) {
             $query->whereHas('vehicle', function ($q) use ($search) {
@@ -109,7 +114,10 @@ class UserDataController extends Controller
                   ->orWhere('vin', 'like', "%{$search}%");
             });
         })
-        ->with(['vehicle.brand:id,name,image_source', 'vehicle.vehicleModel:id,name']);
+        ->with([
+            'vehicle.brand:id,name,image_source',
+            'vehicle.vehicleModel:id,name'
+        ]);
 
     // Return paginated results if per_page is set, else return all
     $bids = $perPage ? $query->paginate($perPage) : $query->get();
@@ -119,6 +127,7 @@ class UserDataController extends Controller
         'data' => $bids,
     ]);
 }
+
 
 
 

@@ -21,6 +21,7 @@ use App\Http\Controllers\Api\Admin\BookingController;
 use App\Http\Controllers\Api\Admin\NotificationController;
 use App\Http\Controllers\Api\Admin\PackageController;
 use App\Http\Controllers\Api\Admin\ProfileController;
+use App\Http\Controllers\Api\Admin\ServiceLocationController;
 use App\Http\Controllers\Api\Customer\BlogController;
 use App\Http\Controllers\Api\Customer\TestimonialController;
 use App\Http\Controllers\Api\Customer\VehicleController;
@@ -32,6 +33,7 @@ use App\Http\Controllers\Api\Customer\FavoriteController;
 use App\Http\Controllers\Api\Customer\InspectionController;
 use App\Http\Controllers\Api\Customer\PackageController as CustomerPackageController;
 use App\Http\Controllers\Api\Customer\SellCarController;
+use App\Http\Controllers\Api\Customer\ServicesLocationController;
 use App\Http\Controllers\Api\Customer\UserDataController;
 use App\Http\Controllers\Api\PushNotificationsController;
 
@@ -78,6 +80,26 @@ Route::prefix('admin')
             Route::get('/permissions', 'getPermissions');
         });
 
+
+
+       
+
+            // List all services and locations
+            Route::get('/service-locations', [ServiceLocationController::class, 'index']);
+            Route::delete('/service-location/delete/{id}', [ServiceLocationController::class, 'destroy']);
+
+            // Service-specific APIs
+            Route::prefix('service')->group(function () {
+                Route::post('/create', [ServiceLocationController::class, 'storeService']);       // Create service
+                Route::post('/update/{id}', [ServiceLocationController::class, 'updateService']);   // Update service
+            });
+
+            // Location-specific APIs
+            Route::prefix('location')->group(function () {
+                Route::post('/create', [ServiceLocationController::class, 'storeLocation']);      // Create location
+                Route::post('/update/{id}', [ServiceLocationController::class, 'updateLocation']);  // Update location
+            });
+       
         // User Management
         Route::controller(UserManagementController::class)->group(function () {
             Route::get('/users', 'index')->middleware('permission:user-list');
@@ -119,7 +141,7 @@ Route::prefix('admin')
         Route::controller(InspectionEnquiryController::class)->group(function () {
             Route::get('/inspection-enquiries', 'index')->middleware('permission:appointment-list');
             Route::get('/inspection-enquiries/inspectors', 'allInspectors');
-             Route::get('/inspection-enquiries/customers', 'getCustomers');
+            Route::get('/inspection-enquiries/customers', 'getCustomers');
             Route::post('/inspection-enquiries/customer/create', 'createCustomer');
             Route::post('/inspection-enquiries/customer/update/{id}', 'updateCustomer');
             Route::get('/inspection-enquiries/show/{id}', 'show')->middleware('permission:appointment-view');
@@ -357,6 +379,9 @@ Route::group(['middleware' => 'auth:api'], function () {
         Route::post('favorites/toggle', 'toggle')->name('favorites.toggle');
         Route::delete('favorites/clear', 'clear')->name('favorites.clear');
     });
+    Route::controller(ServicesLocationController::class)->group(function () {
+        Route::get('services-locations', 'index')->name('service.locations');
+        });
     Route::controller(UserDataController::class)->group(function () {
         Route::get('profile', 'profile')->name('profile');
         Route::post('user/profile/update', 'updateProfile');
@@ -369,7 +394,6 @@ Route::group(['middleware' => 'auth:api'], function () {
         Route::get('user/inspection-appointment/reports/{id}', 'getInspectionReportByEnquiry')->name('user.inspection.reports');
         Route::get('user/inspection-auction/reports/{id}', 'getInspectionReportByVehicle')->name('user.inspection.auction.reports');
         Route::get('user/bookings', 'getUserBookings')->name('user.bookings');
-
     });
     Route::controller(BiddingController::class)->group(function () {
         Route::get('/biddings/{vehicleId}', 'getVehicleBids');
