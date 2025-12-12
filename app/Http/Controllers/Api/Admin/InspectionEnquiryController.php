@@ -7,59 +7,62 @@ use App\Models\AppointmentStatusHistory;
 use Illuminate\Http\Request;
 use App\Models\InspectionEnquiry;
 use App\Models\User;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
+use Spatie\Permission\Models\Role;
 
 class InspectionEnquiryController extends Controller
 {
- public function index(Request $request)
-{
-    $user = auth('api')->user();
-    $search = $request->get('search', '');
-    
-    // Accept both snake_case and camelCase
-    $dateFrom = $request->get('date_from', $request->get('dateFrom'));
-    $dateTo   = $request->get('date_to', $request->get('dateTo'));
+    public function index(Request $request)
+    {
+        $user = auth('api')->user();
+        $search = $request->get('search', '');
 
-    $sortBy = $request->get('sort_by', 'created_at');
-    $sortDir = $request->get('sort_dir', 'DESC');
-    $perPage = $request->get('per_page', 10);
+        // Accept both snake_case and camelCase
+        $dateFrom = $request->get('date_from', $request->get('dateFrom'));
+        $dateTo   = $request->get('date_to', $request->get('dateTo'));
 
-    $enquiries = InspectionEnquiry::query()
-        ->with([
-            'brand:id,name',
-            'vehicleModel:id,name',
-            'inspector:id,name,email,phone'
-        ])
-        // Inclusive date filter
-        ->when($dateFrom && $dateTo, function ($query) use ($dateFrom, $dateTo) {
-            $query->whereBetween('created_at', [
-                $dateFrom . ' 00:00:00', // start of the day
-                $dateTo . ' 23:59:59'    // end of the day
-            ]);
-        })
-        ->when($dateFrom && !$dateTo, function ($query) use ($dateFrom) {
-            $query->where('created_at', '>=', $dateFrom . ' 00:00:00');
-        })
-        ->when(!$dateFrom && $dateTo, function ($query) use ($dateTo) {
-            $query->where('created_at', '<=', $dateTo . ' 23:59:59');
-        })
-        ->when($user->role === 'inspector', function ($query) use ($user) {
-            $query->where('inspector_id', $user->id);
-        })
-        ->when($search, function ($query) use ($search) {
-            $query->where(function ($q) use ($search) {
-                $q->where('name', 'like', "%{$search}%")
-                  ->orWhere('phone', 'like', "%{$search}%")
-                  ->orWhere('email', 'like', "%{$search}%");
-            });
-        })
-        ->orderBy($sortBy, $sortDir)
-        ->paginate($perPage);
+        $sortBy = $request->get('sort_by', 'created_at');
+        $sortDir = $request->get('sort_dir', 'DESC');
+        $perPage = $request->get('per_page', 10);
 
-    return response()->json([
-        'status' => 'success',
-        'data' => $enquiries,
-    ]);
-}
+        $enquiries = InspectionEnquiry::query()
+            ->with([
+                'brand:id,name',
+                'vehicleModel:id,name',
+                'inspector:id,name,email,phone'
+            ])
+            // Inclusive date filter
+            ->when($dateFrom && $dateTo, function ($query) use ($dateFrom, $dateTo) {
+                $query->whereBetween('created_at', [
+                    $dateFrom . ' 00:00:00', // start of the day
+                    $dateTo . ' 23:59:59'    // end of the day
+                ]);
+            })
+            ->when($dateFrom && !$dateTo, function ($query) use ($dateFrom) {
+                $query->where('created_at', '>=', $dateFrom . ' 00:00:00');
+            })
+            ->when(!$dateFrom && $dateTo, function ($query) use ($dateTo) {
+                $query->where('created_at', '<=', $dateTo . ' 23:59:59');
+            })
+            ->when($user->role === 'inspector', function ($query) use ($user) {
+                $query->where('inspector_id', $user->id);
+            })
+            ->when($search, function ($query) use ($search) {
+                $query->where(function ($q) use ($search) {
+                    $q->where('name', 'like', "%{$search}%")
+                        ->orWhere('phone', 'like', "%{$search}%")
+                        ->orWhere('email', 'like', "%{$search}%");
+                });
+            })
+            ->orderBy($sortBy, $sortDir)
+            ->paginate($perPage);
+
+        return response()->json([
+            'status' => 'success',
+            'data' => $enquiries,
+        ]);
+    }
 
 
 
@@ -86,6 +89,65 @@ class InspectionEnquiryController extends Controller
             'data' => $users
         ]);
     }
+
+
+
+    public function createCustomer(Request $request)
+    {
+        $request->validate([
+            'name'  => 'required|string|max:255',
+            'phone' => 'required|string|max:20|unique:users,phone',
+        ]);
+
+        // Ensure "customer" role exists
+        $role = Role::firstOrCreate(['name' => 'customer']);
+
+        // Generate random email
+        $email = Str::random(10) . '@example.com';
+
+        // Create customer
+        $customer = User::create([
+            'name'     => $request->name,
+            'phone'    => $request->phone,
+            'email'    => $email,
+            'password' => Hash::make('password'),
+            'role_id'  => $role->id,
+        ]);
+
+        return response()->json([
+            'message'  => 'Customer created successfully',
+            'customer' => $customer
+        ], 201);
+    }
+
+    public function updateCustomer(Request $request, $id)
+{
+    $customer = User::find($id);
+
+    if (!$customer) {
+        return response()->json(['message' => 'Customer not found'], 404);
+    }
+
+    // Validate only name and phone
+    $request->validate([
+        'name'  => 'required|string|max:255',
+        'phone' => 'required|string|max:20|unique:users,phone,' . $customer->id,
+    ]);
+
+    // Do NOT change role – keep existing one
+
+    // Update fields
+    $customer->name  = $request->name;
+    $customer->phone = $request->phone;
+
+    $customer->save();
+
+    return response()->json([
+        'message'  => 'Customer updated successfully',
+        'customer' => $customer
+    ]);
+}
+
     public function create(Request $request)
     {
         $validated = $request->validate([
@@ -100,7 +162,7 @@ class InspectionEnquiryController extends Controller
             // status history fields
             'status'         => 'nullable|string|max:50',
             'comment'        => 'nullable|string',
-            
+
 
             // other fields
             'comment_initial' => 'nullable|string',
@@ -245,23 +307,23 @@ class InspectionEnquiryController extends Controller
     }
 
 
-   public function show($id)
-{
-    $enquiry = InspectionEnquiry::with([
-        'brand:id,name',
-        'vehicleModel:id,name',
-        'inspector',
-        'statusHistories' => function ($q) {
-            $q->select('id', 'appointment_id', 'status', 'comment', 'creator', 'created_at')
-              ->with('creatorUser:id,name'); // to show creator name
-        }
-    ])->findOrFail($id);
+    public function show($id)
+    {
+        $enquiry = InspectionEnquiry::with([
+            'brand:id,name',
+            'vehicleModel:id,name',
+            'inspector',
+            'statusHistories' => function ($q) {
+                $q->select('id', 'appointment_id', 'status', 'comment', 'creator', 'created_at')
+                    ->with('creatorUser:id,name'); // to show creator name
+            }
+        ])->findOrFail($id);
 
-    return response()->json([
-        'status' => 'success',
-        'data' => $enquiry,
-    ]);
-}
+        return response()->json([
+            'status' => 'success',
+            'data' => $enquiry,
+        ]);
+    }
 
     public function allInspectors(Request $request)
     {
