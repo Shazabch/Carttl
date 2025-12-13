@@ -96,10 +96,10 @@ public function getUserBiddings(Request $request)
         ], 401);
     }
 
-    $status = $request->input('status'); // nullable
-    $search = $request->input('search'); // nullable
-    $vehicleId = $request->input('vehicle_id'); // optional filter
-    $perPage = $request->input('per_page'); // nullable
+    $status = $request->input('status'); 
+    $search = $request->input('search'); 
+    $vehicleId = $request->input('vehicle_id'); 
+    $perPage = $request->input('per_page'); 
 
     $query = VehicleBid::where('user_id', $user->id)
         ->when($status, function ($query) use ($status) {
@@ -116,10 +116,10 @@ public function getUserBiddings(Request $request)
         })
         ->with([
             'vehicle.brand:id,name,image_source',
-            'vehicle.vehicleModel:id,name'
+            'vehicle.vehicleModel:id,name',
+            'vehicle.images'
         ]);
 
-    // Return paginated results if per_page is set, else return all
     $bids = $perPage ? $query->paginate($perPage) : $query->get();
 
     return response()->json([
