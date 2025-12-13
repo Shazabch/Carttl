@@ -13,56 +13,84 @@ use Spatie\Permission\Models\Role;
 
 class InspectionEnquiryController extends Controller
 {
-    public function index(Request $request)
-    {
-        $user = auth('api')->user();
-        $search = $request->get('search', '');
+   public function index(Request $request)
+{
+    $user = auth('api')->user();
+    $search = $request->get('search', '');
 
-        // Accept both snake_case and camelCase
-        $dateFrom = $request->get('date_from', $request->get('dateFrom'));
-        $dateTo   = $request->get('date_to', $request->get('dateTo'));
+    $dateFrom = $request->get('date_from', $request->get('dateFrom'));
+    $dateTo   = $request->get('date_to', $request->get('dateTo'));
 
-        $sortBy = $request->get('sort_by', 'created_at');
-        $sortDir = $request->get('sort_dir', 'DESC');
-        $perPage = $request->get('per_page', 10);
+    $sortBy  = $request->get('sort_by', 'created_at');
+    $sortDir = $request->get('sort_dir', 'DESC');
+    $perPage = $request->get('per_page', 10);
 
-        $enquiries = InspectionEnquiry::query()
-            ->with([
-                'brand:id,name',
-                'vehicleModel:id,name',
-                'inspector:id,name,email,phone'
-            ])
-            // Inclusive date filter
-            ->when($dateFrom && $dateTo, function ($query) use ($dateFrom, $dateTo) {
-                $query->whereBetween('created_at', [
-                    $dateFrom . ' 00:00:00', // start of the day
-                    $dateTo . ' 23:59:59'    // end of the day
-                ]);
-            })
-            ->when($dateFrom && !$dateTo, function ($query) use ($dateFrom) {
-                $query->where('created_at', '>=', $dateFrom . ' 00:00:00');
-            })
-            ->when(!$dateFrom && $dateTo, function ($query) use ($dateTo) {
-                $query->where('created_at', '<=', $dateTo . ' 23:59:59');
-            })
-            ->when($user->role === 'inspector', function ($query) use ($user) {
-                $query->where('inspector_id', $user->id);
-            })
-            ->when($search, function ($query) use ($search) {
-                $query->where(function ($q) use ($search) {
-                    $q->where('name', 'like', "%{$search}%")
-                        ->orWhere('phone', 'like', "%{$search}%")
-                        ->orWhere('email', 'like', "%{$search}%");
+    $enquiries = InspectionEnquiry::query()
+        ->with([
+            'brand:id,name',
+            'vehicleModel:id,name',
+            'inspector:id,name,email,phone'
+        ])
+
+        /* ================= DATE FILTER ================= */
+        ->when($dateFrom || $dateTo, function ($query) use ($dateFrom, $dateTo) {
+
+            $query->where(function ($q) use ($dateFrom, $dateTo) {
+
+                // Use date if not null
+                $q->whereNotNull('date')
+                  ->when($dateFrom && $dateTo, function ($qq) use ($dateFrom, $dateTo) {
+                      $qq->whereBetween('date', [$dateFrom, $dateTo]);
+                  })
+                  ->when($dateFrom && !$dateTo, function ($qq) use ($dateFrom) {
+                      $qq->whereDate('date', '>=', $dateFrom);
+                  })
+                  ->when(!$dateFrom && $dateTo, function ($qq) use ($dateTo) {
+                      $qq->whereDate('date', '<=', $dateTo);
+                  });
+
+                // Fallback to created_at if date is null
+                $q->orWhere(function ($qq) use ($dateFrom, $dateTo) {
+                    $qq->whereNull('date')
+                       ->when($dateFrom && $dateTo, function ($qqq) use ($dateFrom, $dateTo) {
+                           $qqq->whereBetween('created_at', [
+                               $dateFrom . ' 00:00:00',
+                               $dateTo . ' 23:59:59'
+                           ]);
+                       })
+                       ->when($dateFrom && !$dateTo, function ($qqq) use ($dateFrom) {
+                           $qqq->where('created_at', '>=', $dateFrom . ' 00:00:00');
+                       })
+                       ->when(!$dateFrom && $dateTo, function ($qqq) use ($dateTo) {
+                           $qqq->where('created_at', '<=', $dateTo . ' 23:59:59');
+                       });
                 });
-            })
-            ->orderBy($sortBy, $sortDir)
-            ->paginate($perPage);
 
-        return response()->json([
-            'status' => 'success',
-            'data' => $enquiries,
-        ]);
-    }
+            });
+        })
+        /* ================================================= */
+
+        ->when($user->role === 'inspector', function ($query) use ($user) {
+            $query->where('inspector_id', $user->id);
+        })
+
+        ->when($search, function ($query) use ($search) {
+            $query->where(function ($q) use ($search) {
+                $q->where('name', 'like', "%{$search}%")
+                  ->orWhere('phone', 'like', "%{$search}%")
+                  ->orWhere('email', 'like', "%{$search}%");
+            });
+        })
+
+        ->orderBy($sortBy, $sortDir)
+        ->paginate($perPage);
+
+    return response()->json([
+        'status' => 'success',
+        'data'   => $enquiries,
+    ]);
+}
+
 
 
 
