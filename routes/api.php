@@ -374,6 +374,7 @@ Route::post('buy-car', [BuyCarController::class, 'store']);
 Route::group(['middleware' => 'auth:api'], function () {
     //Bookings
     Route::post('bookings/book-now', [BookNowController::class, 'store']);
+    Route::get('get-bookings', [BookNowController::class, 'index']);
     Route::controller(FavoriteController::class)->group(function () {
         Route::get('favorites', 'index')->name('favorites.index');
         Route::post('favorites/toggle', 'toggle')->name('favorites.toggle');

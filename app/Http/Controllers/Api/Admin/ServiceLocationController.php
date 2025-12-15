@@ -21,11 +21,15 @@ class ServiceLocationController extends Controller
         $request->validate([
             'service_name' => 'required|string|max:255',
             'service_amount' => 'required|numeric',
+            'service_type' => 'boolean',
+            'paid_check' => 'nullable|boolean',
         ]);
 
         $service = ServiceLocation::create([
             'service_name' => $request->service_name,
             'service_amount' => $request->service_amount,
+            'paid_check' => $request->paid_check ?? false,
+            'service_type' => $request->service_type ?? false,
             'type' => 'service'
         ]);
 
@@ -37,10 +41,13 @@ class ServiceLocationController extends Controller
     {
         $request->validate([
             'location' => 'required|string|max:255',
+            'service_amount' => 'numeric|nullable',
+           
         ]);
 
         $location = ServiceLocation::create([
             'location' => $request->location,
+            'service_amount' => $request->service_amount,
             'type' => 'location'
         ]);
 
@@ -56,9 +63,11 @@ class ServiceLocationController extends Controller
         $request->validate([
             'service_name' => 'sometimes|required|string|max:255',
             'service_amount' => 'sometimes|required|numeric',
+            'service_type' => 'sometimes|boolean',
+            'paid_check' => 'sometimes|boolean',
         ]);
 
-        $service->update($request->only('service_name','service_amount'));
+        $service->update($request->only('service_name','service_amount','paid_check','service_type'));
 
         return response()->json(['status'=>'success','data'=>$service]);
     }
@@ -71,9 +80,10 @@ class ServiceLocationController extends Controller
 
         $request->validate([
             'location' => 'sometimes|required|string|max:255',
+            'service_amount' => 'sometimes|numeric',
         ]);
 
-        $location->update($request->only('location'));
+        $location->update($request->only('location','service_amount'));
 
         return response()->json(['status'=>'success','data'=>$location]);
     }

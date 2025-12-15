@@ -14,7 +14,57 @@ use Illuminate\Support\Facades\Storage;
 
 class BookNowController extends Controller
 {
-    
+
+
+    public function index(Request $request)
+    {
+        $user = Auth::user();
+
+        // Filters
+        $status = $request->get('status'); // e.g., pending_payment, completed, cancelled
+        $vehicleId = $request->get('vehicle_id');
+        $dateFrom = $request->get('date_from'); // e.g., 2025-12-01
+        $dateTo = $request->get('date_to');     // e.g., 2025-12-15
+
+        // Sorting
+        $sortBy = $request->get('sort_by', 'created_at'); // default sort
+        $sortDir = $request->get('sort_dir', 'desc');     // default direction
+
+        $query = Booking::where('user_id', $user->id);
+
+        // Apply filters
+        if ($status) {
+            $query->where('status', $status);
+        }
+
+        if ($vehicleId) {
+            $query->where('vehicle_id', $vehicleId);
+        }
+
+        if ($dateFrom) {
+            $query->whereDate('created_at', '>=', $dateFrom);
+        }
+
+        if ($dateTo) {
+            $query->whereDate('created_at', '<=', $dateTo);
+        }
+
+        // Include vehicle info
+       $query->with(['vehicle', 'vehicle.images']);
+
+
+        // Apply sorting
+        $query->orderBy($sortBy, $sortDir);
+
+        // Pagination (optional)
+        $perPage = $request->get('per_page', 10);
+        $bookings = $query->paginate($perPage);
+
+        return response()->json([
+            'success' => true,
+            'data' => $bookings,
+        ]);
+    }
 
 
     public function store(Request $request)
