@@ -8,36 +8,52 @@ use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 use Tymon\JWTAuth\Facades\JWTAuth;
+use PDF;
+use Illuminate\Support\Facades\Storage;
+use App\Models\Payment;
+use App\Services\PackageInvoiceService;
+use Illuminate\Support\Facades\Http;
 
 class AuthController extends Controller
 {
+  public function register(Request $request)
+{
+    $request->validate([
+        'name'       => 'required|string|max:255',
+        'email'      => 'required|email|unique:users',
+        'password'   => 'required|string|min:6',
+        'package_id' => 'required|exists:packages,id',
+    ]);
 
-    public function register(Request $request)
-    {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users',
-            'package_id' => 'required',
-            'password' => 'required|string|min:6',
-        ]);
+    // Create user
+    $user = User::create([
+        'name'       => $request->name,
+        'email'      => $request->email,
+        'package_id' => $request->package_id,
+        'password'   => Hash::make($request->password),
+    ]);
 
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'package_id' => $request->package_id,
-            'password' => Hash::make($request->password),
-        ]);
+    // ✅ Generate invoice PDF (NO HTTP)
+    $pdfLink = PackageInvoiceService::generate($user->id);
 
-        $token = JWTAuth::fromUser($user);
+    // Save payment record
+    Payment::create([
+        'user_id'    => $user->id,
+        'package_id' => $request->package_id,
+        'pdf_link'   => $pdfLink,
+        'status'     => 'pending',
+    ]);
 
-        return response()->json([
-            'status' => 'success',
-            'message' => 'User registered successfully',
-            'token' => $token,
-            'user' => $user
-        ]);
-    }
+    $token = JWTAuth::fromUser($user);
 
+    return response()->json([
+        'status'  => 'success',
+        'message' => 'User registered & invoice generated',
+        'token'   => $token,
+        'pdf_url' => $pdfLink,
+        'user'    => $user,
+    ]);
+}
 
     public function login(Request $request)
     {

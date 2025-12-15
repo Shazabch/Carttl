@@ -40,6 +40,8 @@ use App\Http\Controllers\Api\PushNotificationsController;
 //Auth routes
 Route::post('register', [AuthController::class, 'register']);
 Route::post('login', [AuthController::class, 'login']);
+Route::post('/generate-package-invoice', [\App\Http\Controllers\Api\InvoiceController::class, 'generatePackageInvoiceByUser']);
+
 Route::middleware('auth:api')->post('logout', [AuthController::class, 'logout']);
 Route::get('/inspection-field-images/{reportId}/{field}', [InspectionReportController::class, 'getFieldImages'])
     ->name('api.inspection.field.images');
