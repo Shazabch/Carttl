@@ -203,4 +203,9 @@ class Vehicle extends Model
     {
         return $this->belongsToMany(User::class, 'user_vehicle_favorites')->withTimestamps();
     }
+
+    public function bookings()
+{
+    return $this->hasMany(Booking::class, 'vehicle_id');
+}
 }

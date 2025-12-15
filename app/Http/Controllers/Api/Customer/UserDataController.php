@@ -117,7 +117,10 @@ public function getUserBiddings(Request $request)
         ->with([
             'vehicle.brand:id,name,image_source',
             'vehicle.vehicleModel:id,name',
-            'vehicle.images'
+            'vehicle.images',
+             'vehicle.bookings' => function($q) use ($user) {
+                $q->where('user_id', $user->id);
+            }
         ]);
 
     $bids = $perPage ? $query->paginate($perPage) : $query->get();
