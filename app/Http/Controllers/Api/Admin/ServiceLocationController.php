@@ -9,11 +9,20 @@ use App\Models\ServiceLocation;
 class ServiceLocationController extends Controller
 {
     // Index: list all records
-    public function index()
-    {
+   public function index(Request $request)
+{
+    $type = $request->query('type'); // get 'type' from query parameters
+
+    if ($type) {
+        // Filter by type if provided
+        $data = ServiceLocation::where('type', $type)->get();
+    } else {
+        // Otherwise, return all
         $data = ServiceLocation::all();
-        return response()->json(['status' => 'success', 'data' => $data]);
     }
+
+    return response()->json(['status' => 'success', 'data' => $data]);
+}
 
     // Store a Service
     public function storeService(Request $request)
@@ -75,7 +84,7 @@ class ServiceLocationController extends Controller
     // Update a Location
     public function updateLocation(Request $request, $id)
     {
-        $location = ServiceLocation::where('id', $id)->where('type', 'location')->first();
+        $location = ServiceLocation::where('id', $id)->first();
         if (!$location) return response()->json(['status'=>'error','message'=>'Location not found'],404);
 
         $request->validate([
