@@ -26,51 +26,75 @@ use Illuminate\Support\Facades\Crypt;
 class InspectionReportController extends Controller
 {
 
-    public function index(Request $request)
-    {
-        $query = VehicleInspectionReport::with([
-            'brand:id,name',
-            'vehicleModel:id,name',
-        ]);
+    
+public function index(Request $request)
+{
+    $query = VehicleInspectionReport::with([
+        'brand:id,name',
+        'vehicleModel:id,name',
+    ]);
 
-        // --- Filters ---
-        if ($request->has('inspection_enquiry_id')) {
-            $query->where('inspection_enquiry_id', $request->inspection_enquiry_id);
-        }
+    // --- Filters ---
 
-        if ($request->has('vehicle_id')) {
-            $query->where('vehicle_id', $request->vehicle_id);
-        }
-
-        if ($request->has('search')) {
-            $s = $request->search;
-            $query->where(function ($q) use ($s) {
-                $q->where('vin', 'like', "%{$s}%")
-                    ->orWhereHas('brand', fn($b) => $b->where('name', 'like', "%{$s}%"))
-                    ->orWhereHas('vehicleModel', fn($m) => $m->where('name', 'like', "%{$s}%"));
-            });
-        }
-
-        // --- Pagination ---
-        $perPage = $request->get('per_page', 10);
-        $reports = $query->latest()->paginate($perPage);
-
-
-        $reports->getCollection()->transform(function ($report) {
-            $report->make_name = $report->brand->name ?? null;
-            $report->model_name = $report->vehicleModel->name ?? null;
-
-
-            unset($report->brand, $report->vehicleModel);
-
-            return $report;
-        });
-
-        return response()->json([
-            'status' => 'success',
-            'data' => $reports,
-        ]);
+    if ($request->filled('inspection_enquiry_id')) {
+        $query->where('inspection_enquiry_id', $request->inspection_enquiry_id);
     }
+
+    if ($request->filled('vehicle_id')) {
+        $query->where('vehicle_id', $request->vehicle_id);
+    }
+
+    // 🔍 Search
+    if ($request->filled('search')) {
+        $s = $request->search;
+        $query->where(function ($q) use ($s) {
+            $q->where('vin', 'like', "%{$s}%")
+                ->orWhereHas('brand', fn ($b) =>
+                    $b->where('name', 'like', "%{$s}%")
+                )
+                ->orWhereHas('vehicleModel', fn ($m) =>
+                    $m->where('name', 'like', "%{$s}%")
+                );
+        });
+    }
+
+    // 📅 DATE filter (YYYY-MM-DD)
+    if ($request->filled('date')) {
+        $query->whereDate('created_at', $request->date);
+    }
+
+    // 📆 MONTH filter
+    // Accepts: "2025-12" OR "12"
+    if ($request->filled('month')) {
+        if (strlen($request->month) === 7) {
+            // YYYY-MM
+            $query->whereYear('created_at', substr($request->month, 0, 4))
+                  ->whereMonth('created_at', substr($request->month, 5, 2));
+        } else {
+            // MM only
+            $query->whereMonth('created_at', $request->month);
+        }
+    }
+
+    // --- Pagination ---
+    $perPage = $request->get('per_page', 10);
+    $reports = $query->latest()->paginate($perPage);
+
+    // --- Transform ---
+    $reports->getCollection()->transform(function ($report) {
+        $report->make_name  = $report->brand->name ?? null;
+        $report->model_name = $report->vehicleModel->name ?? null;
+
+        unset($report->brand, $report->vehicleModel);
+
+        return $report;
+    });
+
+    return response()->json([
+        'status' => 'success',
+        'data'   => $reports,
+    ]);
+}
     public function getFieldImages($reportId, $field)
     {
         $fieldData = InspectionField::with('files')
