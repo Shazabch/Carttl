@@ -76,7 +76,7 @@ class FeatureSeeder extends Seeder
             'Cabin Air Filter',
         ];
 
-        $tags = ['Luxury', 'Sports Car', 'Certified By GX'];
+        $tags = ['Luxury', 'Sports Car', 'Certified By Caartl'];
 
         // --- EXTERIOR ---
         foreach ($exterior as $feature) {

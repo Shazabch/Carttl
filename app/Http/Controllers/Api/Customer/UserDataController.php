@@ -91,7 +91,7 @@ class UserDataController extends Controller
     public function getUserPackageInvoices(Request $request)
     {
         $user = Auth::guard('api')->user();
-        $invoices = Payment::where('user_id', '16')
+        $invoices = Payment::where('user_id', $user)->with('package')
             ->whereNotNull('pdf_link')
             ->orderBy('created_at', 'desc')
             ->get();
