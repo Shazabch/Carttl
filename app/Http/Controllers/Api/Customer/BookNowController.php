@@ -159,16 +159,24 @@ class BookNowController extends Controller
             $vehicle->status = 'pending_payment';
             $vehicle->save();
 
-            DB::commit();
+          
+        // Generate invoice PDF
+        $invoiceUrl = \App\Services\BookingInvoiceService::generate($booking->id);
+        $booking->invoice_link = $invoiceUrl;
+        $booking->save();
 
-            return response()->json([
-                'success' => true,
-                'message' => 'Booking created successfully',
-                'data'    => [
-                    'booking' => $booking,
-                    'total'   => $total,
-                ],
-            ]);
+        DB::commit();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Booking created successfully',
+            'data'    => [
+                'booking' => $booking,
+                'total'   => $total,
+                'invoice' => $invoiceUrl,
+            ],
+        ]);
+
         } catch (\Exception $e) {
             DB::rollBack();
             return response()->json([
