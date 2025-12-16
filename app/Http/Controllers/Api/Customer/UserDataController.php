@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Booking;
 use App\Models\ContactSubmission;
 use App\Models\InspectionEnquiry;
+use App\Models\Payment;
 use App\Models\VehicleBid;
 use App\Models\VehicleEnquiry;
 use App\Models\VehicleInspectionReport;
@@ -85,51 +86,67 @@ class UserDataController extends Controller
         ]);
     }
 
-public function getUserBiddings(Request $request)
-{
-    $user = Auth::guard('api')->user();
 
-    if (!$user) {
+
+    public function getUserPackageInvoices(Request $request)
+    {
+        $user = Auth::guard('api')->user();
+        $invoices = Payment::where('user_id', '16')
+            ->whereNotNull('pdf_link')
+            ->orderBy('created_at', 'desc')
+            ->get();
+
         return response()->json([
-            'status' => 'error',
-            'message' => 'Unauthenticated user.'
-        ], 401);
+            'status'  => 'success',
+            'message' => 'User package invoices fetched successfully.',
+            'data'    => $invoices,
+        ], 200);
     }
+    public function getUserBiddings(Request $request)
+    {
+        $user = Auth::guard('api')->user();
 
-    $status = $request->input('status'); 
-    $search = $request->input('search'); 
-    $vehicleId = $request->input('vehicle_id'); 
-    $perPage = $request->input('per_page'); 
+        if (!$user) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Unauthenticated user.'
+            ], 401);
+        }
 
-    $query = VehicleBid::where('user_id', $user->id)
-        ->when($status, function ($query) use ($status) {
-            $query->where('status', $status);
-        })
-        ->when($vehicleId, function ($query) use ($vehicleId) {
-            $query->where('vehicle_id', $vehicleId);
-        })
-        ->when($search, function ($query) use ($search) {
-            $query->whereHas('vehicle', function ($q) use ($search) {
-                $q->where('name', 'like', "%{$search}%")
-                  ->orWhere('vin', 'like', "%{$search}%");
-            });
-        })
-        ->with([
-            'vehicle.brand:id,name,image_source',
-            'vehicle.vehicleModel:id,name',
-            'vehicle.images',
-             'vehicle.bookings' => function($q) use ($user) {
-                $q->where('user_id', $user->id);
-            }
+        $status = $request->input('status');
+        $search = $request->input('search');
+        $vehicleId = $request->input('vehicle_id');
+        $perPage = $request->input('per_page');
+
+        $query = VehicleBid::where('user_id', $user->id)
+            ->when($status, function ($query) use ($status) {
+                $query->where('status', $status);
+            })
+            ->when($vehicleId, function ($query) use ($vehicleId) {
+                $query->where('vehicle_id', $vehicleId);
+            })
+            ->when($search, function ($query) use ($search) {
+                $query->whereHas('vehicle', function ($q) use ($search) {
+                    $q->where('name', 'like', "%{$search}%")
+                        ->orWhere('vin', 'like', "%{$search}%");
+                });
+            })
+            ->with([
+                'vehicle.brand:id,name,image_source',
+                'vehicle.vehicleModel:id,name',
+                'vehicle.images',
+                'vehicle.bookings' => function ($q) use ($user) {
+                    $q->where('user_id', $user->id);
+                }
+            ]);
+
+        $bids = $perPage ? $query->paginate($perPage) : $query->get();
+
+        return response()->json([
+            'status' => 'success',
+            'data' => $bids,
         ]);
-
-    $bids = $perPage ? $query->paginate($perPage) : $query->get();
-
-    return response()->json([
-        'status' => 'success',
-        'data' => $bids,
-    ]);
-}
+    }
 
 
 
