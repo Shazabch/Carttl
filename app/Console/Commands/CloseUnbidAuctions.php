@@ -14,29 +14,32 @@ class CloseUnbidAuctions extends Command
 
     public function handle()
     {
-        Log::info('CloseUnbidAuctions command ran at '.now());
+        Log::info('CloseUnbidAuctions command ran at ' . now());
         $now = Carbon::now();
 
         $vehicles = Vehicle::where('is_auction', 1)
             ->where('auction_end_date', '<', $now)
-            ->whereDoesntHave('bids')
+            ->whereDoesntHave('bids', function ($q) {
+                $q->where('status', 'accepted');
+            })
             ->get();
+
         if ($vehicles->isEmpty()) {
-            $this->info('No unbid auctions to close.');
-            Log::info('No unbid auctions to close at ' . $now);
+            $this->info('No unaccepted auctions to close.');
+            Log::info('No unaccepted auctions to close at ' . $now);
             return 0;
         }
 
         $count = $vehicles->count();
 
-        // Update auctions
-        Vehicle::whereIn('id', $vehicles->pluck('id'))->update(['is_auction' => 0]);
+        // Close auctions
+        Vehicle::whereIn('id', $vehicles->pluck('id'))
+            ->update(['is_auction' => 0]);
 
-        $this->info("Closed {$count} auctions with no bids.");
+        $this->info("Closed {$count} auctions with no accepted bids.");
 
-        // Log each closed auction in laravel.log
         foreach ($vehicles as $vehicle) {
-            Log::info("Auction closed automatically for vehicle ID: {$vehicle->id}, no bids received at {$now}");
+            Log::info("Auction closed automatically for vehicle ID: {$vehicle->id}, no accepted bids at {$now}");
         }
 
         return 0;

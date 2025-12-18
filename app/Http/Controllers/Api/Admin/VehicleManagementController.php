@@ -133,6 +133,32 @@ class VehicleManagementController extends Controller
             'data' => $vehicles
         ]);
     }
+
+    public function auctionForDropdown()
+    {
+        $search = request()->get('search', '');
+        $vehicles = Vehicle::where('is_auction', true)
+            ->where('status', 'published')
+            ->when($search, function ($query, $search) {
+                $query->where(function ($q) use ($search) {
+                    $q->where('title', 'like', "%{$search}%")
+                        ->orWhere('vin', 'like', "%{$search}%")
+                        ->orWhereHas('brand', function ($b) use ($search) {
+                            $b->where('name', 'like', "%{$search}%");
+                        })
+                        ->orWhereHas('vehicleModel', function ($m) use ($search) {
+                            $m->where('name', 'like', "%{$search}%");
+                        });
+                });
+            })
+            ->with(['brand:id,name', 'vehicleModel:id,name'])
+            ->orderBy('created_at', 'desc')
+            ->get();
+        return response()->json([
+            'status' => 'success',
+            'data' => $vehicles
+        ]);
+    }
     public function auctions(Request $request)
     {
         $perPage = $request->get('per_page', 10);
@@ -247,11 +273,8 @@ class VehicleManagementController extends Controller
         $perPage = $request->get('per_page', 10);
         $search  = $request->get('search', '');
 
-        $query = Vehicle::where('is_auction', true)
-            ->where('status', 'published')
-            ->where('auction_end_date', '<', Carbon::now());
-
-
+        $query = Vehicle::where('is_auction', false)
+            ->where('status', 'published');
         if (!empty($search)) {
             $query->where(function ($q) use ($search) {
                 $q->where('title', 'like', "%{$search}%")

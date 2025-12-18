@@ -20,7 +20,7 @@
     </div>
 
     <p><strong>Booking ID:</strong> {{ $booking->id }}</p>
-    <p><strong>Vehicle:</strong> {{ $booking->vehicle->name ?? '-' }}</p>
+    <p><strong>Vehicle:</strong> {{ $booking->vehicle?->brand?->name ?? '-' }} {{ $booking->vehicle?->vehicleModel?->name ?? '-' }}</p>
     <p><strong>Customer:</strong> {{ $booking->user->name ?? '-' }}</p>
     <p><strong>Receiver:</strong> {{ $booking->receiver_name }} ({{ $booking->receiver_email }})</p>
     <p><strong>Delivery Type:</strong> {{ ucfirst(str_replace('_', ' ', $booking->delivery_type)) }}</p>

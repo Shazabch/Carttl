@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Schema;
 use App\Models\VehicleBid;
+use App\Services\BookingInvoiceService;
 use Illuminate\Support\Facades\Storage;
 
 class BookingController extends Controller
@@ -19,7 +20,7 @@ class BookingController extends Controller
         $perPage = $request->get('per_page', 10);
         $search  = $request->get('search', '');
 
-        $vehiclesQuery = Vehicle::where('status', 'pending_payment')->where('is_auction',true)
+        $vehiclesQuery = Vehicle::where('status', 'pending_payment')->where('is_auction', true)
             ->when($search, function ($query, $search) {
                 $query->whereHas('brand', function ($q) use ($search) {
                     $q->where('name', 'like', "%{$search}%");
@@ -65,7 +66,7 @@ class BookingController extends Controller
         $perPage = $request->get('per_page', 10);
         $search  = $request->get('search', '');
 
-        $vehiclesQuery = Vehicle::where('status', 'bid_approved')->where('is_auction',true)
+        $vehiclesQuery = Vehicle::where('status', 'bid_approved')->where('is_auction', true)
             ->when($search, function ($query, $search) {
                 $query->whereHas('brand', function ($q) use ($search) {
                     $q->where('name', 'like', "%{$search}%");
@@ -127,7 +128,7 @@ class BookingController extends Controller
         $perPage = $request->get('per_page', 10);
         $search  = $request->get('search', '');
 
-        $vehiclesQuery = Vehicle::where('status', 'intransfer')->where('is_auction',true)
+        $vehiclesQuery = Vehicle::where('status', 'intransfer')->where('is_auction', true)
             ->when($search, function ($query, $search) {
                 $query->whereHas('brand', function ($q) use ($search) {
                     $q->where('name', 'like', "%{$search}%");
@@ -174,7 +175,7 @@ class BookingController extends Controller
         $perPage = $request->get('per_page', 10);
         $search  = $request->get('search', '');
 
-        $vehiclesQuery = Vehicle::where('status', 'delivered')->where('is_auction',true)
+        $vehiclesQuery = Vehicle::where('status', 'delivered')->where('is_auction', true)
             ->when($search, function ($query, $search) {
                 $query->whereHas('brand', function ($q) use ($search) {
                     $q->where('name', 'like', "%{$search}%");
@@ -341,5 +342,31 @@ class BookingController extends Controller
                 'error' => $e->getMessage(),
             ], 500);
         }
+    }
+
+    public function generateBookingPdf(Request $request)
+    {
+        $request->validate([
+            'booking_id' => 'required|exists:bookings,id',
+        ]);
+
+        $booking = Booking::findOrFail($request->booking_id);
+
+        // Generate PDF using service
+        $invoiceLink = BookingInvoiceService::generate($booking->id);
+
+        // Optional: save link in bookings table
+        $booking->update([
+            'invoice_link' => $invoiceLink
+        ]);
+
+        return response()->json([
+            'status' => true,
+            'message' => 'Invoice generated successfully',
+            'data' => [
+                'booking_id'  => $booking->id,
+                'invoice_url' => $invoiceLink
+            ]
+        ]);
     }
 }

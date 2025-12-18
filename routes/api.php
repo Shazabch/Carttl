@@ -211,6 +211,7 @@ Route::prefix('admin')
         });
         Route::controller(VehicleManagementController::class)->group(function () {
             Route::get('/auctions', 'auctions');
+            Route::get('/drop-down-auctions', 'auctionForDropdown');
             Route::get('/upcoming-auctions', 'upcomingAuctions');
             Route::get('/live-auctions', 'liveAuctions');
             Route::get('/expired-auctions', 'expiredAuctions');
@@ -305,6 +306,9 @@ Route::prefix('admin')
 
             Route::post('/bookings/change-status/{id}', 'changeStatus')
                 ->middleware('permission:booking-edit');
+
+
+           Route::post('/bookings/generate-pdf', 'generateBookingPdf');
 
             Route::delete('/bookings/delete/{id}', 'deleteBooking')
                 ->middleware('permission:booking-delete');
