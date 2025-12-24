@@ -11,26 +11,40 @@ use Illuminate\Support\Facades\Storage;
 
 class InvoicesController extends Controller
 {
-    // List all invoices with pagination & search
-    public function index(Request $request)
+    // -----------------------------
+    // Booking Invoices List
+    // -----------------------------
+    public function bookingIndex(Request $request)
     {
-        $perPage = $request->input('per_page', 25); // default 25 per page
-        $query = Invoice::query();
+        $perPage = $request->input('per_page', 25);
+        $query = Invoice::where('type', 'booking');
 
-        // Optional search filters
-        if ($request->filled('type')) {
-            $query->where('type', $request->type);
-        }
-
+        // Filter by booking_id
         if ($request->filled('booking_id')) {
             $query->where('booking_id', $request->booking_id);
         }
 
-        if ($request->filled('user_id')) {
-            $query->where('user_id', $request->user_id);
+        // Simple search by invoice id, pdf_link, or vehicle name
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->where(function ($q) use ($search) {
+                $q->where('id', $search)
+                  ->orWhere('pdf_link', 'like', "%{$search}%")
+                  ->orWhereHas('booking.vehicle', function ($q2) use ($search) {
+                      $q2->where('name', 'like', "%{$search}%");
+                  });
+            });
         }
 
         $invoices = $query->latest()->paginate($perPage);
+
+        // Add related booking info
+        $invoices->getCollection()->transform(function ($invoice) {
+            if ($invoice->booking_id) {
+                $invoice->booking = Booking::with('vehicle')->find($invoice->booking_id);
+            }
+            return $invoice;
+        });
 
         return response()->json([
             'status' => true,
@@ -38,42 +52,85 @@ class InvoicesController extends Controller
         ]);
     }
 
-    // Show single invoice
-  // Show single invoice with related info
-public function show($id)
-{
-    $invoice = Invoice::find($id);
+    // -----------------------------
+    // Package Invoices List
+    // -----------------------------
+    public function packageIndex(Request $request)
+    {
+        $perPage = $request->input('per_page', 25);
+        $query = Invoice::where('type', 'package');
 
-    if (! $invoice) {
+        // Filter by user_id
+        if ($request->filled('user_id')) {
+            $query->where('user_id', $request->user_id);
+        }
+
+        // Simple search by invoice id, pdf_link, user name, or package name
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->where(function ($q) use ($search) {
+                $q->where('id', $search)
+                  ->orWhere('pdf_link', 'like', "%{$search}%")
+                  ->orWhereHas('user', function ($q2) use ($search) {
+                      $q2->where('name', 'like', "%{$search}%")
+                         ->orWhereHas('package', function ($q3) use ($search) {
+                             $q3->where('name', 'like', "%{$search}%");
+                         });
+                  });
+            });
+        }
+
+        $invoices = $query->latest()->paginate($perPage);
+
+        // Add related user & package info
+        $invoices->getCollection()->transform(function ($invoice) {
+            if ($invoice->user_id) {
+                $user = User::with('package')->find($invoice->user_id);
+                $invoice->user = $user;
+                $invoice->package = $user->package ?? null;
+            }
+            return $invoice;
+        });
+
         return response()->json([
-            'status'  => false,
-            'message' => 'Invoice not found',
-        ], 404);
+            'status' => true,
+            'data'   => $invoices,
+        ]);
     }
 
-    $data = [
-        'id'         => $invoice->id,
-        'type'       => $invoice->type,
-        'pdf_link'   => $invoice->pdf_link,
-        'created_at' => $invoice->created_at,
-        'updated_at' => $invoice->updated_at,
-    ];
+    // Show single invoice (same as before)
+    public function show($id)
+    {
+        $invoice = Invoice::find($id);
 
-    // Add related data
-    if ($invoice->type === 'booking' && $invoice->booking_id) {
-        $data['booking'] = Booking::with('vehicle')->find($invoice->booking_id);
-    } elseif ($invoice->type === 'package' && $invoice->user_id) {
-        $user = User::with('package')->find($invoice->user_id);
-        $data['user'] = $user;
-        $data['package'] = $user->package ?? null;
+        if (! $invoice) {
+            return response()->json([
+                'status'  => false,
+                'message' => 'Invoice not found',
+            ], 404);
+        }
+
+        $data = [
+            'id'         => $invoice->id,
+            'type'       => $invoice->type,
+            'pdf_link'   => $invoice->pdf_link,
+            'created_at' => $invoice->created_at,
+            'updated_at' => $invoice->updated_at,
+        ];
+
+        if ($invoice->type === 'booking' && $invoice->booking_id) {
+            $data['booking'] = Booking::with('vehicle')->find($invoice->booking_id);
+        } elseif ($invoice->type === 'package' && $invoice->user_id) {
+            $user = User::with('package')->find($invoice->user_id);
+            $data['user'] = $user;
+            $data['package'] = $user->package ?? null;
+        }
+
+        return response()->json([
+            'status' => true,
+            'data'   => $data,
+        ]);
     }
-
-    return response()->json([
-        'status' => true,
-        'data'   => $data,
-    ]);
-}
-
 
     // Delete an invoice
     public function destroy($id)
@@ -87,7 +144,6 @@ public function show($id)
             ], 404);
         }
 
-        // Delete the PDF file from storage
         if ($invoice->pdf_link) {
             $filePath = str_replace(asset('storage/'), '', $invoice->pdf_link);
             Storage::disk('public')->delete($filePath);
@@ -101,7 +157,7 @@ public function show($id)
         ]);
     }
 
-    // Generate invoice
+    // Generate invoice (same as before)
     public function generate(Request $request)
     {
         $request->validate([
@@ -111,7 +167,7 @@ public function show($id)
         ]);
 
         if ($request->type === 'booking') {
-            $booking = \App\Models\Booking::findOrFail($request->booking_id);
+            $booking = Booking::findOrFail($request->booking_id);
             $pdfLink = \App\Services\BookingInvoiceService::generate($booking->id);
 
             $invoice = Invoice::create([
@@ -119,8 +175,8 @@ public function show($id)
                 'booking_id' => $booking->id,
                 'pdf_link'   => $pdfLink,
             ]);
-        } else { // package
-            $user = \App\Models\User::findOrFail($request->user_id);
+        } else {
+            $user = User::findOrFail($request->user_id);
             $pdfLink = \App\Services\PackageInvoiceService::generate($user->id);
 
             $invoice = Invoice::create([

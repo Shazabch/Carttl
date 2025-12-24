@@ -177,7 +177,8 @@ Route::prefix('admin')
         });
 
           Route::controller(InvoicesController::class)->group(function () {
-            Route::get('/invoices', 'index');
+            Route::get('/invoices/booking', 'bookingIndex');
+            Route::get('/invoices/package', 'packageIndex');
             Route::get('/invoices/show/{id}', 'show');
             Route::delete('/invoices/delete/{id}', 'destroy');
             Route::post('/invoices/create', 'generate');
