@@ -18,6 +18,7 @@ use App\Http\Controllers\Api\Admin\VehicleManagementController;
 use App\Http\Controllers\Api\Admin\InspectionReportController;
 use App\Http\Controllers\Api\Admin\AgentManagementController;
 use App\Http\Controllers\Api\Admin\BookingController;
+use App\Http\Controllers\Api\Admin\InvoicesController;
 use App\Http\Controllers\Api\Admin\NotificationController;
 use App\Http\Controllers\Api\Admin\PackageController;
 use App\Http\Controllers\Api\Admin\ProfileController;
@@ -173,6 +174,14 @@ Route::prefix('admin')
             Route::delete('/bids/delete/{id}', 'destroy')->middleware('permission:bidding-actions');
             Route::post('/bids/bulk-delete', 'bulkDelete')->middleware('permission:bidding-actions');
             Route::get('/auction-filter', 'auctionVehiclesForFilter');
+        });
+
+          Route::controller(InvoicesController::class)->group(function () {
+            Route::get('/invoices', 'index');
+            Route::get('/invoices/show/{id}', 'show');
+            Route::delete('/invoices/delete/{id}', 'destroy');
+            Route::post('/invoices/create', 'generate');
+           
         });
 
         // Makes Management

@@ -98,4 +98,10 @@ public function agent()
     return $this->hasMany(VehicleBid::class, 'user_id');
 }
 
+public function package()
+{
+    return $this->belongsTo(Package::class, 'package_id');
+}
+
+
 }
