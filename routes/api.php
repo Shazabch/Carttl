@@ -182,6 +182,8 @@ Route::prefix('admin')
             Route::get('/invoices/show/{id}', 'show');
             Route::delete('/invoices/delete/{id}', 'destroy');
             Route::post('/invoices/create', 'generate');
+            Route::post('/all-customers', 'allCustomers');
+            Route::post('/all-bookings', 'allBookings');
            
         });
 

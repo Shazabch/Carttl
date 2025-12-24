@@ -14,38 +14,38 @@ use Illuminate\Support\Facades\Storage;
 class UserManagementController extends Controller
 {
 
-public function index(Request $request)
-{
-    $perPage = $request->get('per_page', 10);
+    public function index(Request $request)
+    {
+        $perPage = $request->get('per_page', 10);
 
-    $users = User::query()
-        // Filter by role if provided
-        ->when($request->filled('role'), function ($query) use ($request) {
-            $query->whereHas('roles', function ($q) use ($request) {
-                $q->where('name', $request->role);
-            });
-        })
-        // Filter by search if provided
-        ->when($request->filled('search'), function ($query) use ($request) {
-            $search = $request->search;
-            $query->where(function ($q) use ($search) {
-                $q->where('name', 'like', "%{$search}%")
-                  ->orWhere('email', 'like', "%{$search}%");
-            });
-        })
-        ->latest()
-        ->paginate($perPage);
+        $users = User::query()
+            // Filter by role if provided
+            ->when($request->filled('role'), function ($query) use ($request) {
+                $query->whereHas('roles', function ($q) use ($request) {
+                    $q->where('name', $request->role);
+                });
+            })
+            // Filter by search if provided
+            ->when($request->filled('search'), function ($query) use ($request) {
+                $search = $request->search;
+                $query->where(function ($q) use ($search) {
+                    $q->where('name', 'like', "%{$search}%")
+                        ->orWhere('email', 'like', "%{$search}%");
+                });
+            })
+            ->latest()
+            ->paginate($perPage);
 
-    $roles = Role::where('guard_name', 'api')->pluck('name');
+        $roles = Role::where('guard_name', 'api')->pluck('name');
 
-    return response()->json([
-        'status' => 'success',
-        'data' => [
-            'users' => $users,
-            'roles' => $roles,
-        ],
-    ]);
-}
+        return response()->json([
+            'status' => 'success',
+            'data' => [
+                'users' => $users,
+                'roles' => $roles,
+            ],
+        ]);
+    }
 
 
 
@@ -71,7 +71,7 @@ public function index(Request $request)
             'role'     => 'required|string|exists:roles,name',
             'password' => 'required|string|min:8',
             'phone' => 'nullable',
-            'photo'    => 'nullable|image', 
+            'photo'    => 'nullable|image',
         ]);
 
         $photoUrl = null;
@@ -120,7 +120,7 @@ public function index(Request $request)
             'remove_photo' => 'nullable|boolean',
         ]);
 
-        
+
         $photoUrl = $user->photo;
         if ($request->boolean('remove_photo') && $photoUrl) {
             if (str_contains($photoUrl, url('/'))) {
@@ -132,7 +132,7 @@ public function index(Request $request)
             $photoUrl = null;
         }
 
-        
+
         if ($request->hasFile('photo')) {
             if ($photoUrl && str_contains($photoUrl, url('/'))) {
                 $relativePath = str_replace(url('storage') . '/', '', $photoUrl);
@@ -148,7 +148,7 @@ public function index(Request $request)
         $data = [
             'name'  => $validated['name'],
             'email' => $validated['email'],
-             'phone' => $validated['phone'] ?? null,
+            'phone' => $validated['phone'] ?? null,
             'role'  => $validated['role'],
             'photo' => $photoUrl,
         ];

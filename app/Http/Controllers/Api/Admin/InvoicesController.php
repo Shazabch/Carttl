@@ -97,7 +97,52 @@ class InvoicesController extends Controller
             'data'   => $invoices,
         ]);
     }
+    
 
+    public function allCustomers(Request $request)
+    {
+        $query = User::where('role', 'customer');
+
+        // Simple search (name, email)
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->where(function ($q) use ($search) {
+                $q->where('name', 'like', "%{$search}%")
+                  ->orWhere('email', 'like', "%{$search}%");
+            });
+        }
+
+        $customers = $query->latest()->get();
+
+        return response()->json([
+            'status' => true,
+            'data'   => $customers,
+        ]);
+    }
+
+
+    public function allBookings(Request $request)
+    {
+        $query = Booking::query();
+
+        // Simple search (only booking table columns)
+        if ($request->filled('search')) {
+            $search = $request->search;
+
+            $query->where(function ($q) use ($search) {
+                $q->where('id', $search)
+                  ->orWhere('booking_no', 'like', "%{$search}%")
+                  ->orWhere('status', 'like', "%{$search}%");
+            });
+        }
+
+        $bookings = $query->latest()->get();
+
+        return response()->json([
+            'status' => true,
+            'data'   => $bookings,
+        ]);
+    }
     // Show single invoice (same as before)
     public function show($id)
     {
