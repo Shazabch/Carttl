@@ -34,8 +34,9 @@
         <table class="package">
             <tr>
                 <th>Package Name</th>
-                <th>Duration</th>
+               
                 <th>Price</th>
+                 <th>Duration</th>
             </tr>
             <tr>
                 <td>{{ $package->name }}</td>
