@@ -5,7 +5,10 @@ namespace App\Http\Controllers\Api\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Booking;
 use App\Models\Invoice;
+use App\Models\Package;
 use App\Models\User;
+use App\Services\BookingInvoiceService;
+use App\Services\PackageInvoiceService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -29,10 +32,10 @@ class InvoicesController extends Controller
             $search = $request->search;
             $query->where(function ($q) use ($search) {
                 $q->where('id', $search)
-                  ->orWhere('pdf_link', 'like', "%{$search}%")
-                  ->orWhereHas('booking.vehicle', function ($q2) use ($search) {
-                      $q2->where('name', 'like', "%{$search}%");
-                  });
+                    ->orWhere('pdf_link', 'like', "%{$search}%")
+                    ->orWhereHas('booking.vehicle', function ($q2) use ($search) {
+                        $q2->where('name', 'like', "%{$search}%");
+                    });
             });
         }
 
@@ -70,13 +73,13 @@ class InvoicesController extends Controller
             $search = $request->search;
             $query->where(function ($q) use ($search) {
                 $q->where('id', $search)
-                  ->orWhere('pdf_link', 'like', "%{$search}%")
-                  ->orWhereHas('user', function ($q2) use ($search) {
-                      $q2->where('name', 'like', "%{$search}%")
-                         ->orWhereHas('package', function ($q3) use ($search) {
-                             $q3->where('name', 'like', "%{$search}%");
-                         });
-                  });
+                    ->orWhere('pdf_link', 'like', "%{$search}%")
+                    ->orWhereHas('user', function ($q2) use ($search) {
+                        $q2->where('name', 'like', "%{$search}%")
+                            ->orWhereHas('package', function ($q3) use ($search) {
+                                $q3->where('name', 'like', "%{$search}%");
+                            });
+                    });
             });
         }
 
@@ -87,7 +90,6 @@ class InvoicesController extends Controller
             if ($invoice->user_id) {
                 $user = User::with('package')->find($invoice->user_id);
                 $invoice->user = $user;
-               
             }
             return $invoice;
         });
@@ -97,7 +99,7 @@ class InvoicesController extends Controller
             'data'   => $invoices,
         ]);
     }
-    
+
 
     public function allCustomers(Request $request)
     {
@@ -108,7 +110,7 @@ class InvoicesController extends Controller
             $search = $request->search;
             $query->where(function ($q) use ($search) {
                 $q->where('name', 'like', "%{$search}%")
-                  ->orWhere('email', 'like', "%{$search}%");
+                    ->orWhere('email', 'like', "%{$search}%");
             });
         }
 
@@ -131,8 +133,8 @@ class InvoicesController extends Controller
 
             $query->where(function ($q) use ($search) {
                 $q->where('id', $search)
-                  ->orWhere('booking_no', 'like', "%{$search}%")
-                  ->orWhere('status', 'like', "%{$search}%");
+                    ->orWhere('booking_no', 'like', "%{$search}%")
+                    ->orWhere('status', 'like', "%{$search}%");
             });
         }
 
@@ -168,7 +170,6 @@ class InvoicesController extends Controller
         } elseif ($invoice->type === 'package' && $invoice->user_id) {
             $user = User::with('package')->find($invoice->user_id);
             $data['user'] = $user;
-          
         }
 
         return response()->json([
@@ -213,7 +214,7 @@ class InvoicesController extends Controller
 
         if ($request->type === 'booking') {
             $booking = Booking::findOrFail($request->booking_id);
-            $pdfLink = \App\Services\BookingInvoiceService::generate($booking->id);
+            $pdfLink = BookingInvoiceService::generate($booking->id);
 
             $invoice = Invoice::create([
                 'type'       => 'booking',
@@ -222,14 +223,36 @@ class InvoicesController extends Controller
             ]);
         } else {
             $user = User::findOrFail($request->user_id);
-            $pdfLink = \App\Services\PackageInvoiceService::generate($user->id);
 
+            // Check if user has a package
+            if (! $user->package_id) {
+                return response()->json([
+                    'status'  => false,
+                    'message' => 'User does not have any package',
+                ], 422);
+            }
+
+            // Check if package exists
+            $packageExists = Package::where('id', $user->package_id)->exists();
+
+            if (! $packageExists) {
+                return response()->json([
+                    'status'  => false,
+                    'message' => 'Package not found',
+                ], 404);
+            }
+
+            // Generate package invoice
+            $pdfLink = PackageInvoiceService::generate($user->id);
+
+            // Save invoice
             $invoice = Invoice::create([
                 'type'     => 'package',
                 'user_id'  => $user->id,
                 'pdf_link' => $pdfLink,
             ]);
         }
+
 
         return response()->json([
             'status'  => true,
