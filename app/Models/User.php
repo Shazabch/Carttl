@@ -92,4 +92,10 @@ public function agent()
     {
         return [];
     }
+
+    public function vehicleBids()
+{
+    return $this->hasMany(VehicleBid::class, 'user_id');
+}
+
 }

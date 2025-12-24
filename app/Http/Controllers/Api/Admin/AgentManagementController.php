@@ -106,24 +106,36 @@ class AgentManagementController extends Controller
         ], 201);
     }
 
-    public function show($id)
-    {
-        $agent = User::where('role', 'agent')
-            ->with('Customers')
-            ->find($id);
+   public function show($id)
+{
+    $agent = User::where('role', 'agent')
+        ->with(['Customers']) // load customers first
+        ->find($id);
 
-        if (!$agent) {
-            return response()->json([
-                'status'  => 'error',
-                'message' => 'Agent not found.',
-            ], 404);
-        }
-
+    if (!$agent) {
         return response()->json([
-            'status' => 'success',
-            'data'   => $agent,
-        ]);
+            'status'  => 'error',
+            'message' => 'Agent not found.',
+        ], 404);
     }
+
+    // Loop through customers to attach bids and vehicles
+    $agent->Customers->each(function ($customer) {
+        // Load all bids for the customer
+        $customer->vehicleBids = $customer->vehicleBids()->with('vehicle.brand', 'vehicle.vehicleModel')->get();
+
+        // Get unique vehicles customer has bid on
+        $customer->biddedVehicles = $customer->vehicleBids->pluck('vehicle')->unique('id')->values();
+    });
+
+    return response()->json([
+        'status' => 'success',
+        'data'   => $agent,
+    ]);
+}
+
+
+
 
     public function update(Request $request, $id)
     {
@@ -186,7 +198,7 @@ class AgentManagementController extends Controller
                 ->whereIn('id', $customerIds)
                 ->update(['agent_id' => $agent->id]);
         }
-          $admin = auth('api')->user();
+        $admin = auth('api')->user();
         if ($admin) {
             Activity::causedBy($admin)
                 ->performedOn($agent)
@@ -220,7 +232,7 @@ class AgentManagementController extends Controller
         $assigned = User::whereIn('id', $request->customer_ids ?? [])
             ->select('id', 'name', 'email', 'agent_id')
             ->get();
-          $admin = auth('api')->user();
+        $admin = auth('api')->user();
         if ($admin) {
             Activity::causedBy($admin)
                 ->performedOn($agent)
@@ -302,7 +314,7 @@ class AgentManagementController extends Controller
 
         User::where('agent_id', $agent->id)->update(['agent_id' => null]);
         $agent->delete();
-          $admin = auth('api')->user();
+        $admin = auth('api')->user();
         if ($admin) {
             Activity::causedBy($admin)
                 ->event('deleted')
