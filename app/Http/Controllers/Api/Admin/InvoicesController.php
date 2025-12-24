@@ -87,7 +87,7 @@ class InvoicesController extends Controller
             if ($invoice->user_id) {
                 $user = User::with('package')->find($invoice->user_id);
                 $invoice->user = $user;
-                $invoice->package = $user->package ?? null;
+               
             }
             return $invoice;
         });
@@ -123,7 +123,7 @@ class InvoicesController extends Controller
         } elseif ($invoice->type === 'package' && $invoice->user_id) {
             $user = User::with('package')->find($invoice->user_id);
             $data['user'] = $user;
-            $data['package'] = $user->package ?? null;
+          
         }
 
         return response()->json([
