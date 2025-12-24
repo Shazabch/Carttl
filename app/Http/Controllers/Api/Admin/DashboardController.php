@@ -123,7 +123,7 @@ class DashboardController extends Controller
         ])
             ->orderByDesc('bid_amount')
             ->take(3)
-            ->get(['id', 'vehicle_id', 'bid_amount', 'created_at']);
+            ->get(['id', 'vehicle_id', 'bid_amount','status', 'created_at']);
         $recentListings = Vehicle::with([
             'brand:id,name',
             'vehicleModel:id,name'

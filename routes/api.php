@@ -81,11 +81,6 @@ Route::prefix('admin')
             Route::delete('/roles/delete/{id}', 'destroy')->middleware('permission:role-manage');
             Route::get('/permissions', 'getPermissions');
         });
-
-
-
-       
-
             // List all services and locations
             Route::get('/service-locations', [ServiceLocationController::class, 'index']);
             Route::delete('/service-location/delete/{id}', [ServiceLocationController::class, 'destroy']);
