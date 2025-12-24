@@ -109,6 +109,21 @@ class DashboardController extends Controller
             ->orderByDesc('bid_amount')
             ->take(3)
             ->get(['id', 'vehicle_id', 'bid_amount', 'created_at']);
+
+
+
+        $liveBids = VehicleBid::with([
+            'vehicle' => function ($query) {
+                $query->select('id', 'title', 'brand_id', 'vehicle_model_id', 'year', 'status', 'price')
+                    ->with([
+                        'brand:id,name',
+                        'vehicleModel:id,name'
+                    ]);
+            }
+        ])
+            ->orderByDesc('bid_amount')
+            ->take(3)
+            ->get(['id', 'vehicle_id', 'bid_amount', 'created_at']);
         $recentListings = Vehicle::with([
             'brand:id,name',
             'vehicleModel:id,name'
@@ -140,6 +155,7 @@ class DashboardController extends Controller
 
                 'recent_listings'       => $recentListings,
                 'top_bids'     => $topBids,
+                'live_bids'     => $liveBids,
                 'payment_processing'           => $paymentProcessing,
                 'intransfer'           => $intransfer,
 
