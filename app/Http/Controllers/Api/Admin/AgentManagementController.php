@@ -20,7 +20,9 @@ class AgentManagementController extends Controller
         $perPage = $request->get('per_page', 10);
         $search  = $request->get('search', '');
 
-        $query = User::where('role', 'agent')
+        $query = User::whereHas('roles', function ($q) {
+            $q->where('name', 'agent');
+        })
             ->when($search, function ($q) use ($search) {
                 $q->where(function ($inner) use ($search) {
                     $inner->where('name', 'like', "%{$search}%")
@@ -46,7 +48,7 @@ class AgentManagementController extends Controller
                 'name'             => $agent->name,
                 'email'            => $agent->email,
                 'phone'            => $agent->phone,
-                'role'             => $agent->role,
+                'role'             => 'agent',
                 'photo'            => $agent->photo,
                 'target'           => $agent->target,
                 'customers_count'  => $agent->customers_count,
@@ -106,33 +108,33 @@ class AgentManagementController extends Controller
         ], 201);
     }
 
-   public function show($id)
-{
-    $agent = User::where('role', 'agent')
-        ->with(['Customers']) // load customers first
-        ->find($id);
+    public function show($id)
+    {
+        $agent = User::where('role', 'agent')
+            ->with(['Customers']) // load customers first
+            ->find($id);
 
-    if (!$agent) {
+        if (!$agent) {
+            return response()->json([
+                'status'  => 'error',
+                'message' => 'Agent not found.',
+            ], 404);
+        }
+
+        // Loop through customers to attach bids and vehicles
+        $agent->Customers->each(function ($customer) {
+            // Load all bids for the customer
+            $customer->vehicleBids = $customer->vehicleBids()->with('vehicle.brand', 'vehicle.vehicleModel')->get();
+
+            // Get unique vehicles customer has bid on
+            $customer->biddedVehicles = $customer->vehicleBids->pluck('vehicle')->unique('id')->values();
+        });
+
         return response()->json([
-            'status'  => 'error',
-            'message' => 'Agent not found.',
-        ], 404);
+            'status' => 'success',
+            'data'   => $agent,
+        ]);
     }
-
-    // Loop through customers to attach bids and vehicles
-    $agent->Customers->each(function ($customer) {
-        // Load all bids for the customer
-        $customer->vehicleBids = $customer->vehicleBids()->with('vehicle.brand', 'vehicle.vehicleModel')->get();
-
-        // Get unique vehicles customer has bid on
-        $customer->biddedVehicles = $customer->vehicleBids->pluck('vehicle')->unique('id')->values();
-    });
-
-    return response()->json([
-        'status' => 'success',
-        'data'   => $agent,
-    ]);
-}
 
 
 
