@@ -30,6 +30,7 @@ use App\Http\Controllers\Api\Customer\BiddingController;
 use App\Http\Controllers\Api\Customer\BookNowController;
 use App\Http\Controllers\Api\Customer\BuyCarController;
 use App\Http\Controllers\Api\Customer\ContactController;
+use App\Http\Controllers\Api\Customer\CustomerInvoicesController;
 use App\Http\Controllers\Api\Customer\FavoriteController;
 use App\Http\Controllers\Api\Customer\InspectionController;
 use App\Http\Controllers\Api\Customer\PackageController as CustomerPackageController;
@@ -414,6 +415,12 @@ Route::group(['middleware' => 'auth:api'], function () {
         Route::get('/biddings/{vehicleId}', 'getVehicleBids');
         Route::post('/place-bid/{vehicleId}', 'placeBid');
         Route::get('/bid-history/{vehicleId}', 'getBidHistory');
+    });
+
+     Route::controller(CustomerInvoicesController::class)->group(function () {
+        Route::get('/invoices', 'index');
+        Route::get('/invoices/show/{id}', 'show');
+       
     });
 });
 

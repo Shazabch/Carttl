@@ -58,10 +58,14 @@ class InspectionController extends Controller
            
             if ($user) {
                 $validated['user_id'] = $user->id;
+                $validated['created_by'] = $user->id;
             }
 
            
             $validated['type'] = 'inspection';
+            $validated['source'] = 'App';
+            
+
             $enquiry = InspectionEnquiry::create($validated);
 
            

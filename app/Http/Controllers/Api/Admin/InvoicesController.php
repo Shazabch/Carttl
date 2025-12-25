@@ -219,6 +219,7 @@ class InvoicesController extends Controller
             $invoice = Invoice::create([
                 'type'       => 'booking',
                 'booking_id' => $booking->id,
+                'user_id'    => $booking->user_id,
                 'pdf_link'   => $pdfLink,
             ]);
         } else {

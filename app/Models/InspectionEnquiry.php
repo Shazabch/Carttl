@@ -41,4 +41,8 @@ class InspectionEnquiry extends Model
     {
         return $this->belongsTo(User::class, 'inspector_id');
     }
+      public function creator()
+    {
+        return $this->belongsTo(User::class, 'created_by');
+    }
 }

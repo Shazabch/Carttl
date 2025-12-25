@@ -69,6 +69,7 @@ class UserManagementController extends Controller
             'name'     => 'required|string|max:255',
             'email'    => 'required|email|max:255|unique:users,email',
             'role'     => 'required|string|exists:roles,name',
+            'package_id'     => 'nullable|exists:packages,id',
             'password' => 'required|string|min:8',
             'phone' => 'nullable',
             'photo'    => 'nullable|image',
@@ -87,6 +88,7 @@ class UserManagementController extends Controller
             'password'    => Hash::make($validated['password']),
             'role'        => $validated['role'],
             'phone' => $validated['phone'] ?? null,
+            'package_id' => $validated['package_id'] ?? null,
             'is_approved' => false,
             'photo'       => $photoUrl,
         ]);
@@ -117,6 +119,7 @@ class UserManagementController extends Controller
             'password' => 'nullable|string|min:8',
             'photo'    => 'nullable|image',
             'phone' => 'nullable',
+            'package_id'     => 'nullable|exists:packages,id',
             'remove_photo' => 'nullable|boolean',
         ]);
 
@@ -149,6 +152,7 @@ class UserManagementController extends Controller
             'name'  => $validated['name'],
             'email' => $validated['email'],
             'phone' => $validated['phone'] ?? null,
+            'package_id' => $validated['package_id'] ?? null,
             'role'  => $validated['role'],
             'photo' => $photoUrl,
         ];
