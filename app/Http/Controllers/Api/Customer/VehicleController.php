@@ -302,7 +302,35 @@ class VehicleController extends Controller
         ]);
     }
 
+     public function expiredAuctions(Request $request)
+    {
+        $perPage = $request->get('per_page', 10);
+        $search  = $request->get('search', '');
 
+        $query = Vehicle::where('is_auction', false)
+            ->where('status', 'published');
+        if (!empty($search)) {
+            $query->where(function ($q) use ($search) {
+                $q->where('title', 'like', "%{$search}%")
+                    ->orWhere('vin', 'like', "%{$search}%")
+                    ->orWhereHas('brand', function ($b) use ($search) {
+                        $b->where('name', 'like', "%{$search}%");
+                    })
+                    ->orWhereHas('vehicleModel', function ($m) use ($search) {
+                        $m->where('name', 'like', "%{$search}%");
+                    });
+            });
+        }
+
+        $vehicles = $query->with(['brand:id,name', 'vehicleModel:id,name','images'])
+            ->orderBy('auction_end_date', 'desc')
+            ->paginate($perPage);
+
+        return response()->json([
+            'status' => 'success',
+            'data'   => $vehicles
+        ]);
+    }
 
     public function show($id)
     {

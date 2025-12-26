@@ -96,6 +96,31 @@ class InspectionEnquiryController extends Controller
 
 
 
+    public function enquiryCreators(Request $request)
+{
+    $search = $request->get('search');
+
+    $creators = User::whereIn('id', function ($query) {
+            $query->select('created_by')
+                ->from('inspection_enquiries')
+                ->whereNotNull('created_by')
+                ->groupBy('created_by');
+        })
+        ->when($search, function ($query) use ($search) {
+            $query->where(function ($q) use ($search) {
+                $q->where('name', 'like', "%{$search}%")
+                  ->orWhere('email', 'like', "%{$search}%")
+                  ->orWhere('phone', 'like', "%{$search}%");
+            });
+        })
+        ->orderBy('name')
+        ->get(['id', 'name', 'email']);
+
+    return response()->json([
+        'status' => 'success',
+        'data'   => $creators,
+    ]);
+}
 
 
     public function getCustomers(Request $request)

@@ -141,6 +141,7 @@ Route::prefix('admin')
             Route::get('/inspection-enquiries', 'index')->middleware('permission:appointment-list');
             Route::get('/inspection-enquiries/inspectors', 'allInspectors');
             Route::get('/inspection-enquiries/customers', 'getCustomers');
+            Route::get('/inspection-enquiries/created-by', 'enquiryCreators');
             Route::post('/inspection-enquiries/customer/create', 'createCustomer');
             Route::post('/inspection-enquiries/customer/update/{id}', 'updateCustomer');
             Route::get('/inspection-enquiries/show/{id}', 'show')->middleware('permission:appointment-view');
@@ -337,6 +338,7 @@ Route::controller(VehicleController::class)->group(function () {
 
     //Auctions
     Route::get('auctions', 'getAuctionVehicles')->name('auctions-list');
+    Route::get('auctions/listed', 'expiredAuctions')->name('auctions-expired');
     Route::get('auctions/show/{id}', 'detail');
     Route::get('inspection/show/{id}', 'showInspection');
     Route::get('featured-auctions', 'featuredAuctions')->name('featured.auctions');
