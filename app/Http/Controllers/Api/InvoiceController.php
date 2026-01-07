@@ -10,10 +10,8 @@ class InvoiceController extends Controller
 {
     public function generatePackageInvoiceByUser(Request $request)
     {
-        $request->validate([
-            'user_id' => 'required|exists:users,id',
-        ]);
-
+       $userId = auth()->id();
+       $request->merge(['user_id' => $userId]);
         try {
             $pdfUrl = PackageInvoiceService::generate($request->user_id);
 

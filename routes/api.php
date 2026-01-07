@@ -38,11 +38,12 @@ use App\Http\Controllers\Api\Customer\SellCarController;
 use App\Http\Controllers\Api\Customer\ServicesLocationController;
 use App\Http\Controllers\Api\Customer\UserDataController;
 use App\Http\Controllers\Api\PushNotificationsController;
+use App\Http\Controllers\Api\UserPreferencesController;
 
 //Auth routes
 Route::post('register', [AuthController::class, 'register']);
 Route::post('login', [AuthController::class, 'login']);
-Route::post('/generate-package-invoice', [\App\Http\Controllers\Api\InvoiceController::class, 'generatePackageInvoiceByUser']);
+Route::get('/generate-package-invoice', [\App\Http\Controllers\Api\InvoiceController::class, 'generatePackageInvoiceByUser']);
 
 Route::middleware('auth:api')->post('logout', [AuthController::class, 'logout']);
 Route::get('/inspection-field-images/{reportId}/{field}', [InspectionReportController::class, 'getFieldImages'])
@@ -50,11 +51,16 @@ Route::get('/inspection-field-images/{reportId}/{field}', [InspectionReportContr
 // push notifications
 Route::prefix('notifications')->group(function () {
     Route::controller(PushNotificationsController::class)->group(function () {
-        Route::post('/save-token', 'saveToken');            // Save device token
-        Route::post('/send', 'sendNotification');          // Send to single device
-        Route::post('/send-all', 'sendToAll');            // Send to all devices
+        Route::post('/save-token', 'saveToken');                    // Save device token
+        Route::post('/send', 'sendNotification');                   // Send to single device
+        Route::post('/send-all', 'sendToAll');                     // Send to all devices
+        Route::post('/send-by-preferences', 'sendByPreferences');   // Send based on preference criteria
+        Route::post('/send-to-preference-users', 'sendToPreferenceUsers'); // Send to specific preference IDs
     });
 });
+
+
+
 Route::get('admin/inspection-reports/damage-types', [InspectionReportController::class, 'getDamageTypes']);
 
 Route::get('/inspection-reports/show-shared/{token}', [InspectionReportController::class, 'showShared']);
@@ -388,6 +394,17 @@ Route::post('buy-car', [BuyCarController::class, 'store']);
 
 
 Route::group(['middleware' => 'auth:api'], function () {
+    // User Preferences Routes
+Route::prefix('preferences')->group(function () {
+    Route::controller(UserPreferencesController::class)->group(function () {
+        Route::get('/index', 'index');                          // List all preferences
+        Route::post('/create', 'store');                         // Create preference
+        Route::get('/show/{id}', 'show');                       // Show single preference
+        Route::post('/update/{id}', 'update');                     // Update preference
+        Route::delete('/delete/{id}', 'destroy');                 // Delete preference
+        Route::get('/notifications/active', 'getForNotifications'); // Get preferences for notifications
+    });
+});
     //Bookings
     Route::post('bookings/book-now', [BookNowController::class, 'store']);
     Route::get('get-bookings', [BookNowController::class, 'index']);

@@ -9,11 +9,12 @@ use App\Models\FuelType;
 use App\Models\Transmission;
 use App\Models\Vehicle;
 use App\Models\VehicleImage;
+use App\Models\UserPreference;
 use App\Services\ImageWatermarkService;
+use App\Services\FCMService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
-
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
@@ -390,8 +391,6 @@ class VehicleManagementController extends Controller
             $vehicle->features()->sync($features);
         }
 
-
-
         if ($request->hasFile('images')) {
             foreach ($vehicle->images as $oldImage) {
                 if ($oldImage->path) {
@@ -406,11 +405,136 @@ class VehicleManagementController extends Controller
                 $vehicle->images()->create(['path' => $fullUrl]);
             }
         }
+
+        // Send notifications to users based on their preferences
+        $this->sendNotificationsByPreferences($vehicle);
+
         return response()->json([
             'status' => 'success',
             'message' => 'Vehicle created successfully',
             'data' => $vehicle->load('brand', 'vehicleModel', 'features', 'images')
         ]);
+    }
+
+    /**
+     * Send notifications to users whose preferences match the vehicle
+     */
+    private function sendNotificationsByPreferences(Vehicle $vehicle)
+    {
+        try {
+            $fcm = app(FCMService::class);
+            $brand = $vehicle->brand;
+            $model = $vehicle->vehicleModel;
+
+            // Build vehicle criteria
+            $vehicleData = [
+                'title' => $vehicle->title,
+                'price' => $vehicle->price,
+                'mileage' => $vehicle->mileage,
+                'year' => $vehicle->year,
+                'make' => $brand ? $brand->name : null,
+                'model' => $model ? $model->name : null,
+            ];
+
+            // Find matching preferences
+            $query = UserPreference::where('is_active', true);
+
+            // Filter by price range
+            $query->where(function($q) use ($vehicle) {
+                $q->whereNull('price_from')
+                  ->orWhere('price_from', '<=', $vehicle->price);
+            })->where(function($q) use ($vehicle) {
+                $q->whereNull('price_to')
+                  ->orWhere('price_to', '>=', $vehicle->price);
+            });
+
+            // Filter by mileage range
+            if ($vehicle->mileage) {
+                $query->where(function($q) use ($vehicle) {
+                    $q->whereNull('mileage_form')
+                      ->orWhere('mileage_form', '<=', $vehicle->mileage);
+                })->where(function($q) use ($vehicle) {
+                    $q->whereNull('mileage_to')
+                      ->orWhere('mileage_to', '>=', $vehicle->mileage);
+                });
+            }
+
+            // Filter by year range
+            if ($vehicle->year) {
+                $query->where(function($q) use ($vehicle) {
+                    $q->whereNull('year_form')
+                      ->orWhere('year_form', '<=', $vehicle->year);
+                })->where(function($q) use ($vehicle) {
+                    $q->whereNull('year_to')
+                      ->orWhere('year_to', '>=', $vehicle->year);
+                });
+            }
+
+            // Filter by make
+            if ($vehicle->brand) {
+                $query->where(function($q) use ($vehicle) {
+                    $q->whereNull('make')
+                      ->orWhere('make', $vehicle->brand->name);
+                });
+            }
+
+            // Filter by model
+            if ($vehicle->vehicleModel) {
+                $query->where(function($q) use ($vehicle) {
+                    $q->whereNull('model')
+                      ->orWhere('model', $vehicle->vehicleModel->name);
+                });
+            }
+
+            // Filter by body type
+            if ($vehicle->bodyType) {
+                $query->where(function($q) use ($vehicle) {
+                    $q->whereNull('body_type')
+                      ->orWhere('body_type', $vehicle->bodyType->name);
+                });
+            }
+
+            $matchingPreferences = $query->get();
+
+            if ($matchingPreferences->isEmpty()) {
+                return;
+            }
+
+            // Get user IDs with device tokens
+            $userIds = $matchingPreferences->pluck('user_id')->filter()->unique();
+            
+            $deviceTokens = \App\Models\DeviceToken::whereIn('user_id', $userIds)
+                ->pluck('device_token', 'user_id')
+                ->toArray();
+
+            if (empty($deviceTokens)) {
+                return;
+            }
+
+            // Prepare notification
+            $title = 'New Vehicle Available';
+            $body = "{$vehicle->title} - Rs. " . number_format($vehicle->price);
+            $data = [
+                'vehicle_id' => $vehicle->id,
+                'price' => $vehicle->price,
+                'mileage' => $vehicle->mileage,
+                'make' => $vehicle->brand ? $vehicle->brand->name : '',
+                'model' => $vehicle->vehicleModel ? $vehicle->vehicleModel->name : '',
+                'year' => $vehicle->year
+            ];
+
+            // Send notifications
+            foreach ($deviceTokens as $token) {
+                try {
+                    $fcm->sendNotification($token, $title, $body, $data);
+                } catch (\Throwable $e) {
+                    \Illuminate\Support\Facades\Log::error("Failed to send FCM notification: " . $e->getMessage());
+                }
+            }
+
+        } catch (\Throwable $e) {
+            \Illuminate\Support\Facades\Log::error("Error sending preference-based notifications: " . $e->getMessage());
+        }
     }
 
 
