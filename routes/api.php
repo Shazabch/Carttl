@@ -192,6 +192,7 @@ Route::prefix('admin')
             Route::post('/invoices/create', 'generate');
             Route::get('/all-customers', 'allCustomers');
             Route::get('/all-bookings', 'allBookings');
+            Route::post('/invoices/mark-paid', 'markAsPaid');
            
         });
 
@@ -439,6 +440,7 @@ Route::prefix('preferences')->group(function () {
      Route::controller(CustomerInvoicesController::class)->group(function () {
         Route::get('/invoices', 'index');
         Route::get('/invoices/show/{id}', 'show');
+        Route::post('/invoices/upload-payment-slip', 'uploadPayment');
        
     });
 });

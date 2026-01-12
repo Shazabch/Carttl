@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Models\Invoice;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class CustomerInvoicesController extends Controller
 {
@@ -73,5 +75,55 @@ class CustomerInvoicesController extends Controller
         'data'   => $invoice
     ]);
 }
+
+
+    /**
+     * Upload payment slip for a package/booking invoice
+     *
+     * Expected inputs: invoice_id (int), payment_slip (file)
+     */
+    public function uploadPayment(Request $request)
+    {
+       
+        $user = Auth::guard('api')->user();
+
+        if (! $user) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Unauthenticated'
+            ], 401);
+        }
+
+        $request->validate([
+            'invoice_id' => 'required|integer|exists:invoices,id',
+            'payment_slip' => 'required',
+        ]);
+
+        $invoice = Invoice::where('id', $request->invoice_id)
+            ->where('user_id', $user->id)
+            ->first();
+
+        if (! $invoice) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Invoice not found'
+            ], 404);
+        }
+
+        $file = $request->file('payment_slip');
+        $filename = Str::random(12) . '_' . time() . '.' . $file->getClientOriginalExtension();
+    $path = $file->storeAs('public/payments', $filename);
+
+    // create a full URL to the stored file (e.g. https://example.com/storage/payments/xxx)
+    $publicPath = Storage::url($path); // usually '/storage/payments/filename'
+    $invoice->payment_slip = asset($publicPath);
+        $invoice->save();
+
+        return response()->json([
+            'status' => true,
+            'message' => 'Payment slip uploaded',
+            'data' => $invoice
+        ]);
+    }
 
 }

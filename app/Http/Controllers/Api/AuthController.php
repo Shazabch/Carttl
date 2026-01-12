@@ -32,6 +32,7 @@ class AuthController extends Controller
             'email'      => $request->email,
             'package_id' => $request->package_id,
             'password'   => Hash::make($request->password),
+            'status'     => 'pending',
         ]);
 
         // Generate package invoice PDF

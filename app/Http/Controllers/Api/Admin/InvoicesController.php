@@ -262,4 +262,44 @@ class InvoicesController extends Controller
             'pdf_url' => $pdfLink,
         ]);
     }
+
+
+    /**
+     * Mark an invoice as paid (admin)
+     *
+     * Request: invoice_id (int)
+     */
+    public function markAsPaid(Request $request)
+    {
+        $request->validate([
+            'invoice_id' => 'required|integer|exists:invoices,id',
+        ]);
+
+        $invoice = Invoice::find($request->invoice_id);
+
+        if (! $invoice) {
+            return response()->json([
+                'status'  => false,
+                'message' => 'Invoice not found',
+            ], 404);
+        }
+
+        $invoice->status = 'paid';
+        $invoice->save();
+
+        // If this is a package invoice, approve the user associated with it
+        if ($invoice->type === 'package' && $invoice->user_id) {
+            $user = User::find($invoice->user_id);
+            if ($user) {
+                $user->status = 'approved';
+                $user->save();
+            }
+        }
+
+        return response()->json([
+            'status'  => true,
+            'message' => 'Invoice marked as paid',
+            'data'    => $invoice,
+        ]);
+    }
 }
