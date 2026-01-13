@@ -7,6 +7,7 @@ use App\Models\Booking;
 use App\Models\ContactSubmission;
 use App\Models\InspectionEnquiry;
 use App\Models\Payment;
+use App\Models\User;
 use App\Models\VehicleBid;
 use App\Models\VehicleEnquiry;
 use App\Models\VehicleInspectionReport;
@@ -23,10 +24,11 @@ class UserDataController extends Controller
         if (!$user) {
             return response()->json(['status' => 'error', 'message' => 'Unauthenticated user.'], 401);
         }
+        $loggedInUser = User::with('package','dre')->find($user->id);
 
         return response()->json([
             'status' => 'success',
-            'data' => $user
+            'data' => $loggedInUser
         ]);
     }
 

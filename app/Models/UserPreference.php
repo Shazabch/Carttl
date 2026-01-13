@@ -10,6 +10,7 @@ class UserPreference extends Model
 
     protected $casts = [
         'additional_filters' => 'array',
+        'specs' => 'array',
         'is_active' => 'boolean',
         'price' => 'decimal:2'
     ];

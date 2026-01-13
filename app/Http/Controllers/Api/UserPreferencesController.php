@@ -50,7 +50,9 @@ class UserPreferencesController extends Controller
                 'model' => 'nullable|string',
                 'year_form' => 'nullable|string',
                 'year_to' => 'nullable|string',
-                'specs' => 'nullable|string',
+                // Accept either an array of specs or a JSON-serializable value
+                'specs' => 'nullable|array',
+                'specs.*' => 'string',
                 'location' => 'nullable|string',
                 'additional_filters' => 'nullable|array',
                 'is_active' => 'nullable|boolean'
@@ -123,7 +125,8 @@ class UserPreferencesController extends Controller
                 'model' => 'nullable|string',
                 'year_form' => 'nullable|string',
                 'year_to' => 'nullable|string',
-                'specs' => 'nullable|string',
+                'specs' => 'nullable|array',
+                'specs.*' => 'string',
                 'location' => 'nullable|string',
                 'additional_filters' => 'nullable|array',
                 'is_active' => 'nullable|boolean'
