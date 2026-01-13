@@ -111,12 +111,20 @@ class CustomerInvoicesController extends Controller
         }
 
         $file = $request->file('payment_slip');
-        $filename = Str::random(12) . '_' . time() . '.' . $file->getClientOriginalExtension();
-    $path = $file->storeAs('public/payments', $filename);
 
-    // create a full URL to the stored file (e.g. https://example.com/storage/payments/xxx)
-    $publicPath = Storage::url($path); // usually '/storage/payments/filename'
-    $invoice->payment_slip = asset($publicPath);
+        // Ensure invoices directory exists on the public disk
+        if (! Storage::disk('public')->exists('invoices')) {
+            Storage::disk('public')->makeDirectory('invoices');
+        }
+
+        // Filename like: payment_slip_invoice_123_20260113_123000.jpg
+        $fileName = 'payment_slip_invoice_' . $invoice->id . '_' . now()->format('Ymd_His') . '.' . $file->getClientOriginalExtension();
+
+        // Store under public/invoices
+        $storedPath = Storage::disk('public')->putFileAs('invoices', $file, $fileName);
+
+        // Build full public URL using the same approach as invoice PDFs
+        $invoice->payment_slip = asset('storage/' . $storedPath);
         $invoice->save();
 
         return response()->json([
