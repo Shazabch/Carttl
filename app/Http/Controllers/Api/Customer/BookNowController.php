@@ -144,6 +144,7 @@ class BookNowController extends Controller
             $booking = Booking::create([
                 'vehicle_id'         => $vehicle->id,
                 'user_id'            => Auth::id(),
+                'is_auction'         => $vehicle->is_auction == 1 ? 1 : 0,
                 'delivery_type'      => $validated['delivery_type'],
                 'delivery_charges'   => $validated['delivery_charges'] ?? null,
                 'address'            => $validated['address'] ?? null,
@@ -280,6 +281,7 @@ class BookNowController extends Controller
             // Update booking
             $booking->update([
                 'vehicle_id'         => $vehicle->id,
+                'is_auction'         => $vehicle->is_auction == 1 ? 1 : 0,
                 'delivery_type'      => $validated['delivery_type'] ?? $booking->delivery_type,
                 'delivery_charges'   => $validated['delivery_charges'] ?? $booking->delivery_charges,
                 'address'            => $validated['address'] ?? $booking->address,

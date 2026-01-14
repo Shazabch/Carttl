@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\Customer;
 
 use App\Http\Controllers\Controller;
+use App\Models\BodyType;
 use App\Models\Brand;
 use App\Models\Feature;
 use App\Models\User;
@@ -15,6 +16,16 @@ class VehicleController extends Controller
 {
 
     //Makes
+
+     public function getBodyTypes()
+    {
+        $bodyTypes = BodyType::all();
+
+        return response()->json([
+            'status' => 'success',
+            'data' => $bodyTypes,
+        ]);
+    }
     public function getAllMakes(Request $request)
     {
         $search = $request->get('search');

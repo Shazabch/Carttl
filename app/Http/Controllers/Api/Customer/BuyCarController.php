@@ -24,6 +24,7 @@ class BuyCarController extends Controller
             'phone' => 'required|min:13|max:13',
             'email' => 'required|email',
             'address' => 'nullable|string',
+            'notes' => 'nullable|string|max:10000',
         ]);
 
         $user = auth('api')->user();
@@ -54,6 +55,7 @@ class BuyCarController extends Controller
             'phone'      => $request->phone,
             'email'      => $request->email,
             'address'    => $request->address,
+            'notes'      => $request->notes,
             'user_id'    => $user?->id,
             'type'       => 'purchase',
             'vehicle_id' => $request->vehicle_id,

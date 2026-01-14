@@ -342,6 +342,7 @@ Route::controller(VehicleController::class)->group(function () {
     Route::get('vehicles', 'getBuyVehicles')->name('vehicles');
     Route::get('sold-vehicles', 'getSoldVehicles')->name('sold.vehicles');
     Route::get('/vehicle/{id}', 'detail');
+    Route::get('/body-types', 'getBodyTypes');
 
     //Auctions
     Route::get('auctions', 'getAuctionVehicles')->name('auctions-list');
