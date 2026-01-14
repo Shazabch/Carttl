@@ -95,19 +95,25 @@ class BookNowController extends Controller
         try {
             $vehicle = Vehicle::findOrFail($validated['vehicle_id']);
 
-            $approvedBid = VehicleBid::where('vehicle_id', $vehicle->id)
-                ->where('status', 'accepted')
-                ->orderBy('bid_amount', 'desc')
-                ->first();
+            // Check if vehicle is auction
+            if ($vehicle->is_auction == 1) {
+                $approvedBid = VehicleBid::where('vehicle_id', $vehicle->id)
+                    ->where('status', 'accepted')
+                    ->orderBy('bid_amount', 'desc')
+                    ->first();
 
-            if (!$approvedBid) {
-                return response()->json([
-                    'success' => false,
-                    'message' => 'No approved bid found for this vehicle.',
-                ], 400);
+                if (!$approvedBid) {
+                    return response()->json([
+                        'success' => false,
+                        'message' => 'No approved bid found for this vehicle.',
+                    ], 400);
+                }
+
+                $vehiclePrice = $approvedBid->bid_amount;
+            } else {
+                // For non-auction vehicles, use the vehicle price
+                $vehiclePrice = $vehicle->price;
             }
-
-            $vehiclePrice = $approvedBid->bid_amount;
 
             $services  = $validated['services'] ?? [];
             $fixedFees = $validated['fixed_fees'] ?? [];
