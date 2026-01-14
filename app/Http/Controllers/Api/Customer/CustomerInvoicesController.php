@@ -26,7 +26,8 @@ class CustomerInvoicesController extends Controller
 
     $query = Invoice::where('user_id', $user->id)
         ->with([
-            'booking.vehicle',
+            'booking.vehicle.brand',
+            'booking.vehicle.vehicleModel',
             'user.package'
         ]);
 

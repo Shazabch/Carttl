@@ -50,7 +50,7 @@ class BookNowController extends Controller
         }
 
         // Include vehicle info
-        $query->with(['vehicle', 'vehicle.images']);
+        $query->with(['vehicle', 'vehicle.images', 'vehicle.brand:id,name', 'vehicle.vehicleModel:id,name']);
 
 
         // Apply sorting
