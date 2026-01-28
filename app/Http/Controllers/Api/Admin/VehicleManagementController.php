@@ -309,6 +309,7 @@ class VehicleManagementController extends Controller
             'features',
             'latestBid',
             'bids',
+            'bids.user:id,name,email',
             'coverImage:id,vehicle_id,path',
             'vehicleModel',
             'fuelType',

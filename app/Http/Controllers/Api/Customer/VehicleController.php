@@ -249,8 +249,7 @@ class VehicleController extends Controller
                 'tags' => $tags,
                 'exterior_features' => $exteriorFeatures,
                 'interior_features' => $interiorFeatures,
-                'all_exterior_features' => $allExterior,
-                'all_interior_features' => $allInterior,
+                
 
                 // ADD inspections in the detail API response
                 'inspections' => $vehicle->inspections,

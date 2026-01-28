@@ -19,11 +19,18 @@ class AgentManagementController extends Controller
     {
         $perPage = $request->get('per_page', 10);
         $search  = $request->get('search', '');
+        $user = auth('api')->user();
 
         $query = User::whereHas('roles', function ($q) {
             $q->where('name', 'agent');
-        })
-            ->when($search, function ($q) use ($search) {
+        });
+
+        // If logged-in user is an agent, only show their own entry
+        if ($user && $user->hasRole('agent')) {
+            $query->where('id', $user->id);
+        }
+
+        $query->when($search, function ($q) use ($search) {
                 $q->where(function ($inner) use ($search) {
                     $inner->where('name', 'like', "%{$search}%")
                         ->orWhere('email', 'like', "%{$search}%")
@@ -110,6 +117,13 @@ class AgentManagementController extends Controller
 
     public function show($id)
     {
+        $user = auth('api')->user();
+
+        // If logged-in user is an agent, override the ID to show only their own profile
+        if ($user && $user->hasRole('agent')) {
+            $id = $user->id;
+        }
+
         $agent = User::where('role', 'agent')
             ->with(['Customers']) // load customers first
             ->find($id);
@@ -217,6 +231,16 @@ class AgentManagementController extends Controller
 
     public function assignCustomers(Request $request, $agentId)
     {
+        $user = auth('api')->user();
+
+        // If logged-in user is an agent, they cannot assign customers
+        if ($user && $user->hasRole('agent')) {
+            return response()->json([
+                'status'  => 'error',
+                'message' => 'Unauthorized. Agents cannot assign customers.',
+            ], 403);
+        }
+
         $request->validate([
             'customer_ids'   => 'nullable',
             'customer_ids.*' => 'nullable|exists:users,id',
@@ -261,6 +285,14 @@ class AgentManagementController extends Controller
                 'status'  => 'error',
                 'message' => 'Unauthorized access.',
             ], 401);
+        }
+
+        // If logged-in user is an agent, only allow viewing their own customers
+        if ($user->hasRole('agent') && $user->id !== (int)$agentId) {
+            return response()->json([
+                'status'  => 'error',
+                'message' => 'Unauthorized access. You can only view your own customers.',
+            ], 403);
         }
 
         $agent = User::where('role', 'agent')->find($agentId);

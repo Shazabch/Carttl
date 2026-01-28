@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Api\Customer;
 
 use App\Http\Controllers\Controller;
 use App\Models\Invoice;
+use App\Models\User;
+use App\Notifications\PaymentSlipUploadedNotification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -128,11 +130,44 @@ class CustomerInvoicesController extends Controller
         $invoice->payment_slip = asset('storage/' . $storedPath);
         $invoice->save();
 
+        // Send notifications to admins, super admins, and assigned agent
+        $this->sendPaymentSlipNotifications($user, $invoice);
+
         return response()->json([
             'status' => true,
             'message' => 'Payment slip uploaded',
             'data' => $invoice
         ]);
+    }
+
+    /**
+     * Send notifications to admins, super admins, and assigned agent
+     */
+    private function sendPaymentSlipNotifications($user, $invoice)
+    {
+        $notificationRecipients = [];
+
+        // Get all users with admin or super-admin roles using whereHas
+        $admins = User::whereHas('roles', function ($query) {
+            $query->whereIn('name', ['admin', 'super-admin']);
+        })->get();
+
+        foreach ($admins as $admin) {
+            $notificationRecipients[] = $admin;
+        }
+
+        // Get assigned agent if user has agent_id
+        if ($user->agent_id !== null) {
+            $agent = User::find($user->agent_id);
+            if ($agent && !in_array($agent->id, collect($notificationRecipients)->pluck('id')->toArray())) {
+                $notificationRecipients[] = $agent;
+            }
+        }
+
+        // Send notification to all recipients
+        foreach ($notificationRecipients as $recipient) {
+            $recipient->notify(new PaymentSlipUploadedNotification($invoice, $user));
+        }
     }
 
 }

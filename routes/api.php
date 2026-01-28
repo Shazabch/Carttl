@@ -265,8 +265,7 @@ Route::prefix('admin')
 
         // Agents
         Route::controller(AgentManagementController::class)->group(function () {
-            Route::get('/agents', 'index')
-                ->middleware('permission:dre-list');
+            Route::get('/agents', 'index');
             Route::post('/agents/create', 'store')
                 ->middleware('permission:dre-manage');
             Route::get('/agents/show/{id}', 'show')

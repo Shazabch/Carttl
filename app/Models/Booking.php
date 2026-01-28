@@ -3,9 +3,13 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Spatie\Activitylog\Traits\LogsActivity;
+use Spatie\Activitylog\LogOptions;
 
 class Booking extends Model
 {
+    use LogsActivity;
+    
     protected $guarded = [];
     protected $casts = [
     'services' => 'array',
@@ -21,5 +25,11 @@ class Booking extends Model
     return $this->belongsTo(User::class, 'user_id');
 }
 
-
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->logAll()
+            ->logOnlyDirty()
+            ->dontSubmitEmptyLogs();
+    }
 }
