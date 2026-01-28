@@ -20,7 +20,7 @@ class BookingController extends Controller
         $perPage = $request->get('per_page', 10);
         $search  = $request->get('search', '');
 
-        $vehiclesQuery = Vehicle::where('status', 'pending_payment')->where('is_auction', true)
+        $vehiclesQuery = Vehicle::where('status', 'pending_payment')
             ->when($search, function ($query, $search) {
                 $query->whereHas('brand', function ($q) use ($search) {
                     $q->where('name', 'like', "%{$search}%");
@@ -128,7 +128,7 @@ class BookingController extends Controller
         $perPage = $request->get('per_page', 10);
         $search  = $request->get('search', '');
 
-        $vehiclesQuery = Vehicle::where('status', 'intransfer')->where('is_auction', true)
+        $vehiclesQuery = Vehicle::where('status', 'intransfer')
             ->when($search, function ($query, $search) {
                 $query->whereHas('brand', function ($q) use ($search) {
                     $q->where('name', 'like', "%{$search}%");
@@ -175,7 +175,7 @@ class BookingController extends Controller
         $perPage = $request->get('per_page', 10);
         $search  = $request->get('search', '');
 
-        $vehiclesQuery = Vehicle::where('status', 'delivered')->where('is_auction', true)
+        $vehiclesQuery = Vehicle::where('status', 'delivered')
             ->when($search, function ($query, $search) {
                 $query->whereHas('brand', function ($q) use ($search) {
                     $q->where('name', 'like', "%{$search}%");
