@@ -29,10 +29,21 @@ class InspectionReportController extends Controller
     
 public function index(Request $request)
 {
+    $user = auth('api')->user();
+    
     $query = VehicleInspectionReport::with([
         'brand:id,name',
         'vehicleModel:id,name',
     ]);
+
+    // If logged-in user is an agent, filter to show only inspection reports for vehicles with bids from their customers
+    if ($user && $user->hasRole('agent')) {
+        $query->whereHas('vehicle.bids', function ($q) use ($user) {
+            $q->whereHas('user', function ($inner) use ($user) {
+                $inner->where('agent_id', $user->id);
+            });
+        });
+    }
 
     // --- Filters ---
 

@@ -15,74 +15,6 @@ class DashboardController extends Controller
 {
     public function index(): JsonResponse
     {
-
-        $appointmentCount      = InspectionEnquiry::count();
-        $auctionCount         = Vehicle::where('is_auction', true)->where('status', 'published')->count();
-        $purchaseEnquiryCount = VehicleEnquiry::where('type', 'purchase')->count();
-        $sellEnquiryCount     = VehicleEnquiry::where('type', 'sale')->count();
-        $now = now();
-
-
-        $upcomingCount = Vehicle::where('status', 'published')
-            ->where('is_auction', true)
-            ->where('auction_start_date', '>', $now) // auction not started yet
-            ->count();
-
-        $liveCount = Vehicle::where('status', 'published')
-            ->where('is_auction', true)
-            ->where('auction_start_date', '<=', $now)
-            ->where('auction_end_date', '>=', $now) // currently ongoing
-            ->count();
-
-        $expiredCount = Vehicle::where('status', 'published')
-            ->where('is_auction', true)
-            ->where('auction_end_date', '<', $now) // already ended
-            ->count();
-
-        $listedThisMonthCount = Vehicle::where('status', 'published')
-            ->where('is_auction', true)
-            ->whereMonth('auction_end_date', $now->month)
-            ->whereYear('auction_end_date', $now->year)
-            ->where('auction_end_date', '<', $now) // ensure expired
-            ->count();
-
-        $paymentProcessing = Vehicle::where('status', 'pending_payment')
-            ->where('is_auction', true)
-            ->with(['brand:id,name', 'vehicleModel:id,name'])
-            ->latest()
-            ->take(3)
-            ->get();
-
-        $intransfer = Vehicle::where('status', 'intransfer')
-            ->where('is_auction', true)
-            ->with(['brand:id,name', 'vehicleModel:id,name'])
-            ->latest()
-            ->take(3)
-            ->get();
-
-        $deliveredCount = Vehicle::where('status', 'delivered')
-            ->where('is_auction', true)
-            ->whereBetween('updated_at', [now()->startOfWeek(Carbon::SUNDAY), now()])
-            ->count();
-        $latestDelivered = Vehicle::where('status', 'delivered')
-            ->where('is_auction', true)
-            ->whereBetween('updated_at', [now()->startOfWeek(Carbon::SUNDAY), now()])
-            ->with(['brand:id,name', 'vehicleModel:id,name']) // optional
-            ->orderBy('updated_at', 'desc')
-            ->take(3)
-            ->get();
-
-
-
-
-
-        $nextAuction = Vehicle::where('is_auction', true)
-            ->where('status', 'published')
-            ->where('auction_start_date', '>', now())
-            ->orderBy('auction_start_date', 'asc')
-            ->select('id', 'title', 'auction_start_date', 'auction_end_date')
-            ->first();
-
         $user = auth('api')->user();
         if (!$user) {
             return response()->json([
@@ -90,6 +22,178 @@ class DashboardController extends Controller
                 'message' => 'Unauthorized access',
             ], 401);
         }
+
+        // Check if user is an agent
+        $isAgent = $user->hasRole('agent');
+
+        // Appointment count - filter by agent's customers
+        $appointmentCount = InspectionEnquiry::query()
+            ->when($isAgent, fn($q) => 
+                $q->whereHas('user', fn($inner) => 
+                    $inner->where('agent_id', $user->id)
+                )
+            )
+            ->count();
+
+        // Auction count - filter by vehicles with bids from agent's customers
+        $auctionCount = Vehicle::where('is_auction', true)
+            ->where('status', 'published')
+            ->when($isAgent, fn($q) => 
+                $q->whereHas('bids', fn($b) => 
+                    $b->whereHas('user', fn($u) => 
+                        $u->where('agent_id', $user->id)
+                    )
+                )
+            )
+            ->count();
+
+        // Purchase enquiry count - filter by agent's customers
+        $purchaseEnquiryCount = VehicleEnquiry::where('type', 'purchase')
+            ->when($isAgent, fn($q) => 
+                $q->whereHas('user', fn($inner) => 
+                    $inner->where('agent_id', $user->id)
+                )
+            )
+            ->count();
+
+        // Sell enquiry count - filter by agent's customers
+        $sellEnquiryCount = VehicleEnquiry::where('type', 'sale')
+            ->when($isAgent, fn($q) => 
+                $q->whereHas('user', fn($inner) => 
+                    $inner->where('agent_id', $user->id)
+                )
+            )
+            ->count();
+
+        $now = now();
+
+        // Upcoming auctions - filter by vehicles with bids from agent's customers
+        $upcomingCount = Vehicle::where('status', 'published')
+            ->where('is_auction', true)
+            ->where('auction_start_date', '>', $now)
+            ->when($isAgent, fn($q) => 
+                $q->whereHas('bids', fn($b) => 
+                    $b->whereHas('user', fn($u) => 
+                        $u->where('agent_id', $user->id)
+                    )
+                )
+            )
+            ->count();
+
+        // Live auctions - filter by vehicles with bids from agent's customers
+        $liveCount = Vehicle::where('status', 'published')
+            ->where('is_auction', true)
+            ->where('auction_start_date', '<=', $now)
+            ->where('auction_end_date', '>=', $now)
+            ->when($isAgent, fn($q) => 
+                $q->whereHas('bids', fn($b) => 
+                    $b->whereHas('user', fn($u) => 
+                        $u->where('agent_id', $user->id)
+                    )
+                )
+            )
+            ->count();
+
+        // Expired auctions - filter by vehicles with bids from agent's customers
+        $expiredCount = Vehicle::where('status', 'published')
+            ->where('is_auction', true)
+            ->where('auction_end_date', '<', $now)
+            ->when($isAgent, fn($q) => 
+                $q->whereHas('bids', fn($b) => 
+                    $b->whereHas('user', fn($u) => 
+                        $u->where('agent_id', $user->id)
+                    )
+                )
+            )
+            ->count();
+
+        // Listed this month - filter by vehicles with bids from agent's customers
+        $listedThisMonthCount = Vehicle::where('status', 'published')
+            ->where('is_auction', true)
+            ->whereMonth('auction_end_date', $now->month)
+            ->whereYear('auction_end_date', $now->year)
+            ->where('auction_end_date', '<', $now)
+            ->when($isAgent, fn($q) => 
+                $q->whereHas('bids', fn($b) => 
+                    $b->whereHas('user', fn($u) => 
+                        $u->where('agent_id', $user->id)
+                    )
+                )
+            )
+            ->count();
+
+        // Payment processing - filter by vehicles with bids from agent's customers
+        $paymentProcessing = Vehicle::where('status', 'pending_payment')
+            ->where('is_auction', true)
+            ->when($isAgent, fn($q) => 
+                $q->whereHas('bids', fn($b) => 
+                    $b->whereHas('user', fn($u) => 
+                        $u->where('agent_id', $user->id)
+                    )
+                )
+            )
+            ->with(['brand:id,name', 'vehicleModel:id,name'])
+            ->latest()
+            ->take(3)
+            ->get();
+
+        // In transfer - filter by vehicles with bids from agent's customers
+        $intransfer = Vehicle::where('status', 'intransfer')
+            ->where('is_auction', true)
+            ->when($isAgent, fn($q) => 
+                $q->whereHas('bids', fn($b) => 
+                    $b->whereHas('user', fn($u) => 
+                        $u->where('agent_id', $user->id)
+                    )
+                )
+            )
+            ->with(['brand:id,name', 'vehicleModel:id,name'])
+            ->latest()
+            ->take(3)
+            ->get();
+
+        // Delivered this week - filter by vehicles with bids from agent's customers
+        $deliveredCount = Vehicle::where('status', 'delivered')
+            ->where('is_auction', true)
+            ->whereBetween('updated_at', [now()->startOfWeek(Carbon::SUNDAY), now()])
+            ->when($isAgent, fn($q) => 
+                $q->whereHas('bids', fn($b) => 
+                    $b->whereHas('user', fn($u) => 
+                        $u->where('agent_id', $user->id)
+                    )
+                )
+            )
+            ->count();
+
+        $latestDelivered = Vehicle::where('status', 'delivered')
+            ->where('is_auction', true)
+            ->whereBetween('updated_at', [now()->startOfWeek(Carbon::SUNDAY), now()])
+            ->when($isAgent, fn($q) => 
+                $q->whereHas('bids', fn($b) => 
+                    $b->whereHas('user', fn($u) => 
+                        $u->where('agent_id', $user->id)
+                    )
+                )
+            )
+            ->with(['brand:id,name', 'vehicleModel:id,name'])
+            ->orderBy('updated_at', 'desc')
+            ->take(3)
+            ->get();
+
+        // Next auction - filter by vehicles with bids from agent's customers
+        $nextAuction = Vehicle::where('is_auction', true)
+            ->where('status', 'published')
+            ->where('auction_start_date', '>', now())
+            ->when($isAgent, fn($q) => 
+                $q->whereHas('bids', fn($b) => 
+                    $b->whereHas('user', fn($u) => 
+                        $u->where('agent_id', $user->id)
+                    )
+                )
+            )
+            ->orderBy('auction_start_date', 'asc')
+            ->select('id', 'title', 'auction_start_date', 'auction_end_date')
+            ->first();
         $profile = [
             'id' => $user->id,
             'name' => $user->name,
@@ -97,6 +201,8 @@ class DashboardController extends Controller
             'role' => $user->role ?? 'Admin',
             'created_at' => $user->created_at,
         ];
+
+        // Top bids - filter by bids from agent's customers
         $topBids = VehicleBid::with([
             'vehicle' => function ($query) {
                 $query->select('id', 'title', 'brand_id', 'vehicle_model_id', 'year', 'status', 'price')
@@ -106,12 +212,16 @@ class DashboardController extends Controller
                     ]);
             }
         ])
+            ->when($isAgent, fn($q) => 
+                $q->whereHas('user', fn($inner) => 
+                    $inner->where('agent_id', $user->id)
+                )
+            )
             ->orderByDesc('bid_amount')
             ->take(3)
             ->get(['id', 'vehicle_id', 'bid_amount', 'created_at']);
 
-
-
+        // Live bids - filter by bids from agent's customers
         $liveBids = VehicleBid::with([
             'vehicle' => function ($query) {
                 $query->select('id', 'title', 'brand_id', 'vehicle_model_id', 'year', 'status', 'price')
@@ -121,19 +231,36 @@ class DashboardController extends Controller
                     ]);
             }
         ])
+            ->when($isAgent, fn($q) => 
+                $q->whereHas('user', fn($inner) => 
+                    $inner->where('agent_id', $user->id)
+                )
+            )
             ->orderByDesc('bid_amount')
             ->take(3)
             ->get(['id', 'vehicle_id', 'bid_amount','status', 'created_at']);
+
+        // Recent listings - filter by vehicles with bids from agent's customers
         $recentListings = Vehicle::with([
             'brand:id,name',
             'vehicleModel:id,name'
         ])
             ->where('status', 'published')
             ->where('is_auction', true)
+            ->when($isAgent, fn($q) => 
+                $q->whereHas('bids', fn($b) => 
+                    $b->whereHas('user', fn($u) => 
+                        $u->where('agent_id', $user->id)
+                    )
+                )
+            )
             ->orderByDesc('created_at')
             ->take(3)
             ->get(['id', 'title', 'brand_id', 'vehicle_model_id', 'year', 'price', 'status', 'created_at']);
+
+        // Latest agents - only show for non-agents
         $latestAgents = User::where('role', 'agent')
+            ->when($isAgent, fn($q) => $q->where('id', $user->id))
             ->orderByDesc('created_at')
             ->take(5)
             ->get();

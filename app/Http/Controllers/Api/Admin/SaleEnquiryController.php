@@ -11,12 +11,19 @@ class SaleEnquiryController extends Controller
 {
     public function index(Request $request)
     {
+        $user = auth('api')->user();
         $search = $request->get('search', '');
         $perPage = $request->get('per_page', 10);
 
         $enquiries = VehicleEnquiry::query()
             ->where('type', 'sale')
             ->with(['brand:id,name', 'vehicleModel:id,name', 'imageSet'])
+            // Agent role restriction - show enquiries from their assigned customers
+            ->when($user && $user->hasRole('agent'), fn($query) =>
+                $query->whereHas('user', fn($q) =>
+                    $q->where('agent_id', $user->id)
+                )
+            )
             ->when($search, function ($query) use ($search) {
                 $query->where('name', 'like', "%{$search}%")
                     ->orWhere('number', 'like', "%{$search}%")

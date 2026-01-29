@@ -18,7 +18,10 @@ class VehicleEnquiry extends Model
         return $this->hasOne(SaleEnquiryImage::class, 'sale_enquiry_id');
     }
 
-
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
+    }
  
     public function brand(): BelongsTo
     {

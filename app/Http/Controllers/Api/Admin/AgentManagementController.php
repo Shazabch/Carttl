@@ -124,7 +124,9 @@ class AgentManagementController extends Controller
             $id = $user->id;
         }
 
-        $agent = User::where('role', 'agent')
+        $agent = User::wherehas('roles', function ($q) {
+                $q->where('name', 'agent');
+            })
             ->with(['Customers']) // load customers first
             ->find($id);
 

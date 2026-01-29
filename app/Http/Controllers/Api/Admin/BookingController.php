@@ -19,16 +19,27 @@ class BookingController extends Controller
     {
         $perPage = $request->get('per_page', 10);
         $search  = $request->get('search', '');
+        $user = auth('api')->user();
 
-        $vehiclesQuery = Vehicle::where('status', 'pending_payment')
-            ->when($search, function ($query, $search) {
-                $query->whereHas('brand', function ($q) use ($search) {
-                    $q->where('name', 'like', "%{$search}%");
-                })
-                    ->orWhereHas('vehicleModel', function ($q) use ($search) {
-                        $q->where('name', 'like', "%{$search}%");
-                    });
+        $vehiclesQuery = Vehicle::where('status', 'pending_payment');
+        
+        // If logged-in user is an agent, filter to show only vehicles with bookings from their customers
+        if ($user && $user->hasRole('agent')) {
+            $vehiclesQuery->whereHas('bookings', function ($q) use ($user) {
+                $q->whereHas('user', function ($inner) use ($user) {
+                    $inner->where('agent_id', $user->id);
+                });
             });
+        }
+        
+        $vehiclesQuery->when($search, function ($query, $search) {
+            $query->whereHas('brand', function ($q) use ($search) {
+                $q->where('name', 'like', "%{$search}%");
+            })
+                ->orWhereHas('vehicleModel', function ($q) use ($search) {
+                    $q->where('name', 'like', "%{$search}%");
+                });
+        });
 
         $vehicles = $vehiclesQuery->with(['brand:id,name', 'vehicleModel:id,name'])
             ->paginate($perPage)
@@ -65,16 +76,27 @@ class BookingController extends Controller
     {
         $perPage = $request->get('per_page', 10);
         $search  = $request->get('search', '');
+        $user = auth('api')->user();
 
-        $vehiclesQuery = Vehicle::where('status', 'bid_approved')->where('is_auction', true)
-            ->when($search, function ($query, $search) {
-                $query->whereHas('brand', function ($q) use ($search) {
-                    $q->where('name', 'like', "%{$search}%");
-                })
-                    ->orWhereHas('vehicleModel', function ($q) use ($search) {
-                        $q->where('name', 'like', "%{$search}%");
-                    });
+        $vehiclesQuery = Vehicle::where('status', 'bid_approved')->where('is_auction', true);
+        
+        // If logged-in user is an agent, filter to show only vehicles with bookings from their customers
+        if ($user && $user->hasRole('agent')) {
+            $vehiclesQuery->whereHas('bookings', function ($q) use ($user) {
+                $q->whereHas('user', function ($inner) use ($user) {
+                    $inner->where('agent_id', $user->id);
+                });
             });
+        }
+        
+        $vehiclesQuery->when($search, function ($query, $search) {
+            $query->whereHas('brand', function ($q) use ($search) {
+                $q->where('name', 'like', "%{$search}%");
+            })
+                ->orWhereHas('vehicleModel', function ($q) use ($search) {
+                    $q->where('name', 'like', "%{$search}%");
+                });
+        });
 
         $vehicles = $vehiclesQuery
             ->with([
@@ -127,16 +149,27 @@ class BookingController extends Controller
     {
         $perPage = $request->get('per_page', 10);
         $search  = $request->get('search', '');
+        $user = auth('api')->user();
 
-        $vehiclesQuery = Vehicle::where('status', 'intransfer')
-            ->when($search, function ($query, $search) {
-                $query->whereHas('brand', function ($q) use ($search) {
-                    $q->where('name', 'like', "%{$search}%");
-                })
-                    ->orWhereHas('vehicleModel', function ($q) use ($search) {
-                        $q->where('name', 'like', "%{$search}%");
-                    });
+        $vehiclesQuery = Vehicle::where('status', 'intransfer');
+        
+        // If logged-in user is an agent, filter to show only vehicles with bookings from their customers
+        if ($user && $user->hasRole('agent')) {
+            $vehiclesQuery->whereHas('bookings', function ($q) use ($user) {
+                $q->whereHas('user', function ($inner) use ($user) {
+                    $inner->where('agent_id', $user->id);
+                });
             });
+        }
+        
+        $vehiclesQuery->when($search, function ($query, $search) {
+            $query->whereHas('brand', function ($q) use ($search) {
+                $q->where('name', 'like', "%{$search}%");
+            })
+                ->orWhereHas('vehicleModel', function ($q) use ($search) {
+                    $q->where('name', 'like', "%{$search}%");
+                });
+        });
 
         $vehicles = $vehiclesQuery->with(['brand:id,name', 'vehicleModel:id,name'])
             ->paginate($perPage)
@@ -174,16 +207,27 @@ class BookingController extends Controller
     {
         $perPage = $request->get('per_page', 10);
         $search  = $request->get('search', '');
+        $user = auth('api')->user();
 
-        $vehiclesQuery = Vehicle::where('status', 'delivered')
-            ->when($search, function ($query, $search) {
-                $query->whereHas('brand', function ($q) use ($search) {
-                    $q->where('name', 'like', "%{$search}%");
-                })
-                    ->orWhereHas('vehicleModel', function ($q) use ($search) {
-                        $q->where('name', 'like', "%{$search}%");
-                    });
+        $vehiclesQuery = Vehicle::where('status', 'delivered');
+        
+        // If logged-in user is an agent, filter to show only vehicles with bookings from their customers
+        if ($user && $user->hasRole('agent')) {
+            $vehiclesQuery->whereHas('bookings', function ($q) use ($user) {
+                $q->whereHas('user', function ($inner) use ($user) {
+                    $inner->where('agent_id', $user->id);
+                });
             });
+        }
+        
+        $vehiclesQuery->when($search, function ($query, $search) {
+            $query->whereHas('brand', function ($q) use ($search) {
+                $q->where('name', 'like', "%{$search}%");
+            })
+                ->orWhereHas('vehicleModel', function ($q) use ($search) {
+                    $q->where('name', 'like', "%{$search}%");
+                });
+        });
 
         $vehicles = $vehiclesQuery->with(['brand:id,name', 'vehicleModel:id,name'])
             ->paginate($perPage)

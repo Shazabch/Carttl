@@ -14,6 +14,7 @@ class BidManagementController extends Controller
 
     public function index(Request $request)
     {
+        $user = auth('api')->user();
         $search = $request->get('search', '');
         $filterStatus = $request->get('status', 'all');
         $vehicleId = $request->get('vehicle_id', null);
@@ -22,6 +23,12 @@ class BidManagementController extends Controller
         $query = VehicleBid::with(['user:id,name,email', 'vehicle:id,title,is_auction'])
             ->orderBy('created_at', 'desc');
 
+        // Agent role restriction - show bids from their assigned customers
+        if ($user && $user->hasRole('agent')) {
+            $query->whereHas('user', fn($q) =>
+                $q->where('agent_id', $user->id)
+            );
+        }
 
         if (!empty($search)) {
             $query->where(function ($q) use ($search) {

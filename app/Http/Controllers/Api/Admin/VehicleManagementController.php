@@ -96,6 +96,7 @@ class VehicleManagementController extends Controller
         $type = $request->get('type', 'all'); // 'sold', 'listed', 'pending', 'draft', or 'all'
         $search = $request->get('search', '');
         $perPage = $request->get('per_page', 10);
+        $user = auth('api')->user();
 
         $query = Vehicle::query();
 
@@ -110,7 +111,14 @@ class VehicleManagementController extends Controller
             $query->where('status', 'draft');
         }
 
-
+        // If logged-in user is an agent, filter to show only vehicles with bids from their customers
+        if ($user && $user->hasRole('agent')) {
+            $query->whereHas('bids', function ($q) use ($user) {
+                $q->whereHas('user', function ($inner) use ($user) {
+                    $inner->where('agent_id', $user->id);
+                });
+            });
+        }
 
         if (!empty($search)) {
             $query->where(function ($q) use ($search) {
@@ -164,10 +172,19 @@ class VehicleManagementController extends Controller
     {
         $perPage = $request->get('per_page', 10);
         $search  = $request->get('search', '');
+        $user = auth('api')->user();
 
         $query = Vehicle::where('is_auction', true)
             ->where('status', 'published'); // only published
 
+        // If logged-in user is an agent, filter to show only vehicles with bids from their customers
+        if ($user && $user->hasRole('agent')) {
+            $query->whereHas('bids', function ($q) use ($user) {
+                $q->whereHas('user', function ($inner) use ($user) {
+                    $inner->where('agent_id', $user->id);
+                });
+            });
+        }
 
         if (!empty($search)) {
             $query->where(function ($q) use ($search) {
@@ -236,6 +253,7 @@ class VehicleManagementController extends Controller
     {
         $perPage = $request->get('per_page', 10);
         $search  = $request->get('search', '');
+        $user = auth('api')->user();
 
         $now = Carbon::now();
 
@@ -244,6 +262,14 @@ class VehicleManagementController extends Controller
             ->where('auction_start_date', '<=', $now)
             ->where('auction_end_date', '>=', $now);
 
+        // If logged-in user is an agent, filter to show only vehicles with bids from their customers
+        if ($user && $user->hasRole('agent')) {
+            $query->whereHas('bids', function ($q) use ($user) {
+                $q->whereHas('user', function ($inner) use ($user) {
+                    $inner->where('agent_id', $user->id);
+                });
+            });
+        }
 
         if (!empty($search)) {
             $query->where(function ($q) use ($search) {
@@ -273,9 +299,20 @@ class VehicleManagementController extends Controller
     {
         $perPage = $request->get('per_page', 10);
         $search  = $request->get('search', '');
+        $user = auth('api')->user();
 
         $query = Vehicle::where('is_auction', false)
             ->where('status', 'published');
+        
+        // If logged-in user is an agent, filter to show only vehicles with bids from their customers
+        if ($user && $user->hasRole('agent')) {
+            $query->whereHas('bids', function ($q) use ($user) {
+                $q->whereHas('user', function ($inner) use ($user) {
+                    $inner->where('agent_id', $user->id);
+                });
+            });
+        }
+        
         if (!empty($search)) {
             $query->where(function ($q) use ($search) {
                 $q->where('title', 'like', "%{$search}%")

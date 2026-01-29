@@ -19,8 +19,16 @@ class InvoicesController extends Controller
     // -----------------------------
     public function bookingIndex(Request $request)
     {
+        $user = auth('api')->user();
         $perPage = $request->input('per_page', 25);
         $query = Invoice::where('type', 'booking');
+
+        // Agent role restriction - show invoices from their assigned customers
+        if ($user && $user->hasRole('agent')) {
+            $query->whereHas('user', fn($q) =>
+                $q->where('agent_id', $user->id)
+            );
+        }
 
         // Filter by booking_id
         if ($request->filled('booking_id')) {
@@ -60,8 +68,16 @@ class InvoicesController extends Controller
     // -----------------------------
     public function packageIndex(Request $request)
     {
+        $user = auth('api')->user();
         $perPage = $request->input('per_page', 25);
         $query = Invoice::where('type', 'package');
+
+        // Agent role restriction - show invoices from their assigned customers
+        if ($user && $user->hasRole('agent')) {
+            $query->whereHas('user', fn($q) =>
+                $q->where('agent_id', $user->id)
+            );
+        }
 
         // Filter by user_id
         if ($request->filled('user_id')) {

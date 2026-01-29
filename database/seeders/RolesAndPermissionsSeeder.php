@@ -210,6 +210,97 @@ class RolesAndPermissionsSeeder extends Seeder
                 'appointment-view',
                 'appointment-manage',
             ],
+             'agent' => [
+                'dashboard-view',
+
+                // Activity Logs
+                'activity-log-list',
+                'activity-log-view',
+                'activity-log-delete',
+
+                // Roles & Permissions
+                'role-list',
+                'role-manage',
+
+                // Users
+                'user-list',
+                'user-manage',
+
+                // Contact Inquiries
+                'contact-inquiry-list',
+                'contact-inquiry-view',
+                'contact-inquiry-delete',
+
+                // Inspection Inquiries
+                'inspection-inquiry-list',
+                'inspection-inquiry-view',
+                'inspection-inquiry-delete',
+
+                // Purchase Inquiries
+                'purchase-inquiry-list',
+                'purchase-inquiry-view',
+                'purchase-inquiry-delete',
+
+                // Sale Inquiries
+                'sale-inquiry-list',
+                'sale-inquiry-view',
+                'sale-inquiry-delete',
+
+                // Bids
+                'bidding-list',
+                'bidding-actions',
+
+                // Makes
+                'make-list',
+                'make-actions',
+
+                // Auctions
+                'auction-list',
+                'auction-view',
+                'auction-create',
+                'auction-edit',
+                'auction-delete',
+
+                // Inspection Reports
+                'inspection-report-list',
+                'inspection-report-view',
+                'inspection-report-create',
+                'inspection-report-edit',
+                'inspection-report-delete',
+                'inspection-report-generate-pdf',
+                'inspection-report-share',
+                'inspection-report-download',
+
+                // Agents
+                'dre-list',
+                'dre-view',
+                'dre-manage',
+
+                // Packages
+                'package-list',
+                'package-create',
+                'package-view',
+                'package-edit',
+                'package-delete',
+
+                // Bookings
+                'booking-list',
+                'booking-view',
+                'booking-edit',
+                'booking-delete',
+
+                // Invoices
+                'invoice-list',
+                'invoice-view',
+                'invoice-create',
+                'invoice-edit',
+                'invoice-delete',
+
+                // Appointments
+                'appointment-list',
+                'appointment-view',
+                'appointment-manage',
+            ],
 
 
             'inspector' => [

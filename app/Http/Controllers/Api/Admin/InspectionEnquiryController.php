@@ -35,6 +35,13 @@ class InspectionEnquiryController extends Controller
             'creator:id,name,email'
         ])
 
+        // Agent role restriction - show enquiries from their assigned customers
+        ->when($user && $user->hasRole('agent'), fn($query) =>
+            $query->whereHas('user', fn($q) =>
+                $q->where('agent_id', $user->id)
+            )
+        )
+
         // Date filter
         ->when($dateFrom || $dateTo, function ($query) use ($dateFrom, $dateTo) {
             $query->where(function ($q) use ($dateFrom, $dateTo) {
