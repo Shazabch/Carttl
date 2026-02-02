@@ -53,7 +53,7 @@ class UserManagementController extends Controller
     public function show($id)
     {
         $user = User::with(['roles', 'bids' => function($query) {
-            $query->with('vehicle')->latest()->get();
+            $query->with(['vehicle.brand:id,name', 'vehicle.vehicleModel:id,name'])->latest();
         }])->findOrFail($id);
 
         return response()->json([
