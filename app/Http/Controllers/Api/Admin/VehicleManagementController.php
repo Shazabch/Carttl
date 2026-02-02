@@ -200,7 +200,7 @@ class VehicleManagementController extends Controller
         }
 
         $vehicles = $query->with(['brand:id,name', 'vehicleModel:id,name'])
-            ->withCount('bids')       // <-- Add this line
+            ->withCount('bids')
             ->orderBy('created_at', 'desc')
             ->paginate($perPage);
 
@@ -284,9 +284,35 @@ class VehicleManagementController extends Controller
             });
         }
 
-        $vehicles = $query->with(['brand:id,name', 'vehicleModel:id,name'])
+        $vehicles = $query->with(['brand:id,name', 'vehicleModel:id,name', 'bids' => function($q) {
+            $q->with('user:id,name,email')->latest()->limit(2);
+        }])
             ->orderBy('auction_end_date', 'asc')
             ->paginate($perPage);
+        
+        // Add latest and previous bid information to each vehicle
+        $vehicles->getCollection()->transform(function ($vehicle) {
+            $bids = $vehicle->bids->sortByDesc('created_at')->values();
+            
+            $vehicle->latest_bid = isset($bids[0]) ? [
+                'id' => $bids[0]->id,
+                'bid_amount' => $bids[0]->bid_amount,
+                'max_bid' => $bids[0]->max_bid,
+                'bidder' => $bids[0]->user,
+                'created_at' => $bids[0]->created_at,
+            ] : null;
+            
+            $vehicle->previous_bid = isset($bids[1]) ? [
+                'id' => $bids[1]->id,
+                'bid_amount' => $bids[1]->bid_amount,
+                'max_bid' => $bids[1]->max_bid,
+                'bidder' => $bids[1]->user,
+                'created_at' => $bids[1]->created_at,
+            ] : null;
+            
+            unset($vehicle->bids);
+            return $vehicle;
+        });
 
         return response()->json([
             'status' => 'success',
@@ -326,9 +352,35 @@ class VehicleManagementController extends Controller
             });
         }
 
-        $vehicles = $query->with(['brand:id,name', 'vehicleModel:id,name'])
+        $vehicles = $query->with(['brand:id,name', 'vehicleModel:id,name', 'bids' => function($q) {
+            $q->with('user:id,name,email')->latest()->limit(2);
+        }])
             ->orderBy('auction_end_date', 'desc')
             ->paginate($perPage);
+
+        // Add latest and previous bid information to each vehicle
+        $vehicles->getCollection()->transform(function ($vehicle) {
+            $bids = $vehicle->bids->sortByDesc('created_at')->values();
+            
+            $vehicle->latest_bid = isset($bids[0]) ? [
+                'id' => $bids[0]->id,
+                'bid_amount' => $bids[0]->bid_amount,
+                'max_bid' => $bids[0]->max_bid,
+                'bidder' => $bids[0]->user,
+                'created_at' => $bids[0]->created_at,
+            ] : null;
+            
+            $vehicle->previous_bid = isset($bids[1]) ? [
+                'id' => $bids[1]->id,
+                'bid_amount' => $bids[1]->bid_amount,
+                'max_bid' => $bids[1]->max_bid,
+                'bidder' => $bids[1]->user,
+                'created_at' => $bids[1]->created_at,
+            ] : null;
+            
+            unset($vehicle->bids);
+            return $vehicle;
+        });
 
         return response()->json([
             'status' => 'success',

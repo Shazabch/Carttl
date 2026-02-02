@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\Customer;
 use App\Http\Controllers\Controller;
 use App\Models\Vehicle;
 use App\Models\VehicleBid;
+use App\Services\AutoBiddingService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
@@ -54,6 +55,7 @@ class BiddingController extends Controller
         $request->validate([
             'current_bid' => 'required|numeric|min:1',
             'max_bid' => 'required|numeric|min:1',
+            'is_auto' => 'sometimes|boolean',
         ]);
 
         $vehicle = Vehicle::findOrFail($vehicleId);
@@ -83,6 +85,10 @@ class BiddingController extends Controller
                 'bid_amount' => $request->current_bid,
                 'max_bid' => $request->max_bid,
             ]);
+
+            // Trigger auto-bidding process for this vehicle
+            $autoBiddingService = app(AutoBiddingService::class);
+            $autoBiddingService->processAutoBidsForVehicle($vehicle->id);
 
             return response()->json([
                 'status' => 'success',

@@ -52,7 +52,9 @@ class UserManagementController extends Controller
 
     public function show($id)
     {
-        $user = User::with('roles')->findOrFail($id);
+        $user = User::with(['roles', 'bids' => function($query) {
+            $query->with('vehicle')->latest()->get();
+        }])->findOrFail($id);
 
         return response()->json([
             'status' => 'success',

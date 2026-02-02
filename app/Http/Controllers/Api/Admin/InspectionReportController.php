@@ -624,7 +624,7 @@ public function index(Request $request)
             'a' => ['name' => 'Scratch', 'color' => '#FFC0CB'],          // Pink
             'b' => ['name' => 'Multiple Scratches', 'color' => '#FFFF00'], // Yellow
             'c' => ['name' => 'Cosmetic Paint', 'color' => '#008000'],    // Green
-            'd' => ['name' => 'Chip', 'color' => '#00AA00'],              // unchanged
+            'd' => ['name' => 'Chip', 'color' => '#808080'],              // unchanged
             'e' => ['name' => 'Dent', 'color' => '#0000FF'],             // Blue
             'f' => ['name' => 'Repainted', 'color' => '#FF0000'],        // Red
             'g' => ['name' => 'Repaired', 'color' => '#800080'],         // Purple
@@ -832,7 +832,7 @@ public function index(Request $request)
                 'Scratch'           => ['name' => 'Scratch',       'color' => '#FFC0CB'], // Pink
                 'Multiple Scratches' => ['name' => 'Multiple Scratches', 'color' => '#FFFF00'], // Yellow
                 'Cosmetic Paint'     => ['name' => 'Cosmetic Paint', 'color' => '#00AA00'], // Green
-                'Chip'               => ['name' => 'Chip',          'color' => '#00AA00'], // unchanged (Green?)
+                'Chip'               => ['name' => 'Chip',          'color' => '#808080'], // unchanged (Green?)
                 'Dent'               => ['name' => 'Dent',          'color' => '#0000FF'], // Blue
                 'Repainted'          => ['name' => 'Repainted',     'color' => '#FF0000'], // Red
                 'Repaired'           => ['name' => 'Repaired',      'color' => '#800080'], // Purple
