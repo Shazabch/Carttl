@@ -21,7 +21,7 @@ class BidManagementController extends Controller
         $perPage = $request->get('per_page', 10);
 
         $query = VehicleBid::with(['user:id,name,email', 'vehicle:id,title,is_auction'])
-            ->orderBy('created_at', 'desc');
+            ->orderBy('id', 'desc');
 
         // Agent role restriction - show bids from their assigned customers
         if ($user && $user->hasRole('agent')) {
