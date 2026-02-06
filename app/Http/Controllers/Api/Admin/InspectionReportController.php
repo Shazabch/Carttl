@@ -11,10 +11,12 @@ use App\Models\VehicleInspectionImage;
 use App\Models\VehicleInspectionReport;
 use App\Models\InspectionField;
 use App\Models\InspectionFieldImage;
+use App\Models\User;
 use App\Notifications\VehicleInspectionConfirmation;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\URL;
@@ -203,6 +205,41 @@ public function index(Request $request)
                 'error' => 'Invalid link'
             ], 401);
         }
+    }
+
+    public function getAllCustomers()
+    {
+        $customers = User::role('customer')->select('id', 'name', 'email')->get();
+
+        return response()->json([
+            'status' => 'success',
+            'data' => $customers
+        ]);
+    }
+
+    public function addCustomer(Request $request)
+    {
+        $validated = $request->validate([
+            'name'  => 'required|string|max:255',
+            'email' => 'required|email|max:255|unique:users,email',
+            'phone' => 'nullable|string|max:50',
+        ]);
+
+        $user = User::create([
+            'name'     => $validated['name'],
+            'email'    => $validated['email'],
+            'phone'    => $validated['phone'],
+            'role'     => 'customer',
+            'password' => Hash::make('password'),
+        ]);
+
+        $user->syncRoles('customer');
+
+        return response()->json([
+            'status'  => 'success',
+            'message' => 'Customer created successfully.',
+            'data'    => $user,
+        ], 201);
     }
 
     public function generateShareableLink(Request $request)
