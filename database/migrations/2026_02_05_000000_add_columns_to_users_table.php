@@ -11,11 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('vehicle_inspection_reports', function (Blueprint $table) {
-            $table->unsignedBigInteger('user_id')->nullable()->after('id');
+        Schema::table('users', function (Blueprint $table) {
+            $table->string('warranty')->nullable();
             $table->decimal('asking_price', 13, 2)->nullable();
             $table->decimal('auction_price', 13, 2)->nullable();
             $table->text('notes')->nullable();
+            $table->json('user_documents')->nullable();
         });
     }
 
@@ -24,8 +25,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('vehicle_inspection_reports', function (Blueprint $table) {
-            $table->dropColumn(['user_id', 'asking_price', 'auction_price', 'notes']);
+        Schema::table('users', function (Blueprint $table) {
+            $table->dropColumn(['warranty', 'asking_price', 'auction_price', 'notes', 'user_documents']);
         });
-    }
+    }   
 };

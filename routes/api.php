@@ -239,6 +239,7 @@ Route::prefix('admin')
             Route::get('/inspection-reports/show/{id}', 'show')->middleware('permission:inspection-report-view');
             Route::get('/inspection-reports/get-customers', 'getAllCustomers');
             Route::post('/inspection-reports/add-customer', 'addCustomer');
+            Route::post('/inspection-reports/update-customer/{id}', 'updateCustomer');
             Route::post('/inspection-reports/shareable', 'generateShareableLink')->middleware('permission:inspection-report-share');
             Route::post('/inspection-reports/create', 'store')->middleware('permission:inspection-report-create');
             Route::post('/inspection-reports/upload-images', 'storeVehicleImages')->middleware('permission:inspection-report-create');

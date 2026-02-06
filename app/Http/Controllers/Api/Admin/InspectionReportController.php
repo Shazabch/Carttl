@@ -220,17 +220,43 @@ public function index(Request $request)
     public function addCustomer(Request $request)
     {
         $validated = $request->validate([
-            'name'  => 'required|string|max:255',
-            'email' => 'required|email|max:255|unique:users,email',
-            'phone' => 'nullable|string|max:50',
+            'name'           => 'required|string|max:255',
+            'email'          => 'required|email|max:255|unique:users,email',
+            'phone'          => 'nullable|string|max:50',
+            'warranty'       => 'nullable|string|max:255',
+            'asking_price'   => 'nullable|numeric|min:0',
+            'auction_price'  => 'nullable|numeric|min:0',
+            'notes'          => 'nullable|string',
+            'user_documents' => 'nullable|array',
+            'user_documents.*' => 'file|mimes:pdf,jpg,jpeg,png,doc,docx|max:10240',
         ]);
 
+        $documentPaths = [];
+        if ($request->hasFile('user_documents')) {
+            $dir = 'user_documents';
+            if (!Storage::disk('public')->exists($dir)) {
+                Storage::disk('public')->makeDirectory($dir);
+            }
+
+            foreach ($request->file('user_documents') as $file) {
+                $filename = 'user-doc-' . uniqid() . '-' . now()->format('Ymd_His') . '.' . $file->getClientOriginalExtension();
+                $path = $dir . '/' . $filename;
+                Storage::disk('public')->putFileAs($dir, $file, $filename);
+                $documentPaths[] = asset('storage/' . $path);
+            }
+        }
+
         $user = User::create([
-            'name'     => $validated['name'],
-            'email'    => $validated['email'],
-            'phone'    => $validated['phone'],
-            'role'     => 'customer',
-            'password' => Hash::make('password'),
+            'name'           => $validated['name'],
+            'email'          => $validated['email'],
+            'phone'          => $validated['phone'] ?? null,
+            'warranty'       => $validated['warranty'] ?? null,
+            'asking_price'   => $validated['asking_price'] ?? null,
+            'auction_price'  => $validated['auction_price'] ?? null,
+            'notes'          => $validated['notes'] ?? null,
+            'user_documents' => !empty($documentPaths) ? $documentPaths : null,
+            'role'           => 'customer',
+            'password'       => Hash::make('password'),
         ]);
 
         $user->syncRoles('customer');
@@ -240,6 +266,61 @@ public function index(Request $request)
             'message' => 'Customer created successfully.',
             'data'    => $user,
         ], 201);
+    }
+
+    public function updateCustomer(Request $request, $id)
+    {
+        $user = User::findOrFail($id);
+
+        $validated = $request->validate([
+            'name'           => 'sometimes|required|string|max:255',
+            'email'          => 'sometimes|required|email|max:255|unique:users,email,' . $id,
+            'phone'          => 'nullable|string|max:50',
+            'warranty'       => 'nullable|string|max:255',
+            'asking_price'   => 'nullable|numeric|min:0',
+            'auction_price'  => 'nullable|numeric|min:0',
+            'notes'          => 'nullable|string',
+            'user_documents' => 'nullable|array',
+            'user_documents.*' => 'file|mimes:pdf,jpg,jpeg,png,doc,docx|max:10240',
+        ]);
+
+        $updateData = $request->except(['user_documents']);
+
+        if ($request->hasFile('user_documents')) {
+            $dir = 'user_documents';
+            if (!Storage::disk('public')->exists($dir)) {
+                Storage::disk('public')->makeDirectory($dir);
+            }
+
+            // Delete old documents
+            if ($user->user_documents) {
+                foreach ($user->user_documents as $oldPath) {
+                    $relativePath = str_replace(asset('storage/'), '', $oldPath);
+                    if (Storage::disk('public')->exists($relativePath)) {
+                        Storage::disk('public')->delete($relativePath);
+                    }
+                }
+            }
+
+            // Upload new documents
+            $documentPaths = [];
+            foreach ($request->file('user_documents') as $file) {
+                $filename = 'user-doc-' . uniqid() . '-' . now()->format('Ymd_His') . '.' . $file->getClientOriginalExtension();
+                $path = $dir . '/' . $filename;
+                Storage::disk('public')->putFileAs($dir, $file, $filename);
+                $documentPaths[] = asset('storage/' . $path);
+            }
+            
+            $updateData['user_documents'] = $documentPaths;
+        }
+
+        $user->update($updateData);
+
+        return response()->json([
+            'status'  => 'success',
+            'message' => 'Customer updated successfully.',
+            'data'    => $user->fresh(),
+        ], 200);
     }
 
     public function generateShareableLink(Request $request)

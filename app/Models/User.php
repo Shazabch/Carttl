@@ -31,7 +31,12 @@ class User extends Authenticatable implements JWTSubject
         'role',
         'package_id',
         'status',
-        'is_approved'
+        'is_approved',
+        'warranty',
+        'asking_price',
+        'auction_price',
+        'notes',
+        'user_documents',
     ];
 
     /**
@@ -54,6 +59,7 @@ class User extends Authenticatable implements JWTSubject
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'user_documents' => 'array',
         ];
     }
     public function favoriteVehicles(): BelongsToMany
