@@ -380,9 +380,6 @@ public function index(Request $request)
             'body_type'              => 'nullable|string',
             'specs'                  => 'nullable|string',
             'odometer'               => 'nullable|numeric',
-            'asking_price'           => 'nullable|numeric|min:0',
-            'auction_price'          => 'nullable|numeric|min:0',
-            'notes'                  => 'nullable|string',
             'damage_image'           => 'nullable|file|image',
         ];
 
@@ -688,9 +685,6 @@ public function index(Request $request)
             'body_type'              => 'nullable|string',
             'specs'                  => 'nullable|string',
             'odometer'               => 'nullable|numeric',
-            'asking_price'           => 'nullable|numeric|min:0',
-            'auction_price'          => 'nullable|numeric|min:0',
-            'notes'                  => 'nullable|string',
             'damage_image'           => 'nullable|file|image',
         ];
 
