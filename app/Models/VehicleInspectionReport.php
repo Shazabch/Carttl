@@ -104,4 +104,9 @@ class VehicleInspectionReport extends Model
     {
         return $this->hasMany(InspectionField::class, 'vehicle_inspection_report_id');
     }
+    public function customer()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
+    
 }

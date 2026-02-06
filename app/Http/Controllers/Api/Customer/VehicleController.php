@@ -173,6 +173,7 @@ class VehicleController extends Controller
       public function showInspection($id)
     {
         $report = VehicleInspectionReport::with([
+             'customer',
             'vehicle',
             'damages',
             'inspector',
@@ -210,6 +211,7 @@ class VehicleController extends Controller
             'inspections.damages',
             'inspections.fields.files',
             'inspections.vehicleModel:id,name',
+            'inspections.customer'
         ])
             ->find($id);
 

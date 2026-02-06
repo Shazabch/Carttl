@@ -142,6 +142,7 @@ public function index(Request $request)
     public function show($id)
     {
         $report = VehicleInspectionReport::with([
+            'customer',
             'vehicle',
             'damages',
             'inspector',
@@ -248,6 +249,7 @@ public function index(Request $request)
         $rules = [
             'vehicle_id'             => 'nullable|exists:vehicles,id',
             'inspection_enquiry_id'  => 'nullable|exists:inspection_enquiries,id',
+            'user_id'                => 'nullable|exists:users,id',
             'make'                   => 'required',
             'model'                  => 'required',
             'year'                   => 'required|integer',
@@ -260,6 +262,8 @@ public function index(Request $request)
             'body_type'              => 'nullable|string',
             'specs'                  => 'nullable|string',
             'odometer'               => 'nullable|numeric',
+            'asking_price'           => 'nullable|numeric|min:0',
+            'auction_price'          => 'nullable|numeric|min:0',
             'notes'                  => 'nullable|string',
             'damage_image'           => 'nullable|file|image',
         ];
@@ -553,6 +557,7 @@ public function index(Request $request)
         $rules = [
             'vehicle_id'             => 'nullable|exists:vehicles,id',
             'inspection_enquiry_id'  => 'nullable|exists:inspection_enquiries,id',
+            'user_id'                => 'nullable|exists:users,id',
             'make'                   => 'required',
             'model'                  => 'required',
             'year'                   => 'required|integer',
@@ -565,6 +570,8 @@ public function index(Request $request)
             'body_type'              => 'nullable|string',
             'specs'                  => 'nullable|string',
             'odometer'               => 'nullable|numeric',
+            'asking_price'           => 'nullable|numeric|min:0',
+            'auction_price'          => 'nullable|numeric|min:0',
             'notes'                  => 'nullable|string',
             'damage_image'           => 'nullable|file|image',
         ];

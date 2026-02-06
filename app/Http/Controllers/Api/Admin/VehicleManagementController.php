@@ -409,6 +409,7 @@ class VehicleManagementController extends Controller
             'inspections:id,vehicle_id,make,model,inspector_id,created_at',
             'inspections.brand:id,name',
             'inspections.vehicleModel:id,name',
+            'inspections.customer'
             
             
         ])
