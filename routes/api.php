@@ -108,7 +108,7 @@ Route::prefix('admin')
         // User Management
         Route::controller(UserManagementController::class)->group(function () {
             Route::get('/users', 'index')->middleware('permission:user-list');
-            Route::get('/users/show/{id}', 'show')->middleware('permission:user-manage');
+            Route::get('/users/show/{id}', 'show');
             Route::post('/users/create', 'store')->middleware('permission:user-manage');
             Route::post('/users/update/{id}', 'update')->middleware('permission:user-manage');
             Route::patch('/users/toggle-approval/{id}', 'toggleApproval')->middleware('permission:user-manage');
