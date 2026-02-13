@@ -90,9 +90,15 @@ class BiddingController extends Controller
             $autoBiddingService = app(AutoBiddingService::class);
             $autoBiddingService->processAutoBidsForVehicle($vehicle->id);
 
+            $isAutoBid = false;
+            if ($request->is_auto == true) {
+                $isAutoBid = true;
+            }
+
             return response()->json([
                 'status' => 'success',
-                'message' => 'Bid placed successfully.',
+                'message' => $isAutoBid ? 'Auto Bid placed successfully.' : 'Bid Placed Successfully',
+                'auto_bid' => $isAutoBid,
                 'data' => $bid,
             ]);
         } catch (\Exception $e) {
