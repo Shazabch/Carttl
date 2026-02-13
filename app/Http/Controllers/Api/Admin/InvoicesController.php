@@ -25,7 +25,9 @@ class InvoicesController extends Controller
 
         // Agent role restriction - show invoices from their assigned customers
         if ($user && $user->hasRole('agent')) {
-            $query->whereHas('user', fn($q) =>
+            $query->whereHas(
+                'user',
+                fn($q) =>
                 $q->where('agent_id', $user->id)
             );
         }
@@ -74,7 +76,9 @@ class InvoicesController extends Controller
 
         // Agent role restriction - show invoices from their assigned customers
         if ($user && $user->hasRole('agent')) {
-            $query->whereHas('user', fn($q) =>
+            $query->whereHas(
+                'user',
+                fn($q) =>
                 $q->where('agent_id', $user->id)
             );
         }
@@ -301,6 +305,7 @@ class InvoicesController extends Controller
         }
 
         $invoice->status = 'paid';
+        $invoice->is_approved = true;
         $invoice->save();
 
         // If this is a package invoice, approve the user associated with it
