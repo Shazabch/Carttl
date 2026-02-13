@@ -305,7 +305,6 @@ class InvoicesController extends Controller
         }
 
         $invoice->status = 'paid';
-        $invoice->is_approved = true;
         $invoice->save();
 
         // If this is a package invoice, approve the user associated with it
@@ -313,6 +312,7 @@ class InvoicesController extends Controller
             $user = User::find($invoice->user_id);
             if ($user) {
                 $user->status = 'approved';
+                $user->is_approved = true;
                 $user->save();
             }
         }
