@@ -131,7 +131,7 @@ class CustomerInvoicesController extends Controller
         $invoice->save();
 
         // Send notifications to admins, super admins, and assigned agent
-        // $this->sendPaymentSlipNotifications($user, $invoice);
+        $this->sendPaymentSlipNotifications($user, $invoice);
 
         return response()->json([
             'status' => true,
