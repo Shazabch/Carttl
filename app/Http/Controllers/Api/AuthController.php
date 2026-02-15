@@ -13,49 +13,143 @@ use PDF;
 use Illuminate\Support\Facades\Storage;
 use App\Models\Payment;
 use App\Services\PackageInvoiceService;
-use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+use Twilio\Rest\Client;
 
 class AuthController extends Controller
 {
     public function register(Request $request)
     {
+        
         $request->validate([
             'name'       => 'required|string|max:255',
             'email'      => 'required|email|unique:users',
             'password'   => 'required|string|min:6',
             'package_id' => 'required|exists:packages,id',
+            'phone'      => 'required|string|max:20|unique:users,phone',
         ]);
 
-        // Create user
-        $user = User::create([
-            'name'       => $request->name,
-            'email'      => $request->email,
-            'package_id' => $request->package_id,
-            'password'   => Hash::make($request->password),
-            'status'     => 'pending',
-        ]);
-
-        // Generate package invoice PDF
-        $pdfLink = PackageInvoiceService::generate($user->id);
-
+        $otp = (string) random_int(100000, 999999);
        
+        $otpExpiresAt = now()->addMinutes(1);
 
-        // Save invoice in invoices table
-        $invoice = Invoice::create([
-            'type'     => 'package',
-            'user_id'  => $user->id,
-            'pdf_link' => $pdfLink,
+        $user = DB::transaction(function () use ($request, $otp, $otpExpiresAt) {
+            $user = User::create([
+                'name'       => $request->name,
+                'email'      => $request->email,
+                'package_id' => $request->package_id,
+                'phone'      => $request->phone,
+                'password'   => Hash::make($request->password),
+                'status'     => 'pending',
+            ]);
+
+            $user->phone_otp_hash = Hash::make($otp);
+            $user->phone_otp_expires_at = $otpExpiresAt;
+            $user->phone_verified_at = null;
+            $user->save();
+
+            return $user;
+        });
+
+        try {
+            $twilio = new Client(
+                config('services.twilio.sid'),
+                config('services.twilio.token')
+            );
+
+            $twilio->messages->create($user->phone, [
+                'from' => config('services.twilio.from'),
+                'body' => "Your verification code is {$otp}. It expires in 10 minutes.",
+            ]);
+        } catch (\Throwable $exception) {
+            Log::error('Twilio OTP send failed', [
+                'user_id' => $user->id,
+                'phone' => $user->phone,
+                'error' => $exception->getMessage(),
+                'code' => $exception->getCode(),
+            ]);
+            $user->delete();
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Unable to send OTP. Please try again later.',
+            ], 500);
+        }
+
+        return response()->json([
+            'status'  => 'success',
+            'message' => 'OTP sent to your phone. Please verify to continue.',
+            'otp_expires_at' => $otpExpiresAt,
+            'user' => $user,
         ]);
+    }
+
+    public function verifyPhoneOtp(Request $request)
+    {
+        $request->validate([
+            'phone' => 'required|string|max:20',
+            'otp'   => 'required|string|size:6',
+        ]);
+
+        $user = User::where('phone', $request->phone)->first();
+
+        if (!$user) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'User not found for this phone number.',
+            ], 404);
+        }
+
+        if (!$user->phone_otp_hash || !$user->phone_otp_expires_at) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'No OTP pending for this phone number.',
+            ], 400);
+        }
+
+        if (now()->greaterThan($user->phone_otp_expires_at)) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'OTP has expired. Please request a new one.',
+            ], 400);
+        }
+
+        if (!Hash::check($request->otp, $user->phone_otp_hash)) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Invalid OTP.',
+            ], 400);
+        }
+
+        $user->phone_verified_at = now();
+        $user->phone_otp_hash = null;
+        $user->phone_otp_expires_at = null;
+        $user->save();
+
+        $pdfLink = null;
+        $existingInvoice = Invoice::where('type', 'package')
+            ->where('user_id', $user->id)
+            ->first();
+
+        if ($existingInvoice) {
+            $pdfLink = $existingInvoice->pdf_link;
+        } else {
+            $pdfLink = PackageInvoiceService::generate($user->id);
+            Invoice::create([
+                'type'     => 'package',
+                'user_id'  => $user->id,
+                'pdf_link' => $pdfLink,
+            ]);
+        }
 
         $token = JWTAuth::fromUser($user);
 
         return response()->json([
-            'status'  => 'success',
-            'message' => 'User registered & invoice generated',
-            'token'   => $token,
+            'status' => 'success',
+            'message' => 'Phone verified successfully.',
+            'token' => $token,
             'invoice' => $pdfLink,
-            'user'    => $user,
-          
+            'user' => $user,
         ]);
     }
 

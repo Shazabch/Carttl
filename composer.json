@@ -21,6 +21,7 @@
         "spatie/browsershot": "^5.0",
         "spatie/laravel-activitylog": "^4.10",
         "spatie/laravel-permission": "^6.20",
+        "twilio/sdk": "^7.15",
         "tymon/jwt-auth": "^2.2"
     },
     "require-dev": {

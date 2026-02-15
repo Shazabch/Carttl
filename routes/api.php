@@ -43,6 +43,7 @@ use App\Http\Controllers\Api\UserPreferencesController;
 //Auth routes
 Route::post('register', [AuthController::class, 'register']);
 Route::post('login', [AuthController::class, 'login']);
+Route::post('verify-phone-otp', [AuthController::class, 'verifyPhoneOtp']);
 Route::get('/generate-package-invoice', [\App\Http\Controllers\Api\InvoiceController::class, 'generatePackageInvoiceByUser']);
 
 Route::middleware('auth:api')->post('logout', [AuthController::class, 'logout']);
