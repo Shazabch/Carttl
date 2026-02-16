@@ -16,7 +16,7 @@ class FCMService
         // Disable SSL verification for Windows dev
         $guzzle = new Client(['verify' => false]);
 
-        $credentials = config('firebase.service_account');
+        $credentials = config('services.firebase.service_account');
 
         if (!$credentials) {
             throw new \Exception("Firebase credentials not configured. Please set FIREBASE_CREDENTIALS in .env file.");

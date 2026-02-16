@@ -40,5 +40,9 @@ return [
         'token' => env('TWILIO_AUTH_TOKEN'),
         'from' => env('TWILIO_FROM'),
     ],
+    
+    'firebase' => [
+        'service_account' => env('FIREBASE_CREDENTIALS', storage_path('app/firebase/caartl-firebase-adminsdk-fbsvc-bd2f95bf15.json')),
+    ],
 
 ];
