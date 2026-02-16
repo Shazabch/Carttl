@@ -16,24 +16,34 @@ class FCMService
         // Disable SSL verification for Windows dev
         $guzzle = new Client(['verify' => false]);
 
-        $credentialsPath = config('firebase.service_account');
+        $credentials = config('firebase.service_account');
 
-        // Support both file path and JSON string
-        if ($credentialsPath) {
-            // Check if it's a JSON string or file path
-            if (is_file($credentialsPath) && is_readable($credentialsPath)) {
-                $factory = (new Factory())->withServiceAccount($credentialsPath);
-            } elseif (is_string($credentialsPath) && json_decode($credentialsPath, true)) {
-                // JSON string provided directly
-                $factory = (new Factory())->withServiceAccount(json_decode($credentialsPath, true));
+        if (!$credentials) {
+            throw new \Exception("Firebase credentials not configured. Please set FIREBASE_CREDENTIALS in .env file.");
+        }
+
+        // Support multiple credential formats
+        if (is_array($credentials)) {
+            // Already an array (from config)
+            $factory = (new Factory())->withServiceAccount($credentials);
+        } elseif (is_string($credentials)) {
+            // Check if it's a file path first (most common case)
+            if (file_exists($credentials)) {
+                if (!is_readable($credentials)) {
+                    throw new \Exception("Firebase credentials file exists but is not readable: {$credentials}. Check file permissions.");
+                }
+                $factory = (new Factory())->withServiceAccount($credentials);
             } else {
-                throw new \Exception(
-                    "Firebase credentials file not found or not readable at: " . $credentialsPath . 
-                    ". Please check FIREBASE_CREDENTIALS in .env and file permissions."
-                );
+                // Not a file, try parsing as JSON string
+                $decoded = json_decode($credentials, true);
+                if ($decoded && json_last_error() === JSON_ERROR_NONE && is_array($decoded)) {
+                    $factory = (new Factory())->withServiceAccount($decoded);
+                } else {
+                    throw new \Exception("Firebase credentials invalid. Not a valid file path or JSON string: {$credentials}");
+                }
             }
         } else {
-            throw new \Exception("Firebase credentials not configured. Please set FIREBASE_CREDENTIALS in .env file.");
+            throw new \Exception("Firebase credentials must be a file path, JSON string, or array.");
         }
 
         // Only set client if your version supports it
