@@ -153,6 +153,66 @@ class AuthController extends Controller
         ]);
     }
 
+    public function resendPhoneOtp(Request $request)
+    {
+        $request->validate([
+            'phone' => 'required|string|max:20',
+        ]);
+
+        $user = User::where('phone', $request->phone)->first();
+
+        if (!$user) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'User not found for this phone number.',
+            ], 404);
+        }
+
+        if ($user->phone_verified_at) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Phone number is already verified.',
+            ], 400);
+        }
+
+        $otp = (string) random_int(100000, 999999);
+        $otpExpiresAt = now()->addMinutes(1);
+
+        $user->phone_otp_hash = Hash::make($otp);
+        $user->phone_otp_expires_at = $otpExpiresAt;
+        $user->save();
+
+        try {
+            $twilio = new Client(
+                config('services.twilio.sid'),
+                config('services.twilio.token')
+            );
+
+            $twilio->messages->create($user->phone, [
+                'from' => config('services.twilio.from'),
+                'body' => "Your verification code is {$otp}. It expires in 10 minutes.",
+            ]);
+        } catch (\Throwable $exception) {
+            Log::error('Twilio OTP resend failed', [
+                'user_id' => $user->id,
+                'phone' => $user->phone,
+                'error' => $exception->getMessage(),
+                'code' => $exception->getCode(),
+            ]);
+
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Unable to resend OTP. Please try again later.',
+            ], 500);
+        }
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'OTP resent to your phone. Please verify to continue.',
+            'otp_expires_at' => $otpExpiresAt,
+        ]);
+    }
+
 
     public function login(Request $request)
     {

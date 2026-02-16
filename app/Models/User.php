@@ -37,6 +37,7 @@ class User extends Authenticatable implements JWTSubject
         'auction_price',
         'notes',
         'user_documents',
+        
     ];
 
     /**
