@@ -16,8 +16,25 @@ class FCMService
         // Disable SSL verification for Windows dev
         $guzzle = new Client(['verify' => false]);
 
-        $factory = (new Factory())
-            ->withServiceAccount(env('FIREBASE_CREDENTIALS'));
+        $credentialsPath = config('firebase.service_account');
+
+        // Support both file path and JSON string
+        if ($credentialsPath) {
+            // Check if it's a JSON string or file path
+            if (is_file($credentialsPath) && is_readable($credentialsPath)) {
+                $factory = (new Factory())->withServiceAccount($credentialsPath);
+            } elseif (is_string($credentialsPath) && json_decode($credentialsPath, true)) {
+                // JSON string provided directly
+                $factory = (new Factory())->withServiceAccount(json_decode($credentialsPath, true));
+            } else {
+                throw new \Exception(
+                    "Firebase credentials file not found or not readable at: " . $credentialsPath . 
+                    ". Please check FIREBASE_CREDENTIALS in .env and file permissions."
+                );
+            }
+        } else {
+            throw new \Exception("Firebase credentials not configured. Please set FIREBASE_CREDENTIALS in .env file.");
+        }
 
         // Only set client if your version supports it
         if (method_exists($factory, 'withHttpClient')) {
