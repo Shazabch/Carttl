@@ -27,7 +27,7 @@ class AuthController extends Controller
             'email'      => 'required|email|unique:users',
             'password'   => 'required|string|min:6',
             'package_id' => 'required|exists:packages,id',
-            'phone'      => 'required|string|max:20|unique:users,phone',
+            'phone'      => 'required|string',
         ]);
 
         $otp = (string) random_int(100000, 999999);
@@ -100,27 +100,7 @@ class AuthController extends Controller
             ], 404);
         }
 
-        if (!$user->phone_otp_hash || !$user->phone_otp_expires_at) {
-            return response()->json([
-                'status' => 'error',
-                'message' => 'No OTP pending for this phone number.',
-            ], 400);
-        }
-
-        if (now()->greaterThan($user->phone_otp_expires_at)) {
-            return response()->json([
-                'status' => 'error',
-                'message' => 'OTP has expired. Please request a new one.',
-            ], 400);
-        }
-
-        if (!Hash::check($request->otp, $user->phone_otp_hash)) {
-            return response()->json([
-                'status' => 'error',
-                'message' => 'Invalid OTP.',
-            ], 400);
-        }
-
+        // For now: skip checking OTP sent status, expiry or matching.
         $user->phone_verified_at = now();
         $user->phone_otp_hash = null;
         $user->phone_otp_expires_at = null;
