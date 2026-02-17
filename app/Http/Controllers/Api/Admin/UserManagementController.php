@@ -75,6 +75,7 @@ class UserManagementController extends Controller
             'password' => 'required|string|min:8',
             'phone' => 'nullable',
             'photo'    => 'nullable|image',
+            'is_approved' => 'nullable|boolean',
         ]);
 
         $photoUrl = null;
@@ -91,7 +92,7 @@ class UserManagementController extends Controller
             'role'        => $validated['role'],
             'phone' => $validated['phone'] ?? null,
             'package_id' => $validated['package_id'] ?? null,
-            'is_approved' => false,
+            'is_approved' => $validated['is_approved'] ?? false,
             'photo'       => $photoUrl,
         ]);
 
@@ -123,6 +124,7 @@ class UserManagementController extends Controller
             'phone' => 'nullable',
             'package_id'     => 'nullable|exists:packages,id',
             'remove_photo' => 'nullable|boolean',
+            'is_approved' => 'nullable|boolean',
         ]);
 
 
@@ -157,6 +159,7 @@ class UserManagementController extends Controller
             'package_id' => $validated['package_id'] ?? null,
             'role'  => $validated['role'],
             'photo' => $photoUrl,
+            'is_approved' => $validated['is_approved'] ?? $user->is_approved,
         ];
 
         if (!empty($validated['password'])) {
