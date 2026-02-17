@@ -182,6 +182,8 @@ class UserManagementController extends Controller
     {
         $user = User::findOrFail($id);
         $user->is_approved = !$user->is_approved;
+        // keep `status` column in sync with approval
+        $user->status = $user->is_approved ? 'approved' : 'pending';
         $user->save();
 
         $status = $user->is_approved ? 'approved' : 'set to pending';
