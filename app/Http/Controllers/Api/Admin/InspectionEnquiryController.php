@@ -177,6 +177,8 @@ class InspectionEnquiryController extends Controller
             'password' => Hash::make('password'),
             'role_id'  => $role->id,
         ]);
+        $customer->assignRole($role);
+        
 
         return response()->json([
             'message'  => 'Customer created successfully',
