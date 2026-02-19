@@ -27,7 +27,7 @@ class AuthController extends Controller
             'email'      => 'required|email|unique:users',
             'password'   => 'required|string|min:6',
             'package_id' => 'required|exists:packages,id',
-            'phone'      => 'required|string',
+            'phone'      => 'required|string|max:20|unique:users',
         ]);
 
         $otp = (string) random_int(100000, 999999);
