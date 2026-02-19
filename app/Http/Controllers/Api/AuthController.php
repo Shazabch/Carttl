@@ -21,7 +21,53 @@ class AuthController extends Controller
 {
     public function register(Request $request)
     {
-        
+        // Check if pending unverified user exists with same email + phone
+        $pendingUser = User::where('email', $request->email)
+            ->where('phone', $request->phone)
+            ->where('phone_verified_at', null)
+            ->first();
+
+        if ($pendingUser) {
+            // Resend OTP to existing pending user
+            $otp = (string) random_int(100000, 999999);
+            $otpExpiresAt = now()->addMinutes(2);
+
+            try {
+                $twilio = new Client(
+                    config('services.twilio.sid'),
+                    config('services.twilio.token')
+                );
+
+                $twilio->messages->create($pendingUser->phone, [
+                    'from' => config('services.twilio.from'),
+                    'body' => "Your verification code is {$otp}. It expires in 2 minutes.",
+                ]);
+            } catch (\Throwable $exception) {
+                Log::error('Twilio OTP resend failed for pending user', [
+                    'user_id' => $pendingUser->id,
+                    'phone' => $pendingUser->phone,
+                    'error' => $exception->getMessage(),
+                ]);
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'Unable to send OTP. Please try again later.',
+                ], 500);
+            }
+
+            // Update pending user with new OTP
+            $pendingUser->phone_otp_hash = Hash::make($otp);
+            $pendingUser->phone_otp_expires_at = $otpExpiresAt;
+            $pendingUser->save();
+
+            return response()->json([
+                'status' => 'success',
+                'message' => 'OTP resent to your phone. Please verify to continue.',
+                'otp_expires_at' => $otpExpiresAt,
+                'user' => $pendingUser,
+            ]);
+        }
+
+        // Normal registration validation
         $request->validate([
             'name'       => 'required|string|max:255',
             'email'      => 'required|email|unique:users',
@@ -31,9 +77,32 @@ class AuthController extends Controller
         ]);
 
         $otp = (string) random_int(100000, 999999);
-       
         $otpExpiresAt = now()->addMinutes(2);
 
+        // Send OTP BEFORE creating user to prevent orphaned records
+        try {
+            $twilio = new Client(
+                config('services.twilio.sid'),
+                config('services.twilio.token')
+            );
+
+            $twilio->messages->create($request->phone, [
+                'from' => config('services.twilio.from'),
+                'body' => "Your verification code is {$otp}. It expires in 2 minutes.",
+            ]);
+        } catch (\Throwable $exception) {
+            Log::error('Twilio OTP send failed', [
+                'phone' => $request->phone,
+                'error' => $exception->getMessage(),
+                'code' => $exception->getCode(),
+            ]);
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Unable to send OTP. Please try again later.',
+            ], 500);
+        }
+
+        // Create user only after OTP is successfully sent
         $user = DB::transaction(function () use ($request, $otp, $otpExpiresAt) {
             $user = User::create([
                 'name'       => $request->name,
@@ -52,35 +121,40 @@ class AuthController extends Controller
             return $user;
         });
 
-        try {
-            $twilio = new Client(
-                config('services.twilio.sid'),
-                config('services.twilio.token')
-            );
-
-            $twilio->messages->create($user->phone, [
-                'from' => config('services.twilio.from'),
-                'body' => "Your verification code is {$otp}. It expires in 2 minutes.",
-            ]);
-        } catch (\Throwable $exception) {
-            Log::error('Twilio OTP send failed', [
-                'user_id' => $user->id,
-                'phone' => $user->phone,
-                'error' => $exception->getMessage(),
-                'code' => $exception->getCode(),
-            ]);
-            $user->delete();
-            return response()->json([
-                'status' => 'error',
-                'message' => 'Unable to send OTP. Please try again later.',
-            ], 500);
-        }
-
         return response()->json([
             'status'  => 'success',
             'message' => 'OTP sent to your phone. Please verify to continue.',
             'otp_expires_at' => $otpExpiresAt,
             'user' => $user,
+        ]);
+    }
+
+    public function cleanupPendingUsers(Request $request)
+    {
+        $request->validate([
+            'email' => 'required|email',
+            'phone' => 'required|string|max:20',
+        ]);
+
+        // Delete pending unverified users (not verified within 10 minutes)
+        $deleted = User::where('email', $request->email)
+            ->where('phone', $request->phone)
+            ->where('phone_verified_at', null)
+            ->where('created_at', '<', now()->subMinutes(10))
+            ->delete();
+
+        if ($deleted > 0) {
+            Log::info("Cleaned up {$deleted} pending user(s) for email: {$request->email}");
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Pending registration cleaned up. Please register again.',
+                'cleaned' => $deleted,
+            ]);
+        }
+
+        return response()->json([
+            'status' => 'info',
+            'message' => 'No pending registrations to cleanup.',
         ]);
     }
 
@@ -158,6 +232,8 @@ class AuthController extends Controller
         ]);
     }
 
+  
+
     public function resendPhoneOtp(Request $request)
     {
         $request->validate([
@@ -181,7 +257,7 @@ class AuthController extends Controller
         }
 
         $otp = (string) random_int(100000, 999999);
-        $otpExpiresAt = now()->addMinutes(1);
+        $otpExpiresAt = now()->addMinutes(2);
 
         $user->phone_otp_hash = Hash::make($otp);
         $user->phone_otp_expires_at = $otpExpiresAt;
