@@ -3,15 +3,23 @@
 namespace App\Http\Controllers\Api\Customer;
 
 use App\Http\Controllers\Controller;
+use App\Models\DeviceToken;
 use App\Models\Vehicle;
 use App\Models\VehicleBid;
 use App\Services\AutoBiddingService;
+use App\Services\FCMService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 
 class BiddingController extends Controller
 {
+    protected FCMService $fcm;
+
+    public function __construct(FCMService $fcm)
+    {
+        $this->fcm = $fcm;
+    }
 
     public function getVehicleBids($vehicleId)
     {
@@ -85,6 +93,36 @@ class BiddingController extends Controller
                 'bid_amount' => $request->current_bid,
                 'max_bid' => $request->max_bid,
             ]);
+
+            // Send push notification to previous bidder
+            $previousBid = VehicleBid::where('vehicle_id', $vehicle->id)
+                ->where('id', '!=', $bid->id)
+                ->orderBy('bid_amount', 'desc')
+                ->first();
+
+            if ($previousBid && $previousBid->user) {
+                $deviceTokens = DeviceToken::where('user_id', $previousBid->user->id)
+                    ->pluck('device_token')
+                    ->toArray();
+
+                foreach ($deviceTokens as $token) {
+                    try {
+                        $this->fcm->sendNotification(
+                            $token,
+                            'You\'ve Been Outbid',
+                            "A higher bid of AED" . number_format($request->current_bid) . " has been placed on " . $vehicle->title,
+                            [
+                                'vehicle_id' => $vehicle->id,
+                                'bid_id' => $bid->id,
+                                'new_bid_amount' => $request->current_bid,
+                                'type' => 'outbid'
+                            ]
+                        );
+                    } catch (\Throwable $e) {
+                        Log::error("Failed to send outbid notification: " . $e->getMessage());
+                    }
+                }
+            }
 
             // Trigger auto-bidding process for this vehicle
             $autoBiddingService = app(AutoBiddingService::class);
