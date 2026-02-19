@@ -32,7 +32,7 @@ class AuthController extends Controller
 
         $otp = (string) random_int(100000, 999999);
        
-        $otpExpiresAt = now()->addMinutes(1);
+        $otpExpiresAt = now()->addMinutes(2);
 
         $user = DB::transaction(function () use ($request, $otp, $otpExpiresAt) {
             $user = User::create([
@@ -60,7 +60,7 @@ class AuthController extends Controller
 
             $twilio->messages->create($user->phone, [
                 'from' => config('services.twilio.from'),
-                'body' => "Your verification code is {$otp}. It expires in 1 minute.",
+                'body' => "Your verification code is {$otp}. It expires in 2 minutes.",
             ]);
         } catch (\Throwable $exception) {
             Log::error('Twilio OTP send failed', [
@@ -195,7 +195,7 @@ class AuthController extends Controller
 
             $twilio->messages->create($user->phone, [
                 'from' => config('services.twilio.from'),
-                'body' => "Your verification code is {$otp}. It expires in 1 minute.",
+                'body' => "Your verification code is {$otp}. It expires in 2 minutes.",
             ]);
         } catch (\Throwable $exception) {
             Log::error('Twilio OTP resend failed', [

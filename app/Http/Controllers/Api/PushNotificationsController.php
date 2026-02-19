@@ -24,12 +24,13 @@ class PushNotificationsController extends Controller
     public function saveToken(Request $request)
     {
         $request->validate([
-            'device_token' => 'required|string|unique:device_tokens,device_token',
+            'device_token' => 'required|string',
+            'user_id' => 'required|exists:users,id',
         ]);
 
         DeviceToken::updateOrCreate(
             ['device_token' => $request->device_token],
-            ['user_id' => auth()->id() ?? null]
+            ['user_id' => $request->user_id ?? null]
         );
 
         return response()->json([
@@ -61,9 +62,8 @@ class PushNotificationsController extends Controller
                 'success' => true,
                 'response' => $response
             ]);
-
         } catch (\Throwable $e) {
-            Log::error('FCM Send Error: '.$e->getMessage());
+            Log::error('FCM Send Error: ' . $e->getMessage());
             return response()->json([
                 'success' => false,
                 'message' => 'Failed to send notification',
@@ -102,7 +102,7 @@ class PushNotificationsController extends Controller
                     $request->data ?? []
                 );
             } catch (\Throwable $e) {
-                Log::error("Failed to send FCM to {$token}: ".$e->getMessage());
+                Log::error("Failed to send FCM to {$token}: " . $e->getMessage());
                 $failed[] = $token;
             }
         }
@@ -138,46 +138,46 @@ class PushNotificationsController extends Controller
 
         // Apply criteria filters
         $criteria = $request->input('criteria', []);
-        
+
         if (!empty($criteria['price'])) {
-            $query->where(function($q) use ($criteria) {
+            $query->where(function ($q) use ($criteria) {
                 $q->whereNull('price')
-                  ->orWhere('price', '>=', $criteria['price']);
+                    ->orWhere('price', '>=', $criteria['price']);
             });
         }
 
         if (!empty($criteria['vehicle_type'])) {
-            $query->where(function($q) use ($criteria) {
+            $query->where(function ($q) use ($criteria) {
                 $q->whereNull('vehicle_type')
-                  ->orWhere('vehicle_type', $criteria['vehicle_type']);
+                    ->orWhere('vehicle_type', $criteria['vehicle_type']);
             });
         }
 
         if (!empty($criteria['make'])) {
-            $query->where(function($q) use ($criteria) {
+            $query->where(function ($q) use ($criteria) {
                 $q->whereNull('make')
-                  ->orWhere('make', $criteria['make']);
+                    ->orWhere('make', $criteria['make']);
             });
         }
 
         if (!empty($criteria['model'])) {
-            $query->where(function($q) use ($criteria) {
+            $query->where(function ($q) use ($criteria) {
                 $q->whereNull('model')
-                  ->orWhere('model', $criteria['model']);
+                    ->orWhere('model', $criteria['model']);
             });
         }
 
         if (!empty($criteria['year'])) {
-            $query->where(function($q) use ($criteria) {
+            $query->where(function ($q) use ($criteria) {
                 $q->whereNull('year')
-                  ->orWhere('year', $criteria['year']);
+                    ->orWhere('year', $criteria['year']);
             });
         }
 
         if (!empty($criteria['location'])) {
-            $query->where(function($q) use ($criteria) {
+            $query->where(function ($q) use ($criteria) {
                 $q->whereNull('location')
-                  ->orWhere('location', $criteria['location']);
+                    ->orWhere('location', $criteria['location']);
             });
         }
 
@@ -218,7 +218,7 @@ class PushNotificationsController extends Controller
                 );
                 $sent++;
             } catch (\Throwable $e) {
-                Log::error("Failed to send FCM to {$token}: ".$e->getMessage());
+                Log::error("Failed to send FCM to {$token}: " . $e->getMessage());
                 $failed[] = $token;
             }
         }
@@ -283,7 +283,7 @@ class PushNotificationsController extends Controller
                 );
                 $sent++;
             } catch (\Throwable $e) {
-                Log::error("Failed to send FCM to {$token}: ".$e->getMessage());
+                Log::error("Failed to send FCM to {$token}: " . $e->getMessage());
                 $failed[] = $token;
             }
         }
