@@ -60,7 +60,7 @@ class AuthController extends Controller
 
             $twilio->messages->create($user->phone, [
                 'from' => config('services.twilio.from'),
-                'body' => "Your verification code is {$otp}. It expires in 10 minutes.",
+                'body' => "Your verification code is {$otp}. It expires in 1 minute.",
             ]);
         } catch (\Throwable $exception) {
             Log::error('Twilio OTP send failed', [
@@ -100,7 +100,32 @@ class AuthController extends Controller
             ], 404);
         }
 
-        // For now: skip checking OTP sent status, expiry or matching.
+        if ($user->phone_verified_at) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Phone number is already verified.',
+            ], 400);
+        }
+        if (!$user->phone_otp_hash || !$user->phone_otp_expires_at) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'No OTP found for this phone number. Please request a new one.',
+            ], 400);
+        }
+        if (now()->greaterThan($user->phone_otp_expires_at)) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'OTP has expired. Please request a new one.',
+            ], 400);
+        }
+        if (!Hash::check($request->otp, $user->phone_otp_hash)) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Invalid OTP. Please try again.',
+            ], 400);
+        }
+
+
         $user->phone_verified_at = now();
         $user->phone_otp_hash = null;
         $user->phone_otp_expires_at = null;
@@ -170,7 +195,7 @@ class AuthController extends Controller
 
             $twilio->messages->create($user->phone, [
                 'from' => config('services.twilio.from'),
-                'body' => "Your verification code is {$otp}. It expires in 10 minutes.",
+                'body' => "Your verification code is {$otp}. It expires in 1 minute.",
             ]);
         } catch (\Throwable $exception) {
             Log::error('Twilio OTP resend failed', [
