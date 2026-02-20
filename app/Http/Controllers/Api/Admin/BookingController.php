@@ -25,7 +25,7 @@ class BookingController extends Controller
         $user = auth('api')->user();
 
         $vehiclesQuery = Vehicle::where('status', 'pending_payment');
-        
+
         // If logged-in user is an agent, filter to show only vehicles with bookings from their customers
         if ($user && $user->hasRole('agent')) {
             $vehiclesQuery->whereHas('bookings', function ($q) use ($user) {
@@ -34,7 +34,7 @@ class BookingController extends Controller
                 });
             });
         }
-        
+
         $vehiclesQuery->when($search, function ($query, $search) {
             $query->whereHas('brand', function ($q) use ($search) {
                 $q->where('name', 'like', "%{$search}%");
@@ -82,7 +82,7 @@ class BookingController extends Controller
         $user = auth('api')->user();
 
         $vehiclesQuery = Vehicle::where('status', 'bid_approved')->where('is_auction', true);
-        
+
         // If logged-in user is an agent, filter to show only vehicles with bookings from their customers
         if ($user && $user->hasRole('agent')) {
             $vehiclesQuery->whereHas('bookings', function ($q) use ($user) {
@@ -91,7 +91,7 @@ class BookingController extends Controller
                 });
             });
         }
-        
+
         $vehiclesQuery->when($search, function ($query, $search) {
             $query->whereHas('brand', function ($q) use ($search) {
                 $q->where('name', 'like', "%{$search}%");
@@ -155,7 +155,7 @@ class BookingController extends Controller
         $user = auth('api')->user();
 
         $vehiclesQuery = Vehicle::where('status', 'intransfer');
-        
+
         // If logged-in user is an agent, filter to show only vehicles with bookings from their customers
         if ($user && $user->hasRole('agent')) {
             $vehiclesQuery->whereHas('bookings', function ($q) use ($user) {
@@ -164,7 +164,7 @@ class BookingController extends Controller
                 });
             });
         }
-        
+
         $vehiclesQuery->when($search, function ($query, $search) {
             $query->whereHas('brand', function ($q) use ($search) {
                 $q->where('name', 'like', "%{$search}%");
@@ -213,7 +213,7 @@ class BookingController extends Controller
         $user = auth('api')->user();
 
         $vehiclesQuery = Vehicle::where('status', 'delivered');
-        
+
         // If logged-in user is an agent, filter to show only vehicles with bookings from their customers
         if ($user && $user->hasRole('agent')) {
             $vehiclesQuery->whereHas('bookings', function ($q) use ($user) {
@@ -222,7 +222,7 @@ class BookingController extends Controller
                 });
             });
         }
-        
+
         $vehiclesQuery->when($search, function ($query, $search) {
             $query->whereHas('brand', function ($q) use ($search) {
                 $q->where('name', 'like', "%{$search}%");
@@ -434,15 +434,22 @@ class BookingController extends Controller
     public function deleteBooking($id)
     {
         try {
-            $booking = Booking::findOrFail($id);
-
-            // Delete the booking
-            $booking->delete();
-
-            return response()->json([
-                'success' => true,
-                'message' => 'Booking deleted successfully',
-            ]);
+            $vehicle = Vehicle::findOrFail($id);
+            $booking = Booking::where('vehicle_id', $id)->first();
+            if ($booking) {
+                $booking->delete();
+                //also delete the vehicle
+                $vehicle->delete();
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Booking and associated vehicle deleted successfully',
+                ]);
+            } else {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'No booking found for this vehicle.',
+                ], 404);
+            }
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
@@ -451,6 +458,7 @@ class BookingController extends Controller
             ], 500);
         }
     }
+
 
     public function generateBookingPdf(Request $request)
     {
