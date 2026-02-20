@@ -12,6 +12,9 @@ use Illuminate\Support\Facades\Schema;
 use App\Models\VehicleBid;
 use App\Services\BookingInvoiceService;
 use Illuminate\Support\Facades\Storage;
+use App\Notifications\BookingStatusChangedNotification;
+use App\Services\FCMService;
+use Illuminate\Support\Facades\Log;
 
 class BookingController extends Controller
 {
@@ -337,7 +340,7 @@ class BookingController extends Controller
 
         try {
             $vehicle = Vehicle::findOrFail($vehicleId);
-            $booking = Booking::where('vehicle_id', $vehicle->id)->first();
+            $booking = Booking::with('user')->where('vehicle_id', $vehicle->id)->first();
 
             if (!$booking) {
                 return response()->json([
@@ -349,6 +352,19 @@ class BookingController extends Controller
             $booking->save();
             $vehicle->status = $validated['status'];
             $vehicle->save();
+
+            // Send notification to user
+            if ($booking->user) {
+                try {
+                    // Send email and database notification
+                    $booking->user->notify(new BookingStatusChangedNotification($booking, $validated['status']));
+
+                    // Send push notification via Firebase
+                    $this->sendPushNotification($booking, $validated['status']);
+                } catch (\Exception $notificationError) {
+                    Log::error("Failed to send notification for booking {$booking->id}: " . $notificationError->getMessage());
+                }
+            }
 
             return response()->json([
                 'success' => true,
@@ -365,6 +381,54 @@ class BookingController extends Controller
                 'message' => 'Something went wrong',
                 'error' => $e->getMessage(),
             ], 500);
+        }
+    }
+
+    /**
+     * Send push notification to user via Firebase Cloud Messaging
+     */
+    private function sendPushNotification($booking, $newStatus)
+    {
+        try {
+            $user = $booking->user;
+            if (!$user) {
+                return;
+            }
+
+            // Get user's device tokens
+            $deviceTokens = DB::table('device_tokens')
+                ->where('user_id', $user->id)
+                ->pluck('device_token')
+                ->toArray();
+
+            if (empty($deviceTokens)) {
+                Log::info("No device tokens found for user {$user->id}");
+                return;
+            }
+
+            $fcmService = new FCMService();
+            $vehicle = $booking->vehicle;
+            $vehicleTitle = $vehicle ? ($vehicle->title ?? 'Your Vehicle') : 'Your Vehicle';
+            $title = "Booking Status Updated";
+            $body = "Your booking for {$vehicleTitle} is now " . ucfirst(str_replace('_', ' ', $newStatus));
+            $data = [
+                'booking_id' => (string) $booking->id,
+                'vehicle_id' => (string) $booking->vehicle_id,
+                'status' => $newStatus,
+                'action' => 'booking_status_changed',
+            ];
+
+            // Send to all device tokens
+            foreach ($deviceTokens as $token) {
+                try {
+                    $fcmService->sendNotification($token, $title, $body, $data);
+                    Log::info("Push notification sent to user {$user->id} for booking {$booking->id}");
+                } catch (\Exception $e) {
+                    Log::error("Failed to send push notification to token {$token}: " . $e->getMessage());
+                }
+            }
+        } catch (\Exception $e) {
+            Log::error("Error in sendPushNotification: " . $e->getMessage());
         }
     }
     public function deleteBooking($id)

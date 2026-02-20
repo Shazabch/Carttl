@@ -10,6 +10,9 @@ use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Spatie\Permission\Models\Role;
+use App\Notifications\InspectionStatusChangedNotification;
+use App\Services\FCMService;
+use Illuminate\Support\Facades\Log;
 
 class InspectionEnquiryController extends Controller
 {
@@ -350,7 +353,7 @@ class InspectionEnquiryController extends Controller
         ]);
 
         try {
-            $enquiry = InspectionEnquiry::findOrFail($request->enquiry_id);
+            $enquiry = InspectionEnquiry::with('user')->findOrFail($request->enquiry_id);
 
             // Update status in enquiry
             $enquiry->status = $request->status;
@@ -364,6 +367,19 @@ class InspectionEnquiryController extends Controller
                 'creator'        => auth('api')->id(),
             ]);
 
+            // Send notification to user
+            if ($enquiry->user) {
+                try {
+                    // Send email and database notification
+                    $enquiry->user->notify(new InspectionStatusChangedNotification($enquiry, $request->status, $request->comment));
+
+                    // Send push notification via Firebase
+                    $this->sendPushNotification($enquiry, $request->status);
+                } catch (\Exception $notificationError) {
+                    Log::error("Failed to send notification for enquiry {$enquiry->id}: " . $notificationError->getMessage());
+                }
+            }
+
             return response()->json([
                 'status'  => 'success',
                 'message' => 'Status updated successfully.',
@@ -374,6 +390,55 @@ class InspectionEnquiryController extends Controller
                 'status'  => 'error',
                 'message' => 'Something went wrong: ' . $e->getMessage(),
             ], 500);
+        }
+    }
+
+    /**
+     * Send push notification to user via Firebase Cloud Messaging
+     */
+    private function sendPushNotification($enquiry, $newStatus)
+    {
+        try {
+            $user = $enquiry->user;
+            if (!$user) {
+                return;
+            }
+
+            // Get user's device tokens
+            $deviceTokens = \DB::table('device_tokens')
+                ->where('user_id', $user->id)
+                ->pluck('device_token')
+                ->toArray();
+
+            if (empty($deviceTokens)) {
+                Log::info("No device tokens found for user {$user->id}");
+                return;
+            }
+
+            $fcmService = new FCMService();
+            $title = "Appointment Status Updated";
+            $vehicleName = $enquiry->year . ' ' . 
+                ($enquiry->brand ? $enquiry->brand->name : 'Unknown') . ' ' . 
+                ($enquiry->vehicleModel ? $enquiry->vehicleModel->name : 'Unknown');
+            
+            $body = "Your Appointment for {$vehicleName} is now {$newStatus}";
+            $data = [
+                'enquiry_id' => (string) $enquiry->id,
+                'status' => $newStatus,
+                'action' => 'Appointment_status_changed',
+            ];
+
+            // Send to all device tokens
+            foreach ($deviceTokens as $token) {
+                try {
+                    $fcmService->sendNotification($token, $title, $body, $data);
+                    Log::info("Push notification sent to user {$user->id} for enquiry {$enquiry->id}");
+                } catch (\Exception $e) {
+                    Log::error("Failed to send push notification to token {$token}: " . $e->getMessage());
+                }
+            }
+        } catch (\Exception $e) {
+            Log::error("Error in sendPushNotification: " . $e->getMessage());
         }
     }
 
