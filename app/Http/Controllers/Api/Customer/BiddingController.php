@@ -66,6 +66,36 @@ class BiddingController extends Controller
             'is_auto' => 'sometimes|boolean',
         ]);
 
+        $user = Auth::user();
+        if (!$user) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Unauthorized',
+            ], 401);
+        }
+        $package = $user->package;
+        if (!$package) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'No active package found. Please subscribe to a package to place bids.',
+            ], 403);
+        }
+       if ($package->allowed_no_of_bids > 0) {
+            $userBidsCount = VehicleBid::where('user_id', $user->id)->count();
+            if ($userBidsCount >= $package->allowed_no_of_bids) {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'You have reached the maximum number of bids allowed for your package.',
+                ], 403);
+            }
+        }else {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Your current package does not allow bidding. Please subscribe to a package that allows bids.',
+            ], 403);
+        }
+
+
         $vehicle = Vehicle::findOrFail($vehicleId);
 
         $highestBid = VehicleBid::where('vehicle_id', $vehicle->id)->max('bid_amount') ?? 0;

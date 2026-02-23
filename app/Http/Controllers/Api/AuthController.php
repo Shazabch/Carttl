@@ -125,7 +125,7 @@ class AuthController extends Controller
             'status'  => 'success',
             'message' => 'OTP sent to your phone. Please verify to continue.',
             'otp_expires_at' => $otpExpiresAt,
-            'user' => $user,
+            'user' => $user->loadMissing('package'),
         ]);
     }
 
@@ -222,6 +222,7 @@ class AuthController extends Controller
         }
 
         $token = JWTAuth::fromUser($user);
+        $user->loadMissing('package');
 
         return response()->json([
             'status' => 'success',
@@ -326,6 +327,7 @@ class AuthController extends Controller
     protected function respondWithToken($token)
     {
         $user = Auth::guard('api')->user();
+        $user->loadMissing('package');
         return response()->json([
             'status' => 'success',
             'access_token' => $token,
@@ -344,6 +346,7 @@ class AuthController extends Controller
                 'bio'         => $user->bio,
                 'phone'          => $user->phone,
                 'photo' => $user->photo ? asset('storage/' . $user->photo) : null,
+                'package'       => $user->package,
                 'roles'         => $user->getRoleNames(),
                 'permissions'   => $user->getAllPermissions()->pluck('name'),
             ],
