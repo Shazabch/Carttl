@@ -289,7 +289,8 @@ Route::prefix('admin')
 
         // Packages
         Route::controller(PackageController::class)->group(function () {
-
+            Route::get('/packages/index', 'index')
+                ->middleware('permission:package-list');
             Route::post('/packages/create', 'store')
                 ->middleware('permission:package-create');
             Route::get('/packages/show/{id}', 'show')

@@ -57,11 +57,13 @@ public function index(Request $request)
         $query->where('vehicle_id', $request->vehicle_id);
     }
 
-    // 🔍 Search
+    // 🔍 Search by id and more
     if ($request->filled('search')) {
         $s = $request->search;
         $query->where(function ($q) use ($s) {
+
             $q->where('vin', 'like', "%{$s}%")
+               ->orWhere('id', $s)
                 ->orWhereHas('brand', fn ($b) =>
                     $b->where('name', 'like', "%{$s}%")
                 )

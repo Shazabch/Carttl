@@ -37,6 +37,7 @@ class PackageController extends Controller
             'description'   => 'nullable|string',
             'price'         => 'required|numeric|min:0',
             'duration_days' => 'required|integer|min:1',
+            'allowed_no_of_bids' => 'required|integer|min:1',
             'features'      => 'nullable|array', 
             'features.*'    => 'string',
         ]);
@@ -86,6 +87,7 @@ class PackageController extends Controller
             'description'   => 'nullable|string',
             'price'         => 'sometimes|required|numeric|min:0',
             'duration_days' => 'sometimes|required|integer|min:1',
+            'allowed_no_of_bids' => 'sometimes|required|integer|min:1',
             'features'      => 'nullable|array',
             'features.*'    => 'string',
         ]);
