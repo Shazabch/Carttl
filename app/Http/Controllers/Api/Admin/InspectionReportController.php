@@ -62,8 +62,8 @@ public function index(Request $request)
         $s = $request->search;
         $query->where(function ($q) use ($s) {
 
-            $q->where('vin', 'like', "%{$s}%")
-               ->orWhere('id', $s)
+            $q->where('id', $s)
+                ->orWhere('vin', "%{$s}%")
                 ->orWhereHas('brand', fn ($b) =>
                     $b->where('name', 'like', "%{$s}%")
                 )
