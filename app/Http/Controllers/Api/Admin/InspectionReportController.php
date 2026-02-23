@@ -63,7 +63,7 @@ public function index(Request $request)
         $query->where(function ($q) use ($s) {
 
             $q->where('id', $s)
-                ->orWhere('vin', "%{$s}%")
+                ->orWhere('vin', 'like', "%{$s}%")
                 ->orWhereHas('brand', fn ($b) =>
                     $b->where('name', 'like', "%{$s}%")
                 )
@@ -71,6 +71,9 @@ public function index(Request $request)
                     $m->where('name', 'like', "%{$s}%")
                 );
         });
+
+        // Prioritize exact id matches, then fall back to latest()
+        $query->orderByRaw('id = ? desc', [$s]);
     }
 
     // 📅 DATE filter (YYYY-MM-DD)
