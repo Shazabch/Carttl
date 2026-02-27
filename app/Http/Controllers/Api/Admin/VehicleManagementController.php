@@ -10,12 +10,14 @@ use App\Models\Transmission;
 use App\Models\Vehicle;
 use App\Models\VehicleImage;
 use App\Models\UserPreference;
+use App\Notifications\NewVehicleNotification;
 use App\Services\ImageWatermarkService;
 use App\Services\FCMService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Str;
 
 class VehicleManagementController extends Controller
@@ -517,15 +519,11 @@ class VehicleManagementController extends Controller
             $brand = $vehicle->brand;
             $model = $vehicle->vehicleModel;
 
-            // Build vehicle criteria
-            $vehicleData = [
-                'title' => $vehicle->title,
-                'price' => $vehicle->price,
-                'mileage' => $vehicle->mileage,
-                'year' => $vehicle->year,
-                'make' => $brand ? $brand->name : null,
-                'model' => $model ? $model->name : null,
-            ];
+            // Build consistent message: Make + Model instead of title
+            $make = $brand ? $brand->name : 'Vehicle';
+            $modelName = $model ? $model->name : '';
+            $vehicleName = trim($make . ' ' . $modelName);
+            $message = $vehicleName . ' - AED ' . number_format($vehicle->price);
 
             // Find matching preferences
             $query = UserPreference::where('is_active', true);
@@ -591,35 +589,41 @@ class VehicleManagementController extends Controller
                 return;
             }
 
-            // Get user IDs with device tokens
+            // Get user IDs
             $userIds = $matchingPreferences->pluck('user_id')->filter()->unique();
             
+            // Get users for database and mail notifications
+            $users = \App\Models\User::whereIn('id', $userIds)->get();
+            
+            // Send database and mail notifications
+            if ($users->isNotEmpty()) {
+                Notification::send($users, new NewVehicleNotification($vehicle));
+            }
+            
+            // Get device tokens for push notifications
             $deviceTokens = \App\Models\DeviceToken::whereIn('user_id', $userIds)
-                ->pluck('device_token', 'user_id')
+                ->pluck('device_token')
                 ->toArray();
 
-            if (empty($deviceTokens)) {
-                return;
-            }
+            // Send push notifications with the same message
+            if (!empty($deviceTokens)) {
+                $title = 'New Auction Available';
+                $data = [
+                    'vehicle_id' => $vehicle->id,
+                    'price' => $vehicle->price,
+                    'mileage' => $vehicle->mileage,
+                    'make' => $brand ? $brand->name : '',
+                    'model' => $model ? $model->name : '',
+                    'year' => $vehicle->year,
+                    'type' => 'new_vehicle'
+                ];
 
-            // Prepare notification
-            $title = 'New Vehicle Available';
-            $body = "{$vehicle->title} - Rs. " . number_format($vehicle->price);
-            $data = [
-                'vehicle_id' => $vehicle->id,
-                'price' => $vehicle->price,
-                'mileage' => $vehicle->mileage,
-                'make' => $vehicle->brand ? $vehicle->brand->name : '',
-                'model' => $vehicle->vehicleModel ? $vehicle->vehicleModel->name : '',
-                'year' => $vehicle->year
-            ];
-
-            // Send notifications
-            foreach ($deviceTokens as $token) {
-                try {
-                    $fcm->sendNotification($token, $title, $body, $data);
-                } catch (\Throwable $e) {
-                    \Illuminate\Support\Facades\Log::error("Failed to send FCM notification: " . $e->getMessage());
+                foreach ($deviceTokens as $token) {
+                    try {
+                        $fcm->sendNotification($token, $title, $message, $data);
+                    } catch (\Throwable $e) {
+                        \Illuminate\Support\Facades\Log::error("Failed to send FCM notification: " . $e->getMessage());
+                    }
                 }
             }
 
