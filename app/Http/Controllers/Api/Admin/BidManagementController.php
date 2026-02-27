@@ -125,7 +125,7 @@ class BidManagementController extends Controller
 
             // Send notification to the user
             if ($bid->user) {
-                Notification::send($bid->user, new BidConfirmation($bid));
+                Notification::send($bid->user, new BidConfirmation($bid, $vehicle));
 
                 // Send push notification
                 $deviceTokens = DeviceToken::where('user_id', $bid->user->id)
