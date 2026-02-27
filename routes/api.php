@@ -437,6 +437,9 @@ Route::prefix('preferences')->group(function () {
         Route::get('user/inspection-appointment/reports/{id}', 'getInspectionReportByEnquiry')->name('user.inspection.reports');
         Route::get('user/inspection-auction/reports/{id}', 'getInspectionReportByVehicle')->name('user.inspection.auction.reports');
         Route::get('user/bookings', 'getUserBookings')->name('user.bookings');
+        Route::get('user/notifications', 'getNotifications')->name('user.notifications');
+        Route::post('user/notifications/{notificationId}/read', 'markNotificationAsRead')->name('user.notifications.read');
+        Route::post('user/notifications/read-all', 'markAllNotificationsAsRead')->name('user.notifications.read.all');
     });
     Route::controller(BiddingController::class)->group(function () {
         Route::get('/biddings/{vehicleId}', 'getVehicleBids');

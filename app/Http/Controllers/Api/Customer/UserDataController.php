@@ -415,4 +415,82 @@ class UserDataController extends Controller
             'data' => $bookings,
         ]);
     }
+
+    public function getNotifications(Request $request)
+    {
+        $user = Auth::guard('api')->user();
+
+        if (!$user) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Unauthenticated user.'
+            ], 401);
+        }
+
+        $unreadOnly = $request->input('unread_only', false);
+        $perPage = $request->input('per_page', 15);
+
+        $query = $user->notifications();
+
+        if ($unreadOnly) {
+            $query->whereNull('read_at');
+        }
+
+        $notifications = $perPage 
+            ? $query->paginate($perPage) 
+            : $query->get();
+
+        return response()->json([
+            'status' => 'success',
+            'data' => $notifications,
+            'unread_count' => $user->unreadNotifications()->count(),
+        ]);
+    }
+
+    public function markNotificationAsRead(Request $request, $notificationId)
+    {
+        $user = Auth::guard('api')->user();
+
+        if (!$user) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Unauthenticated user.'
+            ], 401);
+        }
+
+        $notification = $user->notifications()->find($notificationId);
+
+        if (!$notification) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Notification not found.'
+            ], 404);
+        }
+
+        $notification->markAsRead();
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Notification marked as read.',
+        ]);
+    }
+
+    public function markAllNotificationsAsRead(Request $request)
+    {
+        $user = Auth::guard('api')->user();
+
+        if (!$user) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Unauthenticated user.'
+            ], 401);
+        }
+
+        $user->unreadNotifications->markAsRead();
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'All notifications marked as read.',
+        ]);
+    }
 }
