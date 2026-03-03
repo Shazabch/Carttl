@@ -21,10 +21,10 @@ class FavoriteController extends Controller
         $vehicleId = $request->vehicle_id;
 
         if (Auth::check()) {
-           
+
             Auth::user()->favoriteVehicles()->toggle($vehicleId);
 
-           
+
             $isFavorited = Auth::user()->favoriteVehicles()
                 ->where('vehicle_id', $vehicleId)
                 ->exists();
@@ -38,7 +38,7 @@ class FavoriteController extends Controller
             ]);
         }
 
-       
+
         $favorites = session()->get('favorites', []);
 
         if (in_array($vehicleId, $favorites)) {
@@ -66,9 +66,15 @@ class FavoriteController extends Controller
      */
     public function index()
     {
+
+
         if (Auth::check()) {
             $vehicles = Auth::user()->favoriteVehicles()
-                ->with(['brand:id,name,image_source', 'vehicleModel:id,name'])
+                ->with([
+                    'brand:id,name,image_source',
+                    'vehicleModel:id,name',
+                    'coverImage:id,vehicle_id,image_path'
+                ])
                 ->get();
 
             return response()->json([
