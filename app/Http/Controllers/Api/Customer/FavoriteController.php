@@ -73,7 +73,7 @@ class FavoriteController extends Controller
                 ->with([
                     'brand:id,name,image_source',
                     'vehicleModel:id,name',
-                    'coverImage:id,vehicle_id,image_path'
+                    'coverImage:id,vehicle_id,path'
                 ])
                 ->get();
 
