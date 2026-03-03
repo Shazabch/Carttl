@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\DeviceToken;
 use App\Models\Vehicle;
 use App\Models\VehicleBid;
+use App\Notifications\OutbidNotification;
 use App\Services\AutoBiddingService;
 use App\Services\FCMService;
 use Illuminate\Http\Request;
@@ -131,6 +132,18 @@ class BiddingController extends Controller
                 ->first();
 
             if ($previousBid && $previousBid->user) {
+                // Send email and database notification
+                try {
+                    $previousBid->user->notify(new OutbidNotification(
+                        $vehicle,
+                        $request->current_bid,
+                        $bid->id
+                    ));
+                } catch (\Throwable $e) {
+                    Log::error("Failed to send outbid email/database notification: " . $e->getMessage());
+                }
+
+                // Send push notification
                 $deviceTokens = DeviceToken::where('user_id', $previousBid->user->id)
                     ->pluck('device_token')
                     ->toArray();
@@ -149,7 +162,7 @@ class BiddingController extends Controller
                             ]
                         );
                     } catch (\Throwable $e) {
-                        Log::error("Failed to send outbid notification: " . $e->getMessage());
+                        Log::error("Failed to send outbid push notification: " . $e->getMessage());
                     }
                 }
             }
