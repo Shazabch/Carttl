@@ -228,6 +228,7 @@ class InspectionEnquiryController extends Controller
             'user_id'        => 'required|integer|exists:users,id',
             'inspector_id'   => 'nullable|integer|exists:users,id',
             'date'           => 'nullable|date',
+            'time'           => 'nullable',
             // status history fields
             'status'         => 'nullable|string|max:50',
             'comment'        => 'nullable|string',
@@ -251,7 +252,8 @@ class InspectionEnquiryController extends Controller
             // Auto date & time
             $validated['date'] = $request->date    ? $request->date
                 : now()->format('Y-m-d');
-            $validated['time'] = now()->format('H:i');
+            $validated['time'] = $request->time    ? $request->time
+                : now()->format('H:i:s');
 
             // Assign inspector
             $validated['inspector_id'] = $request->inspector_id;
